@@ -124,6 +124,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Setup\Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -142,6 +143,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Setup\Views\web.config" />
+    <Content Include="Areas\Setup\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Setup\Views\Home\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -169,7 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Setup\Controllers\" />
     <Folder Include="Areas\Setup\Models\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
     <Folder Include="Models\" />
