@@ -31,6 +31,7 @@ namespace Testility.WebUI.Infrastructure
         private void AddBindings()
         {
             kernel.Bind<ISetupRepository>().To<EFSetupRepository>();
+            kernel.Bind<ICompiler>().To<Compiler>();
         }
     }
 }

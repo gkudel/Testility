@@ -15,11 +15,11 @@ namespace Testility.Domain.Concrete
         public EFSetupRepository()
         { }
 
-        public IQueryable<TestedClass> TestedClasses
+        public IQueryable<File> Files
         {
             get
             {
-                return context.TestedClasses;
+                return context.Files;
             }
         }
 

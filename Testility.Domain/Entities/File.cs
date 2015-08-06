@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Testility.Domain.Entities
 {
-    public class TestedClass
+    public class File
     {
-        public TestedClass()
+        public File()
         {
-            Methods = new HashSet<TestedMethod>();
+            Clasess = new HashSet<TestedClass>();
         }
 
         public int Id { get; set; }
@@ -21,12 +21,8 @@ namespace Testility.Domain.Entities
         public string Name { get; set; }
 
         [Required]
-        public string Description { get; set; }
+        public string SourceCode { get; set; }
 
-        public int FileId { get; set; }
-
-        public virtual File File { get; set; }
-
-        public virtual ICollection<TestedMethod> Methods { get; set; }
+        public virtual ICollection<TestedClass> Clasess { get; set; }
     }
 }

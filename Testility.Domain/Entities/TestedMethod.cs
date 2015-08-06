@@ -9,6 +9,11 @@ namespace Testility.Domain.Entities
 {
     public class TestedMethod
     {
+        public TestedMethod()
+        {
+            Tests = new HashSet<Test>();
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -17,6 +22,10 @@ namespace Testility.Domain.Entities
 
         [Required]
         public string Description { get; set; }
+
+        public int TestedClassId { get; set; }
+
+        public virtual TestedClass TestedClass { get; set; }
 
         public virtual ICollection<Test> Tests { get; set; }
     }

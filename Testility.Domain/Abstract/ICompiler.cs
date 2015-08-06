@@ -7,8 +7,8 @@ using Testility.Domain.Entities;
 
 namespace Testility.Domain.Abstract
 {
-    public interface ISetupRepository
+    public interface ICompiler
     {
-        IQueryable<File> Files { get;  }
+        IEnumerable<TestedClass> compile(string sourceCode);
     }
 }

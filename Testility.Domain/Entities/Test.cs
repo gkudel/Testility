@@ -19,5 +19,9 @@ namespace Testility.Domain.Entities
         public string Description { get; set; }
 
         public bool Fail { get; set; }
+
+        public int TestedMethodId { get; set; }
+        
+        public virtual TestedMethod TestedMethod { get; set; }
     }
 }

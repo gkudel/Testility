@@ -10,16 +10,18 @@ namespace Testility.WebUI.Areas.Setup.Controllers
     public class HomeController : Controller
     {
         private ISetupRepository repository;
+        private ICompiler compiler;
 
-        public HomeController(ISetupRepository repository)
+        public HomeController(ISetupRepository repository, ICompiler compiler)
         {
             this.repository = repository;
+            this.compiler = compiler;
         }
 
         // GET: Setup/Home
         public ActionResult Index()
-        {           
-            return View(repository.TestedClasses);
+        {
+            return View(repository.Files);
         }
     }
 }
