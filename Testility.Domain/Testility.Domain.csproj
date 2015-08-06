@@ -52,14 +52,24 @@
     <Compile Include="Abstract\ISetupRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFSetupRepository.cs" />
+    <Compile Include="Entities\Test.cs" />
+    <Compile Include="Entities\TestedClass.cs" />
+    <Compile Include="Entities\TestedMethod.cs" />
+    <Compile Include="Migrations\201508061002064_Init.cs" />
+    <Compile Include="Migrations\201508061002064_Init.Designer.cs">
+      <DependentUpon>201508061002064_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Entities\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201508061002064_Init.resx">
+      <DependentUpon>201508061002064_Init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
