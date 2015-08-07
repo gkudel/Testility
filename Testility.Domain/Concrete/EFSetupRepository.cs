@@ -23,11 +23,18 @@ namespace Testility.Domain.Concrete
             }
         }
 
-        public void DeleteSourceCode(int id)
+        public bool DeleteSourceCode(int id)
         {
-            SourceCode sourceCode =  context.SourCodes.Select(a => a).First(b => b.Id == id);
-            context.SourCodes.Remove((sourceCode));
-            Commit();
+
+            SourceCode sourceCode =  context.SourCodes.Select(a => a).FirstOrDefault(b => b.Id == id);
+            if (sourceCode!=null)
+            {
+                context.SourCodes.Remove((sourceCode));
+                Commit();
+                return true;
+            }
+
+            return false;
         }
 
         public SourceCode GetSourceCode(int? id)
@@ -37,17 +44,21 @@ namespace Testility.Domain.Concrete
 
         public void SaveSourceCode(SourceCode sourcode)
         {
-            SourceCode sourceCode = context.SourCodes.Find(sourcode.Id);
-            if (sourceCode != null)
+            if (sourcode != null)
             {
-                context.Entry(sourceCode).CurrentValues.SetValues(sourcode);
-                Commit();
+                SourceCode sourceCode = context.SourCodes.Find(sourcode.Id);
+                if (sourceCode != null)
+                {
+                    context.Entry(sourceCode).CurrentValues.SetValues(sourcode);
+                    Commit();
+                }
+                else
+                {
+                    context.SourCodes.Add(sourcode);
+                    Commit();
+                }
             }
-            else
-            {
-                context.SourCodes.Add(sourcode);
-            }
-            Commit();
+
         }
 
 

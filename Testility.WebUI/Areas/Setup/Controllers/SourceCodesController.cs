@@ -14,16 +14,16 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class SourceCodesController : Controller
     {
-        private ISetupRepository SetupRepository;
+        private ISetupRepository setupRepository;
 
         public SourceCodesController(ISetupRepository setupRepositor)
         {
-            SetupRepository = setupRepositor;
+            setupRepository = setupRepositor;
         }
 
         public ActionResult Index()
         {
-            return View(SetupRepository.SourceCodes);
+            return View(setupRepository.SourceCodes);
         }
 
         // GET: SourceCodes/Details/5
@@ -33,7 +33,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SourceCode sourceCode = SetupRepository.GetSourceCode(id);
+            SourceCode sourceCode = setupRepository.GetSourceCode(id);
             if (sourceCode == null)
             {
                 return HttpNotFound();
@@ -52,11 +52,11 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode)
+        public ActionResult Create([Bind(Include = "Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode)
         {
             if (ModelState.IsValid)
             {
-                 SetupRepository.SaveSourceCode(sourceCode);
+                setupRepository.SaveSourceCode(sourceCode);
                 return RedirectToAction("Index");
             }
 
@@ -70,24 +70,25 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SourceCode sourceCode = SetupRepository.GetSourceCode(id);
+            SourceCode sourceCode = setupRepository.GetSourceCode(id);
             if (sourceCode == null)
             {
                 return HttpNotFound();
             }
+           
             return View(sourceCode);
         }
 
         // POST: SourceCodes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost , ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode)
+        public ActionResult Edit([Bind(Include = "Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode)
         {
             if (ModelState.IsValid)
             {
-                SetupRepository.SaveSourceCode(sourceCode);
+                setupRepository.SaveSourceCode(sourceCode);
                 return RedirectToAction("Index");
             }
             return View(sourceCode);
@@ -100,7 +101,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SourceCode sourceCode = SetupRepository.GetSourceCode(id);
+            SourceCode sourceCode = setupRepository.GetSourceCode(id);
             if (sourceCode == null)
             {
                return HttpNotFound();
@@ -113,17 +114,8 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SetupRepository.DeleteSourceCode(id);
+            setupRepository.DeleteSourceCode(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            //if (disposing)
-            //{
-            //    db.Dispose();
-            //}
-            //base.Dispose(disposing);
         }
     }
 }
