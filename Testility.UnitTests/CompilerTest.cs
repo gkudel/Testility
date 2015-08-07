@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Testility.Engine.Concrete;
 
 namespace Testility.UnitTests
 {
@@ -9,8 +8,9 @@ namespace Testility.UnitTests
     public class CompilerTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void Cannot_Compile_WithOut_SourCode()
         {
+            Compiler compiler = new Compiler();
         }
     }
 }

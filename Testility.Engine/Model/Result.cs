@@ -11,8 +11,10 @@ namespace Testility.Engine.Model
         public Result()
         {
             TestedClasses = new List<TestedClass>();
+            Errors = new List<Error>();
         }
 
         public IList<TestedClass> TestedClasses { get; set; }
+        public IList<Error> Errors { get; set; }
     }
 }
