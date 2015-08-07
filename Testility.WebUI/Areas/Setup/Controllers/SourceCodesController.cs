@@ -26,7 +26,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             return View(setupRepository.SourceCodes);
         }
 
-        // GET: SourceCodes/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -47,9 +46,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             return View();
         }
 
-        // POST: SourceCodes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode)
@@ -72,7 +68,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             return View(sourceCode);
         }
 
-        // GET: SourceCodes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -88,12 +83,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             return View(sourceCode);
         }
 
-        // POST: SourceCodes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost, ActionName("Edit")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode);
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public ActionResult EditPost(int? id)
@@ -113,7 +102,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 try
                 {
                     setupRepository.SaveSourceCode(sourceCode);
-                    TempData["savemessage"] = string.Format("{0} has been saved", sourceCode.Name);
+                    TempData["savemessage"] = string.Format("{0} has been edited", sourceCode.Name);
                     return RedirectToAction("Index");
                 }
                 catch( Exception ex)
@@ -124,7 +113,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             return View(sourceCode);
         }
 
-        // GET: SourceCodes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -139,12 +127,20 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             return View(sourceCode);
         }
 
-        // POST: SourceCodes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            setupRepository.DeleteSourceCode(id);
+            try
+            {
+                setupRepository.DeleteSourceCode(id);
+                TempData["savemessage"] = string.Format("SourceCoude has been deleted");
+            }
+            catch (Exception ex)
+            {
+                TempData["errormessage"] = string.Format("An error occurred when deleting");
+            } 
+            
             return RedirectToAction("Index");
         }
     }
