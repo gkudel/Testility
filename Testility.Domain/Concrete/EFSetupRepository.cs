@@ -15,7 +15,7 @@ namespace Testility.Domain.Concrete
         public EFSetupRepository()
         { }
 
-        public IQueryable<File> Files
+        public IQueryable<SourceCode> Files
         {
             get
             {

@@ -5,3 +5,5 @@ Testility.UnitTests/bin/
 Testility.Domain/bin/
 Testility.WebUI/bin/
 Testility.WebUI/obj/
+Testility.Engine/obj/
+Testility.Engine/bin/

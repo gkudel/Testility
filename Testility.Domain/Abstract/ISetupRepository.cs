@@ -9,6 +9,6 @@ namespace Testility.Domain.Abstract
 {
     public interface ISetupRepository
     {
-        IQueryable<File> Files { get;  }
+        IQueryable<SourceCode> Files { get;  }
     }
 }

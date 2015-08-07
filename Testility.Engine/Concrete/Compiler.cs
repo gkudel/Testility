@@ -1,33 +1,42 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Testility.Domain.Abstract;
-using Testility.Domain.Attribute;
+using Testility.Engine.Abstract;
+using Testility.Engine.Attribute;
 using Testility.Domain.Entities;
 
-namespace Testility.Domain.Concrete
+namespace Testility.Engine.Concrete
 {
     public class Compiler : ICompiler
     {
-        public IEnumerable<TestedClass> compile(string sourceCode)
+        public IEnumerable<TestedClass> compile(SourceCode sourceCode)
         {
             List<TestedClass> list = new List<TestedClass>();
-            CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+            CodeDomProvider provider = CodeDomProvider.CreateProvider(Enum.GetName(typeof(Language), sourceCode.Language));
             if (provider != null)
             {
                 CompilerParameters cp = new CompilerParameters();
 
                 cp.GenerateExecutable = false;
-                cp.GenerateInMemory = true;
+                cp.GenerateInMemory = false;
+                cp.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),  sourceCode.Name + ".dll");
                 cp.TreatWarningsAsErrors = false;
 
-                cp.ReferencedAssemblies.Add("System.dll");
+                string code = sourceCode.Code;
+                code = "using Testility.Engine.Attribute; " + code;
                 cp.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
-                var results = provider.CompileAssemblyFromSource(cp, new string[] { sourceCode });
+
+                foreach (String references in sourceCode.ReferencedAssemblies.Split(';'))
+                {
+                    cp.ReferencedAssemblies.Add(references);
+                }
+                
+                var results = provider.CompileAssemblyFromSource(cp, new string[] { code });
 
                 if (results.Errors.Count == 0)
                 {

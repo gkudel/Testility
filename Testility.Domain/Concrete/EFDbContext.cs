@@ -11,7 +11,7 @@ namespace Testility.Domain.Concrete
 {
     public class EFDbContext : DbContext
     {
-        public DbSet<File> Files { get; set; }
+        public DbSet<SourceCode> Files { get; set; }
         public DbSet<TestedClass> TestedClasses { get; set; }
         public DbSet<TestedMethod> TestedMethods { get; set; }
         public DbSet<Test> Tests { get; set; }

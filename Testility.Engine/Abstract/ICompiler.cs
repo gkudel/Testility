@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Testility.Domain.Entities;
 
-namespace Testility.Domain.Abstract
+namespace Testility.Engine.Abstract
 {
     public interface ICompiler
     {
-        IEnumerable<TestedClass> compile(string sourceCode);
+        IEnumerable<TestedClass> compile(SourceCode sourceCode);
     }
 }

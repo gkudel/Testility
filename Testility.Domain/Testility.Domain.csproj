@@ -49,12 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\ICompiler.cs" />
     <Compile Include="Abstract\ISetupRepository.cs" />
-    <Compile Include="Concrete\Compiler.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFSetupRepository.cs" />
-    <Compile Include="Entities\File.cs" />
+    <Compile Include="Entities\SourceCode.cs" />
     <Compile Include="Entities\Test.cs" />
     <Compile Include="Entities\TestedClass.cs" />
     <Compile Include="Entities\TestedMethod.cs" />
@@ -70,11 +68,12 @@
     <Compile Include="Migrations\201508061349555_SetUp.Designer.cs">
       <DependentUpon>201508061349555_SetUp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201508070638555_SourceCode.cs" />
+    <Compile Include="Migrations\201508070638555_SourceCode.Designer.cs">
+      <DependentUpon>201508070638555_SourceCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Attribute\TestAttribute.cs" />
-    <Compile Include="Attribute\TestedClassesAttribute.cs" />
-    <Compile Include="Attribute\TestedMethodAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -89,6 +88,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508061349555_SetUp.resx">
       <DependentUpon>201508061349555_SetUp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508070638555_SourceCode.resx">
+      <DependentUpon>201508070638555_SourceCode.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

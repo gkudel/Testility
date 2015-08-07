@@ -23,9 +23,9 @@ namespace Testility.Domain.Entities
         [Required]
         public string Description { get; set; }
 
-        public int FileId { get; set; }
+        public int SourceCodeId { get; set; }
 
-        public virtual File File { get; set; }
+        public virtual SourceCode SourceCode { get; set; }
 
         public virtual ICollection<TestedMethod> Methods { get; set; }
     }

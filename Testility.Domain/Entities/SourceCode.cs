@@ -7,9 +7,14 @@ using System.Threading.Tasks;
 
 namespace Testility.Domain.Entities
 {
-    public class File
+    public enum Language
     {
-        public File()
+        CSharp, VisualBasic
+    }
+
+    public class SourceCode
+    {
+        public SourceCode()
         {
             Clasess = new HashSet<TestedClass>();
         }
@@ -21,7 +26,11 @@ namespace Testility.Domain.Entities
         public string Name { get; set; }
 
         [Required]
-        public string SourceCode { get; set; }
+        public string Code { get; set; }
+
+        public Language Language { get; set; }
+
+        public String ReferencedAssemblies { get; set; }
 
         public virtual ICollection<TestedClass> Clasess { get; set; }
     }

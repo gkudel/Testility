@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Testility.Domain.Attribute
+namespace Testility.Engine.Attribute
 {
     [System.AttributeUsage(System.AttributeTargets.Class)]
     public class TestedClassesAttribute : System.Attribute
