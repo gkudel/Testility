@@ -11,10 +11,10 @@ namespace Testility.Domain.Concrete
 {
     public class EFDbContext : DbContext
     {
-        public DbSet<SourceCode> Files { get; set; }
-        public DbSet<TestedClass> TestedClasses { get; set; }
-        public DbSet<TestedMethod> TestedMethods { get; set; }
-        public DbSet<Test> Tests { get; set; }
+        public virtual DbSet<SourceCode> Files { get; set; }
+        public virtual DbSet<TestedClass> TestedClasses { get; set; }
+        public virtual DbSet<TestedMethod> TestedMethods { get; set; }
+        public virtual DbSet<Test> Tests { get; set; }
 
         public EFDbContext() : base("EFDbContext")
         { }
