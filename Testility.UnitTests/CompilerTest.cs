@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Testility.Engine.Concrete;
+using Testility.Engine.Model;
 
 namespace Testility.UnitTests
 {
@@ -8,9 +9,13 @@ namespace Testility.UnitTests
     public class CompilerTest
     {
         [TestMethod]
-        public void Cannot_Compile_WithOut_SourCode()
+        [ExpectedException(typeof(ArgumentException))]
+        public void Compile_WhenCalledWithOutSourcCode_ThrowException()
         {
+            Input input = new Input();
             Compiler compiler = new Compiler();
+
+            compiler.compile(input);
         }
     }
 }
