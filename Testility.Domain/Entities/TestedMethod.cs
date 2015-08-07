@@ -13,20 +13,14 @@ namespace Testility.Domain.Entities
         {
             Tests = new HashSet<Test>();
         }
-
         public int Id { get; set; }
-
         [Required]
         [StringLength(10)]
         public string Name { get; set; }
-
         [Required]
         public string Description { get; set; }
-
         public int TestedClassId { get; set; }
-
         public virtual TestedClass TestedClass { get; set; }
-
         public virtual ICollection<Test> Tests { get; set; }
     }
 }

@@ -19,36 +19,35 @@ namespace Testility.Domain.Concrete
         {
             get
             {
-                return context.Files;
+                return context.SourCodes;
             }
         }
 
         public void DeleteSourceCode(int id)
         {
-            SourceCode sourceCode =  context.Files.Select(a => a).First(b => b.Id == id);
-            context.Files.Remove((sourceCode));
+            SourceCode sourceCode =  context.SourCodes.Select(a => a).First(b => b.Id == id);
+            context.SourCodes.Remove((sourceCode));
             Commit();
         }
 
         public SourceCode GetSourceCode(int? id)
         {
-            return  context.Files.Select(a => a).First(b => b.Id == id);
+            return  context.SourCodes.Select(a => a).First(b => b.Id == id);
         }
 
         public void SaveSourceCode(SourceCode sourcode)
         {
-             SourceCode sourceCode = context.Files.Select(a => a).First(b => b.Id == sourcode.Id);
-                if (sourceCode!=null)
-                {
-                    context.Entry(sourceCode).CurrentValues.SetValues(sourcode);
-                    Commit();
-                }
-                else
-                {
-                    context.Files.Add(sourcode);
-                  
-                }
+            SourceCode sourceCode = context.SourCodes.Find(sourcode.Id);
+            if (sourceCode != null)
+            {
+                context.Entry(sourceCode).CurrentValues.SetValues(sourcode);
                 Commit();
+            }
+            else
+            {
+                context.SourCodes.Add(sourcode);
+            }
+            Commit();
         }
 
 

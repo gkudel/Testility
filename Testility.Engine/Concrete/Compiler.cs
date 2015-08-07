@@ -8,30 +8,30 @@ using System.Text;
 using System.Threading.Tasks;
 using Testility.Engine.Abstract;
 using Testility.Engine.Attribute;
-using Testility.Domain.Entities;
+using Testility.Engine.Model;
 
 namespace Testility.Engine.Concrete
 {
     public class Compiler : ICompiler
     {
-        public IEnumerable<TestedClass> compile(SourceCode sourceCode)
+        public Result compile(Input input)
         {
-            List<TestedClass> list = new List<TestedClass>();
-            CodeDomProvider provider = CodeDomProvider.CreateProvider(Enum.GetName(typeof(Language), sourceCode.Language));
+            Result result = new Result();
+            CodeDomProvider provider = CodeDomProvider.CreateProvider(input.Language);
             if (provider != null)
             {
                 CompilerParameters cp = new CompilerParameters();
 
                 cp.GenerateExecutable = false;
                 cp.GenerateInMemory = false;
-                cp.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),  sourceCode.Name + ".dll");
+                cp.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), input.Name + ".dll");
                 cp.TreatWarningsAsErrors = false;
 
-                string code = sourceCode.Code;
+                string code = input.Code;
                 code = "using Testility.Engine.Attribute; " + code;
                 cp.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
 
-                foreach (String references in sourceCode.ReferencedAssemblies.Split(';'))
+                foreach (String references in input.ReferencedAssemblies.Split(';'))
                 {
                     cp.ReferencedAssemblies.Add(references);
                 }
@@ -76,11 +76,11 @@ namespace Testility.Engine.Concrete
                                 });
                             }
                         }
-                        if (testedclass.Methods.Where(m => m.Tests.Count() > 0).Count() > 0) list.Add(testedclass);
+                        if (testedclass.Methods.Where(m => m.Tests.Count() > 0).Count() > 0) result.TestedClasses.Add(testedclass);
                     }
                 }
             }
-            return list;
+            return result;
         }
     }
 }

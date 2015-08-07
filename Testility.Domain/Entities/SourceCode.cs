@@ -18,20 +18,14 @@ namespace Testility.Domain.Entities
         {
             Clasess = new HashSet<TestedClass>();
         }
-
         public int Id { get; set; }
-
         [Required]
         [StringLength(10)]
         public string Name { get; set; }
-
         [Required]
         public string Code { get; set; }
-
         public Language Language { get; set; }
-
         public String ReferencedAssemblies { get; set; }
-
         public virtual ICollection<TestedClass> Clasess { get; set; }
     }
 }

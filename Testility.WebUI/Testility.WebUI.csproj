@@ -136,18 +136,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Areas\Setup\Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SourceCodesController.cs" />
-    <Compile Include="Controllers\TestedClassesController.cs" />
-    <Compile Include="Controllers\TestedMethodsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\TestedMetodViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -160,7 +156,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Setup\Views\web.config" />
     <Content Include="Areas\Setup\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Setup\Views\Home\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

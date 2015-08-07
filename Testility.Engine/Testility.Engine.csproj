@@ -45,13 +45,12 @@
     <Compile Include="Attribute\TestedClassesAttribute.cs" />
     <Compile Include="Attribute\TestedMethodAttribute.cs" />
     <Compile Include="Concrete\Compiler.cs" />
+    <Compile Include="Model\Input.cs" />
+    <Compile Include="Model\Result.cs" />
+    <Compile Include="Model\Test.cs" />
+    <Compile Include="Model\TestedClass.cs" />
+    <Compile Include="Model\TestedMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Testility.Domain\Testility.Domain.csproj">
-      <Project>{c8ec8f68-f8d0-4310-8a36-d28c7b8f4f36}</Project>
-      <Name>Testility.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

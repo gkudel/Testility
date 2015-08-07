@@ -18,13 +18,9 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    
-                    <li>@Html.ActionLink("Source Codes", "Index", new { area = "Setup" , controller = "SourceCodes" })</li>
-                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="@Url.Action("Index", "Home", new { area = "Setup" })">
+                        <a href="@Url.Action("Index", "SourceCodes", new { area = "Setup" })">
                             <span class="glyphicon glyphicon-cog"></span> SetUp
                         </a>
                     </li>

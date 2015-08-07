@@ -12,21 +12,15 @@ namespace Testility.Domain.Entities
         public TestedClass()
         {
             Methods = new HashSet<TestedMethod>();
-        }
-
+        }    
         public int Id { get; set; }
-
         [Required]
         [StringLength(10)]
         public string Name { get; set; }
-
         [Required]
         public string Description { get; set; }
-
         public int SourceCodeId { get; set; }
-
         public virtual SourceCode SourceCode { get; set; }
-
         public virtual ICollection<TestedMethod> Methods { get; set; }
     }
 }

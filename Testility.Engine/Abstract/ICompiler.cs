@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Testility.Domain.Entities;
+using Testility.Engine.Model;
 
 namespace Testility.Engine.Abstract
 {
     public interface ICompiler
     {
-        IEnumerable<TestedClass> compile(SourceCode sourceCode);
+        Result compile(Input input);
     }
 }

@@ -10,18 +10,13 @@ namespace Testility.Domain.Entities
     public class Test
     {
         public int Id { get; set; }
-
         [Required]
         [StringLength(10)]
         public string Name { get; set; }
-
         [Required]
         public string Description { get; set; }
-
         public bool Fail { get; set; }
-
-        public int TestedMethodId { get; set; }
-        
+        public int TestedMethodId { get; set; }        
         public virtual TestedMethod TestedMethod { get; set; }
     }
 }

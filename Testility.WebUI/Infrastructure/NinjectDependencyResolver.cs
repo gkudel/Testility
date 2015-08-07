@@ -33,8 +33,6 @@ namespace Testility.WebUI.Infrastructure
         private void AddBindings()
         {
             kernel.Bind<ISetupRepository>().To<EFSetupRepository>();
-            kernel.Bind<ITestedClassesRepository>().To<TestedClassesService>();
-            kernel.Bind<ITestedMethodsRepository>().To<TestedMethodsService>();
             kernel.Bind<ICompiler>().To<Compiler>();
         }
     }

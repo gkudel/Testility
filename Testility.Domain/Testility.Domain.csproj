@@ -80,10 +80,6 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServicesRepository\ITestedClassesRepository.cs" />
-    <Compile Include="ServicesRepository\ITestedMethodsRepository.cs" />
-    <Compile Include="Services\TestedClassesService.cs" />
-    <Compile Include="Services\TestedMethodsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
