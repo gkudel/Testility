@@ -52,11 +52,11 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode)
+        public ActionResult Create([Bind(Include = "Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode)
         {
             if (ModelState.IsValid)
             {
-                 SetupRepository.SaveSourceCode(sourceCode);
+                SetupRepository.SaveSourceCode(sourceCode);
                 return RedirectToAction("Index");
             }
 
@@ -81,14 +81,29 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         // POST: SourceCodes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode)
+        public ActionResult EditPost(int? id)
         {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                SetupRepository.SaveSourceCode(sourceCode);
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            SourceCode sourceCode = SetupRepository.GetSourceCode(id);
+            if (sourceCode == null)
+            {
+                return HttpNotFound();
+            }
+            if (TryUpdateModel(sourceCode, "", new string[] { "Name", "Code", "Language", "ReferencedAssemblies" }))
+            {
+                //try
+                //{
+                    SetupRepository.SaveSourceCode(sourceCode);
+                    return RedirectToAction("Index");
+                //}
+                //catch ()
+                //{ }
             }
             return View(sourceCode);
         }

@@ -50,7 +50,6 @@ namespace Testility.Domain.Concrete
             Commit();
         }
 
-
         private void Commit()
         {
             context.SaveChanges();
