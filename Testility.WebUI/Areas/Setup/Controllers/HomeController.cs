@@ -55,7 +55,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 ReferencedAssemblies = "System.dll"
             };
             compiler.compile(code);
-            return View(repository.Files);
+            return View(repository.SourceCodes);
         }
     }
 }

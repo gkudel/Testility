@@ -139,7 +139,7 @@
     <Compile Include="Areas\Setup\Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\SourceCodesController.cs" />
+    <Compile Include="Areas\Setup\Controllers\SourceCodesController.cs" />
     <Compile Include="Controllers\TestedClassesController.cs" />
     <Compile Include="Controllers\TestedMethodsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -185,11 +185,11 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\SourceCodes\Create.cshtml" />
-    <Content Include="Views\SourceCodes\Delete.cshtml" />
-    <Content Include="Views\SourceCodes\Details.cshtml" />
-    <Content Include="Views\SourceCodes\Edit.cshtml" />
-    <Content Include="Views\SourceCodes\Index.cshtml" />
+    <Content Include="Areas\Setup\Views\SourceCodes\Create.cshtml" />
+    <Content Include="Areas\Setup\Views\SourceCodes\Delete.cshtml" />
+    <Content Include="Areas\Setup\Views\SourceCodes\Details.cshtml" />
+    <Content Include="Areas\Setup\Views\SourceCodes\Edit.cshtml" />
+    <Content Include="Areas\Setup\Views\SourceCodes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

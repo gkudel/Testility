@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
+using AutoMapper;
 
 namespace Testility.Domain.Concrete
 {
@@ -18,27 +15,12 @@ namespace Testility.Domain.Concrete
             this.context = context;
         }
 
-        public IQueryable<SourceCode> Files
+        public IQueryable<SourceCode> SourceCodes
         {
             get
             {
                 return context.Files;
             }
-        }
-
-
-        public void SourceCode(SourceCode sourcode)
-        {
-            SourceCode orgSourceCode = context.Files.Select(a => a).First(b => b.Id == sourcode.Id);
-            orgSourceCode.Id = sourcode.Id;
-            orgSourceCode.Clasess = sourcode.Clasess;
-            orgSourceCode.Code = sourcode.Code;
-            orgSourceCode.Language = sourcode.Language;
-            orgSourceCode.Name = sourcode.Name;
-            orgSourceCode.ReferencedAssemblies = sourcode.ReferencedAssemblies;
-            Commit();
-
-
         }
 
         public void DeleteSourceCode(int id)
@@ -55,14 +37,20 @@ namespace Testility.Domain.Concrete
 
         public void SaveSourceCode(SourceCode sourcode)
         {
-            context.Files.Add(sourcode);
-            Commit();
+             SourceCode sourceCode = context.Files.Select(a => a).First(b => b.Id == sourcode.Id);
+                if (sourceCode!=null)
+                {
+                    context.Entry(sourceCode).CurrentValues.SetValues(sourcode);
+                    Commit();
+                }
+                else
+                {
+                    context.Files.Add(sourcode);
+                  
+                }
+                Commit();
         }
 
-        //public IQueryable<SourceCode> GetAllSourceCodes()
-        //{
-        //    return context.Files;
-        //}
 
         private void Commit()
         {

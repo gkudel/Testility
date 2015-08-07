@@ -10,7 +10,7 @@ using Testility.Domain.Abstract;
 using Testility.Domain.Concrete;
 using Testility.Domain.Entities;
 
-namespace Testility.WebUI.Controllers
+namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class SourceCodesController : Controller
     {
@@ -23,7 +23,7 @@ namespace Testility.WebUI.Controllers
 
         public ActionResult Index()
         {
-            return View(SetupRepository.Files);
+            return View(SetupRepository.SourceCodes);
         }
 
         // GET: SourceCodes/Details/5
@@ -87,7 +87,7 @@ namespace Testility.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                SetupRepository.SourceCode(sourceCode);
+                SetupRepository.SaveSourceCode(sourceCode);
                 return RedirectToAction("Index");
             }
             return View(sourceCode);
