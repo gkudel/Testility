@@ -37,6 +37,7 @@ namespace Testility.UnitTests
 
             MockContext = new Mock<EFDbContext>();
             MockContext.Setup(x => x.SourCodes).Returns(MockSet.Object);
+            //MockContext.Setup(x=>x.Entry))
             MockService = new Mock<EFSetupRepository>(MockContext.Object);
         }
 
@@ -50,6 +51,8 @@ namespace Testility.UnitTests
         public void Cannot_Delete_Source_Code_With_WrongId()
         {
             var result = MockService.Object.DeleteSourceCode(10);
+            MockSet.Verify(m => m.Remove(It.IsAny<SourceCode>()), Times.Never);
+            MockContext.Verify(m => m.SaveChanges(), Times.Never);
             Assert.AreEqual(false, result);
         }
 
@@ -82,11 +85,11 @@ namespace Testility.UnitTests
         [TestMethod]
         public void Can_Update_Source_Code()
         {
-            SourceCode sourceCode = new SourceCode(){Id= 2, Name = "be"};
+            SourceCode sourceCode = new SourceCode() { Id = 2, Name = "be" };
             MockService.Object.SaveSourceCode(sourceCode);
-            //How to check if object is updated
-            //SourceCode updatedCode  = MockService.Object.GetSourceCode(2).Name
-            //Assert.AreEqual(sourceCode.Name, MockService.Object.GetSourceCode(2).Name);
+
+            SourceCode c = MockSet.Object.FirstOrDefault(s => s.Id == sourceCode.Id);
+            Assert.AreEqual(sourceCode.Name, c.Name);
             MockContext.Verify(m => m.SaveChanges(), Times.Once);
         }
 

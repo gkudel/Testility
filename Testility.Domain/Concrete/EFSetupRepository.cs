@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Xml.Linq;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
-using AutoMapper;
 
 namespace Testility.Domain.Concrete
 {
@@ -25,8 +25,6 @@ namespace Testility.Domain.Concrete
 
         public bool DeleteSourceCode(int id)
         {
-<<<<<<< HEAD
-
             SourceCode sourceCode =  context.SourCodes.Select(a => a).FirstOrDefault(b => b.Id == id);
             if (sourceCode!=null)
             {
@@ -36,11 +34,6 @@ namespace Testility.Domain.Concrete
             }
 
             return false;
-=======
-            SourceCode sourceCode =  context.SourCodes.Find(id);
-            context.SourCodes.Remove((sourceCode));
-            Commit();
->>>>>>> 00cdf21638cfd1ff18c084182c9c535188464a53
         }
 
         public SourceCode GetSourceCode(int? id)
@@ -52,10 +45,17 @@ namespace Testility.Domain.Concrete
         {
             if (sourcode != null)
             {
-                SourceCode sourceCode = context.SourCodes.Find(sourcode.Id);
+                SourceCode sourceCode = context.SourCodes.FirstOrDefault(a =>a.Id == sourcode.Id);
                 if (sourceCode != null)
                 {
-                    context.Entry(sourceCode).CurrentValues.SetValues(sourcode);
+                    //Brzydkie ale działa 
+                    sourceCode.Id = sourcode.Id;
+                    sourceCode.Name = sourcode.Name;
+                    sourceCode.Clasess = sourcode.Clasess;
+                    sourceCode.Code = sourcode.Code;
+                    sourceCode.Language = sourcode.Language;
+                    sourceCode.ReferencedAssemblies = sourcode.ReferencedAssemblies;
+                    //context.Entry(sourceCode).CurrentValues.SetValues(sourcode);
                     Commit();
                 }
                 else

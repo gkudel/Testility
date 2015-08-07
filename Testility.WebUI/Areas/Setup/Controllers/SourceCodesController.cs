@@ -56,12 +56,17 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             if (ModelState.IsValid)
             {
-<<<<<<< HEAD
-                setupRepository.SaveSourceCode(sourceCode);
-=======
-                SetupRepository.SaveSourceCode(sourceCode);
->>>>>>> 00cdf21638cfd1ff18c084182c9c535188464a53
-                return RedirectToAction("Index");
+                try
+                {
+                    setupRepository.SaveSourceCode(sourceCode);
+                    TempData["savemessage"] = string.Format("{0} has been saved", sourceCode.Name);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    TempData["errormessage"] = string.Format("An error occurred when creating when saving {0}", sourceCode.Name);
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(sourceCode);
@@ -86,40 +91,35 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         // POST: SourceCodes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-<<<<<<< HEAD
-        [HttpPost , ActionName("Edit")]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode)
-=======
+        //[HttpPost, ActionName("Edit")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode);
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public ActionResult EditPost(int? id)
->>>>>>> 00cdf21638cfd1ff18c084182c9c535188464a53
         {
             if (id == null)
             {
-<<<<<<< HEAD
-                setupRepository.SaveSourceCode(sourceCode);
-                return RedirectToAction("Index");
-=======
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            SourceCode sourceCode = SetupRepository.GetSourceCode(id);
+            SourceCode sourceCode = setupRepository.GetSourceCode(id);
             if (sourceCode == null)
             {
                 return HttpNotFound();
             }
             if (TryUpdateModel(sourceCode, "", new string[] { "Name", "Code", "Language", "ReferencedAssemblies" }))
             {
-                //try
-                //{
-                    SetupRepository.SaveSourceCode(sourceCode);
+                try
+                {
+                    setupRepository.SaveSourceCode(sourceCode);
+                    TempData["savemessage"] = string.Format("{0} has been saved", sourceCode.Name);
                     return RedirectToAction("Index");
-                //}
-                //catch ()
-                //{ }
->>>>>>> 00cdf21638cfd1ff18c084182c9c535188464a53
+                }
+                catch( Exception ex)
+                {
+                    TempData["errormessage"] = string.Format("An error occurred when updating {0}", sourceCode.Name);
+                }
             }
             return View(sourceCode);
         }
