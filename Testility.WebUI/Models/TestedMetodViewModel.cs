@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Testility.Domain.Entities;
 
-namespace Testility.Domain.ViewModels
+namespace Testility.WebUI.Models
 {
     public class TestedMetodViewModel
     {

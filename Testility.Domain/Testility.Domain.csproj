@@ -78,7 +78,6 @@
     <Compile Include="ServicesRepository\ITestedMethodsRepository.cs" />
     <Compile Include="Services\TestedClassesService.cs" />
     <Compile Include="Services\TestedMethodsService.cs" />
-    <Compile Include="ViewModel\TestedMetodViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

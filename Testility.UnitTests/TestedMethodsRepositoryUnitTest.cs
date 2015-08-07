@@ -44,5 +44,13 @@ namespace Testility.UnitTests
         {
             Assert.AreEqual(1, ServiceMock.Object.GetMethods().Count);
         }
+
+        [TestMethod]
+        public void Test_Add_Methods()
+        {
+            ServiceMock.Object.SaveTestedMethod(null);
+            MockContext.Verify(x => x.SaveChanges(), Times.Never);
+
+        }
     }
 }

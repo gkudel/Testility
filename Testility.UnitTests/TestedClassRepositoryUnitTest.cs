@@ -11,7 +11,7 @@ using Testility.Domain.Concrete;
 namespace Testility.UnitTests
 {
     [TestClass]
-    public class SetupRepositoryUnitTest
+    public class TestedClassRepositoryUnitTest
     {
 
         public Mock<DbSet<TestedClass>> MockSet { get; set; }
@@ -113,5 +113,13 @@ namespace Testility.UnitTests
              Assert.AreEqual(1, testedClass.Id);
           
          }
+
+        [TestMethod]
+        public void Test_Return_Class_Name()
+        {
+           string name =  ServiceMock.Object.GetClassName(1);
+           Assert.AreEqual("ok", name);
+
+        }
     }
 }

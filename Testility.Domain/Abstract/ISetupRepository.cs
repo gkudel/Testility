@@ -10,5 +10,13 @@ namespace Testility.Domain.Abstract
     public interface ISetupRepository
     {
         IQueryable<SourceCode> Files { get;  }
+
+        void SourceCode(SourceCode sourcode);
+        void DeleteSourceCode(int id);
+        SourceCode GetSourceCode(int? id);
+        void SaveSourceCode(SourceCode sourcode);
+            //IQueryable<SourceCode> GetAllSourceCodes();
     }
+
+
 }

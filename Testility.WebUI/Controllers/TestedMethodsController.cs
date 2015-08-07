@@ -6,7 +6,7 @@ using System.Net;
 using System.Web.Mvc;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
-using Testility.Domain.ViewModels;
+using Testility.WebUI.Models;
 
 namespace Testility.WebUI.Controllers
 {

@@ -2,7 +2,6 @@
 using System.Linq;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
-using Testility.Domain.ViewModels;
 
 
 namespace Testility.Domain.Concrete
