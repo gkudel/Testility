@@ -86,6 +86,7 @@ namespace Testility.UnitTests
         public void Can_Update_Source_Code()
         {
             SourceCode sourceCode = new SourceCode() { Id = 2, Name = "be" };
+            AutoMapperConfiguration.Configure();
             MockService.Object.SaveSourceCode(sourceCode);
 
             SourceCode c = MockSet.Object.FirstOrDefault(s => s.Id == sourceCode.Id);

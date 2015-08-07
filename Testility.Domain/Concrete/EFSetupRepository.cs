@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
+using AutoMapper;
 
 namespace Testility.Domain.Concrete
 {
@@ -48,15 +49,9 @@ namespace Testility.Domain.Concrete
                 SourceCode sourceCode = context.SourCodes.FirstOrDefault(a =>a.Id == sourcode.Id);
                 if (sourceCode != null)
                 {
-                    //Brzydkie ale działa 
-                    sourceCode.Id = sourcode.Id;
-                    sourceCode.Name = sourcode.Name;
-                    sourceCode.Clasess = sourcode.Clasess;
-                    sourceCode.Code = sourcode.Code;
-                    sourceCode.Language = sourcode.Language;
-                    sourceCode.ReferencedAssemblies = sourcode.ReferencedAssemblies;
-                    //context.Entry(sourceCode).CurrentValues.SetValues(sourcode);
-                    Commit();
+
+                     Mapper.Map(sourcode , sourceCode);
+                     Commit();
                 }
                 else
                 {
