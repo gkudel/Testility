@@ -11,9 +11,10 @@ namespace Testility.Domain.Concrete
     public class EFSetupRepository : ISetupRepository, IDisposable
     {
         private EFDbContext context = new EFDbContext();
+        private string veryAmbitiousChanges;
 
         public EFSetupRepository()
-        { }
+        { veryAmbitiousChanges = "pchnij w tę łódź jeża lub óśm skrzyń fig"; }
 
         public IQueryable<SourceCode> Files
         {
