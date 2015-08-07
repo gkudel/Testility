@@ -25,9 +25,7 @@ namespace Testility.Domain.Concrete
 
         public bool DeleteSourceCode(int id)
         {
-<<<<<<< HEAD
-
-            SourceCode sourceCode =  context.SourCodes.Select(a => a).FirstOrDefault(b => b.Id == id);
+            SourceCode sourceCode =  context.SourCodes.FirstOrDefault(b => b.Id == id);
             if (sourceCode!=null)
             {
                 context.SourCodes.Remove((sourceCode));
@@ -36,11 +34,6 @@ namespace Testility.Domain.Concrete
             }
 
             return false;
-=======
-            SourceCode sourceCode =  context.SourCodes.Find(id);
-            context.SourCodes.Remove((sourceCode));
-            Commit();
->>>>>>> 00cdf21638cfd1ff18c084182c9c535188464a53
         }
 
         public SourceCode GetSourceCode(int? id)
