@@ -25,14 +25,14 @@ namespace Testility.Domain.Concrete
 
         public void DeleteSourceCode(int id)
         {
-            SourceCode sourceCode =  context.SourCodes.Select(a => a).First(b => b.Id == id);
+            SourceCode sourceCode =  context.SourCodes.Find(id);
             context.SourCodes.Remove((sourceCode));
             Commit();
         }
 
         public SourceCode GetSourceCode(int? id)
         {
-            return  context.SourCodes.Select(a => a).First(b => b.Id == id);
+            return  context.SourCodes.Find(id);
         }
 
         public void SaveSourceCode(SourceCode sourcode)

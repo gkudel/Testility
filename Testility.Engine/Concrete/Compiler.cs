@@ -35,12 +35,12 @@ namespace Testility.Engine.Concrete
                 {
                     cp.ReferencedAssemblies.Add(references);
                 }
-                
-                var results = provider.CompileAssemblyFromSource(cp, new string[] { code });
 
-                if (results.Errors.Count == 0)
+                var compilingResult = provider.CompileAssemblyFromSource(cp, new string[] { code });
+
+                if (compilingResult.Errors.Count == 0)
                 {
-                    var types = results.CompiledAssembly.GetTypes().SelectMany(t =>
+                    var types = compilingResult.CompiledAssembly.GetTypes().SelectMany(t =>
                         System.Attribute.GetCustomAttributes(t).Where(a => typeof(TestedClassesAttribute).IsInstanceOfType(a)),
                                     (t, a) => new { type = t, attribute = a as TestedClassesAttribute });
 
@@ -49,7 +49,7 @@ namespace Testility.Engine.Concrete
                         TestedClass testedclass = new TestedClass()
                         {
                             Name = t.attribute.Name,
-                            Description = t.attribute.Description,                            
+                            Description = t.attribute.Description,
                         };
                         var methods = t.type.GetMethods().Where(m => m.IsPublic)
                             .SelectMany(m => System.Attribute.GetCustomAttributes(m)
@@ -79,6 +79,17 @@ namespace Testility.Engine.Concrete
                         if (testedclass.Methods.Where(m => m.Tests.Count() > 0).Count() > 0) result.TestedClasses.Add(testedclass);
                     }
                 }
+                else
+                {
+                    foreach (CompilerError error in compilingResult.Errors)
+                    {
+                        result.Errors.Add(new Error() { Message = error.ErrorText });
+                    }
+                }
+            }
+            else
+            {
+                result.Errors.Add(new Error() { Message = "Language cannot be recognised" });
             }
             return result;
         }
