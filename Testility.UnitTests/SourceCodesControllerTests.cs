@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -17,7 +18,7 @@ namespace Testility.UnitTests
     {
 
         public Mock<ISetupRepository> ServiceMock { get; set; }
-        public SourceCodesController SourceCodesController { get; set; }
+        public SourceCodesController sourceCodesController { get; set; }
 
         [TestInitialize]
         public void Int()
@@ -34,14 +35,14 @@ namespace Testility.UnitTests
             ServiceMock.Setup(x => x.GetSourceCode(1)).Returns(singleSource);
             ServiceMock.Setup(x => x.DeleteSourceCode(It.IsAny<int>())).Returns(true);
 
-            SourceCodesController = new SourceCodesController(ServiceMock.Object);
+            sourceCodesController = new SourceCodesController(ServiceMock.Object);
         }
 
 
         [TestMethod]
         public void Index_Contains_All_Data()
         {
-            var result = SourceCodesController.Index();
+            var result = sourceCodesController.Index();
             var model = (result as ViewResult).Model as IQueryable<SourceCode>;
             Assert.AreEqual(2, model.Count());
         }
@@ -50,38 +51,67 @@ namespace Testility.UnitTests
         public void Canot_Details_WithouId()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            var result = SourceCodesController.Details(null) as HttpStatusCodeResult;
+            var result = sourceCodesController.Details(null) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
         [TestMethod]
-
         public void Cannot_Details_NonExists_SourceCodes()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            var result = SourceCodesController.Details(10) as HttpStatusCodeResult;
+            var result = sourceCodesController.Details(10) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
 
         }
+
+        [TestMethod]
+        public void Can_Display_Details_Of_SourceCodes()
+        {
+            ViewResult result = sourceCodesController.Details(1) as ViewResult;
+            var model = (result as ViewResult).Model as SourceCode;
+            ServiceMock.Verify(x=>x.GetSourceCode(1), Times.Once);
+            Assert.AreEqual(1, model.Id);
+        }
+
 
        [TestMethod]
         public void Cannot_Create_SourCodes()
         {
             SourceCode sourceCode = new SourceCode(){Id = 1};
-            SourceCodesController.ModelState.AddModelError("key", "error");
+            sourceCodesController.ModelState.AddModelError("key", "error");
 
-            ViewResult result = SourceCodesController.Create(sourceCode) as ViewResult;
+            ViewResult result = sourceCodesController.Create(sourceCode) as ViewResult;
             var model = (result as ViewResult).Model as SourceCode;
 
             Assert.AreEqual(1, model.Id);
         }
+
+       [TestMethod]
+       public void Cannot_Create_SourCodes_WhenException()
+       {
+           SourceCode sourceCode = new SourceCode() { Id = 1 };
+           ServiceMock.Setup(x => x.SaveSourceCode(It.IsAny<SourceCode>())).Throws(new Exception());
+           var result = sourceCodesController.Create(sourceCode) as RedirectToRouteResult;
+           Assert.AreNotEqual(null, sourceCodesController.TempData["errormessage"]);
+           Assert.AreEqual("Index", result.RouteValues["action"]);
+       }
+
+       [TestMethod]
+       public void Can_Create_SourCodes()
+       {
+           SourceCode sourceCode = new SourceCode() { Id = 1 };
+           var result = sourceCodesController.Create(sourceCode) as RedirectToRouteResult;
+           Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
+           Assert.AreEqual("Index", result.RouteValues["action"]);
+       }
+
 
         [TestMethod]
         public void Cannot_Edit_WithouId()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             int? x = null;
-            var result = SourceCodesController.Edit(x) as HttpStatusCodeResult;
+            var result = sourceCodesController.Edit(x) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
@@ -89,7 +119,7 @@ namespace Testility.UnitTests
         public void Cannot_Edit_NonExists_SourceCodes()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            var result = SourceCodesController.Edit(10) as HttpStatusCodeResult;
+            var result = sourceCodesController.Edit(10) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
@@ -97,9 +127,9 @@ namespace Testility.UnitTests
         public void Cannot_Edit_Invalid_SourCodes()
         {
             SourceCode sourceCode = new SourceCode() { Id = 1 };
-            SourceCodesController.ModelState.AddModelError("key", "error");
+            sourceCodesController.ModelState.AddModelError("key", "error");
 
-            ViewResult result = SourceCodesController.Create(sourceCode) as ViewResult;
+            ViewResult result = sourceCodesController.Create(sourceCode) as ViewResult;
             var model = (result as ViewResult).Model as SourceCode;
 
             Assert.AreEqual(1, model.Id);
@@ -108,7 +138,7 @@ namespace Testility.UnitTests
         [TestMethod]
         public void Can_Edit_SourceCodes()
         {
-            var result = SourceCodesController.Edit(1) as ViewResult;
+            var result = sourceCodesController.Edit(1) as ViewResult;
             var model = (result as ViewResult).Model as SourceCode;
             Assert.AreEqual(1, model.Id);
         }
@@ -117,7 +147,7 @@ namespace Testility.UnitTests
         public void Cannot_Delete_WithoutId()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            var result = SourceCodesController.Delete(null) as HttpStatusCodeResult;
+            var result = sourceCodesController.Delete(null) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
@@ -125,8 +155,38 @@ namespace Testility.UnitTests
         public void Cannot_Delete_NonExists_SourceCodes()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            var result = SourceCodesController.Delete(10) as HttpStatusCodeResult;
+            var result = sourceCodesController.Delete(10) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
+
+        [TestMethod]
+        public void Can_Delete_SourceCodes_RedirectToIndex()
+        {
+            ViewResult result = sourceCodesController.Delete(1) as ViewResult;
+            var model = (result as ViewResult).Model as SourceCode;
+            Assert.AreEqual(1, model.Id);
+            ServiceMock.Verify(x=>x.GetSourceCode(It.IsAny<int>()),Times.Once);  
+        }
+
+
+        [TestMethod]
+        public void Cannot_Delete_SourceCodes_WhenException()
+        {
+            ServiceMock.Setup(x => x.DeleteSourceCode(It.IsAny<int>())).Throws(new Exception());
+            var result = sourceCodesController.DeleteConfirmed(1) as RedirectToRouteResult;
+            Assert.AreNotEqual(null, sourceCodesController.TempData["errormessage"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+
+        [TestMethod]
+        public void Can_Delete_SourceCodes()
+        {
+            var result = sourceCodesController.DeleteConfirmed(1) as RedirectToRouteResult;
+            ServiceMock.Verify(x=>x.DeleteSourceCode(1), Times.Once);
+            Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
     }
 }

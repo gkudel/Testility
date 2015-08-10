@@ -1,10 +1,10 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Testility.Domain.Abstract;
+
 using Testility.Domain.Concrete;
 using Testility.Domain.Entities;
 using Testility.Domain.Mappings;
@@ -35,9 +35,10 @@ namespace Testility.UnitTests
             MockSet.As<IQueryable<SourceCode>>().Setup(x => x.ElementType).Returns(data.ElementType);
             MockSet.As<IQueryable<SourceCode>>().Setup(x => x.GetEnumerator()).Returns(data.GetEnumerator);
 
+           
+
             MockContext = new Mock<EFDbContext>();
             MockContext.Setup(x => x.SourCodes).Returns(MockSet.Object);
-            //MockContext.Setup(x=>x.Entry))
             MockService = new Mock<EFSetupRepository>(MockContext.Object);
         }
 
@@ -94,8 +95,28 @@ namespace Testility.UnitTests
             MockContext.Verify(m => m.SaveChanges(), Times.Once);
         }
 
-       
 
-       
+        [TestMethod]
+        public void Can_Get_Source_Code()
+        {
+
+            SourceCode sourceCode = new SourceCode() { Id = 1, Name = "be" };
+            MockSet.Setup(m => m.Find(It.IsAny<object[]>())).Returns(sourceCode);
+            var result = MockService.Object.GetSourceCode(1);
+            Assert.AreEqual(1, result.Id);
+        }
+
+        [TestMethod]
+        public void Cannot_Get_Source_Code_WhenNull()
+        {
+            SourceCode sourceCode = null;
+            MockSet.Setup(m => m.Find(It.IsAny<object[]>())).Returns(sourceCode);
+           
+            var result = MockService.Object.GetSourceCode(null);
+            //MockSet.Verify(x => x.Find(), Times.Once);
+            Assert.AreEqual(null, result);
+        }
+
+
     }
 }
