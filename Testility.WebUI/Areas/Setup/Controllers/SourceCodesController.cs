@@ -132,7 +132,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
                     Mapper.Map(result, sourceCode);
 
-
                     setupRepository.SaveSourceCode(sourceCode);
                     TempData["savemessage"] = string.Format("{0} has been edited", sourceCode.Name);
                     return RedirectToAction("Index");
