@@ -69,7 +69,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                              return View("CreateAndEdit", sourceCode);
                          }
 
-                    Mapper.Map(result, sourceCode);
+                     Mapper.Map(input, sourceCode);
 
                     setupRepository.SaveSourceCode(sourceCode);
                     TempData["savemessage"] = string.Format("{0} has been saved", sourceCode.Name);
@@ -130,8 +130,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                         return View("CreateAndEdit", sourceCode);
                     }
 
-                    Mapper.Map(result, sourceCode);
-
+                    Mapper.Map(input, sourceCode);
 
                     setupRepository.SaveSourceCode(sourceCode);
                     TempData["savemessage"] = string.Format("{0} has been edited", sourceCode.Name);
@@ -142,6 +141,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     TempData["errormessage"] = string.Format("An error occurred when updating {0}", sourceCode.Name);
                 }
             }
+            TempData["action"] = "Edit";
             return View("CreateAndEdit", sourceCode);
         }
 
