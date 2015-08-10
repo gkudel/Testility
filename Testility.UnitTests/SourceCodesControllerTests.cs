@@ -8,7 +8,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
+using Testility.Engine.Abstract;
 using Testility.WebUI.Areas.Setup.Controllers;
+using Testility.WebUI.Services;
 
 
 namespace Testility.UnitTests
@@ -18,7 +20,10 @@ namespace Testility.UnitTests
     {
 
         public Mock<ISetupRepository> ServiceMock { get; set; }
+        public Mock<ICreateInputClassFromFile> CreateInputClassMock { get; set; }
+        public Mock<ICompiler> CompilerMock { get; set; }
         public SourceCodesController sourceCodesController { get; set; }
+        public Mock<HttpPostedFileBase> File {get;set;}
 
         [TestInitialize]
         public void Int()
@@ -35,7 +40,13 @@ namespace Testility.UnitTests
             ServiceMock.Setup(x => x.GetSourceCode(1)).Returns(singleSource);
             ServiceMock.Setup(x => x.DeleteSourceCode(It.IsAny<int>())).Returns(true);
 
-            sourceCodesController = new SourceCodesController(ServiceMock.Object);
+
+            CreateInputClassMock = new Mock<ICreateInputClassFromFile>();
+            CompilerMock = new Mock<ICompiler>();
+            File = new Mock<HttpPostedFileBase>();
+            File.Setup(d => d.FileName).Returns("test1.txt");
+
+            sourceCodesController = new SourceCodesController(ServiceMock.Object, CreateInputClassMock.Object, CompilerMock.Object);
         }
 
 
@@ -80,7 +91,7 @@ namespace Testility.UnitTests
             SourceCode sourceCode = new SourceCode(){Id = 1};
             sourceCodesController.ModelState.AddModelError("key", "error");
 
-            ViewResult result = sourceCodesController.Create(sourceCode) as ViewResult;
+            ViewResult result = sourceCodesController.Create(sourceCode, File.Object) as ViewResult;
             var model = (result as ViewResult).Model as SourceCode;
 
             Assert.AreEqual(1, model.Id);
@@ -91,7 +102,7 @@ namespace Testility.UnitTests
        {
            SourceCode sourceCode = new SourceCode() { Id = 1 };
            ServiceMock.Setup(x => x.SaveSourceCode(It.IsAny<SourceCode>())).Throws(new Exception());
-           var result = sourceCodesController.Create(sourceCode) as RedirectToRouteResult;
+           var result = sourceCodesController.Create(sourceCode, File.Object) as RedirectToRouteResult;
            Assert.AreNotEqual(null, sourceCodesController.TempData["errormessage"]);
            Assert.AreEqual("Index", result.RouteValues["action"]);
        }
@@ -100,7 +111,7 @@ namespace Testility.UnitTests
        public void Can_Create_SourCodes()
        {
            SourceCode sourceCode = new SourceCode() { Id = 1 };
-           var result = sourceCodesController.Create(sourceCode) as RedirectToRouteResult;
+           var result = sourceCodesController.Create(sourceCode, File.Object) as RedirectToRouteResult;
            Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
            Assert.AreEqual("Index", result.RouteValues["action"]);
        }
@@ -129,7 +140,7 @@ namespace Testility.UnitTests
             SourceCode sourceCode = new SourceCode() { Id = 1 };
             sourceCodesController.ModelState.AddModelError("key", "error");
 
-            ViewResult result = sourceCodesController.Create(sourceCode) as ViewResult;
+            ViewResult result = sourceCodesController.Create(sourceCode, File.Object) as ViewResult;
             var model = (result as ViewResult).Model as SourceCode;
 
             Assert.AreEqual(1, model.Id);

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Testility.Domain.Abstract;
-using Testility.Domain.Concrete;
 using Testility.Domain.Entities;
+using Testility.Engine.Abstract;
+using Testility.Engine.Model;
 using Testility.WebUI.Services;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
@@ -16,12 +13,14 @@ namespace Testility.WebUI.Areas.Setup.Controllers
     public class SourceCodesController : Controller
     {
         private ISetupRepository setupRepository;
-        private IFileRepository fileRepository;
+        private ICreateInputClassFromFile fileRepository;
+        private ICompiler compilerRepository;
 
-        public SourceCodesController(ISetupRepository setupRepositor, IFileRepository fileRepositor)
+        public SourceCodesController(ISetupRepository setupRepositor, ICreateInputClassFromFile fileRepositor, ICompiler compilerRepositor)
         {
             setupRepository = setupRepositor;
             fileRepository = fileRepositor;
+            compilerRepository = compilerRepositor;
         }
 
         public ActionResult Index()
@@ -59,8 +58,9 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 try
                 {
+                    Input input =  fileRepository.CreateInputClass(sourceCode, uploadedFile);
+                    compilerRepository.compile(input);
                     setupRepository.SaveSourceCode(sourceCode);
-                    fileRepository.Save(uploadedFile, x=>Server.MapPath(x));
 
                     TempData["savemessage"] = string.Format("{0} has been saved", sourceCode.Name);
                     return RedirectToAction("Index");
@@ -93,7 +93,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id)
+        public ActionResult EditPost(int? id, HttpPostedFileBase uploadedFile)
         {
             if (id == null)
             {
@@ -109,6 +109,9 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 try
                 {
+                    Input input = fileRepository.CreateInputClass(sourceCode, uploadedFile);
+                    compilerRepository.compile(input);
+
                     setupRepository.SaveSourceCode(sourceCode);
                     TempData["savemessage"] = string.Format("{0} has been edited", sourceCode.Name);
                     return RedirectToAction("Index");
