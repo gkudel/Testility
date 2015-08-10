@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Testility.Logger.Abstract;
 using Testility.WebUI.Infrastructure;
 
 namespace Testility.WebUI
@@ -13,8 +14,10 @@ namespace Testility.WebUI
     {
         protected void Application_Start()
         {
+            NinjectDependencyResolver diResolver = new NinjectDependencyResolver();
             AreaRegistration.RegisterAllAreas();
-            DependencyResolver.SetResolver(new NinjectDependencyResolver());
+            DependencyResolver.SetResolver(diResolver);
+            Logger.Concrete.Logger.Initalize(diResolver.GetService(typeof(ILogger)) as ILogger);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

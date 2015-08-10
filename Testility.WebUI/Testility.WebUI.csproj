@@ -209,6 +209,10 @@
       <Project>{b14a6f1f-981a-4954-8157-cd252098d3f5}</Project>
       <Name>Testility.Engine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Testility.Logger\Testility.Logger.csproj">
+      <Project>{62394f91-75bc-4323-ac91-ad27df199f23}</Project>
+      <Name>Testility.Logger</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
