@@ -2,6 +2,7 @@
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using Testility.Engine.Abstract;
@@ -59,9 +60,18 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 try
                 {
                     Input input =  fileRepository.CreateInputClass(sourceCode, uploadedFile);
-                    compilerRepository.compile(input);
-                    setupRepository.SaveSourceCode(sourceCode);
+                    Result result = compilerRepository.compile(input);
+                        
+                     if (result.Errors.Count > 0)
+                         {
+                             TempData["action"] = "Create";
+                             TempData["errormessage"] = string.Format("An error occurred when compiling attached file {0}", uploadedFile.FileName);
+                             return View("CreateAndEdit", sourceCode);
+                         }
 
+                    Mapper.Map(result, sourceCode);
+
+                    setupRepository.SaveSourceCode(sourceCode);
                     TempData["savemessage"] = string.Format("{0} has been saved", sourceCode.Name);
                     return RedirectToAction("Index");
                 }
@@ -72,6 +82,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 }
             }
 
+            TempData["action"] = "Create";
             return View("CreateAndEdit", sourceCode);
         }
 
@@ -110,7 +121,17 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 try
                 {
                     Input input = fileRepository.CreateInputClass(sourceCode, uploadedFile);
-                    compilerRepository.compile(input);
+                    Result result = compilerRepository.compile(input);
+
+                    if (result.Errors.Count > 0)
+                    {
+                        TempData["action"] = "Edit";
+                        TempData["errormessage"] = string.Format("An error occurred when compiling attached file {0}", uploadedFile.FileName);
+                        return View("CreateAndEdit", sourceCode);
+                    }
+
+                    Mapper.Map(result, sourceCode);
+
 
                     setupRepository.SaveSourceCode(sourceCode);
                     TempData["savemessage"] = string.Format("{0} has been edited", sourceCode.Name);

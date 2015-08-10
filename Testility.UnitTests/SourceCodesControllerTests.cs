@@ -10,6 +10,7 @@ using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using Testility.Engine.Abstract;
 using Testility.WebUI.Areas.Setup.Controllers;
+using Testility.WebUI.Mappings;
 using Testility.WebUI.Services;
 
 
@@ -21,6 +22,7 @@ namespace Testility.UnitTests
 
         public Mock<ISetupRepository> ServiceMock { get; set; }
         public Mock<ICreateInputClassFromFile> CreateInputClassMock { get; set; }
+
         public Mock<ICompiler> CompilerMock { get; set; }
         public SourceCodesController sourceCodesController { get; set; }
         public Mock<HttpPostedFileBase> File {get;set;}
@@ -110,6 +112,7 @@ namespace Testility.UnitTests
        [TestMethod]
        public void Can_Create_SourCodes()
        {
+           AutoMapperConfigurationWebUI.Configure();
            SourceCode sourceCode = new SourceCode() { Id = 1 };
            var result = sourceCodesController.Create(sourceCode, File.Object) as RedirectToRouteResult;
            Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
