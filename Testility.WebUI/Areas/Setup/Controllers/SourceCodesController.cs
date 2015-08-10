@@ -9,16 +9,19 @@ using System.Web.Mvc;
 using Testility.Domain.Abstract;
 using Testility.Domain.Concrete;
 using Testility.Domain.Entities;
+using Testility.WebUI.Services;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class SourceCodesController : Controller
     {
         private ISetupRepository setupRepository;
+        private IFileRepository fileRepository;
 
-        public SourceCodesController(ISetupRepository setupRepositor)
+        public SourceCodesController(ISetupRepository setupRepositor, IFileRepository fileRepositor)
         {
             setupRepository = setupRepositor;
+            fileRepository = fileRepositor;
         }
 
         public ActionResult Index()
@@ -43,29 +46,33 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         // GET: SourceCodes/Create
         public ActionResult Create()
         {
-            return View();
+            TempData["header"] = string.Format("Create");
+            TempData["action"] = "Create";
+            return View("CreateAndEdit");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode)
+        public ActionResult Create([Bind(Include = "Name,Code,Language,ReferencedAssemblies")] SourceCode sourceCode, HttpPostedFileBase uploadedFile)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     setupRepository.SaveSourceCode(sourceCode);
+                    fileRepository.Save(uploadedFile, x=>Server.MapPath(x));
+
                     TempData["savemessage"] = string.Format("{0} has been saved", sourceCode.Name);
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
-                    TempData["errormessage"] = string.Format("An error occurred when creating when saving {0}", sourceCode.Name);
+                    TempData["errormessage"] = string.Format("An error occurred when saving {0}", sourceCode.Name);
                     return RedirectToAction("Index");
                 }
             }
 
-            return View(sourceCode);
+            return View("CreateAndEdit", sourceCode);
         }
 
         public ActionResult Edit(int? id)
@@ -79,8 +86,9 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return HttpNotFound();
             }
-           
-            return View(sourceCode);
+            TempData["header"] = string.Format("Edit");
+            TempData["action"] = "Edit";
+            return View("CreateAndEdit", sourceCode);
         }
 
         [HttpPost, ActionName("Edit")]
@@ -110,7 +118,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     TempData["errormessage"] = string.Format("An error occurred when updating {0}", sourceCode.Name);
                 }
             }
-            return View(sourceCode);
+            return View("CreateAndEdit", sourceCode);
         }
 
         public ActionResult Delete(int? id)

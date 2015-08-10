@@ -136,6 +136,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Setup\Models\Constants.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SourceCodesController.cs" />
@@ -145,6 +146,8 @@
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\IFileRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -181,15 +184,13 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Areas\Setup\Views\SourceCodes\Create.cshtml" />
     <Content Include="Areas\Setup\Views\SourceCodes\Delete.cshtml" />
     <Content Include="Areas\Setup\Views\SourceCodes\Details.cshtml" />
-    <Content Include="Areas\Setup\Views\SourceCodes\Edit.cshtml" />
+    <Content Include="Areas\Setup\Views\SourceCodes\CreateAndEdit.cshtml" />
     <Content Include="Areas\Setup\Views\SourceCodes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Areas\Setup\Models\" />
+    <Folder Include="App_Data\Uploads\" />
     <Folder Include="Areas\Setup\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>

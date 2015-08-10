@@ -1,5 +1,6 @@
 ﻿@using Testility.Domain.Entities
 @model Testility.Domain.Entities.SourceCode
+@using Testility.WebUI.Extensions;
 
 @{
     ViewBag.Title = "Create";
@@ -11,7 +12,7 @@
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-   
+    @Html.SourceCodesStatusHelper()
     
 
     <div class="form-horizontal">

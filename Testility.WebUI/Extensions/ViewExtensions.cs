@@ -24,5 +24,17 @@ namespace Testility.WebUI.Extensions
 
                 return MvcHtmlString.Create(builder.ToString());
         }
+
+        public static MvcHtmlString SourceCodesCreateAndEditHeaderHelper(this HtmlHelper helper)
+        {
+            TagBuilder builder = new TagBuilder("div");
+            if (helper.ViewContext.Controller.TempData["header"] != null)
+            {
+                TagBuilder header = new TagBuilder("h2");
+                header.InnerHtml = helper.ViewContext.Controller.TempData["header"].ToString();
+                builder.InnerHtml += header.ToString();
+            }
+            return MvcHtmlString.Create(builder.ToString());
+        }
     }
 }

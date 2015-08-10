@@ -1,15 +1,15 @@
 ﻿@model Testility.Domain.Entities.SourceCode
+@using Testility.WebUI.Extensions;
 
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
-
-
-@using (Html.BeginForm())
+@Html.SourceCodesCreateAndEditHeaderHelper()
+@using (Html.BeginForm(TempData["action"].ToString(), "SourceCodes", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
+    @Html.SourceCodesStatusHelper()
     
     <div class="form-horizontal">
         <h4>SourceCode</h4>
@@ -42,16 +42,25 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ReferencedAssemblies, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ReferencedAssemblies, htmlAttributes: new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ReferencedAssemblies, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ReferencedAssemblies, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.ReferencedAssemblies, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.ReferencedAssemblies, "", new {@class = "text-danger"})
             </div>
         </div>
 
+
+        <div class="form-group">
+            <label class ="control-label col-md-2">File</label>
+            <div class="col-md-10">
+                <input type="file" name="uploadedFile" id="file" class="file"/>
+            </div>
+        </div>
+
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default"/>
             </div>
         </div>
     </div>

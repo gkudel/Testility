@@ -9,6 +9,7 @@ using Testility.Engine.Abstract;
 using Testility.Domain.Abstract;
 using Testility.Domain.Concrete;
 using Testility.Engine.Concrete;
+using Testility.WebUI.Services;
 
 namespace Testility.WebUI.Infrastructure
 {
@@ -33,6 +34,7 @@ namespace Testility.WebUI.Infrastructure
         private void AddBindings()
         {
             kernel.Bind<ISetupRepository>().To<EFSetupRepository>();
+            kernel.Bind<IFileRepository>().To<FileService>();
             kernel.Bind<ICompiler>().To<Compiler>();
         }
     }
