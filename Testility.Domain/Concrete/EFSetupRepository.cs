@@ -49,7 +49,6 @@ namespace Testility.Domain.Concrete
                 SourceCode sourceCode = context.SourCodes.FirstOrDefault(a =>a.Id == sourcode.Id);
                 if (sourceCode != null)
                 {
-
                      Mapper.Map(sourcode , sourceCode);
                      Commit();
                 }

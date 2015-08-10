@@ -60,6 +60,9 @@
     <Compile Include="Entities\Test.cs" />
     <Compile Include="Entities\TestedClass.cs" />
     <Compile Include="Entities\TestedMethod.cs" />
+    <Compile Include="Infrastructure\EFDbContextConfiguration.cs" />
+    <Compile Include="Infrastructure\EFDbContextInterceptorError.cs" />
+    <Compile Include="Infrastructure\EFDbContextInterceptorLogging.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Mappings\ModelToModelMapping.cs" />
     <Compile Include="Migrations\201508061002064_Init.cs" />
@@ -98,6 +101,12 @@
     <EmbeddedResource Include="Migrations\201508070638555_SourceCode.resx">
       <DependentUpon>201508070638555_SourceCode.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Testility.Logger\Testility.Logger.csproj">
+      <Project>{62394f91-75bc-4323-ac91-ad27df199f23}</Project>
+      <Name>Testility.Logger</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

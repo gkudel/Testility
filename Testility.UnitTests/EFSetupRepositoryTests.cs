@@ -93,9 +93,5 @@ namespace Testility.UnitTests
             Assert.AreEqual(sourceCode.Name, c.Name);
             MockContext.Verify(m => m.SaveChanges(), Times.Once);
         }
-
-       
-
-       
     }
 }
