@@ -139,6 +139,7 @@
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SourceCodesController.cs" />
+    <Compile Include="Extensions\ViewExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
