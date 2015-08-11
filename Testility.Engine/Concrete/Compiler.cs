@@ -14,9 +14,9 @@ using Testility.Engine.Model;
 
 namespace Testility.Engine.Concrete
 {
-    public class Compiler : ICompiler
+    public class Compiler : MarshalByRefObject, ICompiler
     {
-        public Result compile(Input input)
+        public Result Compile(Input input)
         {
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(input.Code), "Source Code can not be null");
             Result result = new Result();

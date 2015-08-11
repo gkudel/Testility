@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Testility.Engine.Model
 {
+    [Serializable]
     public class Test 
     {
         public string Name { get; set; }

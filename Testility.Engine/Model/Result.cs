@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Testility.Engine.Model
 {
+    [Serializable]
     public class Result
     {
         public Result()
@@ -13,7 +14,7 @@ namespace Testility.Engine.Model
             TestedClasses = new List<TestedClass>();
             Errors = new List<Error>();
         }
-
+        public string OutputDll { get; set; }
         public IList<TestedClass> TestedClasses { get; set; }
         public IList<Error> Errors { get; set; }
     }

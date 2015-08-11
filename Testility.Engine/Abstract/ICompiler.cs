@@ -9,6 +9,6 @@ namespace Testility.Engine.Abstract
 {
     public interface ICompiler
     {
-        Result compile(Input input);
+        Result Compile(Input input);
     }
 }

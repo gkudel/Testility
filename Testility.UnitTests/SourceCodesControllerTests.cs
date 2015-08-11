@@ -46,7 +46,7 @@ namespace Testility.UnitTests
 
             
             CompilerMock = new Mock<ICompiler>();
-            CompilerMock.Setup(x => x.compile(It.IsAny<Input>())).Returns(new Result());
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result());
             File = new Mock<HttpPostedFileBase>();
             File.Setup(d => d.FileName).Returns("test1.txt");
 
@@ -98,7 +98,7 @@ namespace Testility.UnitTests
             SourceCode sourceCode = new SourceCode(){Id = 1};
             sourceCodesController.ModelState.AddModelError("key", "error");
 
-            ViewResult result = sourceCodesController.Create(sourceCode, File.Object) as ViewResult;
+            ViewResult result = sourceCodesController.Create() as ViewResult;
             var model = (result as ViewResult).Model as SourceCode;
 
             Assert.AreEqual(1, model.Id);
@@ -119,7 +119,7 @@ namespace Testility.UnitTests
        {
            AutoMapperConfigurationWebUI.Configure();
            SourceCode sourceCode = new SourceCode() { Id = 1 };
-           var result = sourceCodesController.Create(sourceCode, File.Object) as RedirectToRouteResult;
+           var result = sourceCodesController.Create() as RedirectToRouteResult;
            Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
            Assert.AreEqual("Index", result.RouteValues["action"]);
        }
@@ -148,7 +148,7 @@ namespace Testility.UnitTests
             SourceCode sourceCode = new SourceCode() { Id = 1 };
             sourceCodesController.ModelState.AddModelError("key", "error");
 
-            ViewResult result = sourceCodesController.Create(sourceCode, File.Object) as ViewResult;
+            ViewResult result = sourceCodesController.Create() as ViewResult;
             var model = (result as ViewResult).Model as SourceCode;
 
             Assert.AreEqual(1, model.Id);

@@ -78,7 +78,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 try
                 {
                     Input input = fileRepository.CreateInputClass(sourceCode, uploadedFile);
-                    Result result = compilerRepository.compile(input);
+                    Result result = compilerRepository.Compile(input);
 
                     if (result.Errors.Count > 0)
                     {

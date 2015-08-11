@@ -12,6 +12,7 @@ using Testility.Engine.Concrete;
 using Testility.Logger.Abstract;
 using Testility.Logger.Concrete;
 using Testility.WebUI.Services;
+using Testility.Egine.Concrete;
 
 namespace Testility.WebUI.Infrastructure
 {
@@ -36,7 +37,7 @@ namespace Testility.WebUI.Infrastructure
         private void AddBindings()
         {
             kernel.Bind<ISetupRepository>().To<EFSetupRepository>();
-            kernel.Bind<ICompiler>().To<Compiler>();
+            kernel.Bind<ICompiler>().To<CompilerProxy>();
             kernel.Bind<ICreateInputClassFromFile>().To<CreateInputClassFromFile>();
             kernel.Bind<ILogger>().To<TraceLogger>();
         }

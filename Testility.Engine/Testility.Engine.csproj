@@ -90,6 +90,7 @@
     <Compile Include="Attribute\TestedClassesAttribute.cs" />
     <Compile Include="Attribute\TestedMethodAttribute.cs" />
     <Compile Include="Concrete\Compiler.cs" />
+    <Compile Include="Concrete\CompilerProxy.cs" />
     <Compile Include="Model\Error.cs" />
     <Compile Include="Model\Input.cs" />
     <Compile Include="Model\Result.cs" />

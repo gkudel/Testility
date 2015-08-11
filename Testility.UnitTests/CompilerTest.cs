@@ -22,7 +22,7 @@ namespace Testility.UnitTests
         public void Compile_WithOutSourceCode_ArgumentException()
         {
             Input input = new Input();
-            compiler.compile(input);
+            compiler.Compile(input);
         }
 
 
@@ -35,7 +35,7 @@ namespace Testility.UnitTests
                 Code = "public class Test{}",
                 Language = "Pascal"
             };
-            compiler.compile(input);
+            compiler.Compile(input);
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace Testility.UnitTests
                 ReferencedAssemblies = "System.dll"
             };
 
-            Result result = compiler.compile(input);
+            Result result = compiler.Compile(input);
 
             Assert.AreEqual(1, result.Errors.Count);
         }
@@ -65,7 +65,7 @@ namespace Testility.UnitTests
                 ReferencedAssemblies = "System.dll"
             };
 
-            Result result = compiler.compile(input);
+            Result result = compiler.Compile(input);
 
             Assert.AreEqual(0, result.Errors.Count);
         }
@@ -85,7 +85,7 @@ namespace Testility.UnitTests
                 ReferencedAssemblies = "System.dll"
             };
 
-            Result result = compiler.compile(input);
+            Result result = compiler.Compile(input);
 
             Assert.AreEqual(1, result.Errors.Count);
         }
@@ -115,7 +115,7 @@ namespace Testility.UnitTests
                 ReferencedAssemblies = "System.dll"
             };
 
-            Result result = compiler.compile(input);
+            Result result = compiler.Compile(input);
 
             Assert.AreEqual(0, result.Errors.Count);
             Assert.AreEqual(1, result.TestedClasses.Count);
@@ -160,7 +160,7 @@ namespace Testility.UnitTests
                 ReferencedAssemblies = "System.dll"
             };
 
-            Result result = compiler.compile(input);
+            Result result = compiler.Compile(input);
 
             Assert.AreEqual(0, result.Errors.Count);
             Assert.AreEqual(1, result.TestedClasses.Count);
