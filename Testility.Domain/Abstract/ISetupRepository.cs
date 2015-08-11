@@ -14,13 +14,10 @@ namespace Testility.Domain.Abstract
         SourceCode GetSourceCode(int? id);
         void SaveResultToDb(SourceCode sourceCode, TestedClass testedClass);
         void SaveMethodsToDb(TestedClass testedClass, TestedMethod testedMethod);
-        void SaveTestsToDb(TestedMethod testedMethod, Test test);
-
-      
+        void SaveTestsToDb(TestedMethod testedMethod, Test test);      
         TestedClass GetTestedClass(int sourceCodeId);
         TestedMethod GetTestedMethod(string name);
         Test GetTest(string name);
-
     }
 
 

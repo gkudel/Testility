@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Testility.Engine.Concrete;
 using Testility.Engine.Model;
 using Testility.Engine.Abstract;
+using Testility.Egine.Concrete;
 
 namespace Testility.UnitTests
 {
@@ -14,7 +15,7 @@ namespace Testility.UnitTests
         [TestInitialize]
         public void Int()
         {
-            compiler = new Compiler();
+            compiler = new CompilerProxy();
         }
 
         [TestMethod]
