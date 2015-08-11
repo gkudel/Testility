@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Xml.Linq;
 using Testility.Domain.Abstract;
@@ -41,25 +43,6 @@ namespace Testility.Domain.Concrete
             return  context.SourCodes.Find(id);
         }
 
-        public void SaveSourceCode(SourceCode sourcode)
-        {
-            if (sourcode != null)
-            {
-                SourceCode sourceCode = context.SourCodes.FirstOrDefault(a =>a.Id == sourcode.Id);
-                if (sourceCode != null)
-                {
-                     Mapper.Map(sourcode , sourceCode);
-                     Commit();
-                }
-                else
-                {
-                    context.SourCodes.Add(sourcode);
-                    Commit();
-                }
-            }
-
-        }
-
         public void SaveResultToDb(SourceCode sourceCode, TestedClass testedClass)
         {
                 context.SourCodes.Add(sourceCode);
@@ -79,6 +62,23 @@ namespace Testility.Domain.Concrete
             test.TestedMethod = testedMethod;
             context.Tests.Add(test);
         }
+
+
+        public TestedClass GetTestedClass(int sourceCodeId)
+        {
+            return context.TestedClasses.FirstOrDefault(x => x.SourceCodeId == sourceCodeId);
+        }
+
+        public TestedMethod GetTestedMethod(string name)
+        {
+            return context.TestedMethods.FirstOrDefault(y=>y.Name == name);
+        }
+        
+        public Test GetTest(string name)
+        {
+            return context.Tests.FirstOrDefault(y => y.Name == name);
+        }
+
 
         private void Commit()
         {

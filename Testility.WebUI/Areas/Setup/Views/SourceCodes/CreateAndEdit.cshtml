@@ -6,7 +6,7 @@
 }
 
 @Html.SourceCodesCreateAndEditHeaderHelper()
-@using (Html.BeginForm(TempData["action"].ToString(), "SourceCodes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "SourceCodes", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.SourceCodesStatusHelper()

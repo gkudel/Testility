@@ -65,35 +65,35 @@ namespace Testility.UnitTests
             MockContext.Verify(m => m.SaveChanges(), Times.Once);
         }
 
-        [TestMethod]
-        public void Cannot_Save_Source_Code_With_ObjectNull()
-        {
-            MockService.Object.SaveSourceCode(null);
-            MockSet.Verify(m => m.Add(It.IsAny<SourceCode>()), Times.Never);
-            MockContext.Verify(m => m.SaveChanges(), Times.Never);
-        }
+        //[TestMethod]
+        //public void Cannot_Save_Source_Code_With_ObjectNull()
+        //{
+        //    MockService.Object.SaveSourceCode(null);
+        //    MockSet.Verify(m => m.Add(It.IsAny<SourceCode>()), Times.Never);
+        //    MockContext.Verify(m => m.SaveChanges(), Times.Never);
+        //}
 
-        [TestMethod]
-        public void Can_Save_Source_Code()
-        {
-            SourceCode sourceCode = new SourceCode() { Id = 3 };
-            MockService.Object.SaveSourceCode(sourceCode);
-            MockSet.Verify(m => m.Add(It.IsAny<SourceCode>()), Times.Once);
-            MockContext.Verify(m => m.SaveChanges(), Times.Once);
-        }
+        //[TestMethod]
+        //public void Can_Save_Source_Code()
+        //{
+        //    SourceCode sourceCode = new SourceCode() { Id = 3 };
+        //    MockService.Object.SaveSourceCode(sourceCode);
+        //    MockSet.Verify(m => m.Add(It.IsAny<SourceCode>()), Times.Once);
+        //    MockContext.Verify(m => m.SaveChanges(), Times.Once);
+        //}
 
 
-        [TestMethod]
-        public void Can_Update_Source_Code()
-        {
-            SourceCode sourceCode = new SourceCode() { Id = 2, Name = "be" };
-            AutoMapperConfiguration.Configure();
-            MockService.Object.SaveSourceCode(sourceCode);
+        //[TestMethod]
+        //public void Can_Update_Source_Code()
+        //{
+        //    SourceCode sourceCode = new SourceCode() { Id = 2, Name = "be" };
+        //    AutoMapperConfiguration.Configure();
+        //    MockService.Object.SaveSourceCode(sourceCode);
 
-            SourceCode c = MockSet.Object.FirstOrDefault(s => s.Id == sourceCode.Id);
-            Assert.AreEqual(sourceCode.Name, c.Name);
-            MockContext.Verify(m => m.SaveChanges(), Times.Once);
-        }
+        //    SourceCode c = MockSet.Object.FirstOrDefault(s => s.Id == sourceCode.Id);
+        //    Assert.AreEqual(sourceCode.Name, c.Name);
+        //    MockContext.Verify(m => m.SaveChanges(), Times.Once);
+        //}
 
 
         [TestMethod]

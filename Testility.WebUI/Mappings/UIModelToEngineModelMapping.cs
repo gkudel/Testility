@@ -15,7 +15,6 @@ namespace Testility.WebUI.Mappings
          {
              Mapper.CreateMap<SourceCode, Input>();
              Mapper.CreateMap<Input,SourceCode>();
-             Mapper.CreateMap<Engine.Model.TestedClass, Domain.Entities.TestedClass>();
          }
     }
 

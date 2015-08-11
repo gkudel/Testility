@@ -104,15 +104,15 @@ namespace Testility.UnitTests
             Assert.AreEqual(1, model.Id);
         }
 
-       [TestMethod]
-       public void Cannot_Create_SourCodes_WhenException()
-       {
-           SourceCode sourceCode = new SourceCode() { Id = 1 };
-           ServiceMock.Setup(x => x.SaveSourceCode(It.IsAny<SourceCode>())).Throws(new Exception());
-           var result = sourceCodesController.Create(sourceCode, File.Object) as RedirectToRouteResult;
-           Assert.AreNotEqual(null, sourceCodesController.TempData["errormessage"]);
-           Assert.AreEqual("Index", result.RouteValues["action"]);
-       }
+       //[TestMethod]
+       //public void Cannot_Create_SourCodes_WhenException()
+       //{
+       //    SourceCode sourceCode = new SourceCode() { Id = 1 };
+       //    ServiceMock.Setup(x => x.SaveSourceCode(It.IsAny<SourceCode>())).Throws(new Exception());
+       //    var result = sourceCodesController.Create(sourceCode, File.Object) as RedirectToRouteResult;
+       //    Assert.AreNotEqual(null, sourceCodesController.TempData["errormessage"]);
+       //    Assert.AreEqual("Index", result.RouteValues["action"]);
+       //}
 
        [TestMethod]
        public void Can_Create_SourCodes()

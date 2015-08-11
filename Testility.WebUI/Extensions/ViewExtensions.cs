@@ -14,14 +14,7 @@ namespace Testility.WebUI.Extensions
                         saveMessage.InnerHtml = helper.ViewContext.Controller.TempData["savemessage"].ToString();
                         builder.InnerHtml += saveMessage.ToString();   
                 }
-                if (helper.ViewContext.Controller.TempData["errormessage"] != null)
-                    {
-                        TagBuilder errorMessage = new TagBuilder("div");
-                        errorMessage.MergeAttribute("class", "alert alert-danger");
-                        errorMessage.InnerHtml = helper.ViewContext.Controller.TempData["errormessage"].ToString();
-                        builder.InnerHtml += errorMessage.ToString();   
-                    }               
-
+                
                 return MvcHtmlString.Create(builder.ToString());
         }
 
