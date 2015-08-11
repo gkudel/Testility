@@ -43,7 +43,7 @@ namespace Testility.Domain.Concrete
             return  context.SourCodes.Find(id);
         }
 
-        public void SaveResultToDb(SourceCode sourceCode, TestedClass testedClass)
+        public void AddResultToDb(SourceCode sourceCode, TestedClass testedClass)
         {
                 context.SourCodes.Add(sourceCode);
                 testedClass.SourceCode = sourceCode;
@@ -51,32 +51,16 @@ namespace Testility.Domain.Concrete
                 Commit();
         }
 
-        public void SaveMethodsToDb(TestedClass testedClass, TestedMethod testedMethod)
+        public void AddMethodsToDb(TestedClass testedClass, TestedMethod testedMethod)
         {
             testedMethod.TestedClass = testedClass;
             context.TestedMethods.Add(testedMethod);
         }
 
-        public void SaveTestsToDb(TestedMethod testedMethod, Test test)
+        public void AddTestsToDb(TestedMethod testedMethod, Test test)
         {
             test.TestedMethod = testedMethod;
             context.Tests.Add(test);
-        }
-
-
-        public TestedClass GetTestedClass(int sourceCodeId)
-        {
-            return context.TestedClasses.FirstOrDefault(x => x.SourceCodeId == sourceCodeId);
-        }
-
-        public TestedMethod GetTestedMethod(string name)
-        {
-            return context.TestedMethods.FirstOrDefault(y=>y.Name == name);
-        }
-        
-        public Test GetTest(string name)
-        {
-            return context.Tests.FirstOrDefault(y => y.Name == name);
         }
 
 

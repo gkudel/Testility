@@ -73,8 +73,8 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return HttpNotFound();
             }
-            if (TryUpdateModel(sourceCode, "", new string[] { "Name", "Code", "Language", "ReferencedAssemblies" }))
-            {
+            //if (TryUpdateModel(sourceCode, "", new string[] { "Name", "Language", "ReferencedAssemblies" }))
+            //{
                 try
                 {
                     Input input = fileRepository.CreateInputClass(sourceCode, uploadedFile);
@@ -100,11 +100,11 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                             foreach (Engine.Model.Test test in testedMethod.Tests)
                             {
                                 Domain.Entities.Test modelTest = new Domain.Entities.Test() { Name = test.Name, Description = test.Description, Fail = test.Fail };
-                                setupRepository.SaveTestsToDb(modelTestedMethod, modelTest);
+                                setupRepository.AddTestsToDb(modelTestedMethod, modelTest);
                             }
-                            setupRepository.SaveMethodsToDb(modelTestedClass, modelTestedMethod);
+                            setupRepository.AddMethodsToDb(modelTestedClass, modelTestedMethod);
                         }
-                        setupRepository.SaveResultToDb(sourceCode, modelTestedClass);
+                        setupRepository.AddResultToDb(sourceCode, modelTestedClass);
                     }
 
                     TempData["savemessage"] = string.Format("{0} has been edited", sourceCode.Name);
@@ -115,8 +115,8 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", sourceCode.Name));
                     return View("CreateAndEdit", sourceCode);
                 }
-            }
-            return View("CreateAndEdit", sourceCode);
+            //}
+            //return View("CreateAndEdit", sourceCode);
         }
 
         public ActionResult Delete(int? id)

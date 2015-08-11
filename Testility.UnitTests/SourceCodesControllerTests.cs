@@ -42,11 +42,10 @@ namespace Testility.UnitTests
             ServiceMock.Setup(x => x.SourceCodes).Returns(sourceList);
             ServiceMock.Setup(x => x.GetSourceCode(1)).Returns(singleSource);
             ServiceMock.Setup(x => x.DeleteSourceCode(It.IsAny<int>())).Returns(true);
-
-
-            
+          
             CompilerMock = new Mock<ICompiler>();
-            CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result());
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result(){});
+
             File = new Mock<HttpPostedFileBase>();
             File.Setup(d => d.FileName).Returns("test1.txt");
 
@@ -90,43 +89,9 @@ namespace Testility.UnitTests
             ServiceMock.Verify(x=>x.GetSourceCode(1), Times.Once);
             Assert.AreEqual(1, model.Id);
         }
-
-
-       [TestMethod]
-        public void Cannot_Create_SourCodes()
-        {
-            SourceCode sourceCode = new SourceCode(){Id = 1};
-            sourceCodesController.ModelState.AddModelError("key", "error");
-
-            ViewResult result = sourceCodesController.Create() as ViewResult;
-            var model = (result as ViewResult).Model as SourceCode;
-
-            Assert.AreEqual(1, model.Id);
-        }
-
-       //[TestMethod]
-       //public void Cannot_Create_SourCodes_WhenException()
-       //{
-       //    SourceCode sourceCode = new SourceCode() { Id = 1 };
-       //    ServiceMock.Setup(x => x.SaveSourceCode(It.IsAny<SourceCode>())).Throws(new Exception());
-       //    var result = sourceCodesController.Create(sourceCode, File.Object) as RedirectToRouteResult;
-       //    Assert.AreNotEqual(null, sourceCodesController.TempData["errormessage"]);
-       //    Assert.AreEqual("Index", result.RouteValues["action"]);
-       //}
-
-       [TestMethod]
-       public void Can_Create_SourCodes()
-       {
-           AutoMapperConfigurationWebUI.Configure();
-           SourceCode sourceCode = new SourceCode() { Id = 1 };
-           var result = sourceCodesController.Create() as RedirectToRouteResult;
-           Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
-           Assert.AreEqual("Index", result.RouteValues["action"]);
-       }
-
-
+  
         [TestMethod]
-        public void Cannot_Edit_WithouId()
+        public void Cannot_EditWithouId_BadRequest()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             int? x = null;
@@ -135,31 +100,37 @@ namespace Testility.UnitTests
         }
 
         [TestMethod]
-        public void Cannot_Edit_NonExists_SourceCodes()
+        public void Cannot_EditNonExistsSourceCodes_NotFound()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
             var result = sourceCodesController.Edit(10) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
+
         [TestMethod]
-        public void Cannot_Edit_Invalid_SourCodes()
+        public void Can_Edit_SourceCodes_Redirect()
         {
-            SourceCode sourceCode = new SourceCode() { Id = 1 };
-            sourceCodesController.ModelState.AddModelError("key", "error");
-
-            ViewResult result = sourceCodesController.Create() as ViewResult;
-            var model = (result as ViewResult).Model as SourceCode;
-
-            Assert.AreEqual(1, model.Id);
+            var result = sourceCodesController.Edit(1) as ViewResult;
+            Assert.AreEqual("CreateAndEdit", result.ViewName);
         }
 
         [TestMethod]
-        public void Can_Edit_SourceCodes()
+        public void Cannot_EditSourceCodes_Redirect()
         {
-            var result = sourceCodesController.Edit(1) as ViewResult;
-            var model = (result as ViewResult).Model as SourceCode;
-            Assert.AreEqual(1, model.Id);
+            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result() { Errors = new List<Error>(){new Error(){Message = "blbl"}}});
+            SourceCode sourceCode = new SourceCode();
+            var actionResult = sourceCodesController.EditPost(sourceCode, File.Object) as ViewResult;
+            Assert.AreEqual("CreateAndEdit", actionResult.ViewName);
+        }
+
+        [TestMethod]
+        public void Cannot_EditSourceCodes_NotFound()
+        {
+            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            var result = sourceCodesController.EditPost(null, File.Object) as HttpStatusCodeResult;
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
         [TestMethod]
@@ -187,16 +158,14 @@ namespace Testility.UnitTests
             ServiceMock.Verify(x=>x.GetSourceCode(It.IsAny<int>()),Times.Once);  
         }
 
-
         [TestMethod]
         public void Cannot_Delete_SourceCodes_WhenException()
         {
             ServiceMock.Setup(x => x.DeleteSourceCode(It.IsAny<int>())).Throws(new Exception());
             var result = sourceCodesController.DeleteConfirmed(1) as RedirectToRouteResult;
-            Assert.AreNotEqual(null, sourceCodesController.TempData["errormessage"]);
+            ServiceMock.Verify(x=>x.DeleteSourceCode(It.IsAny<int>()), Times.Once);
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
-
 
         [TestMethod]
         public void Can_Delete_SourceCodes()
@@ -206,6 +175,30 @@ namespace Testility.UnitTests
             Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
+
+
+        //[TestMethod]
+        //public void Cannot_Edit_WithouId()
+        //{
+        //}
+
+        //[TestMethod]
+        //public void Cannot_AddSourceCodes()
+        //{
+           
+
+        //[TestMethod]
+        //public void Cannot_Edit_Invalid_SourCodes()
+        //{
+         
+        //}
+
+        //[TestMethod]
+        //public void Can_Edit_SourceCodes()
+        //{
+        //}
+
+
 
     }
 }
