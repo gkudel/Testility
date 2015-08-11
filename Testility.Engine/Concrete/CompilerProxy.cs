@@ -16,9 +16,6 @@ namespace Testility.Egine.Concrete
     {
         private Compiler compiler;
         System.AppDomain unitDomain;
-        public CompilerProxy()
-        {
-        }
         private void Init()
         {
             AppDomainSetup setup = new AppDomainSetup();

@@ -18,7 +18,7 @@ namespace Testility.Engine.Concrete
     {
         public Result Compile(Input input)
         {
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(input.Code), "Source Code can not be null");
+            if(string.IsNullOrEmpty(input.Code)) throw new ArgumentNullException("Source Code can not be null");
             Result result = new Result();
             CodeDomProvider provider = null;
             try
@@ -32,8 +32,8 @@ namespace Testility.Engine.Concrete
                 CompilerParameters compilerparameters = new CompilerParameters();
                 CompilerResults compilingResult = null;
                 compilerparameters.GenerateExecutable = false;
-                compilerparameters.GenerateInMemory = true;
-                //compilerparameters.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), input.Name+ ".dll");
+                compilerparameters.GenerateInMemory = false;
+                result.OutputDll = compilerparameters.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), input.Name+ ".dll");
                 compilerparameters.TreatWarningsAsErrors = false;
 
                 string code = input.Code;
