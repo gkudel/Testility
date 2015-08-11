@@ -14,7 +14,8 @@ namespace Testility.WebUI.Mappings
          protected override void Configure()
          {
              Mapper.CreateMap<SourceCode, Input>();
-             Mapper.CreateMap<Input, SourceCode>();
+             Mapper.CreateMap<Input,SourceCode>();
+             Mapper.CreateMap<Engine.Model.TestedClass, Domain.Entities.TestedClass>();
          }
     }
 

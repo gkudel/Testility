@@ -9,6 +9,7 @@ using Moq;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using Testility.Engine.Abstract;
+using Testility.Engine.Model;
 using Testility.WebUI.Areas.Setup.Controllers;
 using Testility.WebUI.Mappings;
 using Testility.WebUI.Services;
@@ -43,10 +44,14 @@ namespace Testility.UnitTests
             ServiceMock.Setup(x => x.DeleteSourceCode(It.IsAny<int>())).Returns(true);
 
 
-            CreateInputClassMock = new Mock<ICreateInputClassFromFile>();
+            
             CompilerMock = new Mock<ICompiler>();
+            CompilerMock.Setup(x => x.compile(It.IsAny<Input>())).Returns(new Result());
             File = new Mock<HttpPostedFileBase>();
             File.Setup(d => d.FileName).Returns("test1.txt");
+
+            CreateInputClassMock = new Mock<ICreateInputClassFromFile>();
+            CreateInputClassMock.Setup(x => x.CreateInputClass(It.IsAny<SourceCode>(), File.Object)).Returns(new Input() {Code = "xx", Language = "ss", Name = "test", ReferencedAssemblies = "System.dll"});
 
             sourceCodesController = new SourceCodesController(ServiceMock.Object, CreateInputClassMock.Object, CompilerMock.Object);
         }

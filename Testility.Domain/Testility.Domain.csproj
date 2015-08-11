@@ -65,42 +65,12 @@
     <Compile Include="Infrastructure\EFDbContextInterceptorLogging.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Mappings\ModelToModelMapping.cs" />
-    <Compile Include="Migrations\201508061002064_Init.cs" />
-    <Compile Include="Migrations\201508061002064_Init.Designer.cs">
-      <DependentUpon>201508061002064_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508061055403_ObjectNames.cs" />
-    <Compile Include="Migrations\201508061055403_ObjectNames.Designer.cs">
-      <DependentUpon>201508061055403_ObjectNames.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508061349555_SetUp.cs" />
-    <Compile Include="Migrations\201508061349555_SetUp.Designer.cs">
-      <DependentUpon>201508061349555_SetUp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508070638555_SourceCode.cs" />
-    <Compile Include="Migrations\201508070638555_SourceCode.Designer.cs">
-      <DependentUpon>201508070638555_SourceCode.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508061002064_Init.resx">
-      <DependentUpon>201508061002064_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508061055403_ObjectNames.resx">
-      <DependentUpon>201508061055403_ObjectNames.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508061349555_SetUp.resx">
-      <DependentUpon>201508061349555_SetUp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508070638555_SourceCode.resx">
-      <DependentUpon>201508070638555_SourceCode.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Testility.Logger\Testility.Logger.csproj">

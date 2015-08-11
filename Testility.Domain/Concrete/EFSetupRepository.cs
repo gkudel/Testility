@@ -33,7 +33,6 @@ namespace Testility.Domain.Concrete
                 Commit();
                 return true;
             }
-
             return false;
         }
 
@@ -59,6 +58,26 @@ namespace Testility.Domain.Concrete
                 }
             }
 
+        }
+
+        public void SaveResultToDb(SourceCode sourceCode, TestedClass testedClass)
+        {
+                context.SourCodes.Add(sourceCode);
+                testedClass.SourceCode = sourceCode;
+                context.TestedClasses.Add(testedClass);
+                Commit();
+        }
+
+        public void SaveMethodsToDb(TestedClass testedClass, TestedMethod testedMethod)
+        {
+            testedMethod.TestedClass = testedClass;
+            context.TestedMethods.Add(testedMethod);
+        }
+
+        public void SaveTestsToDb(TestedMethod testedMethod, Test test)
+        {
+            test.TestedMethod = testedMethod;
+            context.Tests.Add(test);
         }
 
         private void Commit()

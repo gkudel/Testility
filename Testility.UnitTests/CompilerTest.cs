@@ -18,7 +18,7 @@ namespace Testility.UnitTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Compile_WithOutSourceCode_ArgumentException()
         {
             Input input = new Input();

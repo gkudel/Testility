@@ -9,7 +9,7 @@ namespace Testility.Domain.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(Testility.Domain.Concrete.EFDbContext context)

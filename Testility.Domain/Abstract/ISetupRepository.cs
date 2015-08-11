@@ -13,6 +13,10 @@ namespace Testility.Domain.Abstract
         bool DeleteSourceCode(int id);
         SourceCode GetSourceCode(int? id);
         void SaveSourceCode(SourceCode sourcode);
+        void SaveResultToDb(SourceCode sourceCode, TestedClass testedClass);
+        void SaveMethodsToDb(TestedClass testedClass, TestedMethod testedMethod);
+        void SaveTestsToDb(TestedMethod testedMethod, Test test);
+
     }
 
 

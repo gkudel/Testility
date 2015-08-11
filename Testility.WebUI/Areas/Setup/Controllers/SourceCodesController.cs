@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Validation;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -61,21 +62,35 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 {
                     Input input =  fileRepository.CreateInputClass(sourceCode, uploadedFile);
                     Result result = compilerRepository.compile(input);
-                        
-                     if (result.Errors.Count > 0)
+
+                    if (result.Errors.Count > 0)
                          {
                              TempData["action"] = "Create";
                              TempData["errormessage"] = string.Format("An error occurred when compiling attached file {0}", uploadedFile.FileName);
                              return View("CreateAndEdit", sourceCode);
                          }
+                    sourceCode.Code = input.Code;
+                    foreach (Engine.Model.TestedClass testedClass in result.TestedClasses)
+                    {
+                        Domain.Entities.TestedClass modelTestedClass = new Domain.Entities.TestedClass() {Description = testedClass.Description , Name = testedClass.Name};
+                            foreach (Engine.Model.TestedMethod testedMethod in testedClass.Methods)
+                            {
+                                Domain.Entities.TestedMethod modelTestedMethod = new  Domain.Entities.TestedMethod() {Name = testedMethod.Name , Description = testedMethod.Description};
+                                
+                                foreach (Engine.Model.Test test in testedMethod.Tests)
+                                {
+                                    Domain.Entities.Test modelTest = new Domain.Entities.Test() {Name = test.Name , Description = test.Description , Fail = test.Fail};
+                                    setupRepository.SaveTestsToDb(modelTestedMethod, modelTest);
+                                }
+                                setupRepository.SaveMethodsToDb(modelTestedClass, modelTestedMethod);
+                            }
+                        setupRepository.SaveResultToDb(sourceCode, modelTestedClass);
+                    }
 
-                     Mapper.Map(input, sourceCode);
-
-                    setupRepository.SaveSourceCode(sourceCode);
                     TempData["savemessage"] = string.Format("{0} has been saved", sourceCode.Name);
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex)
+                catch (DbEntityValidationException ex)
                 {
                     TempData["errormessage"] = string.Format("An error occurred when saving {0}", sourceCode.Name);
                     return RedirectToAction("Index");
@@ -130,9 +145,9 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                         return View("CreateAndEdit", sourceCode);
                     }
 
-                    Mapper.Map(input, sourceCode);
-
+                    sourceCode.Code = input.Code;
                     setupRepository.SaveSourceCode(sourceCode);
+
                     TempData["savemessage"] = string.Format("{0} has been edited", sourceCode.Name);
                     return RedirectToAction("Index");
                 }
