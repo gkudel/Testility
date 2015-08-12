@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Testility.Domain.Entities
 {
@@ -18,7 +19,8 @@ namespace Testility.Domain.Entities
         public int Id { get; set; }
         [Required]
         [StringLength(100)]
-        [Index("IX_SourceCode_Name", IsUnique = true)]  
+        [Index("IX_SourceCode_Name", IsUnique = true)]
+        [Remote("IsNameUnique", "Validation", ErrorMessage = "Source code name already exists.")]
         public string Name { get; set; }
         public string Code { get; set; }
         public Language Language { get; set; }
