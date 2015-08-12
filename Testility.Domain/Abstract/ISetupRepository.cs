@@ -9,15 +9,12 @@ namespace Testility.Domain.Abstract
 {
     public interface ISetupRepository
     {
-        IQueryable<SourceCode> SourceCodes { get;  }
+        IQueryable<SourceCode> SourceCodes { get; }
         bool DeleteSourceCode(int id);
         SourceCode GetSourceCode(int? id);
-        void SaveResultToDb(SourceCode sourceCode, TestedClass testedClass);
-        void SaveMethodsToDb(TestedClass testedClass, TestedMethod testedMethod);
-        void SaveTestsToDb(TestedMethod testedMethod, Test test);      
-        TestedClass GetTestedClass(int sourceCodeId);
-        TestedMethod GetTestedMethod(string name);
-        Test GetTest(string name);
+        void AddResultToDb(SourceCode sourceCode, TestedClass testedClass);
+        void AddMethodsToDb(TestedClass testedClass, TestedMethod testedMethod);
+        void AddTestsToDb(TestedMethod testedMethod, Test test);
     }
 
 
