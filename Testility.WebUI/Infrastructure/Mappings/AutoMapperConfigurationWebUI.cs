@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Testility.WebUI.Mappings
+namespace Testility.WebUI.Mappings.Infrastructure
 {
     public class AutoMapperConfigurationWebUI
     {

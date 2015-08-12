@@ -10,10 +10,6 @@ namespace Testility.Domain.Entities
 {
     public class TestedMethod
     {
-        public TestedMethod()
-        {
-            Tests = new HashSet<Test>();
-        }
         public int Id { get; set; }
         [Required]
         [StringLength(100)]

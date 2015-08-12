@@ -4,7 +4,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Testility.Logger.Abstract;
 using Testility.WebUI.Infrastructure;
-using Testility.WebUI.Mappings;
+using Testility.WebUI.Mappings.Infrastructure;
 
 namespace Testility.WebUI
 {

@@ -40,8 +40,8 @@ namespace Testility.UnitTests
 
             ServiceMock = new Mock<ISetupRepository>();
             ServiceMock.Setup(x => x.SourceCodes).Returns(sourceList);
-            ServiceMock.Setup(x => x.GetSourceCode(1)).Returns(singleSource);
-            ServiceMock.Setup(x => x.DeleteSourceCode(It.IsAny<int>())).Returns(true);
+            ServiceMock.Setup(x => x.GetSourceCode(1, false)).Returns(singleSource);
+            ServiceMock.Setup(x => x.Delete(It.IsAny<int>())).Returns(true);
           
             CompilerMock = new Mock<ICompiler>();
             CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result(){});
@@ -86,7 +86,7 @@ namespace Testility.UnitTests
         {
             ViewResult result = sourceCodesController.Details(1) as ViewResult;
             var model = (result as ViewResult).Model as SourceCode;
-            ServiceMock.Verify(x=>x.GetSourceCode(1), Times.Once);
+            ServiceMock.Verify(x=>x.GetSourceCode(1, false), Times.Once);
             Assert.AreEqual(1, model.Id);
         }
   
@@ -155,15 +155,15 @@ namespace Testility.UnitTests
             ViewResult result = sourceCodesController.Delete(1) as ViewResult;
             var model = (result as ViewResult).Model as SourceCode;
             Assert.AreEqual(1, model.Id);
-            ServiceMock.Verify(x=>x.GetSourceCode(It.IsAny<int>()),Times.Once);  
+            ServiceMock.Verify(x=>x.GetSourceCode(It.IsAny<int>(), It.IsAny<bool>()),Times.Once);  
         }
 
         [TestMethod]
         public void Cannot_Delete_SourceCodes_WhenException()
         {
-            ServiceMock.Setup(x => x.DeleteSourceCode(It.IsAny<int>())).Throws(new Exception());
+            ServiceMock.Setup(x => x.Delete(It.IsAny<int>())).Throws(new Exception());
             var result = sourceCodesController.DeleteConfirmed(1) as RedirectToRouteResult;
-            ServiceMock.Verify(x=>x.DeleteSourceCode(It.IsAny<int>()), Times.Once);
+            ServiceMock.Verify(x=>x.Delete(It.IsAny<int>()), Times.Once);
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
@@ -171,7 +171,7 @@ namespace Testility.UnitTests
         public void Can_Delete_SourceCodes()
         {
             var result = sourceCodesController.DeleteConfirmed(1) as RedirectToRouteResult;
-            ServiceMock.Verify(x=>x.DeleteSourceCode(1), Times.Once);
+            ServiceMock.Verify(x=>x.Delete(1), Times.Once);
             Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }

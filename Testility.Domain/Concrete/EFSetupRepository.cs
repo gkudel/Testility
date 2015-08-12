@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using AutoMapper;
+using System.Linq.Expressions;
 
 namespace Testility.Domain.Concrete
 {
@@ -26,7 +27,7 @@ namespace Testility.Domain.Concrete
             }
         }
 
-        public bool DeleteSourceCode(int id)
+        public bool Delete(int id)
         {
             SourceCode sourceCode =  context.SourCodes.Select(a => a).FirstOrDefault(b => b.Id == id);
             if (sourceCode!=null)
@@ -38,32 +39,58 @@ namespace Testility.Domain.Concrete
             return false;
         }
 
-        public SourceCode GetSourceCode(int? id)
+        public SourceCode GetSourceCode(int? id, bool lazyLoading = true)
         {
-            return  context.SourCodes.Find(id);
+            var query = context.SourCodes.Where(s => s.Id == id);
+            if (!lazyLoading)
+            {
+                query = query.Include("Clasess.Methods.Tests");
+            }
+            return query.FirstOrDefault();
         }
 
-        public void AddResultToDb(SourceCode sourceCode, TestedClass testedClass)
+        public void Save(SourceCode sourceCode)
         {
+            if (sourceCode.Id == 0)
+            {
                 context.SourCodes.Add(sourceCode);
-                testedClass.SourceCode = sourceCode;
-                context.TestedClasses.Add(testedClass);
-                Commit();
+            }
+           /* else
+            {
+                foreach(TestedClass c in context.TestedClasses.Where(c => c.SourceCodeId == sourceCode.Id))
+                {
+                    if (sourceCode.Clasess.FirstOrDefault(i => i.Id == c.Id) != null)
+                    {
+                        foreach (TestedMethod m in context.TestedMethods.Where(m => m.TestedClassId == c.Id))
+                        {
+                            if (c.Methods.FirstOrDefault(i => i.Id == m.Id) != null)
+                            {
+                                foreach (Test t in context.Tests.Where(t => t.TestedMethodId == m.Id))
+                                {
+                                    if (m.Tests.FirstOrDefault(i => i.Id == t.Id) == null)
+                                    {
+                                        context.Entry(t).State = EntityState.Deleted;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                context.Entry(m).State = EntityState.Deleted;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        context.Entry(c).State = EntityState.Deleted;
+                    }
+                }
+            }*/
+            Commit();
         }
 
-        public void AddMethodsToDb(TestedClass testedClass, TestedMethod testedMethod)
-        {
-            testedMethod.TestedClass = testedClass;
-            context.TestedMethods.Add(testedMethod);
+        private void Update<T>(T o, DbSet<T> dbSet) where T : class
+        {            
         }
-
-        public void AddTestsToDb(TestedMethod testedMethod, Test test)
-        {
-            test.TestedMethod = testedMethod;
-            context.Tests.Add(test);
-        }
-
-
         private void Commit()
         {
             context.SaveChanges();
