@@ -40,7 +40,7 @@ namespace Testility.UnitTests
 
             ServiceMock = new Mock<ISetupRepository>();
             ServiceMock.Setup(x => x.SourceCodes).Returns(sourceList);
-            ServiceMock.Setup(x => x.GetSourceCode(1, false)).Returns(singleSource);
+            ServiceMock.Setup(x => x.GetSourceCode(1, It.IsAny<bool>())).Returns(singleSource);
             ServiceMock.Setup(x => x.Delete(It.IsAny<int>())).Returns(true);
           
             CompilerMock = new Mock<ICompiler>();
@@ -86,7 +86,7 @@ namespace Testility.UnitTests
         {
             ViewResult result = sourceCodesController.Details(1) as ViewResult;
             var model = (result as ViewResult).Model as SourceCode;
-            ServiceMock.Verify(x=>x.GetSourceCode(1, false), Times.Once);
+            ServiceMock.Verify(x=>x.GetSourceCode(1, It.IsAny<bool>()), Times.Once);
             Assert.AreEqual(1, model.Id);
         }
   
@@ -129,7 +129,7 @@ namespace Testility.UnitTests
         public void Cannot_EditSourceCodes_NotFound()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            var result = sourceCodesController.EditPost(null, File.Object) as HttpStatusCodeResult;
+            var result = sourceCodesController.EditPost(new SourceCode() { Id = 11 } , File.Object) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
