@@ -64,6 +64,14 @@ namespace Testility.Domain.Concrete
         }
 
 
+        public bool CheckSourceCodeNameIsUnique(string name)
+        {
+             SourceCode sourceCode =  context.SourCodes.Select(a => a).FirstOrDefault(b => b.Name == name);
+            if (sourceCode != null)
+                return false;
+            return true;
+        }
+
         private void Commit()
         {
             context.SaveChanges();

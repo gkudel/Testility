@@ -15,6 +15,8 @@ namespace Testility.Domain.Abstract
         void AddResultToDb(SourceCode sourceCode, TestedClass testedClass);
         void AddMethodsToDb(TestedClass testedClass, TestedMethod testedMethod);
         void AddTestsToDb(TestedMethod testedMethod, Test test);
+
+        bool CheckSourceCodeNameIsUnique(string name);
     }
 
 
