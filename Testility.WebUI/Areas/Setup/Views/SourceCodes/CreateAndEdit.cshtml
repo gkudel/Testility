@@ -9,7 +9,6 @@
 @using (Html.BeginForm("Edit", "SourceCodes", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    @Html.SourceCodesStatusHelper()
     
     <div class="form-horizontal">
         <h4>SourceCode</h4>
@@ -24,15 +23,6 @@
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
-        @*
-            <div class="form-group">
-                @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        *@
         <div class="form-group">
             @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
