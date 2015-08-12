@@ -11,7 +11,14 @@ namespace Testility.WebUI.Extensions
             {
                 TagBuilder saveMessage = new TagBuilder("div");
                 saveMessage.MergeAttribute("class", "alert alert-success");
-                saveMessage.InnerHtml = helper.ViewContext.Controller.TempData["savemessage"].ToString();
+                TagBuilder closebutton = new TagBuilder("a");
+                closebutton.MergeAttribute("href", "#");
+                closebutton.MergeAttribute("class", "close");
+                closebutton.MergeAttribute("data-dismiss", "alert");
+                closebutton.MergeAttribute("aria-label", "close");
+                closebutton.InnerHtml = "&times;";
+                saveMessage.InnerHtml = closebutton.ToString(); 
+                saveMessage.InnerHtml += helper.ViewContext.Controller.TempData["savemessage"].ToString();
                 builder.InnerHtml += saveMessage.ToString();
             }
 

@@ -32,14 +32,14 @@ namespace Testility.Egine.Concrete
         }
         private void Finish(Result r)
         {
-            //if(unitDomain  != null) System.AppDomain.Unload(unitDomain);
-            //if (!string.IsNullOrEmpty(r?.OutputDll ?? ""))
-            //{
-            //    if (File.Exists(r.OutputDll))
-            //    {
-            //        File.Delete(r.OutputDll);
-            //    }
-            //}
+            if (unitDomain != null) System.AppDomain.Unload(unitDomain);
+            if (!string.IsNullOrEmpty(r?.OutputDll ?? ""))
+            {
+                if (File.Exists(r.OutputDll))
+                {
+                    File.Delete(r.OutputDll);
+                }
+            }
         }
         public Result Compile(Input input)
         {
@@ -57,7 +57,7 @@ namespace Testility.Egine.Concrete
         }
         public void Dispose()
         {
-            System.AppDomain.Unload(unitDomain);
+            Finish(null);
         }
     }
 }
