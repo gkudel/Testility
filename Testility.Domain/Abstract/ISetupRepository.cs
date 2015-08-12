@@ -13,7 +13,6 @@ namespace Testility.Domain.Abstract
         bool Delete(int id);
         SourceCode GetSourceCode(int? id, bool lazyLoading = true);
         void Save(SourceCode sourceCode);
+        bool CheckSourceCodeNameIsUnique(string name);
     }
-
-
 }

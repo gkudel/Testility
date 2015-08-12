@@ -88,6 +88,14 @@ namespace Testility.Domain.Concrete
             Commit();
         }
 
+        public bool CheckSourceCodeNameIsUnique(string name)
+        {
+            SourceCode sourceCode = context.SourCodes.FirstOrDefault(b => b.Name == name);
+            if (sourceCode != null)
+                return false;
+            return true;
+        }
+
         private void Update<T>(T o, DbSet<T> dbSet) where T : class
         {            
         }

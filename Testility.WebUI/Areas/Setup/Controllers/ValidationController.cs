@@ -19,7 +19,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public JsonResult IsNameUnique(string name)
         {
             return setupRepository.CheckSourceCodeNameIsUnique(name) ? Json(true, JsonRequestBehavior.AllowGet) : Json(false, JsonRequestBehavior.AllowGet);
-
         }
     }
 }
