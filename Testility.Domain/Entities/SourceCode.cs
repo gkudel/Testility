@@ -22,6 +22,7 @@ namespace Testility.Domain.Entities
         [Index("IX_SourceCode_Name", IsUnique = true)]
         [Remote("IsNameUnique", "Validation", ErrorMessage = "Source code name already exists.", AdditionalFields = "Id")]
         public string Name { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Code { get; set; }
         public Language Language { get; set; }
         public String ReferencedAssemblies { get; set; }
