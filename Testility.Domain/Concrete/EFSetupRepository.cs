@@ -55,36 +55,39 @@ namespace Testility.Domain.Concrete
             {
                 context.SourCodes.Add(sourceCode);
             }
-           /* else
+            else
             {
-                foreach(TestedClass c in context.TestedClasses.Where(c => c.SourceCodeId == sourceCode.Id))
+                var classes = context.TestedClasses.Where(c => c.SourceCodeId == sourceCode.Id).ToList();                    
+                foreach (TestedClass c in classes)
                 {
                     if (sourceCode.Clasess.FirstOrDefault(i => i.Id == c.Id) != null)
                     {
-                        foreach (TestedMethod m in context.TestedMethods.Where(m => m.TestedClassId == c.Id))
+                        var methods = context.TestedMethods.Where(m => m.TestedClassId == c.Id).ToList();
+                        foreach (TestedMethod m in methods)
                         {
                             if (c.Methods.FirstOrDefault(i => i.Id == m.Id) != null)
                             {
-                                foreach (Test t in context.Tests.Where(t => t.TestedMethodId == m.Id))
+                                var tests = context.Tests.Where(t => t.TestedMethodId == m.Id).ToList();
+                                foreach (Test t in tests)
                                 {
                                     if (m.Tests.FirstOrDefault(i => i.Id == t.Id) == null)
                                     {
-                                        context.Entry(t).State = EntityState.Deleted;
+                                        context.Tests.Remove(t);
                                     }
                                 }
                             }
                             else
                             {
-                                context.Entry(m).State = EntityState.Deleted;
+                                context.TestedMethods.Remove(m);
                             }
                         }
                     }
                     else
                     {
-                        context.Entry(c).State = EntityState.Deleted;
+                        context.TestedClasses.Remove(c);
                     }
                 }
-            }*/
+            }
             Commit();
         }
 

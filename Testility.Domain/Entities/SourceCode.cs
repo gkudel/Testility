@@ -20,7 +20,7 @@ namespace Testility.Domain.Entities
         [Required]
         [StringLength(100)]
         [Index("IX_SourceCode_Name", IsUnique = true)]
-        [Remote("IsNameUnique", "Validation", ErrorMessage = "Source code name already exists.")]
+        //[Remote("IsNameUnique", "Validation", ErrorMessage = "Source code name already exists.")]
         public string Name { get; set; }
         public string Code { get; set; }
         public Language Language { get; set; }

@@ -105,7 +105,6 @@ namespace Testility.UnitTests
         {
             var result = Service.GetSourceCode(null);
             Assert.AreEqual(null,result);
-
         }
     }
 }
