@@ -22,7 +22,7 @@ namespace Testility.Domain.Concrete
 
         public IQueryable<SourceCode> GetAllSourceCodes()
         {
-            return context.SourCodes;
+            return context.SourCodes.AsQueryable();
         }
 
         public bool Delete(int id)
@@ -96,6 +96,7 @@ namespace Testility.Domain.Concrete
                 return false;
             return true;
         }
+
 
         private void Update<T>(T o, DbSet<T> dbSet) where T : class
         {            

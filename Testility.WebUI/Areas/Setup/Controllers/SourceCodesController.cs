@@ -29,7 +29,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult Index()
         {
-            return View(setupRepository.GetAllSourceCodes());
+            return View(setupRepository.GetAllSourceCodes().ToList());
         }
 
         public ActionResult Create()
@@ -127,5 +127,23 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             
             return RedirectToAction("Index");
         }
+
+        [ActionName("EditClass")]
+        public ActionResult EditClass(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            SourceCode sourceCode = setupRepository.GetSourceCode(id , true);
+            if (sourceCode == null)
+            {
+                return HttpNotFound();
+            }
+            return View();
+        }
+
+
+
     }
 }
