@@ -133,11 +133,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BindingConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
-    <Compile Include="Areas\Setup\Models\Constants.cs" />
+    <Compile Include="Areas\Setup\Models\EditViewModel.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SourceCodesController.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Binding\EditPostValueBinder.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\Mappings\AutoMapperConfigurationWebUI.cs" />
     <Compile Include="Infrastructure\Mappings\UIModelToEngineModelMapping.cs" />

@@ -11,6 +11,8 @@ using Testility.Engine.Model;
 using Testility.WebUI.Services;
 using System.Collections.Generic;
 using System.Linq;
+using Testility.WebUI.Areas.Setup.Models;
+using Testility.WebUI.Infrastructure.Binding;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
@@ -55,17 +57,17 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost([Bind(Include = "Id, Name, Language, ReferencedAssemblies")]SourceCode sourceCode, HttpPostedFileBase uploadedFile, int Id = 0)
+        public ActionResult EditPost([Bind(Include = "Id, Name, Language, ReferencedAssemblies")]EditViewModel model)
         {
-            if (sourceCode == null)
+            if (model.SourceCode == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            if (sourceCode.Id != 0)
+            if (model.SourceCode.Id != 0)
             {
-                sourceCode = setupRepository.GetSourceCode(sourceCode.Id, false);
+                model.SourceCode = setupRepository.GetSourceCode(model.SourceCode.Id, false);
             }
-            if (sourceCode == null)
+            if (model.SourceCode == null)
             {
                 return HttpNotFound();
             }
@@ -73,31 +75,31 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 try
                 {
-                    Input input = fileRepository.CreateInputClass(sourceCode, uploadedFile);
+                    Input input = fileRepository.CreateInputClass(model.SourceCode, model.UploadedFile);
                     Result result = compilerRepository.Compile(input);
 
                     if (result.Errors.Count > 0)
                     {
-                        ModelState.AddModelError(String.Empty, string.Format("An error occurred when compiling attached file {0}", uploadedFile.FileName));
-                        return View("CreateAndEdit", sourceCode);
+                        ModelState.AddModelError(String.Empty, string.Format("An error occurred when compiling attached file {0}", model.UploadedFile.FileName));
+                        return View("CreateAndEdit", model.SourceCode);
                     }
-                    sourceCode.Code = input.Code;
-                    Mapper.Map<Result, SourceCode>(result, sourceCode);
+                    model.SourceCode.Code = input.Code;
+                    Mapper.Map<Result, SourceCode>(result, model.SourceCode);
 
-                    setupRepository.Save(sourceCode);
+                    setupRepository.Save(model.SourceCode);
 
-                    TempData["savemessage"] = string.Format("{0} has been edited", sourceCode.Name);
+                    TempData["savemessage"] = string.Format("{0} has been edited", model.SourceCode.Name);
                     return RedirectToAction("Index");
                 }
                 catch (Exception /* ex */ )
                 {
-                    ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", sourceCode.Name));
-                    return View("CreateAndEdit", sourceCode);
+                    ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", model.SourceCode.Name));
+                    return View("CreateAndEdit", model.SourceCode);
                 }
             }
             else
             {
-                return View("CreateAndEdit", sourceCode);
+                return View("CreateAndEdit", model.SourceCode);
             }
         }
 

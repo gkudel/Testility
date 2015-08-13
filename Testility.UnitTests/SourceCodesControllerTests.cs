@@ -14,6 +14,7 @@ using Testility.WebUI.Areas.Setup.Controllers;
 using Testility.WebUI.Mappings;
 using Testility.WebUI.Services;
 using Testility.WebUI.Mappings.Infrastructure;
+using Testility.WebUI.Areas.Setup.Models;
 
 namespace Testility.UnitTests
 {
@@ -90,8 +91,12 @@ namespace Testility.UnitTests
         public void Cannot_EditPostNonExistsSourceCodes_NotFound()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            SourceCode sourceCode = new SourceCode() { Id = 11 };
-            var result = sourceCodesController.EditPost(sourceCode, File.Object) as HttpStatusCodeResult;
+            EditViewModel model = new EditViewModel()
+            {
+                SourceCode = new SourceCode() { Id = 11 },
+                UploadedFile = File.Object
+            };
+            var result = sourceCodesController.EditPost(model) as HttpStatusCodeResult;
             ServiceMock.Verify(m => m.GetSourceCode(11, false), Times.Once);
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
@@ -100,17 +105,25 @@ namespace Testility.UnitTests
         public void Cannot_EditPostNullSourceCodes_BadRequest()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            SourceCode sourceCode = null;
-            var result = sourceCodesController.EditPost(sourceCode, File.Object) as HttpStatusCodeResult;
+            EditViewModel model = new EditViewModel()
+            {
+                SourceCode = null,
+                UploadedFile = File.Object
+            };
+            var result = sourceCodesController.EditPost(model) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
         [TestMethod]
         public void Cannot_EditPostInvalidSourceCodes_Redirect()
         {
-            SourceCode sourceCode = new SourceCode() { Id = 1 };
             sourceCodesController.ModelState.AddModelError("Error", "Error");
-            var actionResult = sourceCodesController.EditPost(sourceCode, File.Object) as ViewResult;
+            EditViewModel model = new EditViewModel()
+            {
+                SourceCode = new SourceCode() { Id = 1 },
+                UploadedFile = File.Object
+            };
+            var actionResult = sourceCodesController.EditPost(model) as ViewResult;
             ServiceMock.Verify(m => m.GetSourceCode(1, false), Times.Once);
             ServiceMock.Verify(m => m.Save(It.IsAny<SourceCode>()), Times.Never);
             Assert.AreEqual("CreateAndEdit", actionResult.ViewName);
@@ -121,9 +134,13 @@ namespace Testility.UnitTests
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
             CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result() { Errors = new List<Error>(){new Error(){Message = "blbl"}}});
-            SourceCode sourceCode = new SourceCode();
+            EditViewModel model = new EditViewModel()
+            {
+                SourceCode = new SourceCode(),
+                UploadedFile = File.Object
+            };
             ServiceMock.Verify(m => m.Save(It.IsAny<SourceCode>()), Times.Never);
-            var actionResult = sourceCodesController.EditPost(sourceCode, File.Object) as ViewResult;
+            var actionResult = sourceCodesController.EditPost(model) as ViewResult;
             Assert.AreEqual("CreateAndEdit", actionResult.ViewName);
         }
 
@@ -148,8 +165,12 @@ namespace Testility.UnitTests
                     }
                 }
             });
-            SourceCode sourceCode = new SourceCode();
-            var result = sourceCodesController.EditPost(sourceCode, File.Object) as RedirectToRouteResult;
+            EditViewModel model = new EditViewModel()
+            {
+                SourceCode = new SourceCode(),
+                UploadedFile = File.Object
+            };
+            var result = sourceCodesController.EditPost(model) as RedirectToRouteResult;
             ServiceMock.Verify(m => m.Save(It.IsAny <SourceCode>()), Times.Once);
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
