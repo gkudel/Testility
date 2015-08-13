@@ -167,9 +167,9 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Setup\Views\web.config" />
     <Content Include="Areas\Setup\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Setup\Views\_TestedMethodsPartialView.cshtml" />
-    <Content Include="Areas\Setup\Views\_TestedTestsPartialView.cshtml" />
-    <Content Include="Areas\Setup\Views\_TestedClassesPartialView.cshtml" />
+    <Content Include="Areas\Setup\Views\SourceCodes\_TestedMethodsPartialView.cshtml" />
+    <Content Include="Areas\Setup\Views\SourceCodes\_TestedTestsPartialView.cshtml" />
+    <Content Include="Areas\Setup\Views\SourceCodes\_TestedClassesPartialView.cshtml" />
     <Content Include="Areas\Setup\Views\TestedClasses\Delete.cshtml" />
     <Content Include="Areas\Setup\Views\TestedClasses\Edit.cshtml" />
     <Content Include="Areas\Setup\Views\TestedMethods\Delete.cshtml" />
