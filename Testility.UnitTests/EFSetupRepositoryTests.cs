@@ -79,7 +79,7 @@ namespace Testility.UnitTests
         [TestMethod]
         public void Can_Get_All_Source_Codes()
         {
-            Assert.AreEqual(2, Service.SourceCodes.Count());
+            Assert.AreEqual(2, Service.GetAllSourceCodes().Count());
         }
 
         [TestMethod]

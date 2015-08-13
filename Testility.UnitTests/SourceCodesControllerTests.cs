@@ -39,7 +39,7 @@ namespace Testility.UnitTests
             }.AsQueryable();
 
             ServiceMock = new Mock<ISetupRepository>();
-            ServiceMock.Setup(x => x.SourceCodes).Returns(sourceList);
+            ServiceMock.Setup(x => x.GetAllSourceCodes()).Returns(sourceList);
             ServiceMock.Setup(x => x.GetSourceCode(1, It.IsAny<bool>())).Returns(singleSource);
             ServiceMock.Setup(x => x.Delete(It.IsAny<int>())).Returns(true);
           

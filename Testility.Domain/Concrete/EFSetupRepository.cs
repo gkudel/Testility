@@ -20,9 +20,9 @@ namespace Testility.Domain.Concrete
         }
 
 
-        public IList<SourceCode> GetAllSourceCodes()
+        public IQueryable<SourceCode> GetAllSourceCodes()
         {
-            return context.SourCodes.ToList();
+            return context.SourCodes;
         }
 
         public bool Delete(int id)
