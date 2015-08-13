@@ -9,10 +9,12 @@ namespace Testility.Domain.Abstract
 {
     public interface ISetupRepository
     {
-        IQueryable<SourceCode> SourceCodes { get; }
+        
         bool Delete(int id);
         SourceCode GetSourceCode(int? id, bool lazyLoading = true);
         void Save(SourceCode sourceCode);
         bool CheckSourceCodeNameIsUnique(string name);
+        IList<SourceCode> GetAllSourceCodes();
+
     }
 }
