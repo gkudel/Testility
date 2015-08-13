@@ -140,7 +140,7 @@
     <Compile Include="Areas\Setup\Controllers\TestedMethodsController.cs" />
     <Compile Include="Areas\Setup\Controllers\TestsController.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
-    <Compile Include="Areas\Setup\Models\Constants.cs" />
+    <Compile Include="Areas\Setup\Models\EditViewModel.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SourceCodesController.cs" />
@@ -148,6 +148,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Atrribute\ValidateFileAttribute.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\Mappings\AutoMapperConfigurationWebUI.cs" />
     <Compile Include="Infrastructure\Mappings\UIModelToEngineModelMapping.cs" />

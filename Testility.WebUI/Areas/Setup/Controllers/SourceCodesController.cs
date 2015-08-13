@@ -11,6 +11,7 @@ using Testility.Engine.Model;
 using Testility.WebUI.Services;
 using System.Collections.Generic;
 using System.Linq;
+using Testility.WebUI.Areas.Setup.Models;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
@@ -29,13 +30,13 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult Index()
         {            
-            return View(setupRepository.GetAllSourceCodes(false));
+            return View(setupRepository.GetAllSourceCodes().ToList());
         }
 
         public ActionResult Create()
         {
             TempData["header"] = string.Format("Create");
-            return View("CreateAndEdit", new SourceCode());
+            return View("CreateAndEdit", new EditViewModel() { SourceCode = new SourceCode() });
         }
 
         public ActionResult Edit(int? id)
@@ -50,22 +51,27 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 return HttpNotFound();
             }
             TempData["header"] = string.Format("Edit");
-            return View("CreateAndEdit", sourceCode);
+            return View("CreateAndEdit", new EditViewModel() { SourceCode = sourceCode } );
         }
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost([Bind(Include = "Id, Name, Language, ReferencedAssemblies")]SourceCode sourceCode, HttpPostedFileBase uploadedFile, int Id = 0)
+        public ActionResult EditPost(EditViewModel model)
         {
-            if (sourceCode == null)
+            if (model.SourceCode == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            if (sourceCode.Id != 0)
+            if (model.SourceCode.Id != 0)
             {
-                sourceCode = setupRepository.GetSourceCode(sourceCode.Id, false);
+                SourceCode code = setupRepository.GetSourceCode(model.SourceCode.Id, false);
+                if (code != null)
+                {
+                    Mapper.Map(model.SourceCode, code);
+                }
+                model.SourceCode = code;
             }
-            if (sourceCode == null)
+            if (model.SourceCode == null)
             {
                 return HttpNotFound();
             }
@@ -73,31 +79,33 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 try
                 {
-                    Input input = fileRepository.CreateInputClass(sourceCode, uploadedFile);
-                    Result result = compilerRepository.Compile(input);
-
-                    if (result.Errors.Count > 0)
+                    if (model.UploadedFile != null)
                     {
-                        ModelState.AddModelError(String.Empty, string.Format("An error occurred when compiling attached file {0}", uploadedFile.FileName));
-                        return View("CreateAndEdit", sourceCode);
+                        Input input = fileRepository.CreateInputClass(model.SourceCode, model.UploadedFile);
+                        Result result = compilerRepository.Compile(input);
+
+                        if (result.Errors.Count > 0)
+                        {
+                            ModelState.AddModelError(String.Empty, string.Format("An error occurred when compiling attached file {0}", model.UploadedFile.FileName));
+                            return View("CreateAndEdit", model);
+                        }
+                        model.SourceCode.Code = input.Code;
+                        Mapper.Map<Result, SourceCode>(result, model.SourceCode);
                     }
-                    sourceCode.Code = input.Code;
-                    Mapper.Map<Result, SourceCode>(result, sourceCode);
+                    setupRepository.Save(model.SourceCode);
 
-                    setupRepository.Save(sourceCode);
-
-                    TempData["savemessage"] = string.Format("{0} has been edited", sourceCode.Name);
+                    TempData["savemessage"] = string.Format("{0} has been edited", model.SourceCode.Name);
                     return RedirectToAction("Index");
                 }
                 catch (Exception /* ex */ )
                 {
-                    ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", sourceCode.Name));
-                    return View("CreateAndEdit", sourceCode);
+                    ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", model.SourceCode.Name));
+                    return View("CreateAndEdit", model);
                 }
             }
             else
             {
-                return View("CreateAndEdit", sourceCode);
+                return View("CreateAndEdit", model);
             }
         }
 

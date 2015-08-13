@@ -12,7 +12,7 @@ namespace Testility.WebUI
     {
         protected void Application_Start()
         {
-            NinjectDependencyResolver diResolver = new NinjectDependencyResolver();
+            NinjectDependencyResolver diResolver = new NinjectDependencyResolver();           
             AreaRegistration.RegisterAllAreas();
             DependencyResolver.SetResolver(diResolver);
             Logger.Concrete.Logger.Initalize(diResolver.GetService(typeof(ILogger)) as ILogger);
