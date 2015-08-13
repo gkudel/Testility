@@ -19,9 +19,14 @@ namespace Testility.Domain.Concrete
             this.context = context;
         }
 
-        public IQueryable<SourceCode> GetAllSourceCodes()
+        public IQueryable<SourceCode> GetAllSourceCodes(bool lazyLoading = true)
         {
-            return context.SourCodes;
+            var query = context.SourCodes.Select(a=>a);
+            if (!lazyLoading)
+            {
+                query = query.Include("Clasess.Methods.Tests");
+            }
+            return query;
         }
 
         public bool Delete(int id)
@@ -88,13 +93,23 @@ namespace Testility.Domain.Concrete
             Commit();
         }
 
-        public bool CheckSourceCodeNameIsUnique(string name)
+        public bool IsUnique(string name, int id)
+        {
+            SourceCode sourceCode = context.SourCodes.FirstOrDefault(b => b.Name == name && b.Id == id);
+            if (sourceCode != null)
+                return false;
+            return true;
+        }
+
+        public bool IsUniqueName(string name)
         {
             SourceCode sourceCode = context.SourCodes.FirstOrDefault(b => b.Name == name);
             if (sourceCode != null)
                 return false;
             return true;
         }
+
+
 
         private void Commit()
         {

@@ -3,24 +3,21 @@
 
 
 
-<table class="table table-hover col-lg-offset-3 pull-left">
-    <h3 class="col-lg-offset-3">Tests:</h3>
+<table class="Table">
     <tr>
-        <td class="col-lg-1">
+        <th class="col-lg-1">
             @Html.DisplayNameFor(model => model.Name)
-        </td>
+        </th>
 
-        <td class="col-lg-1">
+        <th class="col-lg-1">
             @Html.DisplayNameFor(model => model.Description)
-        </td>
+        </th>
 
-        <td class="col-lg-1">
+        <th class="col-lg-1">
             @Html.DisplayNameFor(model => model.Fail)
-        </td>
+        </th>
 
-        <td class="col-lg-1">
-            
-        </td>
+        <th class="col-lg-3">Options</th>
     </tr>
 
     @foreach (var item in Model)
@@ -38,9 +35,10 @@
                 @Html.DisplayFor(modelItem => item.Fail)
             </td>
 
-            <td class="col-lg-1">
-                @Html.ActionLink("Edit", "Edit", new { controller = "Tests", id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { controller = "Tests", id = item.Id })
+            <td class="col-lg-3">
+                @Html.ActionLink("Edit", "Edit", new { controller = "Tests", id = item.Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Delete", "Delete", new { controller = "Tests", id = item.Id }, new { @class = "btn btn-primary" })
+
             </td>
         </tr>
     }
