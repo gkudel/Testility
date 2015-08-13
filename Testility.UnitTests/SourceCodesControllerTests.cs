@@ -13,7 +13,7 @@ using Testility.Engine.Model;
 using Testility.WebUI.Areas.Setup.Controllers;
 using Testility.WebUI.Mappings;
 using Testility.WebUI.Services;
-
+using Testility.WebUI.Mappings.Infrastructure;
 
 namespace Testility.UnitTests
 {
@@ -122,8 +122,36 @@ namespace Testility.UnitTests
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
             CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result() { Errors = new List<Error>(){new Error(){Message = "blbl"}}});
             SourceCode sourceCode = new SourceCode();
+            ServiceMock.Verify(m => m.Save(It.IsAny<SourceCode>()), Times.Never);
             var actionResult = sourceCodesController.EditPost(sourceCode, File.Object) as ViewResult;
             Assert.AreEqual("CreateAndEdit", actionResult.ViewName);
+        }
+
+        [TestMethod]
+        public void Can_EditPostSourceCodes_Redirect()
+        {
+            AutoMapperConfigurationWebUI.Configure();
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result()
+            {
+                Errors = new List<Error>(),
+                TestedClasses = new List<Engine.Model.TestedClass>()
+                {
+                    new Engine.Model.TestedClass()
+                    {
+                        Methods = new List<Engine.Model.TestedMethod>()
+                        {
+                            new Engine.Model.TestedMethod()
+                            {
+                                Tests = new List<Engine.Model.Test>()
+                            }
+                        }
+                    }
+                }
+            });
+            SourceCode sourceCode = new SourceCode();
+            var result = sourceCodesController.EditPost(sourceCode, File.Object) as RedirectToRouteResult;
+            ServiceMock.Verify(m => m.Save(It.IsAny <SourceCode>()), Times.Once);
+            Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
         [TestMethod]
