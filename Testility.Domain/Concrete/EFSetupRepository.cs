@@ -109,6 +109,15 @@ namespace Testility.Domain.Concrete
             return true;
         }
 
+        public TestedClass GetTestedClass(int? id, bool lazyLoading = true)
+        {
+            var query = context.TestedClasses.FirstOrDefault(a => a.Id == id);
+            if (!lazyLoading)
+            {
+
+            }
+            return query;
+        }
 
 
         private void Commit()

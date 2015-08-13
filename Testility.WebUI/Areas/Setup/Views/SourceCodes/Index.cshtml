@@ -39,16 +39,13 @@
             </td>
 
             <td class="col-lg-2">
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
-
-                <a> Show Tested Class </a>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) 
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" }) 
+                <input type="button" value="Show Tested Class" class="btn btn-default" />
             </td>
         </tr>
 
-        @{ 
-            Html.RenderPartial("../_TestedClassesPartialView", item.Clasess);
-        }
+        @{Html.RenderPartial("_TestedClassesPartialView", item.Clasess);}
 
     </table>
         }

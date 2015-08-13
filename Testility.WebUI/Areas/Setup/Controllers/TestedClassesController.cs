@@ -28,17 +28,31 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View();
+
+            TestedClass testedClass = setupRepository.GetTestedClass(id, false);
+
+            if (testedClass == null)
+                return HttpNotFound();
+
+            return View(testedClass);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Description")] TestedClass testedClass)
         {
-            return View();
+            if (testedClass == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (testedClass.Id != 0)
+            {
+
+            }
+
+            return View(testedClass);
         }
 
         public ActionResult Delete(int? id)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Testility.Domain.Entities;
@@ -16,6 +17,9 @@ namespace Testility.Domain.Abstract
         bool IsUniqueName(string name);
         bool IsUnique(string name, int id);
         IQueryable<SourceCode> GetAllSourceCodes(bool lazyLoading = true);
+
+
+        TestedClass GetTestedClass(int? id, bool lazyLoading = true);
 
     }
 }

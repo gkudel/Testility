@@ -30,7 +30,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult Index()
         {            
-            return View(setupRepository.GetAllSourceCodes().ToList());
+            return View(setupRepository.GetAllSourceCodes(false));
         }
 
         public ActionResult Create()
