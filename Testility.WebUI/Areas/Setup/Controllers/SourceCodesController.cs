@@ -28,7 +28,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         }
 
         public ActionResult Index()
-        {
+        {            
             return View(setupRepository.GetAllSourceCodes());
         }
 
@@ -57,6 +57,10 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditPost([Bind(Include = "Id, Name, Language, ReferencedAssemblies")]SourceCode sourceCode, HttpPostedFileBase uploadedFile, int Id = 0)
         {
+            if (sourceCode == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             if (sourceCode.Id != 0)
             {
                 sourceCode = setupRepository.GetSourceCode(sourceCode.Id, false);
@@ -85,7 +89,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     TempData["savemessage"] = string.Format("{0} has been edited", sourceCode.Name);
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex)
+                catch (Exception /* ex */ )
                 {
                     ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", sourceCode.Name));
                     return View("CreateAndEdit", sourceCode);

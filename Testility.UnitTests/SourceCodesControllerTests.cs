@@ -20,14 +20,12 @@ namespace Testility.UnitTests
     [TestClass]
     public class SourceCodesControllerTests
     {
-
         public Mock<ISetupRepository> ServiceMock { get; set; }
         public Mock<ICreateInputClassFromFile> CreateInputClassMock { get; set; }
-
         public Mock<ICompiler> CompilerMock { get; set; }
         public SourceCodesController sourceCodesController { get; set; }
         public Mock<HttpPostedFileBase> File {get;set;}
-
+        
         [TestInitialize]
         public void Int()
         {
@@ -81,7 +79,6 @@ namespace Testility.UnitTests
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
-
         [TestMethod]
         public void Can_Edit_SourceCodes_Redirect()
         {
@@ -90,21 +87,43 @@ namespace Testility.UnitTests
         }
 
         [TestMethod]
-        public void Cannot_EditSourceCodes_Redirect()
+        public void Cannot_EditPostNonExistsSourceCodes_NotFound()
+        {
+            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            SourceCode sourceCode = new SourceCode() { Id = 11 };
+            var result = sourceCodesController.EditPost(sourceCode, File.Object) as HttpStatusCodeResult;
+            ServiceMock.Verify(m => m.GetSourceCode(11, false), Times.Once);
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+        }
+
+        [TestMethod]
+        public void Cannot_EditPostNullSourceCodes_BadRequest()
+        {
+            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            SourceCode sourceCode = null;
+            var result = sourceCodesController.EditPost(sourceCode, File.Object) as HttpStatusCodeResult;
+            Assert.AreEqual(expected.StatusCode, result.StatusCode);
+        }
+
+        [TestMethod]
+        public void Cannot_EditPostInvalidSourceCodes_Redirect()
+        {
+            SourceCode sourceCode = new SourceCode() { Id = 1 };
+            sourceCodesController.ModelState.AddModelError("Error", "Error");
+            var actionResult = sourceCodesController.EditPost(sourceCode, File.Object) as ViewResult;
+            ServiceMock.Verify(m => m.GetSourceCode(1, false), Times.Once);
+            ServiceMock.Verify(m => m.Save(It.IsAny<SourceCode>()), Times.Never);
+            Assert.AreEqual("CreateAndEdit", actionResult.ViewName);
+        }
+
+        [TestMethod]
+        public void Cannot_EditPostSourceCodes_Redirect()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
             CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result() { Errors = new List<Error>(){new Error(){Message = "blbl"}}});
             SourceCode sourceCode = new SourceCode();
             var actionResult = sourceCodesController.EditPost(sourceCode, File.Object) as ViewResult;
             Assert.AreEqual("CreateAndEdit", actionResult.ViewName);
-        }
-
-        [TestMethod]
-        public void Cannot_EditSourceCodes_NotFound()
-        {
-            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            var result = sourceCodesController.EditPost(new SourceCode() { Id = 11 } , File.Object) as HttpStatusCodeResult;
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
         [TestMethod]
@@ -171,8 +190,5 @@ namespace Testility.UnitTests
         //public void Can_Edit_SourceCodes()
         //{
         //}
-
-
-
     }
 }
