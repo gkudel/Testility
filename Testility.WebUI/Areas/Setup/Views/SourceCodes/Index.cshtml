@@ -46,7 +46,9 @@
             </td>
         </tr>
 
-        @Html.Partial("../_TestedClassesPartialView", item.Clasess)
+        @{ 
+            Html.RenderPartial("../_TestedClassesPartialView", item.Clasess);
+        }
 
     </table>
         }

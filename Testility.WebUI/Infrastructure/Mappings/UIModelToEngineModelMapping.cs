@@ -18,6 +18,8 @@ namespace Testility.WebUI.Mappings.Infrastructure
         {
             Mapper.CreateMap<SourceCode, Input>();
             Mapper.CreateMap<Input, SourceCode>();
+            Mapper.CreateMap<SourceCode, SourceCode>()
+                .ForMember(s => s.Clasess, opt => opt.Ignore());
 
             Mapper.CreateMap<Result, SourceCode>()
                 .ForMember(e => e.Id, opt => opt.Ignore())
