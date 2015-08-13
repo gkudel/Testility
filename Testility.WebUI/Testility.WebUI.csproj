@@ -137,6 +137,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Setup\Controllers\TestedClassesController.cs" />
+    <Compile Include="Areas\Setup\Controllers\TestedMethodsController.cs" />
+    <Compile Include="Areas\Setup\Controllers\TestsController.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
     <Compile Include="Areas\Setup\Models\EditViewModel.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
@@ -165,6 +168,15 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Setup\Views\web.config" />
     <Content Include="Areas\Setup\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Setup\Views\_TestedMethodsPartialView.cshtml" />
+    <Content Include="Areas\Setup\Views\_TestedTestsPartialView.cshtml" />
+    <Content Include="Areas\Setup\Views\_TestedClassesPartialView.cshtml" />
+    <Content Include="Areas\Setup\Views\TestedClasses\Delete.cshtml" />
+    <Content Include="Areas\Setup\Views\TestedClasses\Edit.cshtml" />
+    <Content Include="Areas\Setup\Views\TestedMethods\Delete.cshtml" />
+    <Content Include="Areas\Setup\Views\TestedMethods\Edit.cshtml" />
+    <Content Include="Areas\Setup\Views\Tests\Delete.cshtml" />
+    <Content Include="Areas\Setup\Views\Tests\Edit.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

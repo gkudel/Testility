@@ -1,0 +1,42 @@
+﻿@using Testility.Domain.Entities
+@model IEnumerable<Testility.Domain.Entities.TestedClass>
+
+
+<table class="table table-hover .info col-lg-offset-1">
+    <h3 class="col-lg-offset-1">Tested Classes:</h3>
+    <tr>
+        <td class="col-lg-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </td>
+
+        <td class="col-lg-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </td>
+
+        <td class="col-lg-2"></td>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+
+            <td class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+
+            <td class="col-lg-2">
+                @Html.ActionLink("Edit", "Edit", new {controller = "TestedClasses", id = item.Id}, null) |
+                @Html.ActionLink("Delete", "Delete", new {controller = "TestedClasses", id = item.Id}) |
+                <a class="testedMethods"> Show Methods </a>
+            </td>
+
+
+        </tr>
+        @Html.Partial("../_TestedMethodsPartialView", item.Methods)
+
+    }
+</table>

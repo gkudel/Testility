@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Testility.Domain.Entities.TestedMethod>
+
+
+<table class="table table-hover .info col-lg-offset-2">
+    <h3 class="col-lg-offset-2">Tested Methods:</h3>
+    <tr>
+        <td class="col-lg-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </td>
+
+        <td class="col-lg-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </td>
+
+        <td></td>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+            <td class="col-lg-2">
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+
+            <td class="col-lg-2">
+                @Html.ActionLink("Edit", "Edit", new { controller = "TestedMethods", id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { controller = "TestedMethods", id = item.Id }) |
+
+                <a class="testedTests"> Show Tests </a>
+            </td>
+            @Html.Partial("../_TestedTestsPartialView", item.Tests)
+        </tr>
+    }
+</table>
