@@ -63,32 +63,6 @@ namespace Testility.UnitTests
             var model = (result as ViewResult).Model as IQueryable<SourceCode>;
             Assert.AreEqual(2, model.Count());
         }
-
-        [TestMethod]
-        public void Canot_Details_WithouId()
-        {
-            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            var result = sourceCodesController.Details(null) as HttpStatusCodeResult;
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-        }
-
-        [TestMethod]
-        public void Cannot_Details_NonExists_SourceCodes()
-        {
-            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            var result = sourceCodesController.Details(10) as HttpStatusCodeResult;
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-
-        }
-
-        [TestMethod]
-        public void Can_Display_Details_Of_SourceCodes()
-        {
-            ViewResult result = sourceCodesController.Details(1) as ViewResult;
-            var model = (result as ViewResult).Model as SourceCode;
-            ServiceMock.Verify(x=>x.GetSourceCode(1, It.IsAny<bool>()), Times.Once);
-            Assert.AreEqual(1, model.Id);
-        }
   
         [TestMethod]
         public void Cannot_EditWithouId_BadRequest()

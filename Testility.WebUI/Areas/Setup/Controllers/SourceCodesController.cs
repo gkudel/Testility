@@ -32,20 +32,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             return View(setupRepository.GetAllSourceCodes());
         }
 
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            SourceCode sourceCode = setupRepository.GetSourceCode(id);
-            if (sourceCode == null)
-            {
-                return HttpNotFound();
-            }
-            return View(sourceCode);
-        }
-
         public ActionResult Create()
         {
             TempData["header"] = string.Format("Create");

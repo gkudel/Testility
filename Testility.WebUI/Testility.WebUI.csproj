@@ -188,7 +188,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Areas\Setup\Views\SourceCodes\Delete.cshtml" />
-    <Content Include="Areas\Setup\Views\SourceCodes\Details.cshtml" />
     <Content Include="Areas\Setup\Views\SourceCodes\CreateAndEdit.cshtml" />
     <Content Include="Areas\Setup\Views\SourceCodes\Index.cshtml" />
   </ItemGroup>
