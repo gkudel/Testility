@@ -28,9 +28,10 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             compilerRepository = compilerRepositor;
         }
 
-        public ActionResult Index()
-        {            
-            return View(setupRepository.GetAllSourceCodes(false));
+        public ActionResult Index(int? selecttedSourceCode)
+        {
+            ViewBag.SelecttedSourceCode = selecttedSourceCode;
+            return View(setupRepository.GetAllSourceCodes().ToList());
         }
 
         public ActionResult Create()

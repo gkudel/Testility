@@ -21,12 +21,15 @@ namespace Testility.UnitTests
     [TestClass]
     public class SourceCodesControllerTests
     {
+        #region Members
         public Mock<ISetupRepository> ServiceMock { get; set; }
         public Mock<ICreateInputClassFromFile> CreateInputClassMock { get; set; }
         public Mock<ICompiler> CompilerMock { get; set; }
         public SourceCodesController sourceCodesController { get; set; }
         public Mock<HttpPostedFileBase> File {get;set;}
-        
+        #endregion Members
+
+        #region Init
         [TestInitialize]
         public void Int()
         {
@@ -53,8 +56,9 @@ namespace Testility.UnitTests
 
             sourceCodesController = new SourceCodesController(ServiceMock.Object, CreateInputClassMock.Object, CompilerMock.Object);
         }
+        #endregion Init
 
-
+        #region Index
         [TestMethod]
         public void Index_Contains_All_Data()
         {
@@ -62,7 +66,11 @@ namespace Testility.UnitTests
             var model = (result as ViewResult).Model as IQueryable<SourceCode>;
             Assert.AreEqual(2, model.Count());
         }
-  
+        #endregion Index
+
+        #region Edit & Create
+
+        #region GET
         [TestMethod]
         public void Cannot_EditWithouId_BadRequest()
         {
@@ -86,7 +94,9 @@ namespace Testility.UnitTests
             var result = sourceCodesController.Edit(1) as ViewResult;
             Assert.AreEqual("CreateAndEdit", result.ViewName);
         }
+        #endregion GET
 
+        #region POST
         [TestMethod]
         public void Cannot_EditPostNonExistsSourceCodes_NotFound()
         {
@@ -174,7 +184,11 @@ namespace Testility.UnitTests
             ServiceMock.Verify(m => m.Save(It.IsAny <SourceCode>()), Times.Once);
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
+        #endregion POST
 
+        #endregion Edit & Create
+
+        #region Delete
         [TestMethod]
         public void Cannot_Delete_WithoutId()
         {
@@ -217,27 +231,6 @@ namespace Testility.UnitTests
             Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
-
-
-        //[TestMethod]
-        //public void Cannot_Edit_WithouId()
-        //{
-        //}
-
-        //[TestMethod]
-        //public void Cannot_AddSourceCodes()
-        //{
-           
-
-        //[TestMethod]
-        //public void Cannot_Edit_Invalid_SourCodes()
-        //{
-         
-        //}
-
-        //[TestMethod]
-        //public void Can_Edit_SourceCodes()
-        //{
-        //}
+        #endregion Delete
     }
 }

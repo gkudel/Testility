@@ -12,85 +12,51 @@
     @Html.SourceCodesStatusHelper()
 </p>
 
-        @foreach (var item in Model)
-        {
-            <h1>Source Code:</h1>
-
-    <table class="table table-hover .info .col-md-12">
-        <tr class="success">
-            <td class="col-lg-2">
-                @Html.DisplayNameFor(model => model.Name)
-            </td>
-
-            <td class="col-lg-2">
-                @Html.DisplayNameFor(model => model.Language)
-            </td>
-
-            <td class="col-lg-2"></td>
-
-        </tr>
-        <tr>
-            <td class="col-lg-2">
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-
-            <td class="col-lg-2">
-                @Html.DisplayFor(modelItem => item.ReferencedAssemblies)
-            </td>
-
-            <td class="col-lg-2">
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) 
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" }) 
-                <input type="button" value="Show Tested Class" class="btn btn-default" />
-            </td>
-        </tr>
-
-        @{Html.RenderPartial("_TestedClassesPartialView", item.Clasess);}
-
-    </table>
-        }
-          
-
-                @section Scripts {
-                    <script>
-
-                        $(document).ready(function () {
-                            $(".classes").hide();
-                            $(".tests").hide();
-                            $(".methods").hide();
-                        });
-
-                        $(".testedClass").click(function () {
-                            if ($('.classes').is(":visible")) {
-                                $(".classes").hide();
-                            } else {
-                                $(".classes").show();
-                            }
-                        });
-
-                        $(".testedMethods").click(function () {
-                            if ($('.methods').is(":visible")) {
-                                $(".methods").hide();
-                            } else {
-                                $(".methods").show();
-                            }
-                        });
-
-                        $(".testedTests").click(function () {
-                            if ($('.tests').is(":visible")) {
-                                $(".tests").hide();
-                            } else {
-                                $(".tests").show();
-                            }
-                        });
-
-                    </script>
+<div class="panel panel-primary">
+    <div class="panel-heading"><strong>All Files</strong></div>
+    <div class="panel-body">
+        <table class="table table-hover table-bordered .col-md-12">
+            <thead>
+                <tr>
+                    <th class="col-lg-5">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th class="col-lg-5">
+                        @Html.DisplayNameFor(model => model.Language)
+                    </th>
+                    <th class="col-lg-2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    string selectedRow = "";
+                    if (item.Id == ViewBag.SelecttedSourceCode)
+                    {
+                        selectedRow = "success";
+                    }
+                    <tr class="@selectedRow">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReferencedAssemblies)
+                        </td>
+                        <td class=" text-center">
+                            @Html.ActionLink("Details", "Index", new { selecttedSourceCode = item.Id }) |                            
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })                                                        
+                        </td>
+                    </tr>
+                    if (item.Id == ViewBag.SelecttedSourceCode)
+                    {
+                        Html.RenderPartial("TestedClasses", item.Clasess);
+                    }
                 }
-
-
-
-
-
+            </tbody>
+        </table>
+    </div>
+ </div>
 
 
 
