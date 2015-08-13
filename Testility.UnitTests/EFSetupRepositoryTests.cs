@@ -99,7 +99,6 @@ namespace Testility.UnitTests
             MockContext.Verify(m => m.SaveChanges(), Times.Once);
         }
 
-
         [TestMethod]
         public void Cannot_GetSourceCode_NullReturn()
         {
