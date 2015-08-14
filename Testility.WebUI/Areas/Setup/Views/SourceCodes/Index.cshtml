@@ -2,16 +2,15 @@
 @using Testility.WebUI.Extensions;
 
 @{
-    ViewBag.Title = "Projects explorer";
+    ViewBag.Title = "Projects Explorer";
 }
 
 <p class="list-header">
     @Html.SourceCodesStatusHelper()  
 </p>
-
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div><h2>Projects explorer</h2></div>
+        <div><h2><strong><span class="glyphicon glyphicon-th-list"></span> Projects Explorer</strong></h2></div>
     </div>
     <div class="panel-body">
         <div class="text-right">
@@ -20,13 +19,14 @@
         <table class="table table-hover table-striped col-md-12">
             <thead>
                 <tr>
-                    <th class="col-md-4">
+                    <th class="col-md-3">
                         @Html.DisplayNameFor(model => model.List, m => m.Name)
                     </th>
-                    <th class="col-md-4">
+                    <th class="col-md-3">
                         @Html.DisplayNameFor(model => model.List, m => m.Language)
                     </th>
-                    <th class="col-md-4"></th>
+                    <th class="col-md-3">Summary</th>
+                    <th class="col-md-3"></th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +46,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Language)
                         </td>
+                        <td></td>
                         <td class="text-right">
                             <div class="btn-group">
                                 <a href=" @Url.Action("Index", new { selecttedSourceCode = item.Id, page = Model.PagingInfo.CurrentPage }) " class=" btn btn-default btn-sm">
