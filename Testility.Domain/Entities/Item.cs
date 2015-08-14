@@ -19,14 +19,12 @@ namespace Testility.Domain.Entities
         public int Id { get; set; }
         [Required]
         [StringLength(100)]
-        [Index("IX_Item_Name_SolutionId", Order = 2,  IsUnique = true)]
         public string Name { get; set; }
         [DataType(DataType.MultilineText)]
         [Display(Name = "Source Code")]
         public string Code { get; set; }
-        [Index("IX_Item_Name_SolutionId", Order = 1, IsUnique = true)]
+        public ItemType Type { get; set; }
         public int SolutionId { get; set; }
-        public virtual Solution Solution { get; set; }
-        public virtual ICollection<TestedClass> Clasess { get; set; }
+        public virtual Solution Solution { get; set; }        
     }
 }

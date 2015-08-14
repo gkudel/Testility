@@ -12,59 +12,46 @@ namespace Testility.Domain.Concrete
 {
     public class EFSetupRepository : ISetupRepository, IDisposable
     {
-       private EFDbContext context;
-
+        private EFDbContext context;
         public EFSetupRepository(EFDbContext context)
         {
             this.context = context;
         }
 
-        public IQueryable<Item> GetAllSourceCodes()
+        public IQueryable<Solution> GetSolutions()
         {
-            return context.SourCodes;
+            return context.Solutions;
         }
 
-        public bool Delete(int id)
+        public Solution GetSolution(int? id, bool lazyLoading = true)
         {
-            Item sourceCode =  context.SourCodes.Select(a => a).FirstOrDefault(b => b.Id == id);
-            if (sourceCode!=null)
-            {
-                context.SourCodes.Remove((sourceCode));
-                Commit();
-                return true;
-            }
-            return false;
-        }
-
-        public Item GetSourceCode(int? id, bool lazyLoading = true)
-        {
-            var query = context.SourCodes.Where(s => s.Id == id);
+            var query = context.Solutions.Where(s => s.Id == id);
             if (!lazyLoading)
             {
-                query = query.Include("Clasess.Methods.Tests");
+                query = query.Include("Classes.Methods.Tests");
             }
             return query.FirstOrDefault();
         }
 
-        public void Save(Item sourceCode)
+        public void Save(Solution solution)
         {
-            if (sourceCode.Id == 0)
+            if (solution.Id == 0)
             {
-                context.SourCodes.Add(sourceCode);
+                context.Solutions.Add(solution);
             }
             else
             {
-                var classes = context.TestedClasses.Where(c => c.SourceCodeId == sourceCode.Id).ToList();                    
-                foreach (TestedClass c in classes)
+                var classes = context.Classes.Where(c => c.SolutionId == solution.Id).ToList();                    
+                foreach (Class c in classes)
                 {
-                    if (sourceCode.Clasess.FirstOrDefault(i => i.Id == c.Id) != null)
+                    if (solution.Classes.FirstOrDefault(i => i.Id == c.Id) != null)
                     {
-                        var methods = context.TestedMethods.Where(m => m.TestedClassId == c.Id).ToList();
-                        foreach (TestedMethod m in methods)
+                        var methods = context.Methods.Where(m => m.ClassId == c.Id).ToList();
+                        foreach (Method m in methods)
                         {
                             if (c.Methods.FirstOrDefault(i => i.Id == m.Id) != null)
                             {
-                                var tests = context.Tests.Where(t => t.TestedMethodId == m.Id).ToList();
+                                var tests = context.Tests.Where(t => t.MethodId == m.Id).ToList();
                                 foreach (Test t in tests)
                                 {
                                     if (m.Tests.FirstOrDefault(i => i.Id == t.Id) == null)
@@ -75,45 +62,35 @@ namespace Testility.Domain.Concrete
                             }
                             else
                             {
-                                context.TestedMethods.Remove(m);
+                                context.Methods.Remove(m);
                             }
                         }
                     }
                     else
                     {
-                        context.TestedClasses.Remove(c);
+                        context.Classes.Remove(c);
                     }
                 }
             }
             Commit();
         }
 
-        public bool IsUnique(string name, int id)
+        public bool Delete(int id)
         {
-            Item sourceCode = context.SourCodes.FirstOrDefault(b => b.Name == name && b.Id == id);
-            if (sourceCode != null)
-                return false;
-            return true;
-        }
-
-        public bool IsUniqueName(string name)
-        {
-            Item sourceCode = context.SourCodes.FirstOrDefault(b => b.Name == name);
-            if (sourceCode != null)
-                return false;
-            return true;
-        }
-
-        public TestedClass GetTestedClass(int? id, bool lazyLoading = true)
-        {
-            var query = context.TestedClasses.FirstOrDefault(a => a.Id == id);
-            if (!lazyLoading)
+            Solution solution = context.Solutions.FirstOrDefault(s => s.Id == id);
+            if (solution != null)
             {
-
+                context.Solutions.Remove(solution);
+                Commit();
+                return true;
             }
-            return query;
+            return false;
         }
 
+        public bool IsAlreadyDefined(string name, int? id = null)
+        {
+            return context.Solutions.FirstOrDefault(s => s.Name == name && (id == null || s.Id != id)) != null;
+        }
 
         private void Commit()
         {

@@ -27,7 +27,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            TestedClass testedClass = setupRepository.GetTestedClass(id, false);
+            Class testedClass = setupRepository.GetTestedClass(id, false);
 
             if (testedClass == null)
                 return HttpNotFound();
@@ -37,7 +37,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Description")] TestedClass testedClass)
+        public ActionResult Edit([Bind(Include = "Id,Description")] Class testedClass)
         {
             if (testedClass == null)
             {

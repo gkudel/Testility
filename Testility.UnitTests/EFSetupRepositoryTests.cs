@@ -17,8 +17,8 @@ namespace Testility.UnitTests
     {
 
         public Mock<DbSet<Item>> MockSet { get; set; }
-        public Mock<DbSet<TestedClass>> MockTested { get; set; }
-        public Mock<DbSet<TestedMethod>> MockMethod { get; set; }
+        public Mock<DbSet<Class>> MockTested { get; set; }
+        public Mock<DbSet<Method>> MockMethod { get; set; }
         public Mock<DbSet<Test>> MockTest { get; set; }
 
         public Mock<EFDbContext> MockContext { get; set; }
@@ -41,21 +41,21 @@ namespace Testility.UnitTests
             MockSet.As<IQueryable<Item>>().Setup(x => x.GetEnumerator()).Returns(data.GetEnumerator);
 
 
-            var testedData = new List<TestedClass> { }.AsQueryable();
+            var testedData = new List<Class> { }.AsQueryable();
 
-            MockTested = new Mock<DbSet<TestedClass>>();
-            MockTested.As<IQueryable<TestedClass>>().Setup(x => x.Provider).Returns(testedData.Provider);
-            MockTested.As<IQueryable<TestedClass>>().Setup(x => x.Expression).Returns(testedData.Expression);
-            MockTested.As<IQueryable<TestedClass>>().Setup(x => x.ElementType).Returns(testedData.ElementType);
-            MockTested.As<IQueryable<TestedClass>>().Setup(x => x.GetEnumerator()).Returns(testedData.GetEnumerator);
+            MockTested = new Mock<DbSet<Class>>();
+            MockTested.As<IQueryable<Class>>().Setup(x => x.Provider).Returns(testedData.Provider);
+            MockTested.As<IQueryable<Class>>().Setup(x => x.Expression).Returns(testedData.Expression);
+            MockTested.As<IQueryable<Class>>().Setup(x => x.ElementType).Returns(testedData.ElementType);
+            MockTested.As<IQueryable<Class>>().Setup(x => x.GetEnumerator()).Returns(testedData.GetEnumerator);
 
-            var methodData = new List<TestedMethod> { }.AsQueryable();
+            var methodData = new List<Method> { }.AsQueryable();
 
-            MockMethod = new Mock<DbSet<TestedMethod>>();
-            MockMethod.As<IQueryable<TestedMethod>>().Setup(x => x.Provider).Returns(methodData.Provider);
-            MockMethod.As<IQueryable<TestedMethod>>().Setup(x => x.Expression).Returns(methodData.Expression);
-            MockMethod.As<IQueryable<TestedMethod>>().Setup(x => x.ElementType).Returns(methodData.ElementType);
-            MockMethod.As<IQueryable<TestedMethod>>().Setup(x => x.GetEnumerator()).Returns(methodData.GetEnumerator);
+            MockMethod = new Mock<DbSet<Method>>();
+            MockMethod.As<IQueryable<Method>>().Setup(x => x.Provider).Returns(methodData.Provider);
+            MockMethod.As<IQueryable<Method>>().Setup(x => x.Expression).Returns(methodData.Expression);
+            MockMethod.As<IQueryable<Method>>().Setup(x => x.ElementType).Returns(methodData.ElementType);
+            MockMethod.As<IQueryable<Method>>().Setup(x => x.GetEnumerator()).Returns(methodData.GetEnumerator);
 
 
             var testData = new List<Test> { }.AsQueryable();

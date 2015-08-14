@@ -10,8 +10,8 @@ namespace Testility.WebUI.Areas.Setup.Models
 {
     public class ProcjetsIndexData
     {
-        public IEnumerable<Item> List { get; set; }
-        public Item Selected { get; set; }
+        public IEnumerable<Solution> Solutions { get; set; }
+        public Solution Selected { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }
 }

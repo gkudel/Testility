@@ -87,24 +87,16 @@
     <Compile Include="Entities\Solution.cs" />
     <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Test.cs" />
-    <Compile Include="Entities\TestedClass.cs" />
-    <Compile Include="Entities\TestedMethod.cs" />
+    <Compile Include="Entities\Class.cs" />
+    <Compile Include="Entities\Method.cs" />
     <Compile Include="Infrastructure\EFDbContextConfiguration.cs" />
     <Compile Include="Infrastructure\EFDbContextInterceptorError.cs" />
     <Compile Include="Infrastructure\EFDbContextInterceptorLogging.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Mappings\ModelToModelMapping.cs" />
-    <Compile Include="Migrations\201508111135164_Init.cs" />
-    <Compile Include="Migrations\201508111135164_Init.Designer.cs">
-      <DependentUpon>201508111135164_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508120622186_UniqName.cs" />
-    <Compile Include="Migrations\201508120622186_UniqName.Designer.cs">
-      <DependentUpon>201508120622186_UniqName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508120912245_RemoveReq.cs" />
-    <Compile Include="Migrations\201508120912245_RemoveReq.Designer.cs">
-      <DependentUpon>201508120912245_RemoveReq.cs</DependentUpon>
+    <Compile Include="Migrations\201508141901159_Init.cs" />
+    <Compile Include="Migrations\201508141901159_Init.Designer.cs">
+      <DependentUpon>201508141901159_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -120,14 +112,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508111135164_Init.resx">
-      <DependentUpon>201508111135164_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508120622186_UniqName.resx">
-      <DependentUpon>201508120622186_UniqName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508120912245_RemoveReq.resx">
-      <DependentUpon>201508120912245_RemoveReq.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508141901159_Init.resx">
+      <DependentUpon>201508141901159_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

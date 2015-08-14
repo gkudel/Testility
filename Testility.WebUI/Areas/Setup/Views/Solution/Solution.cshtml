@@ -1,4 +1,4 @@
-﻿@model Testility.Domain.Entities.SourceCode
+﻿@model Testility.Domain.Entities.Solution
 @using Testility.WebUI.Extensions;
 
 @{
@@ -75,8 +75,6 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/ide")
 }
-
-
-    @section css{
-        @Styles.Render("~/Content/ide")
-    }
+@section css{
+    @Styles.Render("~/Content/ide")
+}

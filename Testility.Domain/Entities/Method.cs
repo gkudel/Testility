@@ -8,18 +8,15 @@ using System.Threading.Tasks;
 
 namespace Testility.Domain.Entities
 {
-    public class TestedMethod
+    public class Method
     {
         public int Id { get; set; }
         [Required]
         [StringLength(100)]
-        [Index("IX_TestedMethod_Name_TestedClassId", Order = 2, IsUnique = true)]
         public string Name { get; set; }
-        [Required]
         public string Description { get; set; }
-        [Index("IX_TestedMethod_Name_TestedClassId", Order = 1, IsUnique = true)]
-        public int TestedClassId { get; set; }
-        public virtual TestedClass TestedClass { get; set; }
+        public int ClassId { get; set; }
+        public virtual Class Class { get; set; }
         public virtual ICollection<Test> Tests { get; set; }
     }
 }

@@ -23,6 +23,10 @@ textarea:not(.sourcecode) {
     max-width: 280px;
 }
 
+.main-panel {
+    min-height: 600px;
+}
+
 .padding-top-10 {
     padding-top: 10px;
 }

@@ -17,7 +17,7 @@ namespace Testility.WebUI.Areas.Setup
             context.MapRoute(
                 "Setup_default",
                 "Setup/{controller}/{action}/{id}",
-                new { action = "Index", controller = "SourceCodes", id = UrlParameter.Optional }
+                new { action = "List", controller = "Solution", id = UrlParameter.Optional }
             );
         }
     }

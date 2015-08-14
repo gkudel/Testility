@@ -20,12 +20,13 @@ namespace Testility.Domain.Entities
         [Required]
         [StringLength(100)]
         [Index("IX_Solution_Name", IsUnique = true)]
-        [Remote("IsNameUnique", "Validation", ErrorMessage = "Source code name already exists.", AdditionalFields = "Id")]
+        [Remote("IsNameUnique", "Validation", ErrorMessage = "Solution already exists.", AdditionalFields = "Id")]
         public string Name { get; set; }
         public Language Language { get; set; }
         [Display(Name = "References")]
         public String ReferencedAssemblies { get; set; }
         public byte[] CompiledDll { get; set; }
         public virtual ICollection<Item> Items { get; set; }
+        public virtual ICollection<Class> Classes { get; set; }
     }
 }

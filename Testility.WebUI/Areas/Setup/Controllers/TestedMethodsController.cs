@@ -28,7 +28,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Description,TestedClassId")] TestedMethod testedMethod)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description,TestedClassId")] Method testedMethod)
         {
             return View();
         }

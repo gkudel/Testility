@@ -11,9 +11,10 @@ namespace Testility.Domain.Concrete
 {
     public class EFDbContext : DbContext
     {
-        public virtual DbSet<Item> SourCodes { get; set; }
-        public virtual DbSet<TestedClass> TestedClasses { get; set; }
-        public virtual DbSet<TestedMethod> TestedMethods { get; set; }
+        public virtual DbSet<Solution> Solutions { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<Class> Classes { get; set; }
+        public virtual DbSet<Method> Methods { get; set; }
         public virtual DbSet<Test> Tests { get; set; }
 
         public EFDbContext() : base("EFDbContext")

@@ -22,7 +22,7 @@ namespace Testility.UnitTests
         #region Members
         public Mock<ISetupRepository> ServiceMock { get; set; }
         public Mock<ICompiler> CompilerMock { get; set; }
-        public SourceCodesController sourceCodesController { get; set; }
+        public SolutionController sourceCodesController { get; set; }
         #endregion Members
 
         #region Init
@@ -44,7 +44,7 @@ namespace Testility.UnitTests
             CompilerMock = new Mock<ICompiler>();
             CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result(){});
 
-            sourceCodesController = new SourceCodesController(ServiceMock.Object, CompilerMock.Object);
+            sourceCodesController = new SolutionController(ServiceMock.Object, CompilerMock.Object);
         }
         #endregion Init
 

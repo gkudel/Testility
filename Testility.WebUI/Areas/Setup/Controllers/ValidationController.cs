@@ -18,17 +18,16 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public JsonResult IsNameUnique(string name, int id)
         {
-            if (id != 0)
-            {
-                if (!setupRepository.IsUnique(name, id))
-                {
-                    return Json(true, JsonRequestBehavior.AllowGet);
-                }
-            }
+            return Json(!setupRepository.IsAlreadyDefined(name, id), JsonRequestBehavior.AllowGet);
+        }
 
-            return setupRepository.IsUniqueName(name) 
-                ? Json(true, JsonRequestBehavior.AllowGet)
-                : Json(false, JsonRequestBehavior.AllowGet);
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                setupRepository.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

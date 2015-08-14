@@ -136,14 +136,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Areas\Setup\Controllers\TestedClassesController.cs" />
-    <Compile Include="Areas\Setup\Controllers\TestedMethodsController.cs" />
-    <Compile Include="Areas\Setup\Controllers\TestsController.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
     <Compile Include="Areas\Setup\Models\ProcjetsIndexData.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Areas\Setup\Controllers\SourceCodesController.cs" />
+    <Compile Include="Areas\Setup\Controllers\SolutionController.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Extensions\PagingHelpers.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
@@ -192,15 +189,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Setup\Views\web.config" />
     <Content Include="Areas\Setup\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Setup\Views\SourceCodes\_TestedMethodsPartialView.cshtml" />
-    <Content Include="Areas\Setup\Views\SourceCodes\_TestedTestsPartialView.cshtml" />
-    <Content Include="Areas\Setup\Views\SourceCodes\TestedClasses.cshtml" />
-    <Content Include="Areas\Setup\Views\TestedClasses\Delete.cshtml" />
-    <Content Include="Areas\Setup\Views\TestedClasses\Edit.cshtml" />
-    <Content Include="Areas\Setup\Views\TestedMethods\Delete.cshtml" />
-    <Content Include="Areas\Setup\Views\TestedMethods\Edit.cshtml" />
-    <Content Include="Areas\Setup\Views\Tests\Delete.cshtml" />
-    <Content Include="Areas\Setup\Views\Tests\Edit.cshtml" />
     <Content Include="Scripts\codemirror-2.37\keymap\emacs.js" />
     <Content Include="Scripts\codemirror-2.37\keymap\vim.js" />
     <Content Include="Scripts\codemirror-2.37\lib\codemirror.css" />
@@ -1099,9 +1087,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Areas\Setup\Views\SourceCodes\Delete.cshtml" />
-    <Content Include="Areas\Setup\Views\SourceCodes\CreateAndEdit.cshtml" />
-    <Content Include="Areas\Setup\Views\SourceCodes\Index.cshtml" />
+    <Content Include="Areas\Setup\Views\Solution\Delete.cshtml" />
+    <Content Include="Areas\Setup\Views\Solution\Solution.cshtml" />
+    <Content Include="Areas\Setup\Views\Solution\List.cshtml" />
     <Content Include="Scripts\version.json" />
   </ItemGroup>
   <ItemGroup>

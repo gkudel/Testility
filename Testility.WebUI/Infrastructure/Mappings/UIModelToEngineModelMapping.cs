@@ -18,7 +18,7 @@ namespace Testility.WebUI.Mappings.Infrastructure
         {
             Mapper.CreateMap<Item, Input>();
             Mapper.CreateMap<Input, Item>();
-            Mapper.CreateMap<Item, Item>()
+            /*Mapper.CreateMap<Item, Item>()
                 .ForMember(s => s.Clasess, opt => opt.Ignore());
 
             Mapper.CreateMap<Result, Item>()
@@ -43,7 +43,7 @@ namespace Testility.WebUI.Mappings.Infrastructure
             Mapper.CreateMap<IList<Engine.Model.Test>, ICollection<Domain.Entities.Test>>()
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Test, Domain.Entities.Test>((i, o) => i.Name == o.Name));
             Mapper.CreateMap<Engine.Model.Test, Domain.Entities.Test>()
-                .ForMember(e => e.Id, opt => opt.Ignore());
+                .ForMember(e => e.Id, opt => opt.Ignore());*/
         }
     }
 

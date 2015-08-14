@@ -8,18 +8,12 @@ using Testility.Domain.Entities;
 
 namespace Testility.Domain.Abstract
 {
-    public interface ISetupRepository
+    public interface ISetupRepository : IDisposable
     {
-        
+        IQueryable<Solution> GetSolutions();
+        Solution GetSolution(int? id, bool lazyLoading = true);
+        void Save(Solution solution);
         bool Delete(int id);
-        Item GetSourceCode(int? id, bool lazyLoading = true);
-        void Save(Item sourceCode);
-        bool IsUniqueName(string name);
-        bool IsUnique(string name, int id);
-        IQueryable<Item> GetAllSourceCodes();
-
-
-        TestedClass GetTestedClass(int? id, bool lazyLoading = true);
-
+        bool IsAlreadyDefined(string name, int? id = null);
     }
 }
