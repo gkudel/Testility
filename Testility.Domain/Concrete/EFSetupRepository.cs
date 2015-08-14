@@ -19,14 +19,14 @@ namespace Testility.Domain.Concrete
             this.context = context;
         }
 
-        public IQueryable<SourceCode> GetAllSourceCodes()
+        public IQueryable<Item> GetAllSourceCodes()
         {
             return context.SourCodes;
         }
 
         public bool Delete(int id)
         {
-            SourceCode sourceCode =  context.SourCodes.Select(a => a).FirstOrDefault(b => b.Id == id);
+            Item sourceCode =  context.SourCodes.Select(a => a).FirstOrDefault(b => b.Id == id);
             if (sourceCode!=null)
             {
                 context.SourCodes.Remove((sourceCode));
@@ -36,7 +36,7 @@ namespace Testility.Domain.Concrete
             return false;
         }
 
-        public SourceCode GetSourceCode(int? id, bool lazyLoading = true)
+        public Item GetSourceCode(int? id, bool lazyLoading = true)
         {
             var query = context.SourCodes.Where(s => s.Id == id);
             if (!lazyLoading)
@@ -46,7 +46,7 @@ namespace Testility.Domain.Concrete
             return query.FirstOrDefault();
         }
 
-        public void Save(SourceCode sourceCode)
+        public void Save(Item sourceCode)
         {
             if (sourceCode.Id == 0)
             {
@@ -90,7 +90,7 @@ namespace Testility.Domain.Concrete
 
         public bool IsUnique(string name, int id)
         {
-            SourceCode sourceCode = context.SourCodes.FirstOrDefault(b => b.Name == name && b.Id == id);
+            Item sourceCode = context.SourCodes.FirstOrDefault(b => b.Name == name && b.Id == id);
             if (sourceCode != null)
                 return false;
             return true;
@@ -98,7 +98,7 @@ namespace Testility.Domain.Concrete
 
         public bool IsUniqueName(string name)
         {
-            SourceCode sourceCode = context.SourCodes.FirstOrDefault(b => b.Name == name);
+            Item sourceCode = context.SourCodes.FirstOrDefault(b => b.Name == name);
             if (sourceCode != null)
                 return false;
             return true;

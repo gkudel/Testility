@@ -16,12 +16,12 @@ namespace Testility.WebUI.Mappings.Infrastructure
         }
         protected override void Configure()
         {
-            Mapper.CreateMap<SourceCode, Input>();
-            Mapper.CreateMap<Input, SourceCode>();
-            Mapper.CreateMap<SourceCode, SourceCode>()
+            Mapper.CreateMap<Item, Input>();
+            Mapper.CreateMap<Input, Item>();
+            Mapper.CreateMap<Item, Item>()
                 .ForMember(s => s.Clasess, opt => opt.Ignore());
 
-            Mapper.CreateMap<Result, SourceCode>()
+            Mapper.CreateMap<Result, Item>()
                 .ForMember(e => e.Id, opt => opt.Ignore())
                 .ForMember(e => e.Name, opt => opt.Ignore())
                 .ForMember(e => e.Code, opt => opt.Ignore())

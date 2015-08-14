@@ -12,7 +12,7 @@ namespace Testility.Domain.Mappings
         }
          protected override void Configure()
          {
-             Mapper.CreateMap<SourceCode, SourceCode>();
+             Mapper.CreateMap<Item, Item>();
          }
     }
 

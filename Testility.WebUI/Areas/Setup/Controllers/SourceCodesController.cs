@@ -50,7 +50,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult Create()
         {
-            return View("CreateAndEdit", new SourceCode());
+            return View("CreateAndEdit", new Item());
         }
 
         public ActionResult Edit(int? id)
@@ -59,7 +59,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SourceCode sourceCode = setupRepository.GetSourceCode(id);
+            Item sourceCode = setupRepository.GetSourceCode(id);
             if (sourceCode == null)
             {
                 return HttpNotFound();
@@ -69,12 +69,12 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost([Bind(Include = "Id, Code, Name, Language, ReferencedAssemblies")]SourceCode model)
+        public ActionResult EditPost([Bind(Include = "Id, Code, Name, Language, ReferencedAssemblies")]Item model)
         {
             bool codeChanged = model.Id == 0;
             if (model.Id != 0)
             {
-                SourceCode code = setupRepository.GetSourceCode(model.Id, false);
+                Item code = setupRepository.GetSourceCode(model.Id, false);
                 if (code != null)
                 {
                     codeChanged = code.Code != model.Code;
@@ -100,7 +100,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                             ModelState.AddModelError(String.Empty, "An error occurred when compiling solution");
                             return View("CreateAndEdit", model);
                         }
-                        Mapper.Map<Result, SourceCode>(result, model);
+                        Mapper.Map<Result, Item>(result, model);
                     }
                     setupRepository.Save(model);
 
@@ -125,7 +125,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SourceCode sourceCode = setupRepository.GetSourceCode(id);
+            Item sourceCode = setupRepository.GetSourceCode(id);
             if (sourceCode == null)
             {
                return HttpNotFound();

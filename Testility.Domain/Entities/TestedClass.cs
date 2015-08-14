@@ -19,7 +19,7 @@ namespace Testility.Domain.Entities
         public string Description { get; set; }
         [Index("IX_TestedClass_Name_SourceCodeId", Order = 1, IsUnique = true)]
         public int SourceCodeId { get; set; }
-        public virtual SourceCode SourceCode { get; set; }
+        public virtual Item SourceCode { get; set; }
         public virtual ICollection<TestedMethod> Methods { get; set; }
     }
 }

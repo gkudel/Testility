@@ -29,11 +29,11 @@ namespace Testility.UnitTests
         [TestInitialize]
         public void Int()
         {
-            SourceCode singleSource = new SourceCode(){Id = 1};
+            Item singleSource = new Item(){Id = 1};
 
-            IQueryable<SourceCode> sourceList = new List<SourceCode>
-            { new SourceCode() {Id = 1, Name = "ko", Code = "okok"},
-              new SourceCode() {Id = 2, Name = "ko", Code = "okok"}
+            IQueryable<Item> sourceList = new List<Item>
+            { new Item() {Id = 1, Name = "ko", Code = "okok"},
+              new Item() {Id = 2, Name = "ko", Code = "okok"}
             }.AsQueryable();
 
             ServiceMock = new Mock<ISetupRepository>();
@@ -53,7 +53,7 @@ namespace Testility.UnitTests
         public void Index_Contains_All_Data()
         {
             var result = sourceCodesController.Index(null);
-            var model = (result as ViewResult).Model as IQueryable<SourceCode>;
+            var model = (result as ViewResult).Model as IQueryable<Item>;
             Assert.AreEqual(2, model.Count());
         }
         #endregion Index
@@ -91,7 +91,7 @@ namespace Testility.UnitTests
         public void Cannot_EditPostNonExistsSourceCodes_NotFound()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            SourceCode sourceCode = new SourceCode() { Id = 11 };
+            Item sourceCode = new Item() { Id = 11 };
             var result = sourceCodesController.EditPost(sourceCode) as HttpStatusCodeResult;
             ServiceMock.Verify(m => m.GetSourceCode(11, false), Times.Once);
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
@@ -109,10 +109,10 @@ namespace Testility.UnitTests
         public void Cannot_EditPostInvalidSourceCodes_Redirect()
         {
             sourceCodesController.ModelState.AddModelError("Error", "Error");
-            SourceCode sourceCode = new SourceCode() { Id = 1 };
+            Item sourceCode = new Item() { Id = 1 };
             var actionResult = sourceCodesController.EditPost(sourceCode) as ViewResult;
             ServiceMock.Verify(m => m.GetSourceCode(1, false), Times.Once);
-            ServiceMock.Verify(m => m.Save(It.IsAny<SourceCode>()), Times.Never);
+            ServiceMock.Verify(m => m.Save(It.IsAny<Item>()), Times.Never);
             Assert.AreEqual("CreateAndEdit", actionResult.ViewName);
         }
 
@@ -121,8 +121,8 @@ namespace Testility.UnitTests
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
             CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result() { Errors = new List<Error>(){new Error(){Message = "blbl"}}});
-            SourceCode sourceCode = new SourceCode();
-            ServiceMock.Verify(m => m.Save(It.IsAny<SourceCode>()), Times.Never);
+            Item sourceCode = new Item();
+            ServiceMock.Verify(m => m.Save(It.IsAny<Item>()), Times.Never);
             var actionResult = sourceCodesController.EditPost(sourceCode) as ViewResult;
             Assert.AreEqual("CreateAndEdit", actionResult.ViewName);
         }
@@ -148,9 +148,9 @@ namespace Testility.UnitTests
                     }
                 }
             });
-            SourceCode sourceCode = new SourceCode();
+            Item sourceCode = new Item();
             var result = sourceCodesController.EditPost(sourceCode) as RedirectToRouteResult;
-            ServiceMock.Verify(m => m.Save(It.IsAny <SourceCode>()), Times.Once);
+            ServiceMock.Verify(m => m.Save(It.IsAny <Item>()), Times.Once);
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
         #endregion POST
@@ -178,7 +178,7 @@ namespace Testility.UnitTests
         public void Can_Delete_SourceCodes_RedirectToIndex()
         {
             ViewResult result = sourceCodesController.Delete(1) as ViewResult;
-            var model = (result as ViewResult).Model as SourceCode;
+            var model = (result as ViewResult).Model as Item;
             Assert.AreEqual(1, model.Id);
             ServiceMock.Verify(x=>x.GetSourceCode(It.IsAny<int>(), It.IsAny<bool>()),Times.Once);  
         }

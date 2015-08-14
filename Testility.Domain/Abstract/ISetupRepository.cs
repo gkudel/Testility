@@ -12,11 +12,11 @@ namespace Testility.Domain.Abstract
     {
         
         bool Delete(int id);
-        SourceCode GetSourceCode(int? id, bool lazyLoading = true);
-        void Save(SourceCode sourceCode);
+        Item GetSourceCode(int? id, bool lazyLoading = true);
+        void Save(Item sourceCode);
         bool IsUniqueName(string name);
         bool IsUnique(string name, int id);
-        IQueryable<SourceCode> GetAllSourceCodes();
+        IQueryable<Item> GetAllSourceCodes();
 
 
         TestedClass GetTestedClass(int? id, bool lazyLoading = true);

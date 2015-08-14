@@ -16,7 +16,7 @@ namespace Testility.UnitTests
     public class EFSetupRepositoryTests
     {
 
-        public Mock<DbSet<SourceCode>> MockSet { get; set; }
+        public Mock<DbSet<Item>> MockSet { get; set; }
         public Mock<DbSet<TestedClass>> MockTested { get; set; }
         public Mock<DbSet<TestedMethod>> MockMethod { get; set; }
         public Mock<DbSet<Test>> MockTest { get; set; }
@@ -27,18 +27,18 @@ namespace Testility.UnitTests
         [TestInitialize]
         public void Init()
         {
-            var data = new List<SourceCode> 
+            var data = new List<Item> 
             { 
-                new SourceCode() {Id = 1, Name = "ok"},
-                new SourceCode() {Id = 2, Name = "12ok"}
+                new Item() {Id = 1, Name = "ok"},
+                new Item() {Id = 2, Name = "12ok"}
 
             }.AsQueryable();
 
-            MockSet = new Mock<DbSet<SourceCode>>();
-            MockSet.As<IQueryable<SourceCode>>().Setup(x => x.Provider).Returns(data.Provider);
-            MockSet.As<IQueryable<SourceCode>>().Setup(x => x.Expression).Returns(data.Expression);
-            MockSet.As<IQueryable<SourceCode>>().Setup(x => x.ElementType).Returns(data.ElementType);
-            MockSet.As<IQueryable<SourceCode>>().Setup(x => x.GetEnumerator()).Returns(data.GetEnumerator);
+            MockSet = new Mock<DbSet<Item>>();
+            MockSet.As<IQueryable<Item>>().Setup(x => x.Provider).Returns(data.Provider);
+            MockSet.As<IQueryable<Item>>().Setup(x => x.Expression).Returns(data.Expression);
+            MockSet.As<IQueryable<Item>>().Setup(x => x.ElementType).Returns(data.ElementType);
+            MockSet.As<IQueryable<Item>>().Setup(x => x.GetEnumerator()).Returns(data.GetEnumerator);
 
 
             var testedData = new List<TestedClass> { }.AsQueryable();
@@ -86,7 +86,7 @@ namespace Testility.UnitTests
         public void Cannot_Delete_Source_Code_With_WrongId()
         {
             var result = Service.Delete(10);
-            MockSet.Verify(m => m.Remove(It.IsAny<SourceCode>()), Times.Never);
+            MockSet.Verify(m => m.Remove(It.IsAny<Item>()), Times.Never);
             MockContext.Verify(m => m.SaveChanges(), Times.Never);
             Assert.AreEqual(false, result);
         }
@@ -95,7 +95,7 @@ namespace Testility.UnitTests
         public void Can_Delete_Source_Code()
         {
             Service.Delete(1);
-            MockSet.Verify(m => m.Remove(It.IsAny<SourceCode>()), Times.Once);
+            MockSet.Verify(m => m.Remove(It.IsAny<Item>()), Times.Once);
             MockContext.Verify(m => m.SaveChanges(), Times.Once);
         }
 
