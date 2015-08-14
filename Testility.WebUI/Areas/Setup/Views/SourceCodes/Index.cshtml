@@ -1,62 +1,74 @@
-﻿@model IEnumerable<Testility.Domain.Entities.SourceCode>
+﻿@model Testility.WebUI.Areas.Setup.Models.ProcjetsIndexData
 @using Testility.WebUI.Extensions;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Projects explorer";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-    @Html.SourceCodesStatusHelper()
+<p class="list-header">
+    @Html.SourceCodesStatusHelper()  
 </p>
 
-<div class="panel panel-primary">
-    <div class="panel-heading"><strong>All Files</strong></div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div><h2>Projects explorer</h2></div>
+    </div>
     <div class="panel-body">
-        <table class="table table-hover table-bordered .col-md-12">
+        <div class="text-right">
+            <a href="@Url.Action("Create")" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus"></span> New Poject</a>
+        </div>
+        <table class="table table-hover table-striped col-md-12">
             <thead>
                 <tr>
-                    <th class="col-lg-5">
-                        @Html.DisplayNameFor(model => model.Name)
+                    <th class="col-md-4">
+                        @Html.DisplayNameFor(model => model.List, m => m.Name)
                     </th>
-                    <th class="col-lg-5">
-                        @Html.DisplayNameFor(model => model.Language)
+                    <th class="col-md-4">
+                        @Html.DisplayNameFor(model => model.List, m => m.Language)
                     </th>
-                    <th class="col-lg-2"></th>
+                    <th class="col-md-4"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.List)
                 {
                     string selectedRow = "";
+                    string icon = "glyphicon-folder-close";
                     if (item.Id == ViewBag.SelecttedSourceCode)
                     {
                         selectedRow = "success";
+                        icon = "glyphicon-folder-open";
                     }
                     <tr class="@selectedRow">
                         <td>
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ReferencedAssemblies)
+                            @Html.DisplayFor(modelItem => item.Language)
                         </td>
-                        <td class=" text-center">
-                            @Html.ActionLink("Details", "Index", new { selecttedSourceCode = item.Id }) |                            
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })                                                        
+                        <td class="text-right">
+                            <div class="btn-group">
+                                <a href=" @Url.Action("Index", new { selecttedSourceCode = item.Id, page = Model.PagingInfo.CurrentPage }) " class=" btn btn-default btn-sm">
+                                    <span class="glyphicon @icon"></span>
+                                </a>
+                                <a href=" @Url.Action("Edit", new { id = item.Id }) " class=" btn btn-primary btn-sm">
+                                    <span class="glyphicon glyphicon-edit"></span> Edit
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-sm">
+                                    <span class="glyphicon glyphicon-trash"></span> Delete
+                                </a>
+                            </div>
                         </td>
                     </tr>
-                    if (item.Id == ViewBag.SelecttedSourceCode)
-                    {
-                        Html.RenderPartial("TestedClasses", item.Clasess);
-                    }
                 }
             </tbody>
         </table>
+    </div>    
+    <div class="panel-footer">
+        <div class="text-center">@Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))</div>
     </div>
  </div>
+
 
 
 

@@ -16,7 +16,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             setupRepository = setupRepositor;
         }
 
-        public JsonResult IsNameUnique([Bind(Prefix = "SourceCode.Name")]string name, [Bind(Prefix = "SourceCode.Id")]int id)
+        public JsonResult IsNameUnique(string name, int id)
         {
             if (id != 0)
             {

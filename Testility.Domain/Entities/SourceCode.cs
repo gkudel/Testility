@@ -23,8 +23,10 @@ namespace Testility.Domain.Entities
         [Remote("IsNameUnique", "Validation", ErrorMessage = "Source code name already exists.", AdditionalFields = "Id")]
         public string Name { get; set; }
         [DataType(DataType.MultilineText)]
+        [Display(Name = "Source Code")]
         public string Code { get; set; }
         public Language Language { get; set; }
+        [Display(Name = "References")]
         public String ReferencedAssemblies { get; set; }
         public virtual ICollection<TestedClass> Clasess { get; set; }
     }

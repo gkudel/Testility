@@ -27,12 +27,15 @@ namespace Testility.WebUI
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/codemirror").Include(
+            bundles.Add(new ScriptBundle("~/bundles/ide").Include(
                         "~/Scripts/codemirror-2.37/lib/codemirror.js",
-                        "~/Scripts/codemirror-2.37/mode/clike/clike.js"));
+                        "~/Scripts/codemirror-2.37/mode/clike/clike.js",
+                        "~/Scripts/ideconfig.js"));
 
-            bundles.Add(new StyleBundle("~/Content/codemirror").Include(
+            bundles.Add(new StyleBundle("~/Content/ide").Include(
                     "~/Scripts/codemirror-2.37/lib/codemirror.css"));
+
+
         }
     }
 }

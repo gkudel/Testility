@@ -16,7 +16,7 @@ namespace Testility.Domain.Abstract
         void Save(SourceCode sourceCode);
         bool IsUniqueName(string name);
         bool IsUnique(string name, int id);
-        IQueryable<SourceCode> GetAllSourceCodes(bool lazyLoading = true);
+        IQueryable<SourceCode> GetAllSourceCodes();
 
 
         TestedClass GetTestedClass(int? id, bool lazyLoading = true);

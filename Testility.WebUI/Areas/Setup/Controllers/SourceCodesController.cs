@@ -8,36 +8,49 @@ using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using Testility.Engine.Abstract;
 using Testility.Engine.Model;
-using Testility.WebUI.Services;
 using System.Collections.Generic;
 using System.Linq;
 using Testility.WebUI.Areas.Setup.Models;
+using Testility.WebUI.Model;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class SourceCodesController : Controller
     {
         private ISetupRepository setupRepository;
-        private ICreateInputClassFromFile fileRepository;
         private ICompiler compilerRepository;
+        public int PageSize { get; set; }
 
-        public SourceCodesController(ISetupRepository setupRepositor, ICreateInputClassFromFile fileRepositor, ICompiler compilerRepositor)
+        public SourceCodesController(ISetupRepository setupRepositor, ICompiler compilerRepositor)
         {
             setupRepository = setupRepositor;
-            fileRepository = fileRepositor;
             compilerRepository = compilerRepositor;
+            PageSize = 3;
         }
 
-        public ActionResult Index(int? selecttedSourceCode)
+        public ActionResult Index(int? selecttedSourceCode, int page = 1)
         {
             ViewBag.SelecttedSourceCode = selecttedSourceCode;
-            return View(setupRepository.GetAllSourceCodes().ToList());
+            ProcjetsIndexData data = new ProcjetsIndexData()
+            {
+                List = setupRepository.GetAllSourceCodes()                    
+                    .OrderBy(p => p.Id)
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = setupRepository.GetAllSourceCodes().Count()
+                }
+            };
+
+            return View(data);
         }
 
         public ActionResult Create()
         {
-            TempData["header"] = string.Format("Create");
-            return View("CreateAndEdit", new EditViewModel() { SourceCode = new SourceCode() });
+            return View("CreateAndEdit", new SourceCode());
         }
 
         public ActionResult Edit(int? id)
@@ -51,28 +64,25 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return HttpNotFound();
             }
-            TempData["header"] = string.Format("Edit");
-            return View("CreateAndEdit", new EditViewModel() { SourceCode = sourceCode } );
+            return View("CreateAndEdit", sourceCode  );
         }
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(EditViewModel model)
+        public ActionResult EditPost([Bind(Include = "Id, Code, Name, Language, ReferencedAssemblies")]SourceCode model)
         {
-            if (model.SourceCode == null)
+            bool codeChanged = model.Id == 0;
+            if (model.Id != 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (model.SourceCode.Id != 0)
-            {
-                SourceCode code = setupRepository.GetSourceCode(model.SourceCode.Id, false);
+                SourceCode code = setupRepository.GetSourceCode(model.Id, false);
                 if (code != null)
                 {
-                    Mapper.Map(model.SourceCode, code);
+                    codeChanged = code.Code != model.Code;
+                    Mapper.Map(model, code);
                 }
-                model.SourceCode = code;
+                model = code;
             }
-            if (model.SourceCode == null)
+            if (model == null)
             {
                 return HttpNotFound();
             }
@@ -80,27 +90,26 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 try
                 {
-                    if (model.UploadedFile != null)
+                    if (codeChanged)
                     {
-                        Input input = fileRepository.CreateInputClass(model.SourceCode, model.UploadedFile);
+                        Input input = Mapper.Map<Input>(model);
                         Result result = compilerRepository.Compile(input);
 
                         if (result.Errors.Count > 0)
                         {
-                            ModelState.AddModelError(String.Empty, string.Format("An error occurred when compiling attached file {0}", model.UploadedFile.FileName));
+                            ModelState.AddModelError(String.Empty, "An error occurred when compiling solution");
                             return View("CreateAndEdit", model);
                         }
-                        model.SourceCode.Code = input.Code;
-                        Mapper.Map<Result, SourceCode>(result, model.SourceCode);
+                        Mapper.Map<Result, SourceCode>(result, model);
                     }
-                    setupRepository.Save(model.SourceCode);
+                    setupRepository.Save(model);
 
-                    TempData["savemessage"] = string.Format("{0} has been edited", model.SourceCode.Name);
+                    TempData["savemessage"] = string.Format("{0} has been edited", model.Name);
                     return RedirectToAction("Index");
                 }
                 catch (Exception /* ex */ )
                 {
-                    ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", model.SourceCode.Name));
+                    ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", model.Name));
                     return View("CreateAndEdit", model);
                 }
             }

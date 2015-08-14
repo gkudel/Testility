@@ -19,14 +19,9 @@ namespace Testility.Domain.Concrete
             this.context = context;
         }
 
-        public IQueryable<SourceCode> GetAllSourceCodes(bool lazyLoading = true)
+        public IQueryable<SourceCode> GetAllSourceCodes()
         {
-            var query = context.SourCodes.Select(a=>a);
-            if (!lazyLoading)
-            {
-                query = query.Include("Clasess.Methods.Tests");
-            }
-            return query;
+            return context.SourCodes;
         }
 
         public bool Delete(int id)

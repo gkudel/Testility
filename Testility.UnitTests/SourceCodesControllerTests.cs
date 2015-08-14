@@ -12,9 +12,7 @@ using Testility.Engine.Abstract;
 using Testility.Engine.Model;
 using Testility.WebUI.Areas.Setup.Controllers;
 using Testility.WebUI.Mappings;
-using Testility.WebUI.Services;
 using Testility.WebUI.Mappings.Infrastructure;
-using Testility.WebUI.Areas.Setup.Models;
 
 namespace Testility.UnitTests
 {
@@ -23,10 +21,8 @@ namespace Testility.UnitTests
     {
         #region Members
         public Mock<ISetupRepository> ServiceMock { get; set; }
-        public Mock<ICreateInputClassFromFile> CreateInputClassMock { get; set; }
         public Mock<ICompiler> CompilerMock { get; set; }
         public SourceCodesController sourceCodesController { get; set; }
-        public Mock<HttpPostedFileBase> File {get;set;}
         #endregion Members
 
         #region Init
@@ -41,20 +37,14 @@ namespace Testility.UnitTests
             }.AsQueryable();
 
             ServiceMock = new Mock<ISetupRepository>();
-            ServiceMock.Setup(x => x.GetAllSourceCodes(true)).Returns(sourceList);
+            ServiceMock.Setup(x => x.GetAllSourceCodes()).Returns(sourceList);
             ServiceMock.Setup(x => x.GetSourceCode(1, It.IsAny<bool>())).Returns(singleSource);
             ServiceMock.Setup(x => x.Delete(It.IsAny<int>())).Returns(true);
           
             CompilerMock = new Mock<ICompiler>();
             CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result(){});
 
-            File = new Mock<HttpPostedFileBase>();
-            File.Setup(d => d.FileName).Returns("test1.txt");
-
-            CreateInputClassMock = new Mock<ICreateInputClassFromFile>();
-            CreateInputClassMock.Setup(x => x.CreateInputClass(It.IsAny<SourceCode>(), File.Object)).Returns(new Input() {Code = "xx", Language = "ss", Name = "test", ReferencedAssemblies = "System.dll"});
-
-            sourceCodesController = new SourceCodesController(ServiceMock.Object, CreateInputClassMock.Object, CompilerMock.Object);
+            sourceCodesController = new SourceCodesController(ServiceMock.Object, CompilerMock.Object);
         }
         #endregion Init
 
@@ -62,7 +52,7 @@ namespace Testility.UnitTests
         [TestMethod]
         public void Index_Contains_All_Data()
         {
-            var result = sourceCodesController.Index();
+            var result = sourceCodesController.Index(null);
             var model = (result as ViewResult).Model as IQueryable<SourceCode>;
             Assert.AreEqual(2, model.Count());
         }
@@ -101,12 +91,8 @@ namespace Testility.UnitTests
         public void Cannot_EditPostNonExistsSourceCodes_NotFound()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            EditViewModel model = new EditViewModel()
-            {
-                SourceCode = new SourceCode() { Id = 11 },
-                UploadedFile = File.Object
-            };
-            var result = sourceCodesController.EditPost(model) as HttpStatusCodeResult;
+            SourceCode sourceCode = new SourceCode() { Id = 11 };
+            var result = sourceCodesController.EditPost(sourceCode) as HttpStatusCodeResult;
             ServiceMock.Verify(m => m.GetSourceCode(11, false), Times.Once);
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
@@ -115,12 +101,7 @@ namespace Testility.UnitTests
         public void Cannot_EditPostNullSourceCodes_BadRequest()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            EditViewModel model = new EditViewModel()
-            {
-                SourceCode = null,
-                UploadedFile = File.Object
-            };
-            var result = sourceCodesController.EditPost(model) as HttpStatusCodeResult;
+            var result = sourceCodesController.EditPost(null) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
@@ -128,12 +109,8 @@ namespace Testility.UnitTests
         public void Cannot_EditPostInvalidSourceCodes_Redirect()
         {
             sourceCodesController.ModelState.AddModelError("Error", "Error");
-            EditViewModel model = new EditViewModel()
-            {
-                SourceCode = new SourceCode() { Id = 1 },
-                UploadedFile = File.Object
-            };
-            var actionResult = sourceCodesController.EditPost(model) as ViewResult;
+            SourceCode sourceCode = new SourceCode() { Id = 1 };
+            var actionResult = sourceCodesController.EditPost(sourceCode) as ViewResult;
             ServiceMock.Verify(m => m.GetSourceCode(1, false), Times.Once);
             ServiceMock.Verify(m => m.Save(It.IsAny<SourceCode>()), Times.Never);
             Assert.AreEqual("CreateAndEdit", actionResult.ViewName);
@@ -144,13 +121,9 @@ namespace Testility.UnitTests
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
             CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result() { Errors = new List<Error>(){new Error(){Message = "blbl"}}});
-            EditViewModel model = new EditViewModel()
-            {
-                SourceCode = new SourceCode(),
-                UploadedFile = File.Object
-            };
+            SourceCode sourceCode = new SourceCode();
             ServiceMock.Verify(m => m.Save(It.IsAny<SourceCode>()), Times.Never);
-            var actionResult = sourceCodesController.EditPost(model) as ViewResult;
+            var actionResult = sourceCodesController.EditPost(sourceCode) as ViewResult;
             Assert.AreEqual("CreateAndEdit", actionResult.ViewName);
         }
 
@@ -175,12 +148,8 @@ namespace Testility.UnitTests
                     }
                 }
             });
-            EditViewModel model = new EditViewModel()
-            {
-                SourceCode = new SourceCode(),
-                UploadedFile = File.Object
-            };
-            var result = sourceCodesController.EditPost(model) as RedirectToRouteResult;
+            SourceCode sourceCode = new SourceCode();
+            var result = sourceCodesController.EditPost(sourceCode) as RedirectToRouteResult;
             ServiceMock.Verify(m => m.Save(It.IsAny <SourceCode>()), Times.Once);
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }

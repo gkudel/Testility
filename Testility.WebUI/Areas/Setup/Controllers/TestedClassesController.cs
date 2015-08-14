@@ -10,15 +10,12 @@ using Testility.Domain.Abstract;
 using Testility.Domain.Concrete;
 using Testility.Domain.Entities;
 using Testility.Engine.Abstract;
-using Testility.WebUI.Services;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class TestedClassesController : Controller
     {
         private ISetupRepository setupRepository;
-        private ICreateInputClassFromFile fileRepository;
-        private ICompiler compilerRepository;
 
         public TestedClassesController(ISetupRepository setupRepositor)
         {
