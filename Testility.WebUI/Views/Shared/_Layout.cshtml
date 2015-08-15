@@ -20,24 +20,12 @@
                 <a class="navbar-brand" href="@Url.Action("Index", "Home", new { area=""})" ><span class="glyphicon glyphicon-home"></span> Home</a>
             </div>
             <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Unit Tests <span class="caret"></span></a>
-                    <ul class="dropdown-menu ">
-                        <li><a href="#"><span class="glyphicon glyphicon-plus" /> New</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-folder-open" /> Open</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-list" /> List</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Projects <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-plus"/> New</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-folder-open" /> Open</a></li>
-                        <li><a href="@Url.Action("List", "Solution", new { area = "Setup"})"><span class="glyphicon glyphicon-list" /> List</a></li>
-                    </ul>
-                </li>
+|               <li><a href="#"><span class="glyphicon glyphicon-plus" /> New</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-folder-open" /> Open</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-list" /> List</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="@Url.Action("List", "Solution", new { area = "Setup"})"><span class="glyphicon glyphicon-cog"></span> Setup</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-search"></span> Search</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
