@@ -11,7 +11,7 @@ namespace Testility.Domain.Abstract
     public interface ISetupRepository : IDisposable
     {
         IQueryable<Solution> GetSolutions();
-        Solution GetSolution(int? id, bool lazyLoading = true);
+        Solution GetSolution(int id);
         void Save(Solution solution);
         bool Delete(int id);
         bool IsAlreadyDefined(string name, int? id = null);

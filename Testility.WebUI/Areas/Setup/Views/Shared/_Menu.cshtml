@@ -1,7 +1,7 @@
 ﻿<ul class="nav navbar-nav">
-    <li><a href="#"><span class="glyphicon glyphicon-plus" /> Project</a></li>
+    <li><a href="@Url.Action("Create", "Solution", new { area = "Setup"})"><span class="glyphicon glyphicon-plus" /> Project</a></li>
     <li><a href="#"><span class="glyphicon glyphicon-folder-open" /> Project</a></li>
-    <li><a href="#"><span class="glyphicon glyphicon-list" /> Projects</a></li>
+    <li><a href="@Url.Action("List", "Solution", new { area = "Setup"})"><span class="glyphicon glyphicon-list" /> Projects</a></li>
     <li><a href="#"><span class="glyphicon glyphicon-plus" /> References</a></li>
 </ul>
 

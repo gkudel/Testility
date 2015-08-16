@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 
-namespace Testility.WebUI.Mappings.Infrastructure
+namespace Testility.Domain.Infrastructure.Mappings
 {
-    public class AutoMapperConfigurationWebUI
+    public class AutoMapperConfigurationDomain
     {
         public static void Configure()
         {
             Mapper.Initialize(x =>
             {
-                x.AddProfile<UIModelToEngineModelMappings>();
+                x.AddProfile<DomainModelMapping>();
             });
         }
     }

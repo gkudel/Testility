@@ -50,8 +50,14 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult Create()
         {
-            Solution s = new Solution();
-            s.Items = new HashSet<Item>();
+            Solution s = new Solution()
+            {
+                ReferencedAssemblies = "System.dll",
+                Items = new HashSet<Item>()
+                {
+                    new Item()
+                }
+            };            
             return View("Solution", s);
         }
 
@@ -61,7 +67,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Solution solution = setupRepository.GetSolution(id);
+            Solution solution = setupRepository.GetSolution(id.Value);
             if (solution == null)
             {
                 return HttpNotFound();
@@ -75,7 +81,16 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             if (model == null)
             {
-                return HttpNotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (model.Id > 0)
+            {
+                Solution solution = setupRepository.GetSolution(model.Id);
+                if (solution == null)
+                {
+                    return HttpNotFound();
+                }
+                model = Mapper.Map(model, solution);
             }
             if (ModelState.IsValid)
             {
@@ -85,7 +100,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     TempData["savemessage"] = string.Format("{0} has been edited", model.Name);
                     return RedirectToAction("List");
                 }
-                catch (Exception /* ex */ )
+                catch (Exception  ex  )
                 {
                     ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", model.Name));
                     return View("Solution", model);
@@ -103,7 +118,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Solution solution = setupRepository.GetSolution(id);
+            Solution solution = setupRepository.GetSolution(id.Value);
             if (solution == null)
             {
                return HttpNotFound();

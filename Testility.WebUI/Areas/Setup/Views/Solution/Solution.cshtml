@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = Model.Name;
 }
-<div class="panel panel-default padding-top-10">
+<div class="panel panel-default">
     <div class="panel-heading">
         <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
     </div>
@@ -22,6 +22,7 @@
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.ReferencedAssemblies)
                 <div class="form-inline padding-bottom-10 container">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
@@ -40,24 +41,29 @@
                         }
                     </ul>
                     <div class="tab-content panel panel-default">
-                        @foreach (var item in Model.Items)
-                        {
-                           @Html.Hidden("Id", item.Id, new { @Id = "item_Id", @Name="Items[0].Id" })
-                            <div id="@item.Name" class="tab-pane fade in active">                            
-                                <div class="form-horizontal  padding-top-10">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextBox("Name", item.Name, new { @class = "form-control", @Name = "Items[0].Name", @Id = "Items[0].Name" })
-                                        </div>
-                                    </div>                                
-                                    <div class="form-group">
-                                        <div class="col-md-12">
-                                            @Html.TextArea("Code", item.Code, new { @class = "form-control sourcecode", @rows = "25", @Name = "Items[0].Code", @Id= "Items_0_Code" })
+                        @{ 
+                            var items = Model.Items.ToList();
+                            for (int i=0; i<items.Count;i++)
+                            {
+                                var item = items[i];
+                                @Html.Hidden("Items["+i+"].Id", item.Id, new { @id = "Items_"+i+"_Id" })
+                                @Html.Hidden("Items[" + i + "].SolutionId", item.SolutionId, new { @id = "Items_"+i+"_SolutionId" })
+                                <div id="@item.Name" class="tab-pane fade in active">                            
+                                    <div class="form-horizontal  padding-top-10">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => item.Name, new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.TextBox("Items[" + i + "].Name", item.Name, new { @class = "form-control", @id = "Items_"+i+"_Name" })
+                                            </div>
+                                        </div>                                
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                @Html.TextArea("Items[" + i + "].Code", item.Code, new { @class = "form-control sourcecode", @rows = "25", @id= "Items_"+i+"_Code" })
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         }
                     </div>
                 </div>

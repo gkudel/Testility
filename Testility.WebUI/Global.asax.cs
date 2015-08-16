@@ -4,7 +4,6 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Testility.Logger.Abstract;
 using Testility.WebUI.Infrastructure;
-using Testility.WebUI.Mappings.Infrastructure;
 
 namespace Testility.WebUI
 {
@@ -16,7 +15,7 @@ namespace Testility.WebUI
             AreaRegistration.RegisterAllAreas();
             DependencyResolver.SetResolver(diResolver);
             Logger.Concrete.Logger.Initalize(diResolver.GetService(typeof(ILogger)) as ILogger);
-            AutoMapperConfigurationWebUI.Configure();
+            AutoMapperConfiguration.Configure();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

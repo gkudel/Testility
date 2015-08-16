@@ -147,9 +147,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\AutoMapperConfiguration.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
-    <Compile Include="Infrastructure\Mappings\AutoMapperConfigurationWebUI.cs" />
-    <Compile Include="Infrastructure\Mappings\UIModelToEngineModelMapping.cs" />
     <Compile Include="Model\PagingInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

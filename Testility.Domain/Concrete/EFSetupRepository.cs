@@ -23,13 +23,9 @@ namespace Testility.Domain.Concrete
             return context.Solutions;
         }
 
-        public Solution GetSolution(int? id, bool lazyLoading = true)
+        public Solution GetSolution(int id)
         {
-            var query = context.Solutions.Where(s => s.Id == id);
-            if (!lazyLoading)
-            {
-                query = query.Include("Classes.Methods.Tests");
-            }
+            var query = context.Solutions.Where(s => s.Id == id).Include(s => s.Items);
             return query.FirstOrDefault();
         }
 
@@ -41,7 +37,7 @@ namespace Testility.Domain.Concrete
             }
             else
             {
-                var classes = context.Classes.Where(c => c.SolutionId == solution.Id).ToList();                    
+                /*var classes = context.Classes.Where(c => c.SolutionId == solution.Id).ToList();                    
                 foreach (Class c in classes)
                 {
                     if (solution.Classes.FirstOrDefault(i => i.Id == c.Id) != null)
@@ -70,7 +66,7 @@ namespace Testility.Domain.Concrete
                     {
                         context.Classes.Remove(c);
                     }
-                }
+                }*/
             }
             Commit();
         }
