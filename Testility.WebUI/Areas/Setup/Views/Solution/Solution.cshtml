@@ -11,44 +11,54 @@
     <div class="panel-body">
         <div class="text-right">
             <div class="btn-group">
-                <a href="#" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus"></span> New Item</a>
-                <a href="#" class="btn btn-warning btn-md"><span class="glyphicon glyphicon-folder-open"></span> Open Item</a>
-                <a href="#" class="btn btn-primary btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
+                <a href="#" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> Item </a>
+                <a href="#" class="btn btn-default btn-md"><span class="glyphicon glyphicon-folder-open"></span> Item</a>
+                <a href="#" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
             </div>
         </div>
         <div>
-            @using (Html.BeginForm("Edit", "SourceCodes", FormMethod.Post, new { enctype = "multipart/form-data", id = "Solution", role = "form" }))
+            @using (Html.BeginForm("Edit", "Solution", FormMethod.Post, new { enctype = "multipart/form-data", id = "Solution", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.Id)
                 <div class="form-inline padding-bottom-10 container">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
                         @Html.EnumDropDownListFor(model => model.Language, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="container">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="pill" href="#@Model.Name">@Model.Name</a></li>
+                        @foreach (var item in Model.Items)
+                        {
+                            <li class="active"><a data-toggle="pill" href="#@item.Name">@item.Name</a></li>
+                        }
                     </ul>
                     <div class="tab-content panel panel-default">
-                        <div id="@Model.Name" class="tab-pane fade in active">                            
-                            <div class="form-horizontal  padding-top-10">                                
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control sourcecode", @rows = "25" } })
-                                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                        @foreach (var item in Model.Items)
+                        {
+                           @Html.Hidden("Id", item.Id, new { @Id = "item_Id", @Name="Items[0].Id" })
+                            <div id="@item.Name" class="tab-pane fade in active">                            
+                                <div class="form-horizontal  padding-top-10">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.TextBox("Name", item.Name, new { @class = "form-control", @Name = "Items[0].Name", @Id = "Items[0].Name" })
+                                        </div>
+                                    </div>                                
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            @Html.TextArea("Code", item.Code, new { @class = "form-control sourcecode", @rows = "25", @Name = "Items[0].Code", @Id= "Items_0_Code" })
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
             }
@@ -57,7 +67,7 @@
     <div class="panel-footer">
         <div class="table">
             <div class="td-left">
-                <a href="@Url.Action("Index")">
+                <a href="@Url.Action("List")">
                     <span class="glyphicon glyphicon-step-backward"></span> Back to Projects Explorer
                 </a>
             </div>

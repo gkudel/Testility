@@ -304,6 +304,7 @@
     <Content Include="Scripts\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Areas\Setup\Views\Shared\_Menu.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\codemirror-2.37\theme\ambiance-mobile.css" />
     <Content Include="Scripts\codemirror-2.37\theme\ambiance.css" />
@@ -1091,10 +1092,10 @@
     <Content Include="Areas\Setup\Views\Solution\Solution.cshtml" />
     <Content Include="Areas\Setup\Views\Solution\List.cshtml" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Setup\Views\Shared\" />
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>

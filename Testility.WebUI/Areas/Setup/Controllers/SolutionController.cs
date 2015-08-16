@@ -50,7 +50,9 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult Create()
         {
-            return View("Solution", new Solution());
+            Solution s = new Solution();
+            s.Items = new HashSet<Item>();
+            return View("Solution", s);
         }
 
         public ActionResult Edit(int? id)
@@ -69,7 +71,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost([Bind(Include = "Id, Name, Language, ReferencedAssemblies")]Solution model)
+        public ActionResult EditPost([Bind(Include = "Id, Name, Language, ReferencedAssemblies, Items")]Solution model)
         {
             if (model == null)
             {

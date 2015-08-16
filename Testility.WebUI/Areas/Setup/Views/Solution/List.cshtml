@@ -14,7 +14,7 @@
     </div>
     <div class="panel-body">
         <div class="text-right padding-bottom-10">
-            <a href="@Url.Action("Create")" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus"></span> New Poject</a>
+            <a href="@Url.Action("Create")" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus"></span> Project</a>
         </div>
         <div class="panel panel-default">
             <table class="table table-hover table-striped col-md-12 padding-bottom-10">
@@ -50,14 +50,14 @@
                             <td></td>
                             <td class="text-right">
                                 <div class="btn-group">
-                                    <a href=" @Url.Action("List", new { selecttedSolution = item.Id, page = Model.PagingInfo.CurrentPage }) " class=" btn btn-default btn-sm">
+                                    <a href=" @Url.Action("List", new { selecttedSolution = item.Id, page = Model.PagingInfo.CurrentPage }) " class=" btn btn-default btn-sm" title="Details">
                                         <span class="glyphicon @icon"></span>
                                     </a>
-                                    <a href=" @Url.Action("Edit", new { id = item.Id }) " class=" btn btn-primary btn-sm">
-                                        <span class="glyphicon glyphicon-edit"></span> Edit
+                                    <a href=" @Url.Action("Edit", new { id = item.Id }) " class=" btn btn-primary btn-sm" title="Edit">
+                                        <span class="glyphicon glyphicon-edit"></span> 
                                     </a>
-                                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-sm">
-                                        <span class="glyphicon glyphicon-trash"></span> Delete
+                                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-sm" title="Delete">
+                                        <span class="glyphicon glyphicon-trash"></span> 
                                     </a>
                                 </div>
                             </td>
