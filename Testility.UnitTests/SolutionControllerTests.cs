@@ -45,7 +45,7 @@ namespace Testility.UnitTests
             CompilerMock = new Mock<ICompiler>();
             CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result(){});
 
-            sourceCodesController = new SolutionController(ServiceMock.Object, CompilerMock.Object);
+            sourceCodesController = new SolutionController(ServiceMock.Object, null);
         }
         #endregion Init
 
