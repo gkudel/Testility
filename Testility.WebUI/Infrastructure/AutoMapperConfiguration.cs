@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Testility.Domain.Infrastructure.Mappings;
+using Testility.Domain.Infrastructure.Mapping;
+using Testility.WebUI.Infrastructure.Mapping;
 
 namespace Testility.WebUI.Infrastructure
 {
@@ -11,7 +12,8 @@ namespace Testility.WebUI.Infrastructure
     {
         public static void Configure()
         {
-            AutoMapperConfigurationDomain.Configure();
+            DomainConfiguration.Configure();
+            WebUIConfiguration.Configure();
         }
     }
 }

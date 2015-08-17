@@ -33,7 +33,7 @@ namespace Testility.Engine.Concrete
                 CompilerResults compilingResult = null;
                 compilerparameters.GenerateExecutable = false;
                 compilerparameters.GenerateInMemory = false;
-                result.OutputDll = compilerparameters.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), input.Name+ ".dll");
+                result.TemporaryFile = compilerparameters.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), input.SolutionName+ ".dll");
                 compilerparameters.TreatWarningsAsErrors = false;
 
                 string code = input.Code;
@@ -55,7 +55,7 @@ namespace Testility.Engine.Concrete
 
                     foreach (var t in types)
                     {
-                        TestedClass testedclass = new TestedClass()
+                        Class testedclass = new Class()
                         {
                             Name = t.attribute.Name,
                             Description = t.attribute.Description,
@@ -66,7 +66,7 @@ namespace Testility.Engine.Concrete
                                         (m, a) => new { method = m, attribute = a as TestedMethodAttribute });
                         foreach (var m in methods)
                         {
-                            TestedMethod testedmethod = new TestedMethod()
+                            Method testedmethod = new Method()
                             {
                                 Name = m.attribute.Name,
                                 Description = m.attribute.Description
@@ -87,7 +87,7 @@ namespace Testility.Engine.Concrete
                         }
                         if (testedclass.Methods.Count() > 0)
                         {
-                            result.TestedClasses.Add(testedclass);
+                            result.Classes.Add(testedclass);
                         }
                         else
                         {

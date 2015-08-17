@@ -9,7 +9,7 @@ namespace Testility.Engine.Model
     [Serializable]
     public class Input
     {
-        public string Name { get; set; }
+        public string SolutionName { get; set; }
         public string Language { get; set; }
         public string Code { get; set; }
         public string ReferencedAssemblies { get; set; }

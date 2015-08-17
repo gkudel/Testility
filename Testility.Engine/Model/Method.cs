@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace Testility.Engine.Model
 {
     [Serializable]
-    public class TestedClass
+    public class Method
     {
-        public TestedClass()
+        public Method()
         {
-            Methods = new List<TestedMethod>();
+            Tests = new List<Test>();
         }
         public string Name { get; set; }
         public string Description { get; set; }
-        public IList<TestedMethod> Methods { get; set; }
+        public IList<Test> Tests { get; set; }
     }
 }
