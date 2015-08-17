@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using Testility.WebUI.CustomValidation;
+using Testility.WebUI.Infrastructure.CustomValidation;
 
 namespace Testility.WebUI.Areas.Setup.Models
 {

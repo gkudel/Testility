@@ -17,7 +17,10 @@ namespace Testility.Domain.Concrete
         public virtual DbSet<Method> Methods { get; set; }
         public virtual DbSet<Test> Tests { get; set; }
 
+
+
         public virtual DbSet<Reference> References { get; set; }
+        public virtual DbSet<ReferencedAssemblies> ReferencedAssembliess { get; set; }
 
         public EFDbContext() : base("EFDbContext")
         { }

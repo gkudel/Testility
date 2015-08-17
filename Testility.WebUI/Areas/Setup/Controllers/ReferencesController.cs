@@ -24,8 +24,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult List()
         {
-            IList<ReferencesViewModel> model = Mapper.Map<IList<ReferencesViewModel>>(setupRepository.GetReferences());
-            return View(model);
+            return View(setupRepository.GetReferences().Project().To<ReferencesViewModel>());
         }
 
 

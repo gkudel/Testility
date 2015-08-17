@@ -144,7 +144,7 @@
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SolutionController.cs" />
-    <Compile Include="CustomValidation\CheckReferenceExtensions.cs" />
+    <Compile Include="Infrastructure\CustomValidation\CheckReferenceExtensions.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Extensions\PagingHelpers.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />

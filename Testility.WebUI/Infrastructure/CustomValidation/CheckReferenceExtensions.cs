@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace Testility.WebUI.CustomValidation
+namespace Testility.WebUI.Infrastructure.CustomValidation
 {
     public class CheckReferenceExtensions : ValidationAttribute
     {
@@ -21,6 +21,8 @@ namespace Testility.WebUI.CustomValidation
             {
                 var str = value as String;
 
+                if (str.Length <= referenceExtensions.Length) //For example 1aa will return false
+                    return false;
 
                 if (referenceExtensions == str.Substring(str.Length - referenceExtensions.Length))
                     return true;
