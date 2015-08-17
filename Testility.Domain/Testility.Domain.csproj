@@ -84,6 +84,7 @@
     <Compile Include="Abstract\ISetupRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFSetupRepository.cs" />
+    <Compile Include="Entities\Reference.cs" />
     <Compile Include="Entities\Solution.cs" />
     <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Test.cs" />
@@ -96,6 +97,10 @@
     <Compile Include="Migrations\201508141901159_Init.cs" />
     <Compile Include="Migrations\201508141901159_Init.Designer.cs">
       <DependentUpon>201508141901159_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508171259531_References.cs" />
+    <Compile Include="Migrations\201508171259531_References.Designer.cs">
+      <DependentUpon>201508171259531_References.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,6 +118,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201508141901159_Init.resx">
       <DependentUpon>201508141901159_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508171259531_References.resx">
+      <DependentUpon>201508171259531_References.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

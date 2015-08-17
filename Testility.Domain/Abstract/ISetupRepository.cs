@@ -15,5 +15,12 @@ namespace Testility.Domain.Abstract
         void Save(Solution solution);
         bool Delete(int id);
         bool IsAlreadyDefined(string name, int? id = null);
+
+
+        IQueryable<Reference> GetReferences();
+        Reference GetReference(int id);
+        void SaveReferences(Reference reference);
+        bool DeleteReferences(int id);
+
     }
 }

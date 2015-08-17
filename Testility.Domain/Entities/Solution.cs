@@ -24,7 +24,10 @@ namespace Testility.Domain.Entities
         public Language Language { get; set; }
         public String ReferencedAssemblies { get; set; }
         public byte[] CompiledDll { get; set; }
+
+        public virtual Reference Reference { get; set; }
         public virtual ICollection<Item> Items { get; set; }
         public virtual ICollection<Class> Classes { get; set; }
+        
     }
 }

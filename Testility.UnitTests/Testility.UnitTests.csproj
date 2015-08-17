@@ -105,13 +105,13 @@
       <Project>{c8ec8f68-f8d0-4310-8a36-d28c7b8f4f36}</Project>
       <Name>Testility.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Testility.WebUI\Testility.WebUI.csproj">
-      <Project>{f5d1eb90-2fbc-434c-84bc-51f10d6a6cd1}</Project>
-      <Name>Testility.WebUI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Testility.Engine\Testility.Engine.csproj">
       <Project>{b14a6f1f-981a-4954-8157-cd252098d3f5}</Project>
       <Name>Testility.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Testility.WebUI\Testility.WebUI.csproj">
+      <Project>{f5d1eb90-2fbc-434c-84bc-51f10d6a6cd1}</Project>
+      <Name>Testility.WebUI</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
