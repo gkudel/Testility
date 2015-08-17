@@ -95,8 +95,8 @@
     <Compile Include="Model\Input.cs" />
     <Compile Include="Model\Result.cs" />
     <Compile Include="Model\Test.cs" />
-    <Compile Include="Model\TestedClass.cs" />
-    <Compile Include="Model\TestedMethod.cs" />
+    <Compile Include="Model\Class.cs" />
+    <Compile Include="Model\Method.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

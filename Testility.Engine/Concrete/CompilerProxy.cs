@@ -33,11 +33,11 @@ namespace Testility.Egine.Concrete
         private void Finish(Result r)
         {
             if (unitDomain != null) System.AppDomain.Unload(unitDomain);
-            if (!string.IsNullOrEmpty(r?.OutputDll ?? ""))
+            if (!string.IsNullOrEmpty(r?.TemporaryFile ?? ""))
             {
-                if (File.Exists(r.OutputDll))
+                if (File.Exists(r.TemporaryFile))
                 {
-                    File.Delete(r.OutputDll);
+                    File.Delete(r.TemporaryFile);
                 }
             }
         }

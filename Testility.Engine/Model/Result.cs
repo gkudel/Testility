@@ -11,11 +11,12 @@ namespace Testility.Engine.Model
     {
         public Result()
         {
-            TestedClasses = new List<TestedClass>();
+            Classes = new List<Class>();
             Errors = new List<Error>();
         }
-        public string OutputDll { get; set; }
-        public IList<TestedClass> TestedClasses { get; set; }
+        public string TemporaryFile { get; set; }
+        public byte[] RawData { get; set; }
+        public IList<Class> Classes { get; set; }
         public IList<Error> Errors { get; set; }
     }
 }

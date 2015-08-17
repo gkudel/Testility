@@ -46,7 +46,7 @@ namespace Testility.UnitTests
             {
                 Code = "using System public class Test{}",
                 Language = "CSharp",
-                Name = "Test",
+                SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"
             };
 
@@ -62,7 +62,7 @@ namespace Testility.UnitTests
             {
                 Code = "using System; public class Test{}",
                 Language = "CSharp",
-                Name = "Test",
+                SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"
             };
 
@@ -82,7 +82,7 @@ namespace Testility.UnitTests
                     public class Account
                     {}", 
                 Language = "CSharp",
-                Name = "Test",
+                SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"
             };
 
@@ -112,18 +112,18 @@ namespace Testility.UnitTests
                         }   
                     }",
                 Language = "CSharp",
-                Name = "Test",
+                SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"
             };
 
             Result result = compiler.Compile(input);
 
             Assert.AreEqual(0, result.Errors.Count);
-            Assert.AreEqual(1, result.TestedClasses.Count);
-            Assert.AreEqual("Account", result.TestedClasses[0].Name);
-            Assert.AreEqual(1, result.TestedClasses[0].Methods.Count);
-            Assert.AreEqual("add", result.TestedClasses[0].Methods[0].Name);
-            Assert.AreEqual(0, result.TestedClasses[0].Methods[0].Tests.Count);
+            Assert.AreEqual(1, result.Classes.Count);
+            Assert.AreEqual("Account", result.Classes[0].Name);
+            Assert.AreEqual(1, result.Classes[0].Methods.Count);
+            Assert.AreEqual("add", result.Classes[0].Methods[0].Name);
+            Assert.AreEqual(0, result.Classes[0].Methods[0].Tests.Count);
         }
 
 
@@ -157,21 +157,21 @@ namespace Testility.UnitTests
                         }   
                     }",
                 Language = "CSharp",
-                Name = "Test",
+                SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"
             };
 
             Result result = compiler.Compile(input);
 
             Assert.AreEqual(0, result.Errors.Count);
-            Assert.AreEqual(1, result.TestedClasses.Count);
-            Assert.AreEqual("Account", result.TestedClasses[0].Name);
-            Assert.AreEqual(1, result.TestedClasses[0].Methods.Count);
-            Assert.AreEqual("add", result.TestedClasses[0].Methods[0].Name);
-            Assert.AreEqual(3, result.TestedClasses[0].Methods[0].Tests.Count);
-            Assert.AreEqual("Less_Then_Zero", result.TestedClasses[0].Methods[0].Tests[0].Name);
-            Assert.AreEqual("More_Then_Hundred", result.TestedClasses[0].Methods[0].Tests[1].Name);
-            Assert.AreEqual("Add_To_Account", result.TestedClasses[0].Methods[0].Tests[2].Name);
+            Assert.AreEqual(1, result.Classes.Count);
+            Assert.AreEqual("Account", result.Classes[0].Name);
+            Assert.AreEqual(1, result.Classes[0].Methods.Count);
+            Assert.AreEqual("add", result.Classes[0].Methods[0].Name);
+            Assert.AreEqual(3, result.Classes[0].Methods[0].Tests.Count);
+            Assert.AreEqual("Less_Then_Zero", result.Classes[0].Methods[0].Tests[0].Name);
+            Assert.AreEqual("More_Then_Hundred", result.Classes[0].Methods[0].Tests[1].Name);
+            Assert.AreEqual("Add_To_Account", result.Classes[0].Methods[0].Tests[2].Name);
         }
 
     }
