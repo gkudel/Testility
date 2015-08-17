@@ -12,6 +12,7 @@ using Testility.Engine.Abstract;
 using Testility.Engine.Model;
 using Testility.WebUI.Areas.Setup.Controllers;
 using Testility.WebUI.Areas.Setup.Models;
+using Testility.WebUI.Services.Abstract;
 
 namespace Testility.UnitTests
 {
@@ -20,7 +21,7 @@ namespace Testility.UnitTests
     {
         #region Members
         public Mock<ISetupRepository> ServiceMock { get; set; }
-        public Mock<ICompiler> CompilerMock { get; set; }
+        public Mock<ICompilerService> CompilerMock { get; set; }
         public SolutionController sourceCodesController { get; set; }
         #endregion Members
 
@@ -42,10 +43,10 @@ namespace Testility.UnitTests
             ServiceMock.Setup(x => x.IsAlreadyDefined(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
             
 
-            CompilerMock = new Mock<ICompiler>();
-            CompilerMock.Setup(x => x.Compile(It.IsAny<Input>())).Returns(new Result(){});
+            CompilerMock = new Mock<ICompilerService>();
+            CompilerMock.Setup(x => x.compile(It.IsAny<Solution>()));
 
-            sourceCodesController = new SolutionController(ServiceMock.Object, null);
+            sourceCodesController = new SolutionController(ServiceMock.Object, CompilerMock.Object);
         }
         #endregion Init
 
