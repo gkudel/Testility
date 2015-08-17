@@ -29,7 +29,7 @@
     </div>
     <div class="panel-footer">
         <div class="text-center">
-            @using (Html.BeginForm())
+            @using (Html.BeginForm("Delete", "Solution", FormMethod.Post, new { id = "Delete", role = "form" }))
             {
                 @Html.AntiForgeryToken()
 
@@ -40,7 +40,7 @@
                         </a>
                     </div>
                     <div class="td-right">
-                        <button type="submit" value="Save" class="btn btn-danger btn-lg" form="Solution">
+                        <button type="submit" value="Save" class="btn btn-danger btn-lg" form="Delete">
                             <span class="glyphicon glyphicon-floppy-disk"></span> Save
                         </button>
                     </div>

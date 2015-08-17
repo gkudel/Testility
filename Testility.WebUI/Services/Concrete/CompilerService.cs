@@ -19,9 +19,15 @@ namespace Testility.WebUI.Services.Concrete
             this.compilerRepository = compilerRepository;
         }
 
-        public void compile(Solution solution)
+        public IList<Error> Compile(Solution solution)
         {
-            Input input = Mapper.Map<Input>(solution);                   
+            Input input = Mapper.Map<Input>(solution);
+            Result r = compilerRepository.Compile(input);
+            if (r.Errors.Count == 0)
+            {
+                Mapper.Map<Result, Solution>(r, solution);
+            }
+            return r.Errors;
         }
     }
 }

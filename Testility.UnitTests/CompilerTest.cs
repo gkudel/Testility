@@ -33,7 +33,7 @@ namespace Testility.UnitTests
         {
             Input input = new Input()
             {
-                Code = "public class Test{}",
+                Code = new string[] { "public class Test{}" },
                 Language = "Pascal"
             };
             compiler.Compile(input);
@@ -44,7 +44,7 @@ namespace Testility.UnitTests
         {
             Input input = new Input()
             {
-                Code = "using System public class Test{}",
+                Code = new string[] { "using System public class Test{}" },
                 Language = "CSharp",
                 SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"
@@ -60,7 +60,7 @@ namespace Testility.UnitTests
         {
             Input input = new Input()
             {
-                Code = "using System; public class Test{}",
+                Code = new string[] { "using System; public class Test{}" },
                 Language = "CSharp",
                 SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"
@@ -76,11 +76,11 @@ namespace Testility.UnitTests
         {
             Input input = new Input()
             {
-                Code = @" using System;
+                Code = new string[] { @" using System;
                                         
                     [TestedClasses(Name = ""Account"", Description = ""Account class"")]
                     public class Account
-                    {}", 
+                    {}" }, 
                 Language = "CSharp",
                 SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"
@@ -96,7 +96,7 @@ namespace Testility.UnitTests
         {
             Input input = new Input()
             {
-                Code = @" using System;
+                Code = new string[] { @" using System;
                                         
                     [TestedClasses(Name = ""Account"", Description = ""Account class"")]
                     public class Account
@@ -110,7 +110,7 @@ namespace Testility.UnitTests
                         {
                             Current += amount;
                         }   
-                    }",
+                    }" },
                 Language = "CSharp",
                 SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"
@@ -132,7 +132,7 @@ namespace Testility.UnitTests
         {
             Input input = new Input()
             {
-                Code = @" using System;
+                Code = new string[] { @" using System;
                                         
                     [TestedClasses(Name = ""Account"", Description = ""Account class"")]
                     public class Account
@@ -155,7 +155,7 @@ namespace Testility.UnitTests
                         {
                             Current += amount;
                         }   
-                    }",
+                    }" },
                 Language = "CSharp",
                 SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"

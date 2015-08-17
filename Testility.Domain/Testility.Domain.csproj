@@ -92,7 +92,6 @@
     <Compile Include="Infrastructure\EFDbContextConfiguration.cs" />
     <Compile Include="Infrastructure\EFDbContextInterceptorError.cs" />
     <Compile Include="Infrastructure\EFDbContextInterceptorLogging.cs" />
-    <Compile Include="Infrastructure\Mapping\DomainConfiguration.cs" />
     <Compile Include="Infrastructure\Mapping\DomainModelMapping.cs" />
     <Compile Include="Migrations\201508141901159_Init.cs" />
     <Compile Include="Migrations\201508141901159_Init.Designer.cs">

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Testility.Domain.Entities;
+using Testility.Engine.Model;
 
 namespace Testility.WebUI.Services.Abstract
 {
     public interface ICompilerService
     {
-        void compile(Solution solution);
+        IList<Error> Compile(Solution solution);
     }
 }

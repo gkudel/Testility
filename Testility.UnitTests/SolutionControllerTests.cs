@@ -44,7 +44,7 @@ namespace Testility.UnitTests
             
 
             CompilerMock = new Mock<ICompilerService>();
-            CompilerMock.Setup(x => x.compile(It.IsAny<Solution>()));
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>()));
 
             sourceCodesController = new SolutionController(ServiceMock.Object, CompilerMock.Object);
         }
