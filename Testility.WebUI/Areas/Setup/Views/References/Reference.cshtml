@@ -1,0 +1,40 @@
+﻿@model Testility.WebUI.Areas.Setup.Models.ReferencesViewModel
+
+@{
+    
+}
+@using (Html.BeginForm("Edit", "References", FormMethod.Post, new { id = "Edit" }))
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Reference Explorer</strong></h2></div>
+        </div>
+        <div class="panel-body">
+        
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+          
+        </div>
+        <div class="panel-footer">
+            <div class="table">
+                <div class="td-left">
+                    <a href="@Url.Action("List")">
+                        <span class="glyphicon glyphicon-step-backward"></span> Back to Reference Explorer
+                    </a>
+                </div>
+                <div class="td-right">
+                    <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Edit">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                    </button>
+                </div>
+            </div>
+        </div> 
+    </div>
+}

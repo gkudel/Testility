@@ -84,6 +84,7 @@
     <Compile Include="Abstract\ISetupRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFSetupRepository.cs" />
+    <Compile Include="Entities\Reference.cs" />
     <Compile Include="Entities\Solution.cs" />
     <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Test.cs" />

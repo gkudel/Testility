@@ -58,7 +58,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 {
                     new Item()
                 }
-            };            
+            };
             return View("Solution", s);
         }
 

@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using AutoMapper.QueryableExtensions;
 using Testility.Engine.Model;
+using Testility.WebUI.Areas.Setup.Models;
 
 namespace Testility.WebUI.Infrastructure.Mapping
 {
@@ -43,6 +44,11 @@ namespace Testility.WebUI.Infrastructure.Mapping
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Test, Domain.Entities.Test>((i, o) => i.Name == o.Name));
             Mapper.CreateMap<Engine.Model.Test, Domain.Entities.Test>()
                 .ForMember(e => e.Id, opt => opt.Ignore());
+
+            Mapper.CreateMap<ReferencesViewModel, Reference>();
+            Mapper.CreateMap<Reference, ReferencesViewModel>();
+            Mapper.CreateMap<IQueryable<Reference>, IQueryable<ReferencesViewModel>>();
+            
 
         }
     }

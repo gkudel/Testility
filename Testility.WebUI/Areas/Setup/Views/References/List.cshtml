@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Testility.WebUI.Areas.Setup.Models.ReferencesViewModel>
+@using Testility.WebUI.Extensions;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<p class="padding-top-10">
+    @Html.SourceCodesStatusHelper()
+</p>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div><h2><strong><span class="glyphicon glyphicon-th-list"></span> References Explorer</strong></h2></div>
+    </div>
+    <div class="panel-body">
+        <div class="text-right padding-bottom-10">
+            <a href="@Url.Action("Create")" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
+        </div>
+        <div class="panel panel-default">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td class="text-right">
+                            <div class="btn-group">
+
+                                <a href=" @Url.Action("Edit", new { id = item.Id }) " class=" btn btn-primary btn-sm" title="Edit">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-sm" title="Delete">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                              </div>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            </div>
+        </div>
+</div>

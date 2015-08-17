@@ -117,6 +117,49 @@ namespace Testility.Domain.Concrete
             return context.Solutions.FirstOrDefault(s => s.Name == name && (id == null || s.Id != id)) != null;
         }
 
+
+        public IQueryable<Reference> GetReferences()
+        {
+            return context.References;
+        }
+
+
+        public Reference GetReference(int id)
+        {
+            var query = context.References.Where(s => s.Id == id)
+                .Include("Solutions.Classes.Methods.Tests");
+            return query.FirstOrDefault();
+        }
+
+        public void SaveReferences(Reference reference)
+        {
+            if (reference.Id == 0)
+            {
+                context.References.Add(reference);
+            }
+            else
+            {
+                context.References.Attach(reference);
+                context.Entry(reference).State = EntityState.Modified;
+            }
+            Commit();
+        }
+
+
+
+        public bool DeleteReferences(int id)
+        {
+            Reference references = context.References.FirstOrDefault(s => s.Id == id);
+            if (references != null)
+            {
+                context.References.Remove(references);
+                Commit();
+                return true;
+            }
+            return false;
+        }
+
+
         private void Commit()
         {
             context.SaveChanges();

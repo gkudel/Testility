@@ -17,6 +17,8 @@ namespace Testility.Domain.Concrete
         public virtual DbSet<Method> Methods { get; set; }
         public virtual DbSet<Test> Tests { get; set; }
 
+        public virtual DbSet<Reference> References { get; set; }
+
         public EFDbContext() : base("EFDbContext")
         { }
 
@@ -24,5 +26,6 @@ namespace Testility.Domain.Concrete
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
+
     }
 }
