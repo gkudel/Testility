@@ -1,4 +1,4 @@
-﻿@model Testility.WebUI.Areas.Setup.Models.ProcjetsIndexData
+﻿@model Testility.WebUI.Areas.Setup.Models.IndexVM
 @using Testility.WebUI.Extensions;
 
 @{
@@ -21,17 +21,17 @@
                 <thead>
                     <tr>
                         <th class="col-md-3">
-                            @Html.DisplayNameFor(model => model.Solutions, m => m.Name)
+                            @Html.DisplayNameFor(model => model.List, m => m.Name)
                         </th>
                         <th class="col-md-3">
-                            @Html.DisplayNameFor(model => model.Solutions, m => m.Language)
+                            @Html.DisplayNameFor(model => model.List, m => m.Language)
                         </th>
                         <th class="col-md-3">Summary</th>
                         <th class="col-md-3"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Solutions)
+                    @foreach (var item in Model.List)
                     {
                         string selectedRow = "";
                         string icon = "glyphicon-folder-close";
@@ -47,7 +47,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Language)
                             </td>
-                            <td></td>
+                            <td>@Html.DisplayFor(modelItem => item.Summary)</td>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <a href=" @Url.Action("List", new { selecttedSolution = item.Id, page = Model.PagingInfo.CurrentPage }) " class=" btn btn-default btn-sm" title="Details">

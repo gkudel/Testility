@@ -11,10 +11,10 @@ namespace Testility.Engine.Model
     {
         public Class()
         {
-            Methods = new List<Method>();
+            Methods = new HashSet<Method>();
         }
         public string Name { get; set; }
         public string Description { get; set; }
-        public IList<Method> Methods { get; set; }
+        public ICollection<Method> Methods { get; set; }
     }
 }

@@ -13,6 +13,7 @@ using System.Linq;
 using Testility.WebUI.Areas.Setup.Models;
 using Testility.WebUI.Model;
 using Testility.WebUI.Services.Abstract;
+using AutoMapper.QueryableExtensions;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
@@ -32,12 +33,14 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public ActionResult List(int? selecttedSolution, int page = 1)
         {
             ViewBag.SelecttedSolution = selecttedSolution;
-            ProcjetsIndexData data = new ProcjetsIndexData()
+            IndexVM data = new IndexVM()
             {
-                Solutions = setupRepository.GetSolutions()                    
+                List = setupRepository.GetSolutions(false)
                     .OrderBy(p => p.Id)
                     .Skip((page - 1) * PageSize)
-                    .Take(PageSize),
+                    .Take(PageSize)
+                    .ToList()
+                    .Select(s => Mapper.Map<Solution, IndexItemVM>(s)),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
@@ -59,7 +62,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     new Item()
                 }
             };            
-            return View("Solution", s);
+            return View("Solution", Mapper.Map<SolutionVM>(s));
         }
 
         public ActionResult Edit(int? id)
@@ -73,46 +76,41 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return HttpNotFound();
             }
-            return View("Solution", solution);
+            return View("Solution", Mapper.Map<SolutionVM>(solution));
         }
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost([Bind(Include = "Id, Name, Language, ReferencedAssemblies, Items")]Solution model)
+        public ActionResult EditPost(SolutionVM model)
         {
-            if (model == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (model.Id > 0)
-            {
-                Solution solution = setupRepository.GetSolution(model.Id);
-                if (solution == null)
-                {
-                    return HttpNotFound();
-                }
-                model = Mapper.Map(model, solution);
-            }
+            if (model == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            Solution solution = new Solution();
             if (ModelState.IsValid)
             {
+                if (model?.Id > 0)
+                {
+                    solution = setupRepository.GetSolution(model.Id);
+                    if (solution == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);                       
+                }
+                Mapper.Map(model, solution);
                 try
                 {
-                    IList<Error> errors = compilerService.Compile(model);
+                    IList<Error> errors = compilerService.Compile(solution);
                     if (errors.Count == 0)
                     {
-                        setupRepository.Save(model);
+                        setupRepository.Save(solution);
                         TempData["savemessage"] = string.Format("{0} has been edited", model.Name);
                         return RedirectToAction("List");
                     }
                     else
                     {
-                        ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", model.Name));
+                        ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", solution.Name));
                         return View("Solution", model);
                     }
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", model.Name));
+                    ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", solution.Name));
                     return View("Solution", model);
                 }
             }
@@ -133,7 +131,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                return HttpNotFound();
             }
-            return View(solution);
+            return View(Mapper.Map<SolutionVM>(solution));
         }
 
         [HttpPost, ActionName("Delete")]

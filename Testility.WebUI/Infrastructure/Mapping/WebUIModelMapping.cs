@@ -5,6 +5,9 @@ using System;
 using System.Linq;
 using AutoMapper.QueryableExtensions;
 using Testility.Engine.Model;
+using Testility.WebUI.Model;
+using Testility.Domain.Infrastructure.Mapping;
+using Testility.WebUI.Areas.Setup.Models;
 
 namespace Testility.WebUI.Infrastructure.Mapping
 {
@@ -16,9 +19,23 @@ namespace Testility.WebUI.Infrastructure.Mapping
         }
         protected override void Configure()
         {
+            Mapper.CreateMap<Solution, IndexItemVM>()
+                .ForMember(i => i.Summary, opt => opt.ResolveUsing<SummaryResolver>().ConstructedBy(() => new SummaryResolver()));
+
+            Mapper.CreateMap<Solution, SolutionVM>();
+            Mapper.CreateMap<SolutionVM, Solution>()
+                .ForMember(s => s.CompiledDll, opt => opt.Ignore());
+
+            Mapper.CreateMap<ICollection<ItemVM>, ICollection<Item>>()
+                .ConvertUsing(new CustomConvwerter<ItemVM, Item>((v, t) => v.Id == t.Id));
+
+            Mapper.CreateMap<Item, ItemVM>();
+            Mapper.CreateMap<ItemVM, Item>()
+                .ForMember(i => i.Solution, opt => opt.Ignore());
+
             Mapper.CreateMap<Solution, Input>()
               .ForMember(i => i.SolutionName, opt => opt.MapFrom(s => s.Name))
-              .ForMember(i => i.Code, opt => opt.ResolveUsing<CodeResolver>());
+              .ForMember(i => i.Code, opt => opt.ResolveUsing<CodeResolver>().ConstructedBy(() => new CodeResolver()));
 
 
             Mapper.CreateMap<Result, Solution>()
@@ -28,18 +45,18 @@ namespace Testility.WebUI.Infrastructure.Mapping
                 .ForMember(e => e.ReferencedAssemblies, opt => opt.Ignore())
                 .ForMember(e => e.Classes, opt => opt.MapFrom(src => src.Classes));
 
-            Mapper.CreateMap<IList<Engine.Model.Class>, ICollection<Domain.Entities.Class>>()
+            Mapper.CreateMap<ICollection<Engine.Model.Class>, ICollection<Domain.Entities.Class>>()
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Class, Domain.Entities.Class>((i, o) => i.Name == o.Name));
 
             Mapper.CreateMap<Engine.Model.Class, Domain.Entities.Class>()
                .ForMember(e => e.Id, opt => opt.Ignore());
 
-            Mapper.CreateMap<IList<Engine.Model.Method>, ICollection<Domain.Entities.Method>>()
+            Mapper.CreateMap<ICollection<Engine.Model.Method>, ICollection<Domain.Entities.Method>>()
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Method, Domain.Entities.Method>((i, o) => i.Name == o.Name));
             Mapper.CreateMap<Engine.Model.Method, Domain.Entities.Method>()
                 .ForMember(e => e.Id, opt => opt.Ignore());
 
-            Mapper.CreateMap<IList<Engine.Model.Test>, ICollection<Domain.Entities.Test>>()
+            Mapper.CreateMap<ICollection<Engine.Model.Test>, ICollection<Domain.Entities.Test>>()
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Test, Domain.Entities.Test>((i, o) => i.Name == o.Name));
             Mapper.CreateMap<Engine.Model.Test, Domain.Entities.Test>()
                 .ForMember(e => e.Id, opt => opt.Ignore());
@@ -61,51 +78,15 @@ namespace Testility.WebUI.Infrastructure.Mapping
         }
     }
 
-    public class CustomConvwerter<T, V> : ITypeConverter<IList<T>, ICollection<V>>
+    public class SummaryResolver : ValueResolver<Solution, string>
     {
-        private Func<T, V, bool> predicate;
-        public CustomConvwerter(Func<T, V, bool> predicate)
+        protected override string ResolveCore(Solution solution)
         {
-            this.predicate = predicate;
-        }
-
-        public ICollection<V> Convert(ResolutionContext context)
-        {
-            IList<T> s = context.SourceValue as IList<T>;
-            ICollection<V> dest = null;
-            if (s != null)
-            {
-                dest = context.DestinationValue as ICollection<V>;
-                if (dest == null)
-                {
-                    dest = s.Select(c => Mapper.Map<T, V>(c)).ToList();
-                }
-                else
-                {
-                    List<V> toRemove = new List<V>();
-                    foreach (V v in dest)
-                    {
-                        if (!s.Any(i => predicate(i, v)))
-                        {
-                            toRemove.Add(v);
-                        }
-                    }
-                    toRemove.ForEach(r => dest.Remove(r));
-                    foreach (T i in s)
-                    {
-                        V o = dest.FirstOrDefault(c => predicate(i, c));
-                        if (o == null)
-                        {
-                            dest.Add(Mapper.Map<T, V>(i));
-                        }
-                        else
-                        {
-                            Mapper.Map<T, V>(i, o);
-                        }
-                    }
-                }
-            }
-            return dest;
+            string ret = "Classes[{0}], Methods[{1}], Tests[{2}]";
+            ret = string.Format(ret, solution.Classes?.Count() ?? 0,
+                solution.Classes?.SelectMany(c => c.Methods)?.Count() ?? 0 ,
+                solution.Classes?.SelectMany(c => c.Methods)?.SelectMany(m => m.Tests)?.Count() ?? 0);
+            return ret;
         }
     }
 }

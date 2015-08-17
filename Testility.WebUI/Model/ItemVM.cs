@@ -6,23 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Testility.Domain.Entities;
 
-namespace Testility.Domain.Entities
+namespace Testility.WebUI.Model
 {
-    public enum ItemType
-    {
-        Class, Interface
-    }
-
-    public class Item
+    public class ItemVM
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Item Name is requred")]
         [StringLength(100)]
         public string Name { get; set; }
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Source Code")]
         public string Code { get; set; }
         public ItemType Type { get; set; }
         public int SolutionId { get; set; }
-        public virtual Solution Solution { get; set; }        
     }
 }

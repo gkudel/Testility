@@ -8,10 +8,10 @@ using Testility.WebUI.Model;
 
 namespace Testility.WebUI.Areas.Setup.Models
 {
-    public class ProcjetsIndexData
+    public class IndexVM
     {
-        public IEnumerable<Solution> Solutions { get; set; }
-        public Solution Selected { get; set; }
+        public IEnumerable<IndexItemVM> List { get; set; }
+        public IndexItemVM Selected { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }
 }

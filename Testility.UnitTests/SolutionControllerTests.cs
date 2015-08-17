@@ -13,6 +13,8 @@ using Testility.Engine.Model;
 using Testility.WebUI.Areas.Setup.Controllers;
 using Testility.WebUI.Areas.Setup.Models;
 using Testility.WebUI.Services.Abstract;
+using Testility.WebUI.Model;
+using Testility.WebUI.Infrastructure;
 
 namespace Testility.UnitTests
 {
@@ -28,24 +30,21 @@ namespace Testility.UnitTests
         #region Init
         [TestInitialize]
         public void Int()
-        {
-           
-
+        {          
             IQueryable<Solution> SolutionList = new List<Solution>
             { new Solution() {Id = 1, Name = "ko"},
               new Solution() {Id = 2, Name = "ko"}
             }.AsQueryable();
 
             ServiceMock = new Mock<ISetupRepository>();
-            ServiceMock.Setup(x => x.GetSolutions()).Returns(SolutionList);
+            ServiceMock.Setup(x => x.GetSolutions(It.IsAny<bool>())).Returns(SolutionList);
             //ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
             ServiceMock.Setup(x => x.Delete(It.IsAny<int>())).Returns(true);
             ServiceMock.Setup(x => x.IsAlreadyDefined(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
             
-
             CompilerMock = new Mock<ICompilerService>();
-           
 
+            AutoMapperConfiguration.Configure();
             sourceCodesController = new SolutionController(ServiceMock.Object, CompilerMock.Object);
         }
         #endregion Init
@@ -55,8 +54,8 @@ namespace Testility.UnitTests
         public void List_Contains_All_Data()
         {
             var result = sourceCodesController.List(null);
-            var model = (result as ViewResult).Model as ProcjetsIndexData;
-            Assert.AreEqual(2, model.Solutions.Count());
+            var model = (result as ViewResult).Model as IndexVM;
+            Assert.AreEqual(2, model.List.Count());
         }
         #endregion Index
 
@@ -104,8 +103,8 @@ namespace Testility.UnitTests
         [TestMethod]
         public void Cannot_EditPostNonExistsSourceCodes_NotFound()
         {
-            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            Solution solution = new Solution() { Id = 11 };
+            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            SolutionVM solution = new SolutionVM() { Id = 11 };
             var result = sourceCodesController.EditPost(solution) as HttpStatusCodeResult;
 
             Solution singleSolution = new Solution() { Id = 1 };
@@ -127,7 +126,7 @@ namespace Testility.UnitTests
         public void Cannot_EditPostInvalidSolution_Redirect()
         {
             sourceCodesController.ModelState.AddModelError("Error", "Error");
-            Solution solution = new Solution() { Name = "ok" };
+            SolutionVM solution = new SolutionVM() { Name = "ok" };
             var actionResult = sourceCodesController.EditPost(solution) as ViewResult;
             Assert.AreEqual("Solution", actionResult.ViewName);
         }
@@ -139,7 +138,7 @@ namespace Testility.UnitTests
             ServiceMock.Setup(x => x.Save(It.IsAny<Solution>()));
             CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>())).Returns(new List<Error>());
 
-            Solution solution = new Solution() { Name = "ok" };
+            SolutionVM solution = new SolutionVM() { Name = "ok" };
             var actionResult = sourceCodesController.EditPost(solution) as RedirectToRouteResult;
            
 
@@ -155,7 +154,7 @@ namespace Testility.UnitTests
             ServiceMock.Setup(x => x.Save(It.IsAny<Solution>()));
             CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>())).Returns(new List<Error>() {new Error() });
 
-            Solution solution = new Solution() { Name = "ok" };
+            SolutionVM solution = new SolutionVM() { Name = "ok" };
             var actionResult = sourceCodesController.EditPost(solution) as ViewResult;
 
             ServiceMock.Verify(x => x.Save(It.IsAny<Solution>()), Times.Never);
@@ -170,7 +169,7 @@ namespace Testility.UnitTests
             ServiceMock.Setup(x => x.Save(It.IsAny<Solution>())).Throws(new Exception());
             CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>())).Returns(new List<Error>());
 
-            Solution solution = new Solution() { Name = "ok" };
+            SolutionVM solution = new SolutionVM() { Name = "ok" };
             var actionResult = sourceCodesController.EditPost(solution) as ViewResult;
 
             ServiceMock.Verify(x => x.Save(It.IsAny<Solution>()), Times.Once);
@@ -208,7 +207,7 @@ namespace Testility.UnitTests
             ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(solution);
 
             ViewResult result = sourceCodesController.Delete(1) as ViewResult;
-            var model = (result as ViewResult).Model as Solution;
+            var model = (result as ViewResult).Model as SolutionVM;
             Assert.AreEqual(1, model.Id);
         }
 

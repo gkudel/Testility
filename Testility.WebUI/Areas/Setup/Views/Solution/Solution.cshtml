@@ -1,4 +1,4 @@
-﻿@model Testility.Domain.Entities.Solution
+﻿@model Testility.WebUI.Model.SolutionVM
 @using Testility.WebUI.Extensions;
 
 @{
@@ -36,7 +36,7 @@
                 <div class="container">
                     <ul class="nav nav-tabs">
                         @{
-                            var items = Model.Items?.ToList() ?? new List<Testility.Domain.Entities.Item>();
+                            var items = Model.Items?.ToList() ?? new List<Testility.WebUI.Model.ItemVM>();
                             for (int i = 0; i < items.Count; i++)
                             {
                                 var item = items[i];

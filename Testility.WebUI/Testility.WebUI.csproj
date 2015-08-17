@@ -137,7 +137,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
-    <Compile Include="Areas\Setup\Models\ProcjetsIndexData.cs" />
+    <Compile Include="Areas\Setup\Models\IndexItemVM.cs" />
+    <Compile Include="Areas\Setup\Models\IndexVM.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SolutionController.cs" />
@@ -150,7 +151,9 @@
     <Compile Include="Infrastructure\AutoMapperConfiguration.cs" />
     <Compile Include="Infrastructure\Mapping\WebUIModelMapping.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Model\ItemVM.cs" />
     <Compile Include="Model\PagingInfo.cs" />
+    <Compile Include="Model\SolutionVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\ICompilerService.cs" />
     <Compile Include="Services\Concrete\CompilerService.cs" />

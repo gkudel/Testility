@@ -4,6 +4,7 @@ using Testility.Engine.Concrete;
 using Testility.Engine.Model;
 using Testility.Engine.Abstract;
 using Testility.Egine.Concrete;
+using System.Linq;
 
 namespace Testility.UnitTests
 {
@@ -120,10 +121,10 @@ namespace Testility.UnitTests
 
             Assert.AreEqual(0, result.Errors.Count);
             Assert.AreEqual(1, result.Classes.Count);
-            Assert.AreEqual("Account", result.Classes[0].Name);
-            Assert.AreEqual(1, result.Classes[0].Methods.Count);
-            Assert.AreEqual("add", result.Classes[0].Methods[0].Name);
-            Assert.AreEqual(0, result.Classes[0].Methods[0].Tests.Count);
+            Assert.AreEqual("Account", result.Classes.First().Name);
+            Assert.AreEqual(1, result.Classes.First().Methods.Count);
+            Assert.AreEqual("add", result.Classes.First().Methods.First().Name);
+            Assert.AreEqual(0, result.Classes.First().Methods.First().Tests.Count);
         }
 
 
@@ -165,13 +166,13 @@ namespace Testility.UnitTests
 
             Assert.AreEqual(0, result.Errors.Count);
             Assert.AreEqual(1, result.Classes.Count);
-            Assert.AreEqual("Account", result.Classes[0].Name);
-            Assert.AreEqual(1, result.Classes[0].Methods.Count);
-            Assert.AreEqual("add", result.Classes[0].Methods[0].Name);
-            Assert.AreEqual(3, result.Classes[0].Methods[0].Tests.Count);
-            Assert.AreEqual("Less_Then_Zero", result.Classes[0].Methods[0].Tests[0].Name);
-            Assert.AreEqual("More_Then_Hundred", result.Classes[0].Methods[0].Tests[1].Name);
-            Assert.AreEqual("Add_To_Account", result.Classes[0].Methods[0].Tests[2].Name);
+            Assert.AreEqual("Account", result.Classes.First().Name);
+            Assert.AreEqual(1, result.Classes.First().Methods.Count);
+            Assert.AreEqual("add", result.Classes.First().Methods.First().Name);
+            Assert.AreEqual(3, result.Classes.First().Methods.First().Tests.Count);
+            Assert.AreEqual("Less_Then_Zero", result.Classes.First().Methods.First().Tests.First().Name);
+            Assert.AreEqual("More_Then_Hundred", result.Classes.First().Methods.First().Tests.Skip(1).Take(1).First().Name);
+            Assert.AreEqual("Add_To_Account", result.Classes.First().Methods.First().Tests.Skip(2).Take(1).First().Name);
         }
 
     }

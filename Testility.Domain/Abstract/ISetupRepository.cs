@@ -10,7 +10,7 @@ namespace Testility.Domain.Abstract
 {
     public interface ISetupRepository : IDisposable
     {
-        IQueryable<Solution> GetSolutions();
+        IQueryable<Solution> GetSolutions(bool lazyloading = true);
         Solution GetSolution(int id);
         void Save(Solution solution);
         bool Delete(int id);
