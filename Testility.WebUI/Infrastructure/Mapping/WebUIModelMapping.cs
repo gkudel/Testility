@@ -5,24 +5,16 @@ using System;
 using System.Linq;
 using AutoMapper.QueryableExtensions;
 
-namespace Testility.Domain.Infrastructure.Mappings
+namespace Testility.WebUI.Infrastructure.Mapping
 {
-    public class DomainModelMapping : Profile
+    public class WebUIModelMapping : Profile
     {
         public override string ProfileName
         {
-            get { return "DomainModelMapping"; }
+            get { return "WebUIModelMapping"; }
         }
         protected override void Configure()
         {
-            Mapper.CreateMap<Item, Item>()
-                .ForMember(i => i.Solution, opt => opt.Ignore());
-
-            Mapper.CreateMap<ICollection<Item>, ICollection<Item>>()
-                .ConvertUsing(new CustomConvwerter<Item, Item>((v, t) => v.Id == t.Id));
-
-            Mapper.CreateMap<Solution, Solution>()
-                .ForMember(s => s.Classes, opt => opt.Ignore());
         }
     }
 

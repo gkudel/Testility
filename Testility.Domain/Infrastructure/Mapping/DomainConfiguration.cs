@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 
-namespace Testility.Domain.Infrastructure.Mappings
+namespace Testility.Domain.Infrastructure.Mapping
 {
-    public class AutoMapperConfigurationDomain
+    public class DomainConfiguration
     {
         public static void Configure()
         {

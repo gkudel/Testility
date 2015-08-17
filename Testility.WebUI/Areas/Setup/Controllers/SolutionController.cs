@@ -12,19 +12,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Testility.WebUI.Areas.Setup.Models;
 using Testility.WebUI.Model;
+using Testility.WebUI.Services.Abstract;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class SolutionController : Controller
     {
         private ISetupRepository setupRepository;
-        private ICompiler compilerRepository;
+        private ICompilerService compilerService;
         public int PageSize { get; set; }
 
-        public SolutionController(ISetupRepository setupRepositor, ICompiler compilerRepositor)
+        public SolutionController(ISetupRepository setupRepository, ICompilerService compilerService)
         {
-            setupRepository = setupRepositor;
-            compilerRepository = compilerRepositor;
+            this.setupRepository = setupRepository;
+            this.compilerService = compilerService;
             PageSize = 3;
         }
 
@@ -96,6 +97,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 try
                 {
+                    compilerService.compile(model);
                     setupRepository.Save(model);
                     TempData["savemessage"] = string.Format("{0} has been edited", model.Name);
                     return RedirectToAction("List");
