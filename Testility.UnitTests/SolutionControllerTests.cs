@@ -44,7 +44,7 @@ namespace Testility.UnitTests
             
 
             CompilerMock = new Mock<ICompilerService>();
-            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>()));
+           
 
             sourceCodesController = new SolutionController(ServiceMock.Object, CompilerMock.Object);
         }
@@ -137,12 +137,30 @@ namespace Testility.UnitTests
         {
 
             ServiceMock.Setup(x => x.Save(It.IsAny<Solution>()));
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>())).Returns(new List<Error>());
 
             Solution solution = new Solution() { Name = "ok" };
             var actionResult = sourceCodesController.EditPost(solution) as RedirectToRouteResult;
-            ServiceMock.Verify(x=>x.Save(It.IsAny<Solution>()), Times.Once);
-            Assert.AreEqual("List", actionResult.RouteValues["action"]);
+           
 
+            ServiceMock.Verify(x=>x.Save(It.IsAny<Solution>()), Times.Once);
+            Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
+            Assert.AreEqual("List", actionResult.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void Cannot_EditSolution_CompileError()
+        {
+
+            ServiceMock.Setup(x => x.Save(It.IsAny<Solution>()));
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>())).Returns(new List<Error>() {new Error() });
+
+            Solution solution = new Solution() { Name = "ok" };
+            var actionResult = sourceCodesController.EditPost(solution) as ViewResult;
+
+            ServiceMock.Verify(x => x.Save(It.IsAny<Solution>()), Times.Never);
+            Assert.AreEqual(null, sourceCodesController.TempData["savemessage"]);
+            Assert.AreEqual("Solution", actionResult.ViewName);
         }
 
 
@@ -150,6 +168,7 @@ namespace Testility.UnitTests
         public void Cannot_EditSolution_Exception()
         {
             ServiceMock.Setup(x => x.Save(It.IsAny<Solution>())).Throws(new Exception());
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>())).Returns(new List<Error>());
 
             Solution solution = new Solution() { Name = "ok" };
             var actionResult = sourceCodesController.EditPost(solution) as ViewResult;
