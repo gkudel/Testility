@@ -17,7 +17,7 @@ namespace Testility.Domain.Entities
     public class Solution
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Solution Name is requred")]
         [StringLength(100)]
         [Index("IX_Solution_Name", IsUnique = true)]
         [Remote("IsNameUnique", "Validation", ErrorMessage = "Solution already exists.", AdditionalFields = "Id")]
