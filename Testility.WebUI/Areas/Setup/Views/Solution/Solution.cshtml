@@ -40,7 +40,7 @@
                             for (int i = 0; i < items.Count; i++)
                             {
                                 var item = items[i];
-                                <li class="active"><a data-toggle="pill" href="Item_@i" ng-init="Item_@i = '' ">{{ Item_@i }}</a></li>
+                                <li class="active"><a data-toggle="pill" href="Item_@i" ng-init="Item_@i = '@item.Name' ">{{ Item_@i }}</a></li>
                             }
                          }
                     </ul>
