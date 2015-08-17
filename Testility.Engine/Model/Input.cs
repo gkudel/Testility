@@ -11,7 +11,7 @@ namespace Testility.Engine.Model
     {
         public string SolutionName { get; set; }
         public string Language { get; set; }
-        public string Code { get; set; }
+        public string[] Code { get; set; }
         public string ReferencedAssemblies { get; set; }
     }
 }

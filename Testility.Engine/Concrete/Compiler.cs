@@ -18,7 +18,7 @@ namespace Testility.Engine.Concrete
     {
         public Result Compile(Input input)
         {
-            if(string.IsNullOrEmpty(input.Code)) throw new ArgumentNullException("Source Code can not be null");
+            if(input.Code == null || input.Code.Length == 00) throw new ArgumentNullException("Source Code can not be null");
             Result result = new Result();
             CodeDomProvider provider = null;
             try
@@ -36,8 +36,11 @@ namespace Testility.Engine.Concrete
                 result.TemporaryFile = compilerparameters.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), input.SolutionName+ ".dll");
                 compilerparameters.TreatWarningsAsErrors = false;
 
-                string code = input.Code;
-                code = "using Testility.Engine.Attribute; " + code;
+                for(int i =0; i<input.Code.Length; i++)
+                {
+                    input.Code[i] = "using Testility.Engine.Attribute; " + input.Code[i];
+                    
+                }
                 compilerparameters.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
 
                 foreach (String references in input.ReferencedAssemblies.Split(';'))
@@ -45,7 +48,7 @@ namespace Testility.Engine.Concrete
                     compilerparameters.ReferencedAssemblies.Add(references);
                 }
 
-                compilingResult = provider.CompileAssemblyFromSource(compilerparameters, new string[] { code });
+                compilingResult = provider.CompileAssemblyFromSource(compilerparameters, input.Code);
 
                 if (compilingResult.Errors.Count == 0)
                 {

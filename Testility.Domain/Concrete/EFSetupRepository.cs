@@ -25,7 +25,9 @@ namespace Testility.Domain.Concrete
 
         public Solution GetSolution(int id)
         {
-            var query = context.Solutions.Where(s => s.Id == id).Include(s => s.Items);
+            var query = context.Solutions.Where(s => s.Id == id)
+                .Include(s => s.Items)
+                .Include("Classes.Methods.Tests");
             return query.FirstOrDefault();
         }
 
@@ -37,7 +39,7 @@ namespace Testility.Domain.Concrete
             }
             else
             {
-                /*var classes = context.Classes.Where(c => c.SolutionId == solution.Id).ToList();                    
+                var classes = context.Classes.Where(c => c.SolutionId == solution.Id).ToList();                    
                 foreach (Class c in classes)
                 {
                     if (solution.Classes.FirstOrDefault(i => i.Id == c.Id) != null)
@@ -66,7 +68,34 @@ namespace Testility.Domain.Concrete
                     {
                         context.Classes.Remove(c);
                     }
-                }*/
+                }
+                var newclasses = solution.Classes.ToList();
+                foreach (Class c in newclasses)
+                {
+                    if (c.Id == 0)
+                    {
+                        c.SolutionId = solution.Id;
+                        context.Classes.Add(c);
+                    }
+                    var newmethods = c.Methods.ToList();
+                    foreach(Method m in newmethods)
+                    {
+                        if (m.Id == 0)
+                        {
+                            m.ClassId = c.Id;
+                            context.Methods.Add(m);
+                        }
+                        var newtests = m.Tests.ToList();
+                        foreach (Test t in newtests)
+                        {
+                            if (t.Id == 0)
+                            {
+                                t.MethodId = m.Id;
+                                context.Tests.Add(t);
+                            }
+                        }
+                    }
+                }
             }
             Commit();
         }

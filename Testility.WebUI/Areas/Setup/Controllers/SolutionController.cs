@@ -97,12 +97,20 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 try
                 {
-                    compilerService.compile(model);
-                    setupRepository.Save(model);
-                    TempData["savemessage"] = string.Format("{0} has been edited", model.Name);
-                    return RedirectToAction("List");
+                    IList<Error> errors = compilerService.Compile(model);
+                    if (errors.Count == 0)
+                    {
+                        setupRepository.Save(model);
+                        TempData["savemessage"] = string.Format("{0} has been edited", model.Name);
+                        return RedirectToAction("List");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", model.Name));
+                        return View("Solution", model);
+                    }
                 }
-                catch (Exception  ex  )
+                catch (Exception ex)
                 {
                     ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", model.Name));
                     return View("Solution", model);

@@ -148,7 +148,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\AutoMapperConfiguration.cs" />
-    <Compile Include="Infrastructure\Mapping\WebUIConfiguration.cs" />
     <Compile Include="Infrastructure\Mapping\WebUIModelMapping.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Model\PagingInfo.cs" />
