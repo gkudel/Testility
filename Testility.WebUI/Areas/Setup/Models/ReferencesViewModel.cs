@@ -9,7 +9,6 @@ namespace Testility.WebUI.Areas.Setup.Models
 {
     public class ReferencesViewModel
     {
-
         public int Id { get; set; }
 
         [Required(ErrorMessage = "You must enter name for Assembly")]
