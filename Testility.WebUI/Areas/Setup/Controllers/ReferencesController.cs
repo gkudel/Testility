@@ -8,6 +8,7 @@ using Testility.WebUI.Areas.Setup.Models;
 using AutoMapper;
 using Testility.Domain.Entities;
 using System.Net;
+using AutoMapper.QueryableExtensions;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {

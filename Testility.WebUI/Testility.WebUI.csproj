@@ -136,12 +136,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Setup\Controllers\ReferencesController.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
     <Compile Include="Areas\Setup\Models\IndexItemVM.cs" />
     <Compile Include="Areas\Setup\Models\IndexVM.cs" />
+    <Compile Include="Areas\Setup\Models\ReferencesViewModel.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SolutionController.cs" />
+    <Compile Include="CustomValidation\CheckReferenceExtensions.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Extensions\PagingHelpers.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
@@ -311,6 +314,9 @@
     <Content Include="Scripts\angular\framework\angular-aria.min.js.map" />
     <Content Include="Scripts\angular\framework\angular-animate.min.js.map" />
     <Content Include="Areas\Setup\Views\Shared\_Menu.cshtml" />
+    <Content Include="Areas\Setup\Views\References\Delete.cshtml" />
+    <Content Include="Areas\Setup\Views\References\List.cshtml" />
+    <Content Include="Areas\Setup\Views\References\Reference.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\codemirror-2.37\theme\ambiance-mobile.css" />
     <Content Include="Scripts\codemirror-2.37\theme\ambiance.css" />

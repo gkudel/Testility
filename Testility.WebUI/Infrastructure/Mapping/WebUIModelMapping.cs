@@ -37,6 +37,9 @@ namespace Testility.WebUI.Infrastructure.Mapping
               .ForMember(i => i.SolutionName, opt => opt.MapFrom(s => s.Name))
               .ForMember(i => i.Code, opt => opt.ResolveUsing<CodeResolver>().ConstructedBy(() => new CodeResolver()));
 
+            Mapper.CreateMap<ReferencesViewModel, Reference>();
+            Mapper.CreateMap<Reference, ReferencesViewModel>();
+            Mapper.CreateMap<IQueryable<Reference>, IQueryable<ReferencesViewModel>>();
 
             Mapper.CreateMap<Result, Solution>()
                 .ForMember(e => e.Id, opt => opt.Ignore())
