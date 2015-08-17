@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = Model.Name;
 }
-<div class="panel panel-default">
+<div class="panel panel-default" ng-app="solutionApp">
     <div class="panel-heading">
         <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
     </div>
@@ -35,25 +35,28 @@
                 </div>
                 <div class="container">
                     <ul class="nav nav-tabs">
-                        @foreach (var item in Model.Items)
-                        {
-                            <li class="active"><a data-toggle="pill" href="#@item.Name">@item.Name</a></li>
-                        }
+                        @{
+                            var items = Model.Items?.ToList() ?? new List<Testility.Domain.Entities.Item>();
+                            for (int i = 0; i < items.Count; i++)
+                            {
+                                var item = items[i];
+                                <li class="active"><a data-toggle="pill" href="Item_@i" ng-init="Item_@i = '' ">{{ Item_@i }}</a></li>
+                            }
+                         }
                     </ul>
                     <div class="tab-content panel panel-default">
                         @{ 
-                            var items = Model.Items.ToList();
                             for (int i=0; i<items.Count;i++)
                             {
                                 var item = items[i];
                                 @Html.Hidden("Items["+i+"].Id", item.Id, new { @id = "Items_"+i+"_Id" })
                                 @Html.Hidden("Items[" + i + "].SolutionId", item.SolutionId, new { @id = "Items_"+i+"_SolutionId" })
-                                <div id="@item.Name" class="tab-pane fade in active">                            
+                                <div id="Item_@i" class="tab-pane fade in active">                            
                                     <div class="form-horizontal  padding-top-10">
                                         <div class="form-group">
                                             @Html.LabelFor(model => item.Name, new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBox("Items[" + i + "].Name", item.Name, new { @class = "form-control", @id = "Items_"+i+"_Name" })
+                                                @Html.TextBox("Items[" + i + "].Name", item.Name, new { @class = "form-control", @id = "Items_"+i+"_Name", @ng_model = "Item_" + i })
                                             </div>
                                         </div>                                
                                         <div class="form-group">
@@ -89,6 +92,8 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/ide")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/solution")
 }
 @section css{
     @Styles.Render("~/Content/ide")

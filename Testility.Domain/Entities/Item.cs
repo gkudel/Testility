@@ -17,7 +17,7 @@ namespace Testility.Domain.Entities
     public class Item
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Item Name is requred")]
         [StringLength(100)]
         public string Name { get; set; }
         [DataType(DataType.MultilineText)]
