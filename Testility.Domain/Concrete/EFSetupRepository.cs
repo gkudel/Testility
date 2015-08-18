@@ -137,6 +137,12 @@ namespace Testility.Domain.Concrete
             return false;
         }
 
+        public IQueryable<ReferencedAssemblies> GetReferenceForSolution(int id)
+        {
+            var query = context.ReferencedAssembliess.Where(s => s.SolutionId == id);
+            return query;
+
+        }
 
         private void Commit()
         {

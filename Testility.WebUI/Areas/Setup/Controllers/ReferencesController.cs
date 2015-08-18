@@ -28,6 +28,11 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             return View(model);
         }
 
+        public ActionResult GetListOfReferences(int id)
+        {
+            return Json(new ReferencesJsonVM(setupRepository.GetReferences().OrderBy(x => x.Name), setupRepository.GetReferenceForSolution(id)), JsonRequestBehavior.AllowGet);
+        }
+
 
         public ActionResult Create()
         {
