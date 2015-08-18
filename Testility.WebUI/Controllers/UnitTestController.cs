@@ -1,9 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Testility.Domain.Abstract;
+using Testility.Domain.Entities;
+using Testility.WebUI.Model;
 
 namespace Testility.WebUI.Controllers
 {
@@ -17,10 +20,26 @@ namespace Testility.WebUI.Controllers
             this.unitTestRepository = unitTestRepository;
             PageSize = 3;
         }
+
         // GET: UnitTest
-        public ActionResult List()
+        public ViewResult List(int page = 1)
         {
-            return View();
+            UnitTestIndexVM data = new UnitTestIndexVM()
+            {
+                List = unitTestRepository.GetSolutions()
+                        .OrderBy(p => p.Id)
+                        .Skip((page - 1) * PageSize)
+                        .Take(PageSize)
+                        .ToList()
+                        .Select(s => Mapper.Map<UnitTestSolution, UnitTestIndexItemVM>(s)),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = unitTestRepository.GetSolutions().Count()
+                }
+            };
+            return View(data);
         }
     }
 }

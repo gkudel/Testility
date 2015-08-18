@@ -7,5 +7,7 @@ namespace Testility.WebUI.Model
 {
     public class UnitTestIndexVM
     {
+        public IEnumerable<UnitTestIndexItemVM> List { get; set; }
+        public PagingInfo PagingInfo { get; set; }
     }
 }

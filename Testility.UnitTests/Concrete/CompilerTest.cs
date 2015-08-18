@@ -1,14 +1,17 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Testility.Engine.Concrete;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Testility.Engine.Model;
 using Testility.Engine.Abstract;
 using Testility.Egine.Concrete;
-using System.Linq;
 
-namespace Testility.UnitTests
+namespace Testility.Engine.Concrete.Tests
 {
-    [TestClass]
+    [TestClass()]
     public class CompilerTest
     {
         public ICompiler compiler;
@@ -81,7 +84,7 @@ namespace Testility.UnitTests
                                         
                     [TestedClasses(Name = ""Account"", Description = ""Account class"")]
                     public class Account
-                    {}" }, 
+                    {}" },
                 Language = "CSharp",
                 SolutionName = "Test",
                 ReferencedAssemblies = "System.dll"
@@ -174,6 +177,5 @@ namespace Testility.UnitTests
             Assert.AreEqual("More_Then_Hundred", result.Classes.First().Methods.First().Tests.Skip(1).Take(1).First().Name);
             Assert.AreEqual("Add_To_Account", result.Classes.First().Methods.First().Tests.Skip(2).Take(1).First().Name);
         }
-
     }
 }

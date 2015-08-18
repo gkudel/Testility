@@ -91,7 +91,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="CompilerTest.cs" />
+    <Compile Include="Concrete\CompilerTest.cs" />
+    <Compile Include="Controllers\UnitTestControllerTests.cs" />
     <Compile Include="EFSetupRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolutionControllerTests.cs" />
