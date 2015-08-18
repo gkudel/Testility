@@ -56,10 +56,18 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             if (ModelState.IsValid)
             {
-                Reference reference = Mapper.Map<Reference>(model);
-                setupRepository.SaveReferences(reference);
-                TempData["savemessage"] = string.Format("{0} has been added", model.Name);
-                return RedirectToAction("List");
+                try
+                {
+                    Reference reference = Mapper.Map<Reference>(model);
+                    setupRepository.SaveReferences(reference);
+                    TempData["savemessage"] = string.Format("{0} has been added", model.Name);
+                    return RedirectToAction("List");
+                }
+                catch (Exception /*ex*/)
+                {
+                    ModelState.AddModelError(String.Empty, string.Format("An error occurred {0}", model.Name));
+                    return View("Reference", model);
+                }
             }
             else
             {
