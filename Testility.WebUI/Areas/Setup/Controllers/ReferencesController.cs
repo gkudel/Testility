@@ -24,7 +24,8 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult List()
         {
-            return View(setupRepository.GetReferences().Project().To<ReferencesViewModel>());
+            IList<ReferencesViewModel> model = Mapper.Map<IList<ReferencesViewModel>>(setupRepository.GetReferences().Project().To< ReferencesViewModel>());
+            return View(model);
         }
 
 
@@ -56,18 +57,10 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    Reference reference = Mapper.Map<Reference>(model);
-                    setupRepository.SaveReferences(reference);
-                    TempData["savemessage"] = string.Format("{0} has been added", model.Name);
-                    return RedirectToAction("List");
-                }
-                catch (Exception /*ex*/)
-                {
-                    ModelState.AddModelError(String.Empty, string.Format("An error occurred {0}", model.Name));
-                    return View("Reference", model);
-                }
+                Reference reference = Mapper.Map<Reference>(model);
+                setupRepository.SaveReferences(reference);
+                TempData["savemessage"] = string.Format("{0} has been added", model.Name);
+                return RedirectToAction("List");
             }
             else
             {
