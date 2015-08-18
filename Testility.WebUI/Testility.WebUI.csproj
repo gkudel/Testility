@@ -138,6 +138,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Setup\Controllers\ReferencesController.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
+    <Compile Include="Areas\Setup\Models\ReferencesJsonVM.cs" />
     <Compile Include="Areas\Setup\Models\SolutionIndexItemVM.cs" />
     <Compile Include="Areas\Setup\Models\SolutionIndexVM.cs" />
     <Compile Include="Areas\Setup\Models\ReferencesViewModel.cs" />

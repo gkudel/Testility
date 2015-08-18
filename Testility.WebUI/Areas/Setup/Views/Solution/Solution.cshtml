@@ -4,25 +4,26 @@
 @{
     ViewBag.Title = Model.Name;
 }
-<div class="panel panel-default" ng-app="solutionApp">
-    <div class="panel-heading">
-        <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
-    </div>
-    <div class="panel-body">
-        <div class="text-right">
-            <div class="btn-group">
-                <a href="#" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> Item </a>
-                <a href="#" class="btn btn-default btn-md"><span class="glyphicon glyphicon-folder-open"></span> Item</a>
-                <a href="#" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
-            </div>
+@using (Html.BeginForm("Edit", "Solution", FormMethod.Post, new { enctype = "multipart/form-data", id = "Solution", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.ReferencedAssemblies)
+
+    <div class="panel panel-default" ng-app="solutionApp" ng-controller="ReferenceController">
+        <div class="panel-heading">
+            <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
         </div>
-        <div>
-            @using (Html.BeginForm("Edit", "Solution", FormMethod.Post, new { enctype = "multipart/form-data", id = "Solution", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model => model.Id)
-                @Html.HiddenFor(model => model.ReferencedAssemblies)
+        <div class="panel-body">
+            <div class="text-right">
+                <div class="btn-group">
+                    <a href="#" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> Item </a>
+                    <a href="#" class="btn btn-default btn-md"><span class="glyphicon glyphicon-folder-open"></span> Item</a>
+                    <a id="References" ng-click="ReferencesClick(@Model.Id)" data-toggle="modal" data-target="#myModal" href="" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
+                </div>
+            </div>
+            <div>
                 <div class="form-inline padding-bottom-10 container">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
@@ -42,26 +43,26 @@
                                 var item = items[i];
                                 <li class="active"><a data-toggle="pill" href="Item_@i" ng-init="Item_@i = '@item.Name' ">{{ Item_@i }}</a></li>
                             }
-                         }
+                        }
                     </ul>
                     <div class="tab-content panel panel-default">
-                        @{ 
-                            for (int i=0; i<items.Count;i++)
+                        @{
+                            for (int i = 0; i < items.Count; i++)
                             {
                                 var item = items[i];
-                                @Html.Hidden("Items["+i+"].Id", item.Id, new { @id = "Items_"+i+"_Id" })
-                                @Html.Hidden("Items[" + i + "].SolutionId", item.SolutionId, new { @id = "Items_"+i+"_SolutionId" })
-                                <div id="Item_@i" class="tab-pane fade in active">                            
+                                @Html.Hidden("Items[" + i + "].Id", item.Id, new { @id = "Items_" + i + "_Id" })
+                                @Html.Hidden("Items[" + i + "].SolutionId", item.SolutionId, new { @id = "Items_" + i + "_SolutionId" })
+                                <div id="Item_@i" class="tab-pane fade in active">
                                     <div class="form-horizontal  padding-top-10">
                                         <div class="form-group">
                                             @Html.LabelFor(model => item.Name, new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.TextBox("Items[" + i + "].Name", item.Name, new { @class = "form-control", @id = "Items_"+i+"_Name", @ng_model = "Item_" + i })
+                                                @Html.TextBox("Items[" + i + "].Name", item.Name, new { @class = "form-control", @id = "Items_" + i + "_Name", @ng_model = "Item_" + i })
                                             </div>
-                                        </div>                                
+                                        </div>
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                @Html.TextArea("Items[" + i + "].Code", item.Code, new { @class = "form-control sourcecode", @rows = "25", @id= "Items_"+i+"_Code" })
+                                                @Html.TextArea("Items[" + i + "].Code", item.Code, new { @class = "form-control sourcecode", @rows = "25", @id = "Items_" + i + "_Code" })
                                             </div>
                                         </div>
                                     </div>
@@ -70,24 +71,52 @@
                         }
                     </div>
                 </div>
-            }
-        </div>
-    </div>
-    <div class="panel-footer">
-        <div class="table">
-            <div class="td-left">
-                <a href="@Url.Action("List")">
-                    <span class="glyphicon glyphicon-step-backward"></span> Back to Projects Explorer
-                </a>
-            </div>
-            <div class="td-right">
-                <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Solution">
-                    <span class="glyphicon glyphicon-floppy-disk"></span> Save
-                </button>
+
             </div>
         </div>
+        <div class="panel-footer">
+            <div class="table">
+                <div class="td-left">
+                    <a href="@Url.Action("List")">
+                        <span class="glyphicon glyphicon-step-backward"></span> Back to Projects Explorer
+                    </a>
+                </div>
+                <div class="td-right">
+                    <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Solution">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                    </button>
+                </div>
+
+
+
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add References to Solution</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table">
+                            <div class="td-left">
+                                <select id="AvailableReferences" class="form-control" data_placeholder="Select" multiple="" name="Refrences">
+                                    <option ng-repeat="item in References" value="{{item.Id}}">{{item.Name}}</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+                            }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

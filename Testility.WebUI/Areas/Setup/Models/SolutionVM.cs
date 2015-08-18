@@ -20,6 +20,7 @@ namespace Testility.WebUI.Areas.Setup.Models
         public Language Language { get; set; }
         [Display(Name = "References")]
         public String ReferencedAssemblies { get; set; }
+        public int[] Refrences { get; set; }
         public virtual ICollection<ItemVM> Items { get; set; }
     }
 }

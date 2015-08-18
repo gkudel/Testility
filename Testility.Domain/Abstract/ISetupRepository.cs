@@ -22,5 +22,7 @@ namespace Testility.Domain.Abstract
         void SaveReferences(Reference reference);
         bool DeleteReferences(int id);
 
+        IQueryable<ReferencedAssemblies> GetReferenceForSolution(int id);
+
     }
 }
