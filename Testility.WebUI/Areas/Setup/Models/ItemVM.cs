@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Testility.Domain.Entities;
 
-namespace Testility.WebUI.Model
+namespace Testility.WebUI.Areas.Setup.Models
 {
     public class ItemVM
     {

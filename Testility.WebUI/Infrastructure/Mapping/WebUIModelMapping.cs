@@ -19,7 +19,7 @@ namespace Testility.WebUI.Infrastructure.Mapping
         }
         protected override void Configure()
         {
-            Mapper.CreateMap<Solution, IndexItemVM>()
+            Mapper.CreateMap<Solution, SolutionIndexItemVM>()
                 .ForMember(i => i.Summary, opt => opt.ResolveUsing<SummaryResolver>().ConstructedBy(() => new SummaryResolver()));
 
             Mapper.CreateMap<Solution, SolutionVM>();

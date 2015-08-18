@@ -82,14 +82,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\ISetupRepository.cs" />
+    <Compile Include="Abstract\IUnitTestRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFSetupRepository.cs" />
+    <Compile Include="Concrete\UnitTestRepository.cs" />
     <Compile Include="Entities\Reference.cs" />
     <Compile Include="Entities\Solution.cs" />
     <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Test.cs" />
     <Compile Include="Entities\Class.cs" />
     <Compile Include="Entities\Method.cs" />
+    <Compile Include="Entities\UnitTestSolution.cs" />
     <Compile Include="Infrastructure\EFDbContextConfiguration.cs" />
     <Compile Include="Infrastructure\EFDbContextInterceptorError.cs" />
     <Compile Include="Infrastructure\EFDbContextInterceptorLogging.cs" />
@@ -105,6 +108,10 @@
     <Compile Include="Migrations\201508180738172_References1.cs" />
     <Compile Include="Migrations\201508180738172_References1.Designer.cs">
       <DependentUpon>201508180738172_References1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508180806346_UnitTest.cs" />
+    <Compile Include="Migrations\201508180806346_UnitTest.Designer.cs">
+      <DependentUpon>201508180806346_UnitTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,6 +135,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508180738172_References1.resx">
       <DependentUpon>201508180738172_References1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508180806346_UnitTest.resx">
+      <DependentUpon>201508180806346_UnitTest.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

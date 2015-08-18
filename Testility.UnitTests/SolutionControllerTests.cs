@@ -54,7 +54,7 @@ namespace Testility.UnitTests
         public void List_Contains_All_Data()
         {
             var result = sourceCodesController.List(null);
-            var model = (result as ViewResult).Model as IndexVM;
+            var model = (result as ViewResult).Model as SolutionIndexVM;
             Assert.AreEqual(2, model.List.Count());
         }
         #endregion Index

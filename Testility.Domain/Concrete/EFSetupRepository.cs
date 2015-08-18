@@ -105,8 +105,7 @@ namespace Testility.Domain.Concrete
 
         public Reference GetReference(int id)
         {
-            var query = context.References.Where(s => s.Id == id)
-                .Include("Solutions.Classes.Methods.Tests");
+            var query = context.References.Where(s => s.Id == id);
             return query.FirstOrDefault();
         }
 

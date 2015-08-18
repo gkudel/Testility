@@ -38,6 +38,7 @@ namespace Testility.WebUI.Infrastructure
         private void AddBindings()
         {
             kernel.Bind<ISetupRepository>().To<EFSetupRepository>();
+            kernel.Bind<IUnitTestRepository>().To<UnitTestRepository>();
             kernel.Bind<ICompiler>().To<CompilerProxy>();
             kernel.Bind<ICompilerService>().To<CompilerService>();
             kernel.Bind<ILogger>().To<TraceLogger>();

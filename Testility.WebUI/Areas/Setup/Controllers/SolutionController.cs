@@ -33,14 +33,14 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public ActionResult List(int? selecttedSolution, int page = 1)
         {
             ViewBag.SelecttedSolution = selecttedSolution;
-            IndexVM data = new IndexVM()
+            SolutionIndexVM data = new SolutionIndexVM()
             {
                 List = setupRepository.GetSolutions(false)
                     .OrderBy(p => p.Id)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize)
                     .ToList()
-                    .Select(s => Mapper.Map<Solution, IndexItemVM>(s)),
+                    .Select(s => Mapper.Map<Solution, SolutionIndexItemVM>(s)),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
@@ -108,7 +108,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                         return View("Solution", model);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception /* ex */ )
                 {
                     ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", solution.Name));
                     return View("Solution", model);
