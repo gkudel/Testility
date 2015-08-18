@@ -103,7 +103,7 @@
                         <div class="table">
                             <div class="td-left">
                                 <select id="AvailableReferences" class="form-control" data_placeholder="Select" multiple="" name="Refrences">
-                                    <option ng-repeat="item in References" value="{{item.Id}}">{{item.Name}}</option>
+                                    <option ng-repeat="item in References" value="{{item.Id}}" ng-selected="{{Selected(item.Id)}}">{{item.Name}}</option>
                                 </select>
 
                             </div>

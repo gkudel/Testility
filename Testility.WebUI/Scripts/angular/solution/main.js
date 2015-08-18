@@ -9,4 +9,14 @@ solutionApp.controller("ReferenceController", ['$scope', '$http', function ($sco
             });
         }
     }
+    $scope.Selected = function (id) {
+        var returnValue = false;
+        angular.forEach($scope.SolutionReferences, function (item, key) {
+            if (item.Id === id) {
+                returnValue = true;
+                return;
+            }
+        });
+        return returnValue;
+    };
 }]);
