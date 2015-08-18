@@ -18,7 +18,7 @@ namespace Testility.Domain.Concrete
         public virtual DbSet<Method> Methods { get; set; }
         public virtual DbSet<Test> Tests { get; set; }
         public virtual DbSet<Reference> References { get; set; }
-        public virtual DbSet<ReferencedAssemblies> ReferencedAssembliess { get; set; }
+        public virtual DbSet<ReferencedAssemblies> ReferencedAssembliess { get; set; }        
         #endregion Setup Entities
 
         #region UnitTest Entities

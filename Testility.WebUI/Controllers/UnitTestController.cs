@@ -41,5 +41,10 @@ namespace Testility.WebUI.Controllers
             };
             return View(data);
         }
+
+        public ActionResult Create(int? solutionId)
+        {
+            return View();
+        }
     }
 }

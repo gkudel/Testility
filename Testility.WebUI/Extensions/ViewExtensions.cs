@@ -4,7 +4,7 @@ namespace Testility.WebUI.Extensions
 {
     public static class ViewExtensions
     {
-        public static MvcHtmlString SourceCodesStatusHelper(this HtmlHelper helper)
+        public static MvcHtmlString SaveStatusHelper(this HtmlHelper helper)
         {
             TagBuilder builder = new TagBuilder("div");
             if (helper.ViewContext.Controller.TempData["savemessage"] != null)
