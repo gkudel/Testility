@@ -25,31 +25,31 @@ namespace Testility.UnitTests
         [TestInitialize]
         public void Init()
         {
-            var SolutionsData = new List<Solution>
+            IQueryable<Solution> SolutionsData = new HashSet<Solution>
             {
                 new Solution() {Id = 2, Name = "12ok"},
                 new Solution() {Id = 1, Name = "1"}
-            };
+            }.AsQueryable();
 
-            var ItemsData = new List<Item>
+            IQueryable<Item> ItemsData = new HashSet<Item>
             {
                 new Item() {Id = 2, Name = "12ok"}
-            };
+            }.AsQueryable();
 
-            var ClassesData = new List<Class>
+            IQueryable<Class> ClassesData = new HashSet<Class>
             {
                 new Class() {Id = 2, Name = "12ok"}
-            };
+            }.AsQueryable();
 
-            var MethodsData = new List<Method>
+            IQueryable<Method> MethodsData = new HashSet<Method>
             {
                 new Method() {Id = 2, Name = "12ok"}
-            };
+            }.AsQueryable();
 
-            var TestsData = new List<Test>
+            IQueryable<Test> TestsData = new HashSet<Test>
             {
                 new Test() {Id = 2, Name = "12ok"}
-            };
+            }.AsQueryable();
 
             MockContext = new Mock<EFDbContext>();
 
@@ -64,21 +64,16 @@ namespace Testility.UnitTests
 
             Service = new EFSetupRepository(MockContext.Object);
         }
-
         #endregion
 
-
-
         #region Supp
-        private Mock<DbSet<T>> GetQueryableMockDbSet<T>(List<T> sourceList) where T : class
+        private Mock<DbSet<T>> GetQueryableMockDbSet<T>(IQueryable<T> sourceList) where T : class
         {
-            var queryable = sourceList.AsQueryable();
-
             var dbSet = new Mock<DbSet<T>>();
-            dbSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryable.Provider);
-            dbSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryable.Expression);
-            dbSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
-            dbSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
+            dbSet.As<IQueryable<T>>().Setup(m => m.Provider).Returns(sourceList.Provider);
+            dbSet.As<IQueryable<T>>().Setup(m => m.Expression).Returns(sourceList.Expression);
+            dbSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(sourceList.ElementType);
+            dbSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(sourceList.GetEnumerator());
 
             return dbSet;
         }
