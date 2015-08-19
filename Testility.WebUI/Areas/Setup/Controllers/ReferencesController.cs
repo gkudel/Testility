@@ -14,8 +14,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class ReferencesController : Controller
     {
-
-        private ISetupRepository setupRepository;
+        private readonly ISetupRepository setupRepository;
 
         public ReferencesController(ISetupRepository setupRepository)
         {
@@ -28,16 +27,10 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             return View(model);
         }
 
-        public ActionResult GetListOfReferences(int id)
-        {
-            return Json(new ReferencesJsonVM(setupRepository.GetReferences().OrderBy(x => x.Name).ToList(), setupRepository.GetSolution(id)?.References.Select(r => r.Id).ToArray()), JsonRequestBehavior.AllowGet);
-        }
-
         public ActionResult Create()
         {
             return View("Reference");
         }
-
 
         public ActionResult Edit(int? id)
         {
@@ -54,7 +47,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             ReferencesViewModel model = Mapper.Map<ReferencesViewModel>(reference);
             return View("Reference", model);
         }
-
 
         [HttpPost ActionName("Edit")]
         public ActionResult Edit(ReferencesViewModel model)
@@ -89,12 +81,9 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return HttpNotFound();
             }
-
             ReferencesViewModel model = Mapper.Map<ReferencesViewModel>(reference);
             return View(model);
         }
-
-
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -109,10 +98,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 ModelState.AddModelError(String.Empty, string.Format("An error occurred when deleting"));
             }
-
             return RedirectToAction("List");
-
         }
-
     }
 }

@@ -14,7 +14,7 @@ namespace Testility.WebUI.Services.Concrete
 {
     public class CompilerService : ICompilerService
     {
-        private ICompiler compilerRepository;
+        private readonly ICompiler compilerRepository;
         private ISetupRepository setupRepository;
         public CompilerService(ICompiler compilerRepository, ISetupRepository setupRepository)
         {

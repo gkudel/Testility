@@ -19,8 +19,8 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class SolutionController : Controller
     {
-        private ISetupRepository setupRepository;
-        private ICompilerService compilerService;
+        private readonly ISetupRepository setupRepository;
+        private readonly ICompilerService compilerService;
         public int PageSize { get; set; }
 
         public SolutionController(ISetupRepository setupRepository, ICompilerService compilerService)

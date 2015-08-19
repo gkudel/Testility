@@ -12,7 +12,7 @@ namespace Testility.WebUI.Controllers
 {
     public class UnitTestController : Controller
     {
-        private IUnitTestRepository unitTestRepository;
+        private readonly IUnitTestRepository unitTestRepository;
         public int PageSize { get; set; }
 
         public UnitTestController(IUnitTestRepository unitTestRepository)

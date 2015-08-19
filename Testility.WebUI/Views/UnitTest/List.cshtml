@@ -15,7 +15,7 @@
     <div class="panel-body">
         <div class="text-right padding-bottom-10" ng-app="solutions" ng-controller="BrowserController">
             @{  Html.RenderPartial("_Browser"); }
-            <a href="" ng-click="open('lg')" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus"></span> Project</a>
+            <a href="" ng-click="open('lg')" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus"></span> UnitTest</a>
         </div>
         <div class="panel panel-default">
             <table class="table table-hover table-striped col-md-12 padding-bottom-10">
@@ -54,8 +54,6 @@
         <div class="text-center">@Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x }))</div>
     </div>    
 </div>
-
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/angular-ui")

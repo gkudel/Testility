@@ -5,24 +5,23 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Testility.Domain.Abstract;
-using Testility.Domain.Entities;
-using Testility.WebUI.Model;
 using AutoMapper.QueryableExtensions;
+using Testility.WebUI.Model;
 
 namespace Testility.WebUI.Controllers
 {
-    public class SolutionController : ApiController
+    public class ReferenceController : ApiController
     {
         private readonly ISetupRepository setupRepository;
 
-        public SolutionController(ISetupRepository setupRepository)
+        public ReferenceController(ISetupRepository setupRepository)
         {
             this.setupRepository = setupRepository;
         }
 
-        public IEnumerable<SolutionApi> Get()
+        public IEnumerable<ReferenceApi> Get()
         {
-            return setupRepository.GetSolutions().Project().To<SolutionApi>().ToArray();
+            return setupRepository.GetReferences().Project().To<ReferenceApi>().ToArray();
         }
     }
 }

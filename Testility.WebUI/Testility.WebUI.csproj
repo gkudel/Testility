@@ -151,13 +151,13 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Setup\Controllers\ReferencesController.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
-    <Compile Include="Areas\Setup\Models\ReferencesJsonVM.cs" />
     <Compile Include="Areas\Setup\Models\SolutionIndexItemVM.cs" />
     <Compile Include="Areas\Setup\Models\SolutionIndexVM.cs" />
     <Compile Include="Areas\Setup\Models\ReferencesViewModel.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SolutionController.cs" />
+    <Compile Include="Controllers\ReferenceController.cs" />
     <Compile Include="Controllers\SolutionController.cs" />
     <Compile Include="Controllers\UnitTestController.cs" />
     <Compile Include="Infrastructure\CustomValidation\CheckReferenceExtensions.cs" />
@@ -176,6 +176,7 @@
     <Compile Include="Infrastructure\Ninject\NinjectRegistration.cs" />
     <Compile Include="Model\PagingInfo.cs" />
     <Compile Include="Areas\Setup\Models\SolutionVM.cs" />
+    <Compile Include="Model\ReferenceApi.cs" />
     <Compile Include="Model\SolutionApi.cs" />
     <Compile Include="Model\UnitTestIndexItemVM.cs" />
     <Compile Include="Model\UnitTestIndexVM.cs" />
@@ -184,6 +185,8 @@
     <Compile Include="Services\Concrete\CompilerService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ui-bootstrap-csp.css" />
@@ -220,7 +223,8 @@
     <Content Include="Scripts\angular\framework\angular-touch.min.js" />
     <Content Include="Scripts\angular\framework\angular.js" />
     <Content Include="Scripts\angular\framework\angular.min.js" />
-    <Content Include="Scripts\angular\solution\main.js" />
+    <Content Include="Scripts\angular\solution\browser-config.js" />
+    <Content Include="Scripts\angular\solution\solution.js" />
     <Content Include="Scripts\angular\unit-test\browser-config.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -346,6 +350,12 @@
     <Content Include="Areas\Setup\Views\References\Delete.cshtml" />
     <Content Include="Areas\Setup\Views\References\List.cshtml" />
     <Content Include="Areas\Setup\Views\References\Reference.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\codemirror-2.37\theme\ambiance-mobile.css" />
     <Content Include="Scripts\codemirror-2.37\theme\ambiance.css" />
@@ -1141,9 +1151,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />

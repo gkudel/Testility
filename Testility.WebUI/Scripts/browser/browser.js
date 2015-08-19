@@ -2,6 +2,13 @@
 
 angular.module('browser').controller('BrowserController', function ($scope, $modal, $log, config) {
 
+    $scope.isResult = false;
+    if (config.isResult !== undefined) {
+        $scope.isResult = config.isResult;
+    }
+    $scope.resultName = config.resultName;
+    $scope.getResultValue = config.getResultValue;
+
     $scope.open = function (size) {
         var modalInstance = $modal.open({
             animation: true,
@@ -16,8 +23,7 @@ angular.module('browser').controller('BrowserController', function ($scope, $mod
                     return config;
                 }
             }
-        });
-
+        });       
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
         }, function () {
@@ -28,13 +34,26 @@ angular.module('browser').controller('BrowserController', function ($scope, $mod
 
 
 angular.module('browser').controller('BrowserInstnace', function ($scope, $modalInstance, items, config) {
-
-    $scope.items = items;
+    $scope.allitems = items;
     $scope.title = config.title;
     $scope.selectedItem = [];
 
+    $scope.itemsPerPage = 3;
+    $scope.currentPage = 1;
+    $scope.pageCount = function () {
+        return Math.ceil($scope.allitems.length / $scope.itemsPerPage);
+    };
+    $scope.totalItems = $scope.allitems.length;
+    $scope.$watch('currentPage + itemsPerPage', function () {
+        var begin = (($scope.currentPage - 1) * $scope.itemsPerPage),
+          end = begin + $scope.itemsPerPage;
+
+        $scope.items = $scope.allitems.slice(begin, end);
+    });
+
+
     $scope.ok = function () {
-        $modalInstance.close($scope.selected.item);
+        $modalInstance.close($scope.selectedItem);
     };
 
     $scope.cancel = function () {
@@ -69,6 +88,9 @@ angular.module('browser').controller('BrowserInstnace', function ($scope, $modal
     }
 
     $scope.printSelected = function () {
+        if ($scope.selectedItem.length == 0) {
+            return 'None';
+        }
         return $scope.selectedItem.map($scope.printItem).join();
     };
 });

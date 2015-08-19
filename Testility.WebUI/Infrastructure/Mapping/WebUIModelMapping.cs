@@ -43,7 +43,7 @@ namespace Testility.WebUI.Infrastructure.Mapping
 
             Mapper.CreateMap<ReferencesViewModel, Reference>();
             Mapper.CreateMap<Reference, ReferencesViewModel>();
-            Mapper.CreateMap<IQueryable<Reference>, IQueryable<ReferencesViewModel>>();
+            Mapper.CreateMap<Reference, ReferenceApi>();
 
             Mapper.CreateMap<Result, Solution>()
                 .ForMember(e => e.Id, opt => opt.Ignore())

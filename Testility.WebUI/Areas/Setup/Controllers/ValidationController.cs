@@ -9,7 +9,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class ValidationController : Controller
     {
-        private ISetupRepository setupRepository;
+        private readonly ISetupRepository setupRepository;
 
         public ValidationController(ISetupRepository setupRepositor)
         {

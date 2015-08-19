@@ -36,8 +36,9 @@ namespace Testility.WebUI
                     "~/Scripts/codemirror-2.37/lib/codemirror.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
-                    "~/Scripts/angular/framework/angular.js",
-                    "~/Scripts/angular/solution/main.js"));
+                    "~/Scripts/angular/solution/solution.js",
+                    "~/Scripts/browser/browser.js",
+                    "~/Scripts/angular/solution/browser-config.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular-ui").Include(
                     "~/Scripts/angular/framework/angular.js",
