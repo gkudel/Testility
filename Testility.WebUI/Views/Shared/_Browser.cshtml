@@ -6,7 +6,7 @@
     </div>
     <div class="modal-body">
         <div class="list-group">
-            <a ng-class="selected(item) ? 'list-group-item active' : 'list-group-item'" ng-repeat="item in items" href="#" ng-click="$event.preventDefault(); mark(item)" >{{ item }}</a>
+            <a ng-class="selected(item) ? 'list-group-item active' : 'list-group-item'" ng-repeat="item in items" href="#" ng-click="$event.preventDefault(); mark(item)" >{{ @Model.Item }}</a>
         </div>
         Selected: <b>{{ printSelected() }}</b>
     </div>
