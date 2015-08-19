@@ -158,7 +158,7 @@
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SolutionController.cs" />
-    <Compile Include="Controllers\SolutionsController.cs" />
+    <Compile Include="Controllers\SolutionController.cs" />
     <Compile Include="Controllers\UnitTestController.cs" />
     <Compile Include="Infrastructure\CustomValidation\CheckReferenceExtensions.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />

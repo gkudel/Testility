@@ -11,11 +11,11 @@ using AutoMapper.QueryableExtensions;
 
 namespace Testility.WebUI.Controllers
 {
-    public class SolutionsController : ApiController
+    public class SolutionController : ApiController
     {
         private ISetupRepository setupRepository;
 
-        public SolutionsController(ISetupRepository setupRepository)
+        public SolutionController(ISetupRepository setupRepository)
         {
             this.setupRepository = setupRepository;
         }

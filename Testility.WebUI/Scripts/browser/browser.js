@@ -1,4 +1,4 @@
-﻿angular.module('browser', ['ngAnimate', 'ui.bootstrap', 'browser.config']);
+﻿angular.module('browser', ['ngAnimate', 'ui.bootstrap']);
 
 angular.module('browser').controller('BrowserController', function ($scope, $modal, $log, config) {
 
