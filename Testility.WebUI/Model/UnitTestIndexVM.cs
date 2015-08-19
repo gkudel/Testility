@@ -9,6 +9,5 @@ namespace Testility.WebUI.Model
     {
         public IEnumerable<UnitTestIndexItemVM> List { get; set; }
         public PagingInfo PagingInfo { get; set; }
-        public BrowserConfig BrowserConfig { get; set; }
     }
 }

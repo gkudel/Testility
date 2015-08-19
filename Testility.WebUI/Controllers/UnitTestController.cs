@@ -37,8 +37,7 @@ namespace Testility.WebUI.Controllers
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
                     TotalItems = unitTestRepository.GetSolutions().Count()
-                },
-                BrowserConfig = new BrowserConfig() {  Name = "Solutions", Item ="item.Name" }
+                }
             };
             return View(data);
         }

@@ -9,6 +9,7 @@
                 return d.promise;
             },
             MultiSelection: false,
-            PrintElement: function (element) { return element.Name; }
+            PrintElement: function (element) { return element.Name; },
+            title: 'Solutions'
         };
     });

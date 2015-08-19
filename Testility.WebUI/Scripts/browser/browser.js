@@ -30,7 +30,7 @@ angular.module('browser').controller('BrowserController', function ($scope, $mod
 angular.module('browser').controller('BrowserInstnace', function ($scope, $modalInstance, items, config) {
 
     $scope.items = items;
-    
+    $scope.title = config.title;
     $scope.selectedItem = [];
 
     $scope.ok = function () {
@@ -61,13 +61,14 @@ angular.module('browser').controller('BrowserInstnace', function ($scope, $modal
 
             }
         }
-    };
-    
+    };    
+
+    $scope.printItem = function (e) { return e; };
+    if (config.PrintElement !== undefined) {
+        $scope.printItem = config.PrintElement;
+    }
+
     $scope.printSelected = function () {
-        var print = function (e) { return e; };
-        if (config.PrintElement !== undefined) {
-            print = config.PrintElement;
-        }
-        return $scope.selectedItem.map(print).join();
+        return $scope.selectedItem.map($scope.printItem).join();
     };
 });
