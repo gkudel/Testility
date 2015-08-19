@@ -34,6 +34,7 @@ solutionApp.controller("ReferenceController", ['$scope', '$http', function ($sco
 
     }
 
+    $scope.showData();
 }]);
 
 angular.module('solutionApp').filter('pagination', function () {
