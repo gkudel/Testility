@@ -68,12 +68,24 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -136,6 +148,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Setup\Controllers\ReferencesController.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
     <Compile Include="Areas\Setup\Models\ReferencesJsonVM.cs" />
@@ -145,6 +158,7 @@
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SolutionController.cs" />
+    <Compile Include="Controllers\SolutionsController.cs" />
     <Compile Include="Controllers\UnitTestController.cs" />
     <Compile Include="Infrastructure\CustomValidation\CheckReferenceExtensions.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
@@ -157,6 +171,7 @@
     <Compile Include="Infrastructure\Mapping\WebUIModelMapping.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Areas\Setup\Models\ItemVM.cs" />
+    <Compile Include="Model\BrowserConfig.cs" />
     <Compile Include="Model\PagingInfo.cs" />
     <Compile Include="Areas\Setup\Models\SolutionVM.cs" />
     <Compile Include="Model\UnitTestIndexItemVM.cs" />
@@ -203,10 +218,12 @@
     <Content Include="Scripts\angular\framework\angular.js" />
     <Content Include="Scripts\angular\framework\angular.min.js" />
     <Content Include="Scripts\angular\solution\main.js" />
+    <Content Include="Scripts\angular\unit-test\browser-config.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Setup\Views\web.config" />
     <Content Include="Areas\Setup\Views\_ViewStart.cshtml" />
+    <Content Include="Scripts\browser\browser.js" />
     <Content Include="Scripts\codemirror-2.37\keymap\emacs.js" />
     <Content Include="Scripts\codemirror-2.37\keymap\vim.js" />
     <Content Include="Scripts\codemirror-2.37\lib\codemirror.css" />
@@ -1115,6 +1132,7 @@
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\UnitTest\List.cshtml" />
+    <Content Include="Views\Shared\_Browser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

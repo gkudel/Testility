@@ -35,11 +35,19 @@ namespace Testility.WebUI
             bundles.Add(new StyleBundle("~/Content/ide").Include(
                     "~/Scripts/codemirror-2.37/lib/codemirror.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                      "~/Scripts/angular/framework/angular.js"));
-
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
+                    "~/Scripts/angular/framework/angular.js",
                     "~/Scripts/angular/solution/main.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/angular-ui").Include(
+                    "~/Scripts/angular/framework/angular.js",
+                    "~/Scripts/angular/framework/angular-animate.js",
+                    "~/Scripts/angular-ui/ui-bootstrap-tpls.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/unit-test").Include(
+                   "~/Scripts/browser/browser.js",
+                   "~/Scripts/angular/unit-test/browser-config.js"));
+
         }
     }
 }

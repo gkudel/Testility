@@ -11,7 +11,7 @@
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.ReferencedAssemblies)
 
-    <div class="panel panel-default" ng-app="solutionApp" ng-controller="ReferenceController" ng-init="showData()">
+    <div class="panel panel-default" ng-app="solutionApp" ng-controller="ReferenceController">
         <div class="panel-heading">
             <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
         </div>
@@ -160,14 +160,13 @@
     </div>
  }
 
- 
 
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-            @Scripts.Render("~/bundles/ide")
-            @Scripts.Render("~/bundles/angular")
-            @Scripts.Render("~/bundles/solution")
-        }
-        @section css{
-            @Styles.Render("~/Content/ide")
-        }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/ide")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/solution")
+}
+@section css{
+    @Styles.Render("~/Content/ide")
+}

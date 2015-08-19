@@ -31,6 +31,7 @@ solutionApp.controller("ReferenceController", ['$scope', '$http', function ($sco
 
     }
 
+    $scope.showData();
 }]);
 
 
