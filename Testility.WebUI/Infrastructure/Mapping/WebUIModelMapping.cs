@@ -27,6 +27,9 @@ namespace Testility.WebUI.Infrastructure.Mapping
             Mapper.CreateMap<SolutionVM, Solution>()
                 .ForMember(s => s.CompiledDll, opt => opt.Ignore());
 
+            Mapper.CreateMap<Reference, ReferencedAssemblies>()
+                 .ForMember(i => i.ReferenceId, opt => opt.MapFrom(s=>s.Id));
+
             Mapper.CreateMap<ICollection<ItemVM>, ICollection<Item>>()
                 .ConvertUsing(new CustomConvwerter<ItemVM, Item>((v, t) => v.Id == t.Id));
 
@@ -37,6 +40,7 @@ namespace Testility.WebUI.Infrastructure.Mapping
             Mapper.CreateMap<Solution, Input>()
               .ForMember(i => i.SolutionName, opt => opt.MapFrom(s => s.Name))
               .ForMember(i => i.Code, opt => opt.ResolveUsing<CodeResolver>().ConstructedBy(() => new CodeResolver()));
+
 
             Mapper.CreateMap<ReferencesViewModel, Reference>();
             Mapper.CreateMap<Reference, ReferencesViewModel>();
@@ -64,6 +68,8 @@ namespace Testility.WebUI.Infrastructure.Mapping
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Test, Domain.Entities.Test>((i, o) => i.Name == o.Name));
             Mapper.CreateMap<Engine.Model.Test, Domain.Entities.Test>()
                 .ForMember(e => e.Id, opt => opt.Ignore());
+
+
             #endregion Setup
 
             #region UnitTes

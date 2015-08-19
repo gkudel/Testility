@@ -43,7 +43,7 @@ namespace Testility.Engine.Concrete
                 }
                 compilerparameters.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
 
-                foreach (String references in input.ReferencedAssemblies.Split(';'))
+                foreach (String references in input.ReferencedAssemblies)
                 {
                     compilerparameters.ReferencedAssemblies.Add(references);
                 }

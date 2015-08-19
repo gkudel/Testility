@@ -94,10 +94,10 @@
     <Compile Include="Concrete\CompilerTest.cs" />
     <Compile Include="Concrete\UnitTestRepositoryTests.cs" />
     <Compile Include="Controllers\UnitTestControllerTests.cs" />
-    <Compile Include="EFSetupRepositoryTests.cs" />
+    <Compile Include="Controllers\EFSetupRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SolutionControllerTests.cs" />
-    <Compile Include="ReferenceControllerTests.cs" />
+    <Compile Include="Controllers\SolutionControllerTests.cs" />
+    <Compile Include="Controllers\ReferenceControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

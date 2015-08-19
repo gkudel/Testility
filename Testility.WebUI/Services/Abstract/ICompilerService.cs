@@ -10,6 +10,6 @@ namespace Testility.WebUI.Services.Abstract
 {
     public interface ICompilerService
     {
-        IList<Error> Compile(Solution solution);
+        IList<Error> Compile(Solution solution, int[] referencesIds);
     }
 }

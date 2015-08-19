@@ -9,8 +9,7 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.ReferencedAssemblies)
-
+ 
     <div class="panel panel-default" ng-app="solutionApp" ng-controller="ReferenceController" ng-init="showData()">
         <div class="panel-heading">
             <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
@@ -114,25 +113,19 @@
                                 </div>
 
                                 <div class="" ng-show="References.length">
-                                    <button type="button" class="btn btn-primary" ng-disabled="curPage == 0"
-                                            ng-click="curPage=curPage-1">
-                                        PREV
-                                    </button>
+                                    <button type="button" class="btn btn-primary glyphicon glyphicon-chevron-left" ng-disabled="curPage == 0"
+                                            ng-click="curPage=curPage-1"></button>
 
                                     <span>Page {{curPage + 1}} of {{ numberOfPages() }}</span>
-                                    <button type="button" class="btn btn-primary"
+                                    <button type="button" class="btn btn-primary glyphicon glyphicon-chevron-right"
                                             ng-disabled="curPage >= References.length/pageSize - 1"
-                                            ng-click="curPage = curPage+1">
-                                        NEXT
-                                    </button>
+                                            ng-click="curPage = curPage+1"></button>
                                 </div>
                             </div>
 
                             <div class="panel-body">
                                 <div class="paginationclass" ng-repeat="item in References | pagination: curPage * pageSize | limitTo: pageSize | filter:searchText">
-                                    <div class="td-left col-md-6">
-                                        {{ item.Name }}
-                                    </div>
+                                    <div class="td-left col-md-6">{{ item.Name }}</div>
                                     <div class="td-left col-md-6">
                                         <input type="checkbox" ng-checked="{{Selected(item.Id)}}" value="{{item.Id}}" name="Refrences"> Include to Solution
                                     </div>
