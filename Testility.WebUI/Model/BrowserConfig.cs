@@ -9,5 +9,6 @@ namespace Testility.WebUI.Model
     public class BrowserConfig
     {
         public string Name { get; set; }
+        public string Item { get; set; }
     }
 }

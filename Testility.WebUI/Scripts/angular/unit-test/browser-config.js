@@ -8,6 +8,7 @@
                 });
                 return d.promise;
             },
-            MultiSelection: false
+            MultiSelection: false,
+            PrintElement: function (element) { return element.Name; }
         };
     });

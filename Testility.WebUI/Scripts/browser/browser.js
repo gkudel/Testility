@@ -12,8 +12,8 @@ angular.module('browser').controller('BrowserController', function ($scope, $mod
                 items: function () {
                     return config.getDataSource();
                 },
-                multiselection: function () {
-                    return config.MultiSelection;
+                config: function () {
+                    return config;
                 }
             }
         });
@@ -27,7 +27,7 @@ angular.module('browser').controller('BrowserController', function ($scope, $mod
 });
 
 
-angular.module('browser').controller('BrowserInstnace', function ($scope, $modalInstance, items, multiselection) {
+angular.module('browser').controller('BrowserInstnace', function ($scope, $modalInstance, items, config) {
 
     $scope.items = items;
     
@@ -46,7 +46,7 @@ angular.module('browser').controller('BrowserInstnace', function ($scope, $modal
     };
 
     $scope.mark = function (item) {
-        if (multiselection) {
+        if (config.MultiSelection) {
             if ($scope.selected(item)) {
                 var index = $scope.selectedItem.indexOf(item);
                 $scope.selectedItem.splice(index, 1);
@@ -62,8 +62,12 @@ angular.module('browser').controller('BrowserInstnace', function ($scope, $modal
             }
         }
     };
-
+    
     $scope.printSelected = function () {
-        return $scope.selectedItem.join();
+        var print = function (e) { return e; };
+        if (config.PrintElement !== undefined) {
+            print = config.PrintElement;
+        }
+        return $scope.selectedItem.map(print).join();
     };
 });
