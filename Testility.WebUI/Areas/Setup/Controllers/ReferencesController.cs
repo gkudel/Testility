@@ -30,7 +30,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult GetListOfReferences(int id)
         {
-            return Json(new ReferencesJsonVM(setupRepository.GetReferences().OrderBy(x => x.Name), setupRepository.GetReferenceForSolution(id)), JsonRequestBehavior.AllowGet);
+            return Json(new ReferencesJsonVM(setupRepository.GetReferences().OrderBy(x => x.Name), setupRepository.GetReferencesIdsForSolution(id)), JsonRequestBehavior.AllowGet);
         }
 
 
@@ -62,10 +62,16 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             if (ModelState.IsValid)
             {
-                Reference reference = Mapper.Map<Reference>(model);
-                setupRepository.SaveReferences(reference);
-                TempData["savemessage"] = string.Format("{0} has been added", model.Name);
-                return RedirectToAction("List");
+                try {
+                    Reference reference = Mapper.Map<Reference>(model);
+                    setupRepository.SaveReferences(reference);
+                    TempData["savemessage"] = string.Format("{0} has been added", model.Name);
+                    return RedirectToAction("List");
+                }
+                catch(Exception /*ex*/)
+                {
+                    return View("Reference", model);
+                }
             }
             else
             {

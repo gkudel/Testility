@@ -9,11 +9,11 @@ namespace Testility.WebUI.Areas.Setup.Models
     public class ReferencesJsonVM
     {
         public IQueryable<Reference> AvailableReferences { get; set; }
-        public IQueryable<ReferencedAssemblies> SelectedReferences { get; set; }
-        public ReferencesJsonVM(IQueryable<Reference> availableRef, IQueryable<ReferencedAssemblies> selectedRef = null)
+        public int[] SelectedReferencesIds { get; set; }
+        public ReferencesJsonVM(IQueryable<Reference> availableRef, int[] selectedRef = null)
         {
             AvailableReferences = availableRef;
-            SelectedReferences = selectedRef;
+            SelectedReferencesIds = selectedRef;
         }
 
     }

@@ -57,7 +57,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             Solution s = new Solution()
             {
-                ReferencedAssemblies = "System.dll",
                 Items = new HashSet<Item>()
                 {
                     new Item()
@@ -93,10 +92,12 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     solution = setupRepository.GetSolution(model.Id);
                     if (solution == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);                       
                 }
+              
                 Mapper.Map(model, solution);
+
                 try
                 {
-                    IList<Error> errors = compilerService.Compile(solution);
+                    IList<Error> errors = compilerService.Compile(solution, model.Refrences);
                     if (errors.Count == 0)
                     {
                         setupRepository.Save(solution);

@@ -45,6 +45,12 @@ namespace Testility.Domain.Concrete
             }
             else
             {
+                var referencedAssemblies = context.ReferencedAssembliess.Where(c => c.SolutionId == solution.Id).ToList();
+                foreach (ReferencedAssemblies r in referencedAssemblies)
+                {
+                   context.ReferencedAssembliess.Remove(r);
+                }
+
                 var classes = context.Classes.Where(c => c.SolutionId == solution.Id).ToList();                    
                 foreach (Class c in classes)
                 {
@@ -137,10 +143,24 @@ namespace Testility.Domain.Concrete
             return false;
         }
 
-        public IQueryable<ReferencedAssemblies> GetReferenceForSolution(int id)
+        public int [] GetReferencesIdsForSolution(int id)
         {
-            var query = context.ReferencedAssembliess.Where(s => s.SolutionId == id);
-            return query;
+            return context.ReferencedAssembliess.Where(x=>x.SolutionId == id).Select(a=>a.ReferenceId).ToArray();
+        }
+
+        public string[] GetSelectedReferencesNames(int[] ids)
+        {
+           var query = context.References.Select(s => s).ToList();
+            List<string> tempList = new List<string>();
+            foreach (int item in ids)
+            {
+                var result = query.FirstOrDefault(x => x.Id == item);
+                if (result != null)
+                {
+                    tempList.Add(result.Name);
+                }       
+            }
+            return tempList.ToArray();
 
         }
 

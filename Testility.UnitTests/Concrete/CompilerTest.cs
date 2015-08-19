@@ -51,7 +51,7 @@ namespace Testility.Engine.Concrete.Tests
                 Code = new string[] { "using System public class Test{}" },
                 Language = "CSharp",
                 SolutionName = "Test",
-                ReferencedAssemblies = "System.dll"
+                ReferencedAssemblies = new string[] { "System.dll" }
             };
 
             Result result = compiler.Compile(input);
@@ -67,7 +67,7 @@ namespace Testility.Engine.Concrete.Tests
                 Code = new string[] { "using System; public class Test{}" },
                 Language = "CSharp",
                 SolutionName = "Test",
-                ReferencedAssemblies = "System.dll"
+                ReferencedAssemblies = new string [] { "System.dll" }
             };
 
             Result result = compiler.Compile(input);
@@ -87,7 +87,7 @@ namespace Testility.Engine.Concrete.Tests
                     {}" },
                 Language = "CSharp",
                 SolutionName = "Test",
-                ReferencedAssemblies = "System.dll"
+                ReferencedAssemblies = new string[] { "System.dll" }
             };
 
             Result result = compiler.Compile(input);
@@ -117,7 +117,7 @@ namespace Testility.Engine.Concrete.Tests
                     }" },
                 Language = "CSharp",
                 SolutionName = "Test",
-                ReferencedAssemblies = "System.dll"
+                ReferencedAssemblies = new string[] { "System.dll" }
             };
 
             Result result = compiler.Compile(input);
@@ -162,7 +162,7 @@ namespace Testility.Engine.Concrete.Tests
                     }" },
                 Language = "CSharp",
                 SolutionName = "Test",
-                ReferencedAssemblies = "System.dll"
+                ReferencedAssemblies = new string[] { "System.dll" }
             };
 
             Result result = compiler.Compile(input);

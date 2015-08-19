@@ -22,12 +22,11 @@ namespace Testility.Domain.Entities
         [Index("IX_Solution_Name", IsUnique = true)]
         public string Name { get; set; }
         public Language Language { get; set; }
-        public String ReferencedAssemblies { get; set; }   
         public byte[] CompiledDll { get; set; }
 
         public virtual ICollection<Item> Items { get; set; }
         public virtual ICollection<Class> Classes { get; set; }
-        public virtual ICollection<ReferencedAssemblies> ReferencedAssembliess { get; set; }
+        public virtual ICollection<ReferencedAssemblies> ReferencedAssemblies { get; set; }
         
     }
 }
