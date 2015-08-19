@@ -2,8 +2,6 @@
 
 angular.module('browser').controller('BrowserController', function ($scope, $modal, $log, config) {
 
-    $scope.items = config.getDataSource();
-    
     $scope.open = function (size) {
         var modalInstance = $modal.open({
             animation: true,
@@ -12,7 +10,7 @@ angular.module('browser').controller('BrowserController', function ($scope, $mod
             size: size,
             resolve: {
                 items: function () {
-                    return $scope.items;
+                    return config.getDataSource();
                 },
                 multiselection: function () {
                     return config.MultiSelection;
@@ -32,6 +30,7 @@ angular.module('browser').controller('BrowserController', function ($scope, $mod
 angular.module('browser').controller('BrowserInstnace', function ($scope, $modalInstance, items, multiselection) {
 
     $scope.items = items;
+    
     $scope.selectedItem = [];
 
     $scope.ok = function () {

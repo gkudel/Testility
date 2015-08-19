@@ -33,6 +33,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public ActionResult List(int? selecttedSolution, int page = 1)
         {
             ViewBag.SelecttedSolution = selecttedSolution;
+            Func<Solution, bool> f = (s) => s.Name.Contains("test");
             SolutionIndexVM data = new SolutionIndexVM()
             {
                 List = setupRepository.GetSolutions(false)

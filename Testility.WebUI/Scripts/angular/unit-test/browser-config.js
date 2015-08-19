@@ -1,8 +1,12 @@
 ﻿angular.module('browser.config', [])
-    .factory('config', function ($http) {
+    .factory('config', function ($http, $q) {
         return {
             getDataSource: function () {
-                return ['Item1', 'Item2', 'Item3'];
+                var d = $q.defer();
+                $http.get('/api/Solutions').success(function (response) {
+                    d.resolve(response);
+                });
+                return d.promise;
             },
             MultiSelection: false
         };

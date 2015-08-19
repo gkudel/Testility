@@ -169,11 +169,15 @@
     </Compile>
     <Compile Include="Infrastructure\AutoMapperConfiguration.cs" />
     <Compile Include="Infrastructure\Mapping\WebUIModelMapping.cs" />
-    <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Areas\Setup\Models\ItemVM.cs" />
+    <Compile Include="Infrastructure\Ninject\NinjectDependencyResolver.cs" />
+    <Compile Include="Infrastructure\Ninject\NinjectDependencyScope .cs" />
+    <Compile Include="Infrastructure\Ninject\Ninject.cs" />
+    <Compile Include="Infrastructure\Ninject\NinjectRegistration.cs" />
     <Compile Include="Model\BrowserConfig.cs" />
     <Compile Include="Model\PagingInfo.cs" />
     <Compile Include="Areas\Setup\Models\SolutionVM.cs" />
+    <Compile Include="Model\SolutionApi.cs" />
     <Compile Include="Model\UnitTestIndexItemVM.cs" />
     <Compile Include="Model\UnitTestIndexVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

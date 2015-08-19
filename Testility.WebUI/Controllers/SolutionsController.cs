@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
+using Testility.WebUI.Model;
+using AutoMapper.QueryableExtensions;
 
 namespace Testility.WebUI.Controllers
 {
@@ -18,9 +20,9 @@ namespace Testility.WebUI.Controllers
             this.setupRepository = setupRepository;
         }
 
-        public Solution[] Get()
+        public IEnumerable<SolutionApi> Get()
         {
-            return setupRepository.GetSolutions().ToArray();
+            return setupRepository.GetSolutions().Project().To<SolutionApi>().ToArray();
         }
     }
 }
