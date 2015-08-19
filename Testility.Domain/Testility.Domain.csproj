@@ -97,21 +97,9 @@
     <Compile Include="Infrastructure\EFDbContextInterceptorError.cs" />
     <Compile Include="Infrastructure\EFDbContextInterceptorLogging.cs" />
     <Compile Include="Infrastructure\Mapping\DomainModelMapping.cs" />
-    <Compile Include="Migrations\201508141901159_Init.cs" />
-    <Compile Include="Migrations\201508141901159_Init.Designer.cs">
-      <DependentUpon>201508141901159_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508171259531_References.cs" />
-    <Compile Include="Migrations\201508171259531_References.Designer.cs">
-      <DependentUpon>201508171259531_References.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508180738172_References1.cs" />
-    <Compile Include="Migrations\201508180738172_References1.Designer.cs">
-      <DependentUpon>201508180738172_References1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201508180806346_UnitTest.cs" />
-    <Compile Include="Migrations\201508180806346_UnitTest.Designer.cs">
-      <DependentUpon>201508180806346_UnitTest.cs</DependentUpon>
+    <Compile Include="Migrations\201508191223177_Init.cs" />
+    <Compile Include="Migrations\201508191223177_Init.Designer.cs">
+      <DependentUpon>201508191223177_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,17 +115,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508141901159_Init.resx">
-      <DependentUpon>201508141901159_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508171259531_References.resx">
-      <DependentUpon>201508171259531_References.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508180738172_References1.resx">
-      <DependentUpon>201508180738172_References1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508180806346_UnitTest.resx">
-      <DependentUpon>201508180806346_UnitTest.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508191223177_Init.resx">
+      <DependentUpon>201508191223177_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

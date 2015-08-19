@@ -29,9 +29,6 @@ namespace Testility.WebUI.Infrastructure.Mapping
             Mapper.CreateMap<SolutionVM, Solution>()
                 .ForMember(s => s.CompiledDll, opt => opt.Ignore());
 
-            Mapper.CreateMap<Reference, ReferencedAssemblies>()
-                 .ForMember(i => i.ReferenceId, opt => opt.MapFrom(s=>s.Id));
-
             Mapper.CreateMap<ICollection<ItemVM>, ICollection<Item>>()
                 .ConvertUsing(new CustomConvwerter<ItemVM, Item>((v, t) => v.Id == t.Id));
 
@@ -52,7 +49,7 @@ namespace Testility.WebUI.Infrastructure.Mapping
                 .ForMember(e => e.Id, opt => opt.Ignore())
                 .ForMember(e => e.Name, opt => opt.Ignore())
                 .ForMember(e => e.Language, opt => opt.Ignore())
-                .ForMember(e => e.ReferencedAssemblies, opt => opt.Ignore())
+                .ForMember(e => e.References, opt => opt.Ignore())
                 .ForMember(e => e.Classes, opt => opt.MapFrom(src => src.Classes));
 
             Mapper.CreateMap<ICollection<Engine.Model.Class>, ICollection<Domain.Entities.Class>>()

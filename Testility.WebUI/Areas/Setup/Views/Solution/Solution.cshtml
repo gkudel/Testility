@@ -85,9 +85,6 @@
                         <span class="glyphicon glyphicon-floppy-disk"></span> Save
                     </button>
                 </div>
-
-
-
             </div>
         </div>
         <!-- Modal -->
@@ -100,9 +97,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="panel panel-default">
-
                             <div class="panel-heading">
-
                                 <div class="col-md-5">
                                       <div class="input-group">
                                             <span class="input-group-btn">
@@ -111,18 +106,15 @@
                                             <input type="text" ng-model="searchText" class="form-control" placeholder="Search for...">
                                         </div>
                                 </div>
-
                                 <div class="" ng-show="References.length">
                                     <button type="button" class="btn btn-primary glyphicon glyphicon-chevron-left" ng-disabled="curPage == 0"
                                             ng-click="curPage=curPage-1"></button>
-
                                     <span>Page {{curPage + 1}} of {{ numberOfPages() }}</span>
                                     <button type="button" class="btn btn-primary glyphicon glyphicon-chevron-right"
                                             ng-disabled="curPage >= References.length/pageSize - 1"
                                             ng-click="curPage = curPage+1"></button>
                                 </div>
                             </div>
-
                             <div class="panel-body">
                                 <div class="paginationclass" ng-repeat="item in References | pagination: curPage * pageSize | limitTo: pageSize | filter:searchText">
                                     <div class="td-left col-md-6">{{ item.Name }}</div>
@@ -131,8 +123,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             <div class="panel-footer">
 
                                 <div class="col-md-12">
@@ -144,23 +134,15 @@
                 </div>
             </div>
         </div>
-
-       
-
-        
-
-
     </div>
  }
 
- 
-
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-            @Scripts.Render("~/bundles/ide")
-            @Scripts.Render("~/bundles/angular")
-            @Scripts.Render("~/bundles/solution")
-        }
-        @section css{
-            @Styles.Render("~/Content/ide")
-        }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/ide")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/solution")
+}
+@section css{
+    @Styles.Render("~/Content/ide")
+}

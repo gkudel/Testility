@@ -37,18 +37,26 @@ namespace Testility.Domain.Concrete
             return query.FirstOrDefault();
         }
 
-        public void Save(Solution solution)
+        public void Save(Solution solution, int[] references)
         {
             if (solution.Id == 0)
             {
+                foreach (int id in references.Where(id => solution.References.FirstOrDefault(r => r.Id == id) == null))
+                {
+                    solution.References.Add(GetReference(id));
+                }
                 context.Solutions.Add(solution);
             }
             else
             {
-                var referencedAssemblies = context.ReferencedAssembliess.Where(c => c.SolutionId == solution.Id).ToList();
-                foreach (ReferencedAssemblies r in referencedAssemblies)
+                var referencedAssemblies = solution.References.Where(r => !references.Contains(r.Id)).ToList();               
+                foreach (Reference r in referencedAssemblies)
                 {
-                   context.ReferencedAssembliess.Remove(r);
+                    solution.References.Remove(r);
+                }
+                foreach (int id in references.Where(id => solution.References.FirstOrDefault(r => r.Id == id) == null))
+                {
+                    solution.References.Add(GetReference(id));
                 }
 
                 var classes = context.Classes.Where(c => c.SolutionId == solution.Id).ToList();                    
@@ -143,25 +151,12 @@ namespace Testility.Domain.Concrete
             return false;
         }
 
-        public int [] GetReferencesIdsForSolution(int id)
-        {
-            return context.ReferencedAssembliess.Where(x=>x.SolutionId == id).Select(a=>a.ReferenceId).ToArray();
-        }
-
         public string[] GetSelectedReferencesNames(int[] ids)
         {
-           var query = context.References.Select(s => s).ToList();
-            List<string> tempList = new List<string>();
-            foreach (int item in ids)
-            {
-                var result = query.FirstOrDefault(x => x.Id == item);
-                if (result != null)
-                {
-                    tempList.Add(result.Name);
-                }       
-            }
-            return tempList.ToArray();
-
+            var query = context.References
+                 .Where(r => ids.Contains(r.Id))
+                 .Select(r => r.Name);
+            return query.ToArray();
         }
 
         private void Commit()

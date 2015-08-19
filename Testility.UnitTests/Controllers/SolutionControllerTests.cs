@@ -135,14 +135,14 @@ namespace Testility.UnitTests
         public void Can_EditSolution_RedirectToAction()
         {
 
-            ServiceMock.Setup(x => x.Save(It.IsAny<Solution>()));
+            ServiceMock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
             CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>());
 
             SolutionVM solution = new SolutionVM() { Name = "ok" };
             var actionResult = sourceCodesController.EditPost(solution) as RedirectToRouteResult;
 
 
-            ServiceMock.Verify(x => x.Save(It.IsAny<Solution>()), Times.Once);
+            ServiceMock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
             Assert.AreNotEqual(null, sourceCodesController.TempData["savemessage"]);
             Assert.AreEqual("List", actionResult.RouteValues["action"]);
         }
@@ -151,13 +151,13 @@ namespace Testility.UnitTests
         public void Cannot_EditSolution_CompileError()
         {
 
-            ServiceMock.Setup(x => x.Save(It.IsAny<Solution>()));
+            ServiceMock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
             //CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>())).Returns(new List<Error>() {new Error() });
 
             SolutionVM solution = new SolutionVM() { Name = "ok" };
             var actionResult = sourceCodesController.EditPost(solution) as ViewResult;
 
-            ServiceMock.Verify(x => x.Save(It.IsAny<Solution>()), Times.Never);
+            ServiceMock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Never);
             Assert.AreEqual(null, sourceCodesController.TempData["savemessage"]);
             Assert.AreEqual("Solution", actionResult.ViewName);
         }
@@ -166,13 +166,13 @@ namespace Testility.UnitTests
         [TestMethod]
         public void Cannot_EditSolution_Exception()
         {
-            ServiceMock.Setup(x => x.Save(It.IsAny<Solution>())).Throws(new Exception());
+            ServiceMock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>())).Throws(new Exception());
             CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>());
 
             SolutionVM solution = new SolutionVM() { Name = "ok" };
             var actionResult = sourceCodesController.EditPost(solution) as ViewResult;
 
-            ServiceMock.Verify(x => x.Save(It.IsAny<Solution>()), Times.Once);
+            ServiceMock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
             Assert.AreEqual("Solution", actionResult.ViewName);
 
         }

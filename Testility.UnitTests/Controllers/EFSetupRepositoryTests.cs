@@ -102,7 +102,7 @@ namespace Testility.UnitTests
         public void Can_Add_Solution()
         {
             Solution solution = new Solution() { Name = "ok" };
-            Service.Save(solution);
+            Service.Save(solution, null);
             MockSolution.Verify(x => x.Add(It.IsAny<Solution>()), Times.Once);
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
         } 

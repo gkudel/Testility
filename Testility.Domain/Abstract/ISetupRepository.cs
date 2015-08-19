@@ -12,19 +12,13 @@ namespace Testility.Domain.Abstract
     {
         IQueryable<Solution> GetSolutions(bool lazyloading = true);
         Solution GetSolution(int id);
-        void Save(Solution solution);
+        void Save(Solution solution, int[] references);
         bool Delete(int id);
         bool IsAlreadyDefined(string name, int? id = null);
-
-
         IQueryable<Reference> GetReferences();
         Reference GetReference(int id);
         void SaveReferences(Reference reference);
         bool DeleteReferences(int id);
-        string[] GetSelectedReferencesNames(int[] ids);
-
-        int[] GetReferencesIdsForSolution (int id);
-        //IQueryable<ReferencedAssemblies> GetSelectedReferenceForSolution(int[] ids);
-
+        string[] GetSelectedReferencesNames(int[] ids);        
     }
 }

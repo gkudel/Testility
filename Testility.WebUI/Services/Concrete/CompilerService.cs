@@ -30,11 +30,6 @@ namespace Testility.WebUI.Services.Concrete
             if (r.Errors.Count == 0)
             {
                 Mapper.Map<Result, Solution>(r, solution);
-                foreach(int id in referencesIds)
-                {
-                    ReferencedAssemblies referencedAssemblies =  Mapper.Map<ReferencedAssemblies>(setupRepository.GetReference(id));
-                    solution.ReferencedAssemblies.Add(referencedAssemblies);
-                }
             }
             return r.Errors;
         }

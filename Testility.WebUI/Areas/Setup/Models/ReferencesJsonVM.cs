@@ -8,9 +8,9 @@ namespace Testility.WebUI.Areas.Setup.Models
 {
     public class ReferencesJsonVM
     {
-        public IQueryable<Reference> AvailableReferences { get; set; }
+        public IEnumerable<Reference> AvailableReferences { get; set; }
         public int[] SelectedReferencesIds { get; set; }
-        public ReferencesJsonVM(IQueryable<Reference> availableRef, int[] selectedRef = null)
+        public ReferencesJsonVM(IEnumerable<Reference> availableRef, int[] selectedRef = null)
         {
             AvailableReferences = availableRef;
             SelectedReferencesIds = selectedRef;

@@ -33,7 +33,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public ActionResult List(int? selecttedSolution, int page = 1)
         {
             ViewBag.SelecttedSolution = selecttedSolution;
-            Func<Solution, bool> f = (s) => s.Name.Contains("test");
             SolutionIndexVM data = new SolutionIndexVM()
             {
                 List = setupRepository.GetSolutions(false)
@@ -100,7 +99,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     IList<Error> errors = compilerService.Compile(solution, model.Refrences);
                     if (errors.Count == 0)
                     {
-                        setupRepository.Save(solution);
+                        setupRepository.Save(solution, model.Refrences);
                         TempData["savemessage"] = string.Format("{0} has been edited", model.Name);
                         return RedirectToAction("List");
                     }

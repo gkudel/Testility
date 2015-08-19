@@ -54,7 +54,6 @@ namespace Testility.Domain.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 100),
                         Language = c.Int(nullable: false),
-                        ReferencedAssemblies = c.String(),
                         CompiledDll = c.Binary(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -74,19 +73,61 @@ namespace Testility.Domain.Migrations
                 .ForeignKey("dbo.Solution", t => t.SolutionId, cascadeDelete: true)
                 .Index(t => t.SolutionId);
             
+            CreateTable(
+                "dbo.Reference",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.UnitTestSolution",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        SolutionId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Solution", t => t.SolutionId, cascadeDelete: true)
+                .Index(t => t.SolutionId);
+            
+            CreateTable(
+                "dbo.ReferenceSolution",
+                c => new
+                    {
+                        Reference_Id = c.Int(nullable: false),
+                        Solution_Id = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Reference_Id, t.Solution_Id })
+                .ForeignKey("dbo.Reference", t => t.Reference_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Solution", t => t.Solution_Id, cascadeDelete: true)
+                .Index(t => t.Reference_Id)
+                .Index(t => t.Solution_Id);
+            
         }
         
         public override void Down()
         {
+            DropForeignKey("dbo.UnitTestSolution", "SolutionId", "dbo.Solution");
+            DropForeignKey("dbo.ReferenceSolution", "Solution_Id", "dbo.Solution");
+            DropForeignKey("dbo.ReferenceSolution", "Reference_Id", "dbo.Reference");
             DropForeignKey("dbo.Item", "SolutionId", "dbo.Solution");
             DropForeignKey("dbo.Class", "SolutionId", "dbo.Solution");
             DropForeignKey("dbo.Test", "MethodId", "dbo.Method");
             DropForeignKey("dbo.Method", "ClassId", "dbo.Class");
+            DropIndex("dbo.ReferenceSolution", new[] { "Solution_Id" });
+            DropIndex("dbo.ReferenceSolution", new[] { "Reference_Id" });
+            DropIndex("dbo.UnitTestSolution", new[] { "SolutionId" });
             DropIndex("dbo.Item", new[] { "SolutionId" });
             DropIndex("dbo.Solution", "IX_Solution_Name");
             DropIndex("dbo.Test", new[] { "MethodId" });
             DropIndex("dbo.Method", new[] { "ClassId" });
             DropIndex("dbo.Class", new[] { "SolutionId" });
+            DropTable("dbo.ReferenceSolution");
+            DropTable("dbo.UnitTestSolution");
+            DropTable("dbo.Reference");
             DropTable("dbo.Item");
             DropTable("dbo.Solution");
             DropTable("dbo.Test");
