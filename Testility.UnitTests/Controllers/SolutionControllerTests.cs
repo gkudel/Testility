@@ -32,13 +32,22 @@ namespace Testility.UnitTests
         public void Int()
         {          
             IQueryable<Solution> SolutionList = new List<Solution>
-            { new Solution() {Id = 1, Name = "ko"},
-              new Solution() {Id = 2, Name = "ko"}
+            {
+                new Solution() {Id = 1, Name = "ko"},
+                new Solution() {Id = 2, Name = "ko"},
+                new Solution() {Id = 3, Name = "ko"},
+                new Solution() {Id = 4, Name = "ko"}
+
             }.AsQueryable();
+
+            IQueryable<Reference> ReferenceList = new List<Reference>
+            {
+                new Reference() {Id = 1, Name = "System.dll"}
+            }.AsQueryable();
+
 
             ServiceMock = new Mock<ISetupRepository>();
             ServiceMock.Setup(x => x.GetSolutions(It.IsAny<bool>())).Returns(SolutionList);
-            //ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
             ServiceMock.Setup(x => x.DeleteSolution(It.IsAny<int>())).Returns(true);
             ServiceMock.Setup(x => x.IsAlreadyDefined(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
             
@@ -53,9 +62,34 @@ namespace Testility.UnitTests
         [TestMethod]
         public void List_Contains_All_Data()
         {
+            solutionController.PageSize = 10;
             var result = solutionController.List(null);
             var model = (result as ViewResult).Model as IndexViewModel<SolutionIndexItemViewModel>;
-            Assert.AreEqual(2, model.List.Count());
+            Assert.AreEqual(4, model.List.Count());
+        }
+
+        [TestMethod()]
+        public void Can_GetFirstPage_Solutions()
+        {
+            solutionController.PageSize = 3;
+
+            SolutionIndexItemViewModel[] result = ((IndexViewModel<SolutionIndexItemViewModel>)solutionController.List(null, 1).Model).List.ToArray();
+
+            Assert.AreEqual(result.Length, 3);
+            Assert.AreEqual(1, result[0].Id);
+            Assert.AreEqual(2, result[1].Id);
+            Assert.AreEqual(3, result[2].Id);
+        }
+
+        [TestMethod()]
+        public void Can_GetSecondPage_UnitTestSolutions()
+        {
+            solutionController.PageSize = 3;
+
+            SolutionIndexItemViewModel[] result = ((IndexViewModel<SolutionIndexItemViewModel>)solutionController.List(null, 2).Model).List.ToArray();
+
+            Assert.AreEqual(result.Length, 1);
+            Assert.AreEqual(4, result[0].Id);
         }
         #endregion Index
 
@@ -150,9 +184,7 @@ namespace Testility.UnitTests
         [TestMethod]
         public void Cannot_EditSolution_CompileError()
         {
-
             ServiceMock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
-            //CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>())).Returns(new List<Error>() {new Error() });
 
             SolutionViewModel solution = new SolutionViewModel() { Name = "ok" };
             var actionResult = solutionController.EditPost(solution) as ViewResult;

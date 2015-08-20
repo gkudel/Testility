@@ -30,7 +30,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             PageSize = 3;
         }
 
-        public ActionResult List(int? selecttedSolution, int page = 1)
+        public ViewResult List(int? selecttedSolution, int page = 1)
         {
             ViewBag.SelecttedSolution = selecttedSolution;
             IndexViewModel<SolutionIndexItemViewModel> data = new IndexViewModel<SolutionIndexItemViewModel>()
