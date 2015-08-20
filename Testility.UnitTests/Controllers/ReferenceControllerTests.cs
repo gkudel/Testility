@@ -12,7 +12,7 @@ using Testility.WebUI.Areas.Setup.Model;
 using System.Net;
 using Testility.WebUI.Model;
 
-namespace Testility.UnitTests
+namespace Testility.WebUI.Areas.Setup.Controllers
 {
     [TestClass]
     public class ReferenceControllerTests
@@ -54,11 +54,8 @@ namespace Testility.UnitTests
         }
         #endregion Index
 
-
         #region Edit & Create
-
         #region GET
-
         [TestMethod]
         public void Can_CreateReferences_Redirects()
         {
@@ -94,7 +91,6 @@ namespace Testility.UnitTests
         #endregion GET
 
         #region POST
-
         [TestMethod]
         public void Cannot_EditInvalidReference_Redirect()
         {

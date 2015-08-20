@@ -16,7 +16,7 @@ using Testility.WebUI.Services.Abstract;
 using Testility.WebUI.Model;
 using Testility.WebUI.Infrastructure;
 
-namespace Testility.UnitTests
+namespace Testility.WebUI.Areas.Setup.Controllers
 {
     [TestClass]
     public class SolutionControllerTests

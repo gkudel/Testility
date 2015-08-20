@@ -16,10 +16,8 @@ namespace Testility.Domain.Entities
 
     public class Solution
     {
-        public Solution()
-        {
-            References = new HashSet<Reference>();
-        }
+        private ICollection<Reference> references;
+
         public int Id { get; set; }
         [Required]
         [StringLength(100)]
@@ -30,7 +28,10 @@ namespace Testility.Domain.Entities
 
         public virtual ICollection<Item> Items { get; set; }
         public virtual ICollection<Class> Classes { get; set; }
-        public virtual ICollection<Reference> References { get; set; }
-        
+        public virtual ICollection<Reference> References
+        {
+            get { return references ?? (references = new HashSet<Reference>()); }
+            set { references = value; }
+        }        
     }
 }

@@ -39,29 +39,21 @@ namespace Testility.Domain.Concrete
 
         public void Save(Solution solution, int[] references)
         {
+            var referencedAssemblies = solution.References.Where(r => references?.Contains(r.Id) ?? true).ToList();
+            foreach (Reference r in referencedAssemblies)
+            {
+                solution.References.Remove(r);
+            }
+            foreach (int id in references?.Where(id => solution.References.FirstOrDefault(r => r.Id == id) == null) ?? new int[0])
+            {
+                solution.References.Add(GetReference(id));
+            }
             if (solution.Id == 0)
             {
-                if (references != null)
-                {
-                    foreach (int id in references.Where(id => solution.References.FirstOrDefault(r => r.Id == id) == null))
-                    {
-                        solution.References.Add(GetReference(id));
-                    }
-                }
                 context.Solutions.Add(solution);
             }
             else
-            {
-                var referencedAssemblies = solution.References.Where(r => !references.Contains(r.Id)).ToList();               
-                foreach (Reference r in referencedAssemblies)
-                {
-                    solution.References.Remove(r);
-                }
-                foreach (int id in references.Where(id => solution.References.FirstOrDefault(r => r.Id == id) == null))
-                {
-                    solution.References.Add(GetReference(id));
-                }
-
+            {           
                 var classes = context.Classes.Where(c => c.SolutionId == solution.Id).ToList();                    
                 foreach (Class c in classes)
                 {
