@@ -50,3 +50,12 @@ textarea:not(.sourcecode) {
    display: table-cell;
    text-align: right;
 }
+
+.nav-tabs > li > a{
+	cursor:pointer;
+}
+
+.nav-tabs li a span:hover {
+    color: red;
+	cursor:pointer;
+}

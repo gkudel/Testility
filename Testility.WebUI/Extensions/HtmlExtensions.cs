@@ -23,5 +23,18 @@ namespace Testility.WebUI.Extensions
             return DisplayNameHelper(ModelMetadata.FromLambdaExpression(expression2, new ViewDataDictionary<TClass>()),
                                      ExpressionHelper.GetExpressionText(expression2));
         }
+
+        internal static MvcHtmlString LabelFor(ModelMetadata metadata, string htmlFieldName)
+        {
+            string resolvedDisplayName = metadata.DisplayName ?? metadata.PropertyName ?? htmlFieldName.Split('.').Last();
+
+            return new MvcHtmlString(HttpUtility.HtmlEncode(resolvedDisplayName));
+        }
+
+        public static IHtmlString LabelFor<TModel, TClass, TProperty>(this HtmlHelper<TModel> helper, Expression<Func<TModel, IEnumerable<TClass>>> expression1, Expression<Func<TClass, TProperty>> expression2)
+        {
+            return LabelFor(ModelMetadata.FromLambdaExpression(expression2, new ViewDataDictionary<TClass>()),
+                                     ExpressionHelper.GetExpressionText(expression2));
+        }
     }
 }

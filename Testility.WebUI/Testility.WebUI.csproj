@@ -222,9 +222,9 @@
     <Content Include="Scripts\angular\framework\angular-touch.min.js" />
     <Content Include="Scripts\angular\framework\angular.js" />
     <Content Include="Scripts\angular\framework\angular.min.js" />
-    <Content Include="Scripts\angular\solution\browser-config.js" />
+    <Content Include="Scripts\angular\solution\controllers\solutioncontroller.js" />
     <Content Include="Scripts\angular\solution\solution.js" />
-    <Content Include="Scripts\angular\unit-test\browser-config.js" />
+    <Content Include="Scripts\angular\unit-test\unit-test.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Setup\Views\web.config" />

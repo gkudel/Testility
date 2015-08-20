@@ -1,6 +1,6 @@
 ﻿angular.module('browser', ['ngAnimate', 'ui.bootstrap']);
 
-angular.module('browser').controller('BrowserController', function ($scope, $modal, $log, config) {
+angular.module('browser').controller('BrowserController', ['$scope', '$modal', '$log', 'config', function ($scope, $modal, $log, config) {
 
     $scope.isResult = false;
     if (config.isResult !== undefined) {
@@ -30,10 +30,10 @@ angular.module('browser').controller('BrowserController', function ($scope, $mod
             $log.info('Modal dismissed at: ' + new Date());
         });
     };
-});
+}]);
 
 
-angular.module('browser').controller('BrowserInstnace', function ($scope, $modalInstance, items, config) {
+angular.module('browser').controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', function ($scope, $modalInstance, items, config) {
     $scope.allitems = items;
     $scope.title = config.title;
     $scope.selectedItem = [];
@@ -93,4 +93,4 @@ angular.module('browser').controller('BrowserInstnace', function ($scope, $modal
         }
         return $scope.selectedItem.map($scope.printItem).join();
     };
-});
+}]);

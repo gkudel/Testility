@@ -60,7 +60,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 {
                     new Item()
                 }
-            };            
+            };
             return View("Solution", Mapper.Map<SolutionViewModel>(s));
         }
 
