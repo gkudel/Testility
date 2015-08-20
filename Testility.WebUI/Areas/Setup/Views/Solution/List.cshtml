@@ -20,14 +20,14 @@
             <table class="table table-hover table-striped col-md-12 padding-bottom-10">
                 <thead>
                     <tr>
-                        <th class="col-md-3 col-sm-6">
+                        <th class="col-md-3 col-sm-6 col-xs-6">
                             @Html.DisplayNameFor(model => model.List, m => m.Name)
                         </th>
-                        <th class="col-md-3 hidden-sm">
+                        <th class="col-md-3 hidden-sm hidden-xs">
                             @Html.DisplayNameFor(model => model.List, m => m.Language)
                         </th>
-                        <th class="col-md-3 hidden-sm">Summary</th>
-                        <th class="col-md-3  col-sm-6"></th>
+                        <th class="col-md-3 hidden-sm hidden-xs">Summary</th>
+                        <th class="col-md-3  col-sm-6 col-xs-6"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,16 +44,16 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
-                            <td class="hidden-sm">
+                            <td class="hidden-sm hidden-xs">
                                 @Html.DisplayFor(modelItem => item.Language)
                             </td>
-                            <td class="hidden-sm">
-                                <div class="col-md-4">
+                            <td class="hidden-sm hidden-xs">
+                                <div class="col-md-4 col-sm-4">
                                     @Html.DisplayNameFor(model => model.List, m => m.Classes)<br />
                                     @Html.DisplayNameFor(model => model.List, m => m.Methods)<br />
                                     @Html.DisplayNameFor(model => model.List, m => m.Tests)
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-sm-4">
                                     <span class="badge">@item.Classes</span><br />
                                     <span class="badge">@item.Methods</span><br />
                                     <span class="badge">@item.Tests</span>
