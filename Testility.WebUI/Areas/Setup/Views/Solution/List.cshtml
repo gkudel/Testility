@@ -47,7 +47,17 @@
                             <td class="hidden-sm">
                                 @Html.DisplayFor(modelItem => item.Language)
                             </td>
-                            <td class="hidden-sm">@Html.DisplayFor(modelItem => item.Summary)</td>
+                            <td class="hidden-sm">
+                                <div class="col-md-4">
+                                    @Html.DisplayNameFor(model => model.List, m => m.Classes)<br />
+                                    @Html.DisplayNameFor(model => model.List, m => m.Methods)<br />
+                                    @Html.DisplayNameFor(model => model.List, m => m.Tests)
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="badge">@item.Classes</span><br />
+                                    <span class="badge">@item.Methods</span><br />
+                                    <span class="badge">@item.Tests</span>
+                                </div>
                             <td class="text-right">
                                 <div class="btn-group">
                                     <a href=" @Url.Action("List", new { selecttedSolution = item.Id, page = Model.PagingInfo.CurrentPage }) " class=" btn btn-default btn-sm" title="Details">

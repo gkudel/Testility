@@ -23,7 +23,9 @@ namespace Testility.WebUI.Infrastructure.Mapping
             Mapper.CreateMap<Solution, SolutionApi>();
 
             Mapper.CreateMap<Solution, SolutionIndexItemViewModel>()
-                .ForMember(i => i.Summary, opt => opt.ResolveUsing<SummaryResolver>().ConstructedBy(() => new SummaryResolver()));
+                .ForMember(i => i.Classes, opt => opt.ResolveUsing<ClassesCountResolver>().ConstructedBy(() => new ClassesCountResolver()))
+                .ForMember(i => i.Methods, opt => opt.ResolveUsing<MethodsCountResolver>().ConstructedBy(() => new MethodsCountResolver()))
+                .ForMember(i => i.Tests, opt => opt.ResolveUsing<TestsCountResolver>().ConstructedBy(() => new TestsCountResolver()));
 
             Mapper.CreateMap<Solution, SolutionViewModel>()
                 .ForMember(s => s.References, opt => opt.Ignore());
@@ -90,15 +92,27 @@ namespace Testility.WebUI.Infrastructure.Mapping
         }
     }
 
-    public class SummaryResolver : ValueResolver<Solution, string>
+    public class ClassesCountResolver : ValueResolver<Solution, int>
     {
-        protected override string ResolveCore(Solution solution)
+        protected override int ResolveCore(Solution solution)
         {
-            string ret = "Classes[{0}], Methods[{1}], Tests[{2}]";
-            ret = string.Format(ret, solution.Classes?.Count() ?? 0,
-                solution.Classes?.SelectMany(c => c.Methods)?.Count() ?? 0 ,
-                solution.Classes?.SelectMany(c => c.Methods)?.SelectMany(m => m.Tests)?.Count() ?? 0);
-            return ret;
+            return solution.Classes?.Count() ?? 0;
         }
     }
+
+    public class MethodsCountResolver : ValueResolver<Solution, int>
+    {
+        protected override int ResolveCore(Solution solution)
+        {
+            return solution.Classes?.SelectMany(c => c.Methods)?.Count() ?? 0;
+        }
+    }
+    public class TestsCountResolver : ValueResolver<Solution, int>
+    {
+        protected override int ResolveCore(Solution solution)
+        {
+            return solution.Classes?.SelectMany(c => c.Methods)?.SelectMany(m => m.Tests)?.Count() ?? 0;
+        }
+    }
+
 }

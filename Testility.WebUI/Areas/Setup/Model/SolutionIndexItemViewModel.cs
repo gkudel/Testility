@@ -11,7 +11,9 @@ namespace Testility.WebUI.Areas.Setup.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Summary { get; set; }
+        public int Classes { get; set; }
+        public int Methods { get; set; }
+        public int Tests { get; set; }
         public Language Language { get; set; }
     }
 }
