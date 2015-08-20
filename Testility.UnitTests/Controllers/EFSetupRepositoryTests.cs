@@ -110,7 +110,7 @@ namespace Testility.UnitTests
         [TestMethod]
         public void Cannot_DeleteSolutionWithWrongId()
         {
-            var result = Service.Delete(10);
+            var result = Service.DeleteSolution(10);
 
             MockSolution.Verify(m => m.Remove(It.IsAny<Solution>()), Times.Never);
             MockContext.Verify(m => m.SaveChanges(), Times.Never);
@@ -120,7 +120,7 @@ namespace Testility.UnitTests
         [TestMethod]
         public void Can_DeleteSolution()
         {
-            var result = Service.Delete(1);
+            var result = Service.DeleteSolution(1);
 
             MockSolution.Verify(m => m.Remove(It.IsAny<Solution>()), Times.Once);
             MockContext.Verify(m => m.SaveChanges(), Times.Once);

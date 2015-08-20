@@ -72,7 +72,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 try {
                     Reference reference = Mapper.Map<Reference>(model);
-                    setupRepository.SaveReferences(reference);
+                    setupRepository.Save(reference);
                     TempData["savemessage"] = string.Format("{0} has been added", model.Name);
                     return RedirectToAction("List");
                 }
@@ -108,7 +108,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             try
             {
-                setupRepository.DeleteReferences(model.Id);
+                setupRepository.DeleteReference(model.Id);
                 TempData["savemessage"] = string.Format("Solution has been deleted");
             }
             catch (Exception /*ex*/ )

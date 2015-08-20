@@ -41,9 +41,12 @@ namespace Testility.Domain.Concrete
         {
             if (solution.Id == 0)
             {
-                foreach (int id in references.Where(id => solution.References.FirstOrDefault(r => r.Id == id) == null))
+                if (references != null)
                 {
-                    solution.References.Add(GetReference(id));
+                    foreach (int id in references.Where(id => solution.References.FirstOrDefault(r => r.Id == id) == null))
+                    {
+                        solution.References.Add(GetReference(id));
+                    }
                 }
                 context.Solutions.Add(solution);
             }
@@ -93,7 +96,7 @@ namespace Testility.Domain.Concrete
             Commit();
         }
 
-        public bool Delete(int id)
+        public bool DeleteSolution(int id)
         {
             Solution solution = context.Solutions.FirstOrDefault(s => s.Id == id);
             if (solution != null)
@@ -110,12 +113,10 @@ namespace Testility.Domain.Concrete
             return context.Solutions.FirstOrDefault(s => s.Name == name && (id == null || s.Id != id)) != null;
         }
 
-
         public IQueryable<Reference> GetReferences()
         {
             return context.References;
         }
-
 
         public Reference GetReference(int id)
         {
@@ -123,7 +124,7 @@ namespace Testility.Domain.Concrete
             return query.FirstOrDefault();
         }
 
-        public void SaveReferences(Reference reference)
+        public void Save(Reference reference)
         {
             if (reference.Id == 0)
             {
@@ -137,9 +138,7 @@ namespace Testility.Domain.Concrete
             Commit();
         }
 
-
-
-        public bool DeleteReferences(int id)
+        public bool DeleteReference(int id)
         {
             Reference references = context.References.FirstOrDefault(s => s.Id == id);
             if (references != null)

@@ -10,6 +10,7 @@ using Testility.WebUI.Infrastructure;
 using System.Web.Mvc;
 using Testility.WebUI.Areas.Setup.Model;
 using System.Net;
+using Testility.WebUI.Model;
 
 namespace Testility.UnitTests
 {
@@ -35,8 +36,8 @@ namespace Testility.UnitTests
             ServiceMock = new Mock<ISetupRepository>();
             ServiceMock.Setup(x => x.GetReferences()).Returns(RefList);
             ServiceMock.Setup(x => x.GetReference(3)).Returns(singleRef);
-            ServiceMock.Setup(x => x.DeleteReferences(It.IsAny<int>())).Returns(true);
-            ServiceMock.Setup(x => x.SaveReferences(It.IsAny<Reference>()));
+            ServiceMock.Setup(x => x.DeleteReference(It.IsAny<int>())).Returns(true);
+            ServiceMock.Setup(x => x.Save(It.IsAny<Reference>()));
 
             AutoMapperConfiguration.Configure();
             referencesController = new ReferencesController (ServiceMock.Object);
@@ -48,8 +49,8 @@ namespace Testility.UnitTests
         public void List_ContainsAllReferences()
         {
             var result = referencesController.List();
-            var model = (result as ViewResult).Model as IEnumerable<ReferencesViewModel>;
-            Assert.AreEqual(2, model.Count());
+            var model = (result as ViewResult).Model as IndexViewModel<ReferencesViewModel>;
+            Assert.AreEqual(2, model.List.Count());
         }
         #endregion Index
 
@@ -109,7 +110,7 @@ namespace Testility.UnitTests
             ReferencesViewModel reference = new ReferencesViewModel() { Name = "ok" };
             var actionResult = referencesController.Edit(reference) as RedirectToRouteResult;
 
-            ServiceMock.Verify(x => x.SaveReferences(It.IsAny<Reference>()), Times.Once);
+            ServiceMock.Verify(x => x.Save(It.IsAny<Reference>()), Times.Once);
             Assert.AreNotEqual(null, referencesController.TempData["savemessage"]);
             Assert.AreEqual("List", actionResult.RouteValues["action"]);
         }
@@ -118,13 +119,13 @@ namespace Testility.UnitTests
         public void Cannot_EditSolution_SaveException()
         {
 
-            ServiceMock.Setup(x => x.SaveReferences(It.IsAny<Reference>())).Throws(new Exception());
+            ServiceMock.Setup(x => x.Save(It.IsAny<Reference>())).Throws(new Exception());
             ReferencesViewModel reference = new ReferencesViewModel() { Name = "ok" };
             var actionResult = referencesController.Edit(reference) as ViewResult;
             var model = (actionResult as ViewResult).Model as ReferencesViewModel;
 
 
-            ServiceMock.Verify(x => x.SaveReferences(It.IsAny<Reference>()), Times.Once);
+            ServiceMock.Verify(x => x.Save(It.IsAny<Reference>()), Times.Once);
             Assert.AreEqual(null, referencesController.TempData["savemessage"]);
             Assert.AreEqual("Reference", actionResult.ViewName);
             Assert.AreEqual("ok", model.Name);
@@ -165,11 +166,11 @@ namespace Testility.UnitTests
         [TestMethod]
         public void Cannot_Delete_Reference_WhenException()
         {
-            ServiceMock.Setup(x => x.DeleteReferences(It.IsAny<int>())).Throws(new Exception());
+            ServiceMock.Setup(x => x.DeleteReference(It.IsAny<int>())).Throws(new Exception());
 
             ReferencesViewModel reference = new ReferencesViewModel() { Id = 3, Name = "ok" };
             var result = referencesController.DeleteConfirmed(reference) as RedirectToRouteResult;
-            ServiceMock.Verify(x => x.DeleteReferences(It.IsAny<int>()), Times.Once);
+            ServiceMock.Verify(x => x.DeleteReference(It.IsAny<int>()), Times.Once);
             Assert.AreEqual("List", result.RouteValues["action"]);
         }
 
@@ -178,7 +179,7 @@ namespace Testility.UnitTests
         {
             ReferencesViewModel reference = new ReferencesViewModel() { Id = 3, Name = "ok" };
             var result = referencesController.DeleteConfirmed(reference) as RedirectToRouteResult;
-            ServiceMock.Verify(x => x.DeleteReferences(It.IsAny<int>()), Times.Once);
+            ServiceMock.Verify(x => x.DeleteReference(It.IsAny<int>()), Times.Once);
             Assert.AreNotEqual(null, referencesController.TempData["savemessage"]);
             Assert.AreEqual("List", result.RouteValues["action"]);
         }

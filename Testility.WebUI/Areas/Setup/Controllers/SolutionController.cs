@@ -141,7 +141,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             try
             {
-                setupRepository.Delete(id);
+                setupRepository.DeleteSolution(id);
                 TempData["savemessage"] = string.Format("Solution has been deleted");
             }
             catch (Exception /*ex*/ )

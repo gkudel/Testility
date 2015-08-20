@@ -68,8 +68,6 @@ namespace Testility.WebUI.Infrastructure.Mapping
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Test, Domain.Entities.Test>((i, o) => i.Name == o.Name));
             Mapper.CreateMap<Engine.Model.Test, Domain.Entities.Test>()
                 .ForMember(e => e.Id, opt => opt.Ignore());
-
-
             #endregion Setup
 
             #region UnitTes
