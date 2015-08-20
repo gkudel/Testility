@@ -12,7 +12,7 @@
             PrintElement: function (element) { return element.Name; },
             title: 'References',
             isResult: true,
-            resultName: 'Refrences',
+            resultName: 'References',
             getResultValue: function(item) {
                 return item.Id;
             }

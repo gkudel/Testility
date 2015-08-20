@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Testility.Domain.Entities;
 
-namespace Testility.WebUI.Areas.Setup.Models
+namespace Testility.WebUI.Areas.Setup.Model
 {
-    public class ItemVM
+    public class ItemViewModel
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Item Name is requred")]

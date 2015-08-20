@@ -43,7 +43,7 @@ namespace Testility.WebUI.Controllers.Tests
         {
             unitTestController.PageSize = 3;
 
-            UnitTestIndexItemVM[] result = ((UnitTestIndexVM)unitTestController.List().Model).List.ToArray();
+            UnitTestIndexItemViewModel[] result = ((IndexViewModel<UnitTestIndexItemViewModel>)unitTestController.List().Model).List.ToArray();
 
             Assert.AreEqual(result.Length, 3);
             Assert.AreEqual(1, result[0].Id);
@@ -59,7 +59,7 @@ namespace Testility.WebUI.Controllers.Tests
         {
             unitTestController.PageSize = 3;
 
-            UnitTestIndexItemVM[] result = ((UnitTestIndexVM)unitTestController.List(1).Model).List.ToArray();
+            UnitTestIndexItemViewModel[] result = ((IndexViewModel<UnitTestIndexItemViewModel>)unitTestController.List(1).Model).List.ToArray();
 
             Assert.AreEqual(result.Length, 3);
             Assert.AreEqual(1, result[0].Id);
@@ -72,7 +72,7 @@ namespace Testility.WebUI.Controllers.Tests
         {
             unitTestController.PageSize = 3;
 
-            UnitTestIndexItemVM[] result = ((UnitTestIndexVM)unitTestController.List(2).Model).List.ToArray();
+            UnitTestIndexItemViewModel[] result = ((IndexViewModel<UnitTestIndexItemViewModel>)unitTestController.List(2).Model).List.ToArray();
 
             Assert.AreEqual(result.Length, 2);
             Assert.AreEqual(4, result[0].Id);

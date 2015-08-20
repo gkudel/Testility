@@ -8,7 +8,7 @@ using Testility.Domain.Entities;
 using System.Collections.Generic;
 using Testility.WebUI.Infrastructure;
 using System.Web.Mvc;
-using Testility.WebUI.Areas.Setup.Models;
+using Testility.WebUI.Areas.Setup.Model;
 using System.Net;
 
 namespace Testility.UnitTests

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using Testility.Domain.Entities;
 using Testility.WebUI.Model;
 
-namespace Testility.WebUI.Areas.Setup.Models
+namespace Testility.WebUI.Model
 {
-    public class SolutionIndexVM
+    public class IndexViewModel<T> where T : class
     {
-        public IEnumerable<SolutionIndexItemVM> List { get; set; }
-        public SolutionIndexItemVM Selected { get; set; }
+        public IEnumerable<T> List { get; set; }
+        public T Selected { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }
 }

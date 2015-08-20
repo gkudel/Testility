@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Testility.WebUI.Model
 {
-    public class UnitTestIndexItemVM
+    public class UnitTestIndexItemViewModel
     {
         public int Id { get; set; }
         [Display(Name ="Solution Name")]

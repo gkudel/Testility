@@ -24,14 +24,14 @@ namespace Testility.WebUI.Controllers
         // GET: UnitTest
         public ViewResult List(int page = 1)
         {
-            UnitTestIndexVM data = new UnitTestIndexVM()
+            IndexViewModel<UnitTestIndexItemViewModel> data = new IndexViewModel<UnitTestIndexItemViewModel>()
             {
                 List = unitTestRepository.GetSolutions()
                         .OrderBy(p => p.Id)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize)
                         .ToList()
-                        .Select(s => Mapper.Map<UnitTestSolution, UnitTestIndexItemVM>(s)),
+                        .Select(s => Mapper.Map<UnitTestSolution, UnitTestIndexItemViewModel>(s)),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,

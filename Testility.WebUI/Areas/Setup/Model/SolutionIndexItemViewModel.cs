@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Testility.Domain.Entities;
 
-namespace Testility.WebUI.Areas.Setup.Models
+namespace Testility.WebUI.Areas.Setup.Model
 {
-    public class SolutionIndexItemVM
+    public class SolutionIndexItemViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

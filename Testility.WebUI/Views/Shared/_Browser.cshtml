@@ -14,7 +14,7 @@
             </div>
             <div class="panel-body">
                 <div class="list-group">
-                    <a ng-class="selected(item) ? 'list-group-item active' : 'list-group-item'" ng-repeat="item in items | filter:searchText" href="#" ng-click="$event.preventDefault(); mark(item)">{{ printItem(item) }}</a>
+                    <a ng-class="selected(item) ? 'list-group-item text-primary active' : 'list-group-item text-primary'" ng-repeat="item in items | filter:searchText" href="#" ng-click="$event.preventDefault(); mark(item)">{{ printItem(item) }}</a>
                 </div>
                 <b>{{ printSelected() }}</b>
             </div>
@@ -32,6 +32,4 @@
         </div>
     </div>    
 </script>
-<script type="text/ng-template">
-    <input type="hidden" ng-if="{{ isResult }}" ng-repeat="item in selected" name="{{ resultName }}" value="{{ getResultValue(item) }}" />
-</script>
+<input type="hidden" ng-if="{{ isResult }}" ng-repeat="item in selected" name="{{ resultName }}" value="{{ getResultValue(item) }}" />

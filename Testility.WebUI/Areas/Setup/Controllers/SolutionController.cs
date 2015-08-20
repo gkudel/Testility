@@ -10,7 +10,7 @@ using Testility.Engine.Abstract;
 using Testility.Engine.Model;
 using System.Collections.Generic;
 using System.Linq;
-using Testility.WebUI.Areas.Setup.Models;
+using Testility.WebUI.Areas.Setup.Model;
 using Testility.WebUI.Model;
 using Testility.WebUI.Services.Abstract;
 using AutoMapper.QueryableExtensions;
@@ -33,14 +33,14 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public ActionResult List(int? selecttedSolution, int page = 1)
         {
             ViewBag.SelecttedSolution = selecttedSolution;
-            SolutionIndexVM data = new SolutionIndexVM()
+            IndexViewModel<SolutionIndexItemViewModel> data = new IndexViewModel<SolutionIndexItemViewModel>()
             {
                 List = setupRepository.GetSolutions(false)
                     .OrderBy(p => p.Id)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize)
                     .ToList()
-                    .Select(s => Mapper.Map<Solution, SolutionIndexItemVM>(s)),
+                    .Select(s => Mapper.Map<Solution, SolutionIndexItemViewModel>(s)),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
@@ -61,7 +61,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     new Item()
                 }
             };            
-            return View("Solution", Mapper.Map<SolutionVM>(s));
+            return View("Solution", Mapper.Map<SolutionViewModel>(s));
         }
 
         public ActionResult Edit(int? id)
@@ -75,12 +75,12 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return HttpNotFound();
             }
-            return View("Solution", Mapper.Map<SolutionVM>(solution));
+            return View("Solution", Mapper.Map<SolutionViewModel>(solution));
         }
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(SolutionVM model)
+        public ActionResult EditPost(SolutionViewModel model)
         {
             if (model == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             Solution solution = new Solution();
@@ -96,10 +96,10 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
                 try
                 {
-                    IList<Error> errors = compilerService.Compile(solution, model.Refrences);
+                    IList<Error> errors = compilerService.Compile(solution, model.References);
                     if (errors.Count == 0)
                     {
-                        setupRepository.Save(solution, model.Refrences);
+                        setupRepository.Save(solution, model.References);
                         TempData["savemessage"] = string.Format("{0} has been edited", model.Name);
                         return RedirectToAction("List");
                     }
@@ -132,7 +132,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                return HttpNotFound();
             }
-            return View(Mapper.Map<SolutionVM>(solution));
+            return View(Mapper.Map<SolutionViewModel>(solution));
         }
 
         [HttpPost, ActionName("Delete")]

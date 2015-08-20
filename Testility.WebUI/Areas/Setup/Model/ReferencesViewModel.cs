@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using Testility.WebUI.Infrastructure.CustomValidation;
 
-namespace Testility.WebUI.Areas.Setup.Models
+namespace Testility.WebUI.Areas.Setup.Model
 {
     public class ReferencesViewModel
     {

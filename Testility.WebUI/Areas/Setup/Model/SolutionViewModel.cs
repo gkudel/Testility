@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Testility.Domain.Entities;
 
-namespace Testility.WebUI.Areas.Setup.Models
+namespace Testility.WebUI.Areas.Setup.Model
 {    
-    public class SolutionVM
+    public class SolutionViewModel
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Solution Name is requred")]
@@ -19,7 +19,7 @@ namespace Testility.WebUI.Areas.Setup.Models
         public string Name { get; set; }
         public Language Language { get; set; }
         [Display(Name = "References")]
-        public int[] Refrences { get; set; }
-        public virtual ICollection<ItemVM> Items { get; set; }
+        public int[] References { get; set; }
+        public virtual ICollection<ItemViewModel> Items { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using AutoMapper.QueryableExtensions;
 using Testility.Engine.Model;
 using Testility.WebUI.Model;
 using Testility.Domain.Infrastructure.Mapping;
-using Testility.WebUI.Areas.Setup.Models;
+using Testility.WebUI.Areas.Setup.Model;
 
 namespace Testility.WebUI.Infrastructure.Mapping
 {
@@ -22,18 +22,19 @@ namespace Testility.WebUI.Infrastructure.Mapping
             #region Setup
             Mapper.CreateMap<Solution, SolutionApi>();
 
-            Mapper.CreateMap<Solution, SolutionIndexItemVM>()
+            Mapper.CreateMap<Solution, SolutionIndexItemViewModel>()
                 .ForMember(i => i.Summary, opt => opt.ResolveUsing<SummaryResolver>().ConstructedBy(() => new SummaryResolver()));
 
-            Mapper.CreateMap<Solution, SolutionVM>();
-            Mapper.CreateMap<SolutionVM, Solution>()
-                .ForMember(s => s.CompiledDll, opt => opt.Ignore());
+            Mapper.CreateMap<Solution, SolutionViewModel>()
+                .ForMember(s => s.References, opt => opt.Ignore());
+            Mapper.CreateMap<SolutionViewModel, Solution>()
+                .ForMember(s => s.CompiledDll, opt => opt.Ignore());                
 
-            Mapper.CreateMap<ICollection<ItemVM>, ICollection<Item>>()
-                .ConvertUsing(new CustomConvwerter<ItemVM, Item>((v, t) => v.Id == t.Id));
+            Mapper.CreateMap<ICollection<ItemViewModel>, ICollection<Item>>()
+                .ConvertUsing(new CustomConvwerter<ItemViewModel, Item>((v, t) => v.Id == t.Id));
 
-            Mapper.CreateMap<Item, ItemVM>();
-            Mapper.CreateMap<ItemVM, Item>()
+            Mapper.CreateMap<Item, ItemViewModel>();
+            Mapper.CreateMap<ItemViewModel, Item>()
                 .ForMember(i => i.Solution, opt => opt.Ignore());
 
             Mapper.CreateMap<Solution, Input>()
@@ -72,7 +73,7 @@ namespace Testility.WebUI.Infrastructure.Mapping
             #endregion Setup
 
             #region UnitTes
-            Mapper.CreateMap<UnitTestSolution, UnitTestIndexItemVM>();
+            Mapper.CreateMap<UnitTestSolution, UnitTestIndexItemViewModel>();
             #endregion UnitTes
         }
     }

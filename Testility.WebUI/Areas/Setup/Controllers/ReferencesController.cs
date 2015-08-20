@@ -4,27 +4,44 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Testility.Domain.Abstract;
-using Testility.WebUI.Areas.Setup.Models;
+using Testility.WebUI.Areas.Setup.Model;
 using AutoMapper;
 using Testility.Domain.Entities;
 using System.Net;
 using AutoMapper.QueryableExtensions;
+using Testility.WebUI.Model;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class ReferencesController : Controller
     {
         private readonly ISetupRepository setupRepository;
+        public int PageSize { get; set; }
 
         public ReferencesController(ISetupRepository setupRepository)
         {
             this.setupRepository = setupRepository;
+            PageSize = 3;
         }
 
-        public ActionResult List()
+        public ActionResult List(int page = 1)
         {
-            IList<ReferencesViewModel> model = Mapper.Map<IList<ReferencesViewModel>>(setupRepository.GetReferences().Project().To< ReferencesViewModel>());
-            return View(model);
+            IndexViewModel<ReferencesViewModel> data = new IndexViewModel<ReferencesViewModel>()
+            {
+                List = setupRepository.GetReferences()
+                    .OrderBy(p => p.Id)
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize)
+                    .ToList()
+                    .Select(r => Mapper.Map<Reference, ReferencesViewModel>(r)),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = setupRepository.GetSolutions().Count()
+                }
+            };
+            return View(data);
         }
 
         public ActionResult Create()

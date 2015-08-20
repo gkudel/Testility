@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Testility.WebUI.Areas.Setup.Models.ReferencesViewModel>
+﻿@model Testility.WebUI.Model.IndexViewModel<Testility.WebUI.Areas.Setup.Model.ReferencesViewModel>
 @using Testility.WebUI.Extensions;
 
 @{
@@ -21,12 +21,11 @@
             <table class="table">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Name)
+                        @Html.DisplayNameFor(model => model.List, r => r.Name)
                     </th>
                     <th></th>
                 </tr>
-
-                @foreach (var item in Model)
+                @foreach (var item in Model.List)
                 {
                     <tr>
                         <td>
@@ -41,12 +40,16 @@
                                 <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-sm" title="Delete">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </a>
-                              </div>
+                            </div>
                         </td>
                     </tr>
                 }
 
             </table>
-            </div>
         </div>
+    </div>
+    <div class="panel-footer">
+        <div class="text-center">@Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x }))</div>
+    </div>
+
 </div>
