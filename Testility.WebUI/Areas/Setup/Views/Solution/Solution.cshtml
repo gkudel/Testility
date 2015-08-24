@@ -5,7 +5,7 @@
     ViewBag.Title = "Solution Explorer";
 }
 
-@using (Html.BeginForm("Edit", "Solution", FormMethod.Post, new { enctype = "multipart/form-data", id = "Solution", role = "form", @ng_app= "solutionApp" }))
+@using (Html.BeginForm("Edit", "Solution", FormMethod.Post, new { enctype = "multipart/form-data", id = "Solution", role = "form"}))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -39,33 +39,6 @@
                 </div>
             </div>
             <div>
-                <div role="tabpanel">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" ng-repeat="item in Items" ng-click="selectTab($index)" ng-class="{'active':selectedTab == $index}">
-                            <a data-target="#tab" aria-controls="home" role="tab" data-toggle="tab">{{item.Name}} <span ng-click="deleteTab($index)" class="glyphicon glyphicon-remove"></span></a>
-                        </li>
-                        <li role="presentation" ng-click="addTab()">
-                            <a aria-controls="home" role="tab" data-toggle="tab">( + )</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="tab">
-                            <div class="form-horizontal  padding-top-10">
-                                <div class="form-group">
-                                    <span class="control-label col-md-2">@Html.LabelFor(model => model.Items, i => i.Name)</span>
-                                    <div class="col-md-10">
-                                        @Html.TextBox("Items[$index].Name", "", new { @class = "form-control", @ng_model = "Items[selectedTab].Name" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        @Html.TextArea("Items[$index].Code", "", new { @class = "form-control sourcecode", @rows = "25", @ng_model = "Items[selectedTab].Code" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="panel-footer">

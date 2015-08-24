@@ -222,6 +222,7 @@
     <Content Include="Scripts\angular\framework\angular-touch.min.js" />
     <Content Include="Scripts\angular\framework\angular.js" />
     <Content Include="Scripts\angular\framework\angular.min.js" />
+    <Content Include="Scripts\angular\main.js" />
     <Content Include="Scripts\angular\solution\controllers\solutioncontroller.js" />
     <Content Include="Scripts\angular\solution\solution.js" />
     <Content Include="Scripts\angular\unit-test\unit-test.js" />

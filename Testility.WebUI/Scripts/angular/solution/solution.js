@@ -1,4 +1,4 @@
-﻿angular.module('solutionApp', ['browser'])
+﻿angular.module('Testility')
     .factory('config', function ($http, $q) {
         return {
             getDataSource: function () {
