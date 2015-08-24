@@ -16,6 +16,7 @@ namespace Testility.Domain.Concrete
         public IdentityServices(EFDbContext context)
         {
             db = context;
+
             userStore = new UserStore<IdentityUser>(context);
             userMenager = new UserManager<IdentityUser>(userStore);
             userMenager.UserValidator = new UserValidator<IdentityUser>(userMenager) {RequireUniqueEmail = true, AllowOnlyAlphanumericUserNames = false };
