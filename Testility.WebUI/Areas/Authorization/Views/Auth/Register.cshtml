@@ -1,0 +1,62 @@
+﻿@model Testility.WebUI.Areas.Authorization.Models.RegisterVM
+
+
+@using (Html.BeginForm("Register", "Auth", FormMethod.Post))
+{
+  
+   
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div><h2><strong><span class="glyphicon glyphicon-edit"></span>Register New User</strong></h2></div> 
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model=>model.Id)
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="panel-body">
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+               
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+              
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+              
+            </div>
+           
+             <div class="form-group">
+                @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+
+            </div>
+
+        </div>
+        <div class="panel-footer">
+            <div class="table">
+                <div class="td-right">
+                    <button type="submit" value="Save" class="btn btn-primary btn-lg">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Create
+                    </button>
+                </div>
+            </div>
+         </div>
+</div>
+}

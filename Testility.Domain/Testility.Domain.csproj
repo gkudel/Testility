@@ -42,6 +42,14 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -83,8 +91,10 @@
   <ItemGroup>
     <Compile Include="Abstract\ISetupRepository.cs" />
     <Compile Include="Abstract\IUnitTestRepository.cs" />
+    <Compile Include="Abstract\IIdentityServices.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFSetupRepository.cs" />
+    <Compile Include="Concrete\IdentityServices.cs" />
     <Compile Include="Concrete\UnitTestRepository.cs" />
     <Compile Include="Entities\Reference.cs" />
     <Compile Include="Entities\Solution.cs" />
@@ -100,6 +110,10 @@
     <Compile Include="Migrations\201508191223177_Init.cs" />
     <Compile Include="Migrations\201508191223177_Init.Designer.cs">
       <DependentUpon>201508191223177_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201508240653438_Init1.cs" />
+    <Compile Include="Migrations\201508240653438_Init1.Designer.cs">
+      <DependentUpon>201508240653438_Init1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,6 +131,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201508191223177_Init.resx">
       <DependentUpon>201508191223177_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508240653438_Init1.resx">
+      <DependentUpon>201508240653438_Init1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

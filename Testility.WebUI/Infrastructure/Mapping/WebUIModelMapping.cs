@@ -8,6 +8,8 @@ using Testility.Engine.Model;
 using Testility.WebUI.Model;
 using Testility.Domain.Infrastructure.Mapping;
 using Testility.WebUI.Areas.Setup.Model;
+using Testility.WebUI.Areas.Authorization.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Testility.WebUI.Infrastructure.Mapping
 {
@@ -75,6 +77,15 @@ namespace Testility.WebUI.Infrastructure.Mapping
             #region UnitTes
             Mapper.CreateMap<UnitTestSolution, UnitTestIndexItemViewModel>();
             #endregion UnitTes
+
+
+            #region Identity
+            Mapper.CreateMap<RegisterVM, IdentityUser>()
+                .ForMember(x => x.UserName, opt => opt.MapFrom(a => a.Name))
+                .ForMember(z=>z.Id, opt => opt.Ignore());
+            Mapper.CreateMap<IdentityUser, RegisterVM>().ForMember(x => x.Name, opt => opt.MapFrom(a => a.UserName));
+            Mapper.CreateMap<LoginVM, IdentityUser>();
+            #endregion Identity
         }
     }
 

@@ -7,6 +7,7 @@ using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using AutoMapper;
 using System.Linq.Expressions;
+using Microsoft.AspNet.Identity;
 
 namespace Testility.Domain.Concrete
 {

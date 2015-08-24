@@ -1,4 +1,6 @@
-﻿<ul class="nav navbar-nav">
+﻿@using Microsoft.AspNet.Identity
+
+<ul class="nav navbar-nav">
     <li><a href="@Url.Action("Create", "Solution", new { area = "Setup"})"><span class="glyphicon glyphicon-plus" /> Project</a></li>
     <li><a href="#"><span class="glyphicon glyphicon-folder-open" /> Project</a></li>
     <li><a href="@Url.Action("List", "Solution", new { area = "Setup"})"><span class="glyphicon glyphicon-list" /> Projects</a></li>
@@ -6,7 +8,17 @@
 </ul>
 <ul class="nav navbar-nav navbar-right">
     <li><a href="#"><span class="glyphicon glyphicon-search"></span> Search</a></li>
-    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    @if (Request.IsAuthenticated)
+    {
+        <li>
+            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        </li>
+        <li><<a href="@Url.Action("LogOut", "Auth", new { area = "Authorization" })"><span class="" />Log off</a></li>
+    }
+    else
+    {
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    }
 </ul>
 
