@@ -11,7 +11,7 @@
             <div><h2><strong><span class="glyphicon glyphicon-edit"></span>Register New User</strong></h2></div> 
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model=>model.Id)
-            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
         
         <div class="panel-body">

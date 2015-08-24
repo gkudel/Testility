@@ -94,6 +94,7 @@
     <Compile Include="Abstract\IIdentityServices.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFSetupRepository.cs" />
+    <Compile Include="Concrete\EmailServices.cs" />
     <Compile Include="Concrete\IdentityServices.cs" />
     <Compile Include="Concrete\UnitTestRepository.cs" />
     <Compile Include="Entities\Reference.cs" />

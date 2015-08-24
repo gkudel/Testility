@@ -10,6 +10,8 @@ namespace Testility.WebUI.App_Start
     {
         public void Configuration(IAppBuilder app)
         {
+            app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = "ApplicationCookie",

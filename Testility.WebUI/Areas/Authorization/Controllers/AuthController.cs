@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Linq;
+using System.Collections.Generic;
+
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -81,11 +84,13 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                         var result = await identityServices.CreateAsync(newUser, model.Password);
                         if (result.Succeeded)
                         {
+                            identityServices.SendConfirmationEMail(User.Identity.GetUserId());
                             var identity = await identityServices.CreateIdentityAsync(newUser, "ApplicationCookie");
                             SignInToSite(identity);
                             return RedirectToAction("List", "Solution", new { area = "Setup" });
                         }
-                        ModelState.AddModelError("", "Email already taken");
+                        result.Errors.ToList().ForEach(a => ModelState.AddModelError("", a));
+                        
                         return View();
                     }
                     catch (Exception e)

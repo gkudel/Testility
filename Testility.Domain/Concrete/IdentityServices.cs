@@ -16,12 +16,16 @@ namespace Testility.Domain.Concrete
         public IdentityServices(EFDbContext context)
         {
             db = context;
-
             userStore = new UserStore<IdentityUser>(context);
             userMenager = new UserManager<IdentityUser>(userStore);
-            userMenager.UserValidator = new UserValidator<IdentityUser>(userMenager) {RequireUniqueEmail = true, AllowOnlyAlphanumericUserNames = false };
+            userMenager.UserValidator = new UserValidator<IdentityUser>(userMenager) { RequireUniqueEmail = true, AllowOnlyAlphanumericUserNames = false };
+            userMenager.PasswordValidator = new PasswordValidator() { RequiredLength = 6, RequireLowercase = true, RequireUppercase = true, RequireDigit = true };
+            userMenager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<IdentityUser>
+            {
+                Subject = "Security Code",
+                BodyFormat = "Your security code is {0}"
+            });
         }
-
         public Task<IdentityUser> GetUserAsync(string name, string password)
         {
             return userMenager.FindAsync(name, password);
@@ -53,6 +57,13 @@ namespace Testility.Domain.Concrete
         {
             userMenager.Update(user);
             Save();
+        }
+
+        public async void SendConfirmationEMail(string id)
+        {
+            string code = await userMenager.GenerateEmailConfirmationTokenAsync(id);
+            var callbackUrl = ""; //Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+            await userMenager.SendEmailAsync(id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
         }
 
         public void Save()
