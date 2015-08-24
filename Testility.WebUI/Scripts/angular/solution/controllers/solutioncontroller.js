@@ -1,18 +1,4 @@
 ﻿angular.module('Testility')
-    .directive("codeArea", function () {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            scope: true,
-            link: function ($scope, $element, $attr) {
-                CodeMirror.fromTextArea($element[0], {
-                    matchBrackets: true,
-                    mode: "text/x-csharp",
-                    lineNumbers: true
-                });
-            }
-        };
-    })
     .controller('SolutionController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         var array = /Solution\/Edit\/(\d+)/.exec($location.absUrl());
         var id = undefined;
@@ -38,3 +24,6 @@
             $scope.Solution.Items.push({ Id: 0, Name: 'Any Name', active: true, SolutionId: $scope.Solution.Id });
         }
     }])
+    .controller("CodeController", ['$scope', function ($scope) {
+        $scope.code = $scope.$parent.item.Code;
+    }]);

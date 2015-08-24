@@ -17,10 +17,9 @@
         </div>
         <div class="panel-body">
             <div class="text-right col-md-4 col-md-offset-8">
-                <div class="btn-group btn-group-justified" ng-controller="BrowserController">
+                <div class="btn-group btn-group-justified">
                     <a href="" ng-click="addTab()" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> Item </a>
-                    <a id="References" ng-click="open('lg')" data-toggle="modal" data-target="#myModal" href="" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
-                    @{ Html.RenderPartial("_Browser"); }
+                    <a id="References" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
                 </div>
             </div>
             <div>
@@ -49,10 +48,8 @@
                                         @Html.TextBox("Items[{{$index}}].Name", "", new { @class = "form-control", @id = "Items[{{$index}}].Name", @ng_model = "item.Name" })
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <textarea  name="tems[{{$index}}].Code" id="Items[{{$index}}].Code" rows="25" ng-model="item.Code" >{{item.Code}}</textarea>
-                                    </div>
+                                <div class="padding-non" ng-controller="CodeController">
+                                    <textarea  ui-codemirror ng-model="code"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +76,6 @@
 
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
-	@Scripts.Render("~/bundles/angular-ui")
 	@Scripts.Render("~/bundles/solution")
 }
 @section css{
