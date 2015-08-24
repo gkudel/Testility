@@ -46,7 +46,8 @@ angular.module('ui.browser')
                     },
                     config: function () {
                         return opts;
-                    }
+                    },
+                    selected: $scope.selected
                 }
             });
             modalInstance.result.then(function (selectedItem) {
@@ -58,10 +59,10 @@ angular.module('ui.browser')
         }
     }]);
 
-angular.module('ui.browser').controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', function ($scope, $modalInstance, items, config) {
+angular.module('ui.browser').controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', 'selected', function ($scope, $modalInstance, items, config, selected) {
     $scope.allitems = items;
     $scope.title = config.title;
-    $scope.selectedItem = [];
+    $scope.selectedItem = selected || [];
 
     $scope.itemsPerPage = 3;
     $scope.currentPage = 1;
@@ -85,23 +86,26 @@ angular.module('ui.browser').controller('BrowserInstnace', ['$scope', '$modalIns
         $modalInstance.dismiss('cancel');
     };
 
+    var indexOf = function(item) {
+        return $.grep($scope.selectedItem, function (e) { return config.Equal(e, item); })
+    }
     $scope.selected = function (item) {
-        return $scope.selectedItem.indexOf(item) >= 0;
+        return indexOf(item) > 1
     };
 
     $scope.mark = function (item) {
         if (config.MultiSelection) {
             if ($scope.selected(item)) {
-                var index = $scope.selectedItem.indexOf(item);
+                var index = indexOf(item);
                 $scope.selectedItem.splice(index, 1);
             } else {
-                $scope.selectedItem.push(item);
+                $scope.selectedItem.push(config.GetResultValue(item));
             }
         } else {
             if ($scope.selected(item)) {
                 $scope.selectedItem = [];
             } else {
-                $scope.selectedItem = [item];
+                $scope.selectedItem = [config.GetResultValue(item)];
 
             }
         }

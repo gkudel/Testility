@@ -11,6 +11,8 @@
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
 
+    <input ng-repeat="r in References " type="hidden" name="References"  id="References[{{$index}}]" ng-model="r" />
+
     <div class="panel panel-default" ng-controller="SolutionController">
         <div class="panel-heading">
             <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
@@ -38,8 +40,8 @@
                 <tabset>
                     <tab ng-repeat="item in Solution.Items" heading="{{item.Name}}" active="item.active" disable="item.disabled">
                         <div class="panel panel-default">
-                            <input type="hidden" name="Items[{{$index}}].Id", id= "Items[{{$index}}].Id" ng-model = "item.Id" />
-                            <input type="hidden" name="Items[{{$index}}].SolutionId" , id="Items[{{$index}}].SolutionId" ng-model="item.SolutionId" />
+                            <input type="hidden" name="Items[{{$index}}].Id" id= "Items[{{$index}}].Id" ng-model = "item.Id" />
+                            <input type="hidden" name="Items[{{$index}}].SolutionId" id="Items[{{$index}}].SolutionId" ng-model="item.SolutionId" />
 
                             <div class="form-horizontal  padding-top-10">
                                 <div class="form-group">
