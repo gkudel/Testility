@@ -8,6 +8,7 @@ using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using Testility.WebUI.Model;
 using AutoMapper.QueryableExtensions;
+using AutoMapper;
 
 namespace Testility.WebUI.Controllers
 {
@@ -23,6 +24,11 @@ namespace Testility.WebUI.Controllers
         public IEnumerable<SolutionApi> Get()
         {
             return setupRepository.GetSolutions().Project().To<SolutionApi>().ToArray();
+        }
+
+        public SolutionApi Get(int id)
+        {
+            return Mapper.Map<SolutionApi>(setupRepository.GetSolution(id));
         }
     }
 }

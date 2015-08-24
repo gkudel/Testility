@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
 namespace Testility.WebUI.Model
 {
-    public class SolutionApi
+    public class ItemApi
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int[] References { get; set; }
-        public ItemApi[] Items { get; set; }
+        public string Code { get; set; }
+        public int SolutionId { get; set; }
     }
 }

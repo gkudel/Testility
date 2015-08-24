@@ -28,9 +28,7 @@ namespace Testility.WebUI
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/ide").Include(
-                        "~/Scripts/codemirror-2.37/lib/codemirror.js",
-                        "~/Scripts/codemirror-2.37/mode/clike/clike.js",
-                        "~/Scripts/ideconfig.js"));
+                        ));
 
             bundles.Add(new StyleBundle("~/Content/ide").Include(
                     "~/Scripts/codemirror-2.37/lib/codemirror.css"));
@@ -42,6 +40,8 @@ namespace Testility.WebUI
 
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
                 "~/Scripts/angular/main.js",
+                "~/Scripts/codemirror-2.37/lib/codemirror.js",
+                "~/Scripts/codemirror-2.37/mode/clike/clike.js",
                 "~/Scripts/angular/solution/solution.js",
                 "~/Scripts/angular/solution/controllers/solutioncontroller.js",
                 "~/Scripts/browser/browser.js"));

@@ -5,40 +5,59 @@
     ViewBag.Title = "Solution Explorer";
 }
 
-@using (Html.BeginForm("Edit", "Solution", FormMethod.Post, new { enctype = "multipart/form-data", id = "Solution", role = "form"}))
+@using (Html.BeginForm("Edit", "Solution", FormMethod.Post, new { enctype = "multipart/form-data", id = "Solution", role = "form" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
 
-   
     <div class="panel panel-default" ng-controller="SolutionController">
-
         <div class="panel-heading">
             <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
         </div>
-        <div class="panel-body">            
-            <div class="padding-bottom-10">
-                <div class="col-md-9">
-                    <div class="form-inline">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
-                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @ng_model = "Name" } })
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
-                            @Html.EnumDropDownListFor(model => model.Language, htmlAttributes: new { @class = "form-control", @ng_model = "Language" })
-                        </div>
-                    </div>
+        <div class="panel-body">
+            <div class="text-right col-md-4 col-md-offset-8">
+                <div class="btn-group btn-group-justified" ng-controller="BrowserController">
+                    <a href="" ng-click="addTab()" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> Item </a>
+                    <a id="References" ng-click="open('lg')" data-toggle="modal" data-target="#myModal" href="" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
+                    @{ Html.RenderPartial("_Browser"); }
                 </div>
-                <div class="text-right col-md-3">
-                    <div class="btn-group" ng-controller="BrowserController">
-                        <a id="References" ng-click="open('lg')" data-toggle="modal" data-target="#myModal" href="" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
-                        @{ Html.RenderPartial("_Browser"); }
+            </div>
+            <div>
+                <div class="form-inline padding-bottom-10 container">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @ng_model = "Solution.Name" } })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
+                        @Html.EnumDropDownListFor(model => model.Language, htmlAttributes: new { @class = "form-control", @ng_model = "Solution.Language" })
                     </div>
                 </div>
             </div>
             <div>
+                <tabset>
+                    <tab ng-repeat="item in Solution.Items" heading="{{item.Name}}" active="item.active" disable="item.disabled">
+                        <div class="panel panel-default">
+                            <input type="hidden" name="Items[{{$index}}].Id", id= "Items[{{$index}}].Id" ng-model = "item.Id" />
+                            <input type="hidden" name="Items[{{$index}}].SolutionId" , id="Items[{{$index}}].SolutionId" ng-model="item.SolutionId" />
+
+                            <div class="form-horizontal  padding-top-10">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Items, i => i.Name, new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextBox("Items[{{$index}}].Name", "", new { @class = "form-control", @id = "Items[{{$index}}].Name", @ng_model = "item.Name" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <textarea  name="tems[{{$index}}].Code" id="Items[{{$index}}].Code" rows="25" ng-model="item.Code" >{{item.Code}}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
             </div>
         </div>
         <div class="panel-footer">
@@ -56,7 +75,7 @@
             </div>
         </div>
     </div>
- }
+}
 
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")

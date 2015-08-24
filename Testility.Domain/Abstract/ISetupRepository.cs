@@ -15,7 +15,6 @@ namespace Testility.Domain.Abstract
         void Save(Solution solution, int[] references);
         bool DeleteSolution(int id);
         bool IsAlreadyDefined(string name, int? id = null);
-
         IQueryable<Reference> GetReferences();
         Reference GetReference(int id);
         void Save(Reference reference);

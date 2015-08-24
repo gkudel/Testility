@@ -20,7 +20,9 @@ namespace Testility.WebUI.Infrastructure.Mapping
         protected override void Configure()
         {
             #region Setup
-            Mapper.CreateMap<Solution, SolutionApi>();
+            Mapper.CreateMap<Solution, SolutionApi>()
+                .ForMember(s => s.References, opt => opt.MapFrom(s => s.References.Select(solution => solution.Id).ToArray()));
+            Mapper.CreateMap<Item, ItemApi>();
 
             Mapper.CreateMap<Solution, SolutionIndexItemViewModel>()
                 .ForMember(i => i.Classes, opt => opt.ResolveUsing<ClassesCountResolver>().ConstructedBy(() => new ClassesCountResolver()))

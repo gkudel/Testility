@@ -1,4 +1,18 @@
 ﻿angular.module('Testility')
+    .directive("codeArea", function () {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            scope: true,
+            link: function ($scope, $element, $attr) {
+                CodeMirror.fromTextArea($element[0], {
+                    matchBrackets: true,
+                    mode: "text/x-csharp",
+                    lineNumbers: true
+                });
+            }
+        };
+    })
     .controller('SolutionController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         var array = /Solution\/Edit\/(\d+)/.exec($location.absUrl());
         var id = undefined;
@@ -6,33 +20,21 @@
             id = array[1]
         }
 
-        $scope.Name = '';
-        $scope.Language = 0;
-        $scope.References = [];
-        $scope.counter = 2;
-        $scope.Items = [
-            { Id: 1, Name: 'Account.cs', Active: true },
-            { Id: 2, Name: 'IRepositorium.cs', Active: false }
-        ];
+        $scope.Solution = {
+            Id: 0,
+            Name: '',
+            Language: 0,
+            References: [],
+            Items: []
+        };
 
         if (id !== undefined) {
             $http.get('/api/Solution/' + id).then(function (response) {
+                $scope.Solution = response.data;
             });
         }
 
-        $scope.selectedTab = 0; 
-
-        $scope.selectTab = function (index) {
-            $scope.selectedTab = index;
+        $scope.addTab = function (solutionId) {
+            $scope.Solution.Items.push({ Id: 0, Name: 'Any Name', active: true, SolutionId: $scope.Solution.Id });
         }
-
-        $scope.addTab = function () {
-            $scope.counter++;
-            $scope.Items.push({ Id: $scope.counter, Name: 'Any Name' });
-            $scope.selectedTab = $scope.Items.length - 1; 
-        }
-
-        $scope.deleteTab = function (index) {
-            $scope.Items.splice(index, 1);
-        }
-    }]);
+    }])
