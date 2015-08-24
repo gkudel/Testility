@@ -1,39 +1,64 @@
-﻿angular.module('browser', ['ngAnimate', 'ui.bootstrap']);
-
-angular.module('browser').controller('BrowserController', ['$scope', '$modal', '$log', 'config', function ($scope, $modal, $log, config) {
-
-    $scope.isResult = false;
-    if (config.isResult !== undefined) {
-        $scope.isResult = config.isResult;
-    }
-    $scope.resultName = config.resultName;
-    $scope.getResultValue = config.getResultValue;
-
-    $scope.open = function (size) {
-        var modalInstance = $modal.open({
-            animation: true,
-            templateUrl: 'Browser.html',
-            controller: 'BrowserInstnace',
-            size: size,
-            resolve: {
-                items: function () {
-                    return config.getDataSource();
-                },
-                config: function () {
-                    return config;
+﻿angular.module('ui.browser', ['ngAnimate', 'ui.bootstrap'])
+    .directive('uiBrowser', ['ui.config', function (uiConfig) {
+        return {
+            restrict: 'A',
+            scope: true,
+            replace: false,
+            transclude: true,
+            templateUrl: function(element, attrs) {
+                var options;
+                if (attrs.config !== undefined) options = uiConfig.browsersConfig[attrs.config] || {};
+                opts = angular.extend({}, options, attrs.uiBrowser);
+                if (opts.hasOwnProperty('templateUrl')) {
+                    return opts.templateUrl;
                 }
-            }
-        });       
-        modalInstance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
-        });
-    };
-}]);
+                return '/Views/Shared/_Browser.html';
+            },
+            controller: 'uiBrowserController'
+        };
+    }]);
 
+angular.module('ui.browser')
+    .controller('uiBrowserController', ['$scope', '$element', '$attrs', '$transclude', 'ui.config', '$modal', '$log', '$q', '$http',
+            function ($scope, $element, $attrs, $transclude, uiConfig, $modal, $log, $q, $http) {
+        var options;
+        if ($attrs.config !== undefined) options = uiConfig.browsersConfig[$attrs.config] || {};
+        opts = angular.extend({}, options, $attrs.uiBrowser);
 
-angular.module('browser').controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', function ($scope, $modalInstance, items, config) {
+        $scope.open = function (size) {
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'Browser.html',
+                controller: 'BrowserInstnace',
+                size: size,
+                resolve: {
+                    items: function () {
+                        if (typeof opts.DataSource === "function") {
+                            return opts.DataSource();s
+                        } else if ((typeof opts.DataSource == 'string' || opts.DataSource instanceof String) && opts.DataSource.length > 0) {
+                            var d = $q.defer()
+                            $http.get(opts.DataSource).success(function (response) {
+                                d.resolve(response);
+                            });
+                            return d.promise;
+                        }
+                        return [];
+                    },
+                    config: function () {
+                        return opts;
+                    }
+                }
+            });
+            modalInstance.result.then(function (selectedItem) {
+                $scope.selected = selectedItem;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+
+        }
+    }]);
+
+angular.module('ui.browser').controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', function ($scope, $modalInstance, items, config) {
     $scope.allitems = items;
     $scope.title = config.title;
     $scope.selectedItem = [];

@@ -254,7 +254,6 @@
     <Content Include="Scripts\angular\framework\angular.min.js" />
     <Content Include="Scripts\angular\main.js" />
     <Content Include="Scripts\angular\solution\controllers\solutioncontroller.js" />
-    <Content Include="Scripts\angular\solution\solution.js" />
     <Content Include="Scripts\angular\unit-test\unit-test.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -1138,7 +1137,7 @@
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\UnitTest\List.cshtml" />
-    <Content Include="Views\Shared\_Browser.cshtml" />
+    <Content Include="Views\Shared\_Browser.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

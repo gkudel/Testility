@@ -19,7 +19,7 @@
             <div class="text-right col-md-4 col-md-offset-8">
                 <div class="btn-group btn-group-justified">
                     <a href="" ng-click="addTab()" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> Item </a>
-                    <a id="References" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
+                    <a ui-browser config="References" ng-click="open('lg')" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
                 </div>
             </div>
             <div>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
-                        @Html.EnumDropDownListFor(model => model.Language, htmlAttributes: new { @class = "form-control", @ng_model = "Solution.Language" })
+                        @Html.EnumDropDownListFor(model => model.Language, htmlAttributes: new { @class = "form-control", @ng_model = "Solution.Language", @convert_number="" })
                     </div>
                 </div>
             </div>

@@ -38,18 +38,16 @@ namespace Testility.WebUI
                     "~/Scripts/angular/framework/angular-animate.js",
                     "~/Scripts/angular-ui/angular-ui.js",
                     "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
-                    "~/Scripts/angular/main.js"));
+                    "~/Scripts/angular/main.js",
+                    "~/Scripts/browser/browser.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
                 "~/Scripts/codemirror-3.0/codemirror.js",
                 "~/Scripts/codemirror-3.0/util/matchbrackets.js",
                 "~/Scripts/codemirror-3.0/mode/clike.js",
-                "~/Scripts/angular/solution/solution.js",
                 "~/Scripts/angular/solution/controllers/solutioncontroller.js"));
-                //"~/Scripts/browser/browser.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/unit-test").Include(
-                   //"~/Scripts/browser/browser.js",
                    "~/Scripts/angular/unit-test/unit-test.js"));
         }
     }
