@@ -1,9 +1,12 @@
-﻿using Ninject.Modules;
+﻿using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataProtection;
+using Ninject.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Testility.Domain.Abstract;
 using Testility.Domain.Concrete;
 using Testility.Egine.Concrete;
@@ -24,6 +27,9 @@ namespace Testility.WebUI.Infrastructure.Ninject
             Bind<ICompiler>().To<CompilerProxy>();
             Bind<ICompilerService>().To<CompilerService>();
             Bind<ILogger>().To<TraceLogger>();
+            Bind<IIdentityServices>().To<IdentityServices>();
+
+            Bind<IAuthenticationManager>().ToMethod(c => HttpContext.Current.GetOwinContext().Authentication);
         }
     }
 }
