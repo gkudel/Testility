@@ -5,10 +5,12 @@
     ViewBag.Title = "Solution Explorer";
 }
 
-@using (Html.BeginForm("Edit", "Solution", FormMethod.Post, new { enctype = "multipart/form-data", id = "Solution", role = "form" }))
+@using (Html.BeginForm("Edit", "Solution", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "Solution" , @name = "Solution", @role = "form" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Json);
+
     <div class="panel panel-default" ng-controller="SolutionController">
         <input type="hidden" name="Id" id="Id" value="{{Solution.Id}}" />
         <input ng-repeat="r in Solution.References " type="hidden" name="References[{{$index}}]" id="References[{{$index}}]" value="{{r}}" />

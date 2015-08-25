@@ -30,7 +30,7 @@ namespace Testility.WebUI.Infrastructure.Mapping
                 .ForMember(i => i.Tests, opt => opt.ResolveUsing<TestsCountResolver>().ConstructedBy(() => new TestsCountResolver()));
 
             Mapper.CreateMap<Solution, SolutionViewModel>()
-                .ForMember(s => s.References, opt => opt.Ignore());
+                .ForMember(s => s.References, opt => opt.MapFrom(s => s.References.Select(solution => solution.Id).ToArray()));
             Mapper.CreateMap<SolutionViewModel, Solution>()
                 .ForMember(s => s.CompiledDll, opt => opt.Ignore())
                 .ForMember(s => s.References, opt => opt.Ignore());

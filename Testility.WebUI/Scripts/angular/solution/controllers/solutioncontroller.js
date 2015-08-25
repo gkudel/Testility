@@ -1,9 +1,9 @@
 ﻿angular.module('Testility')
     .controller('SolutionController', ['$scope', '$http', '$location', '$q', function ($scope, $http, $location, $q) {
-        var array = /Solution\/Edit\/(\d+)/.exec($location.absUrl());
-        var id = undefined;
-        if (array && array.length > 1) {
-            id = array[1]
+        $scope.ReferencesModelSize = 'lg';
+        $scope.References = function (items) {
+            if (items !== undefined) $scope.Solution.References = items;
+            return $scope.Solution.References || [];
         }
 
         $scope.Solution = {
@@ -14,19 +14,26 @@
             Items: []
         };
 
-        $scope.ReferencesModelSize = 'lg';
-        $scope.References = function (items) {
-            if (items !== undefined) $scope.Solution.References = items;
-            return $scope.Solution.References;
-        }
 
-        if (id !== undefined) {
-            $http.get('/api/Solution/' + id).then(function (response) {
-                $scope.Solution = response.data;
-            });
+        if (Solution.Json.value) {
+            $scope.Solution = JSON.parse(Solution.Json.value);
+        } else {
+
+            var array = /Solution\/Edit\/(\d+)/.exec($location.absUrl());
+            var id = undefined;
+            if (array && array.length > 1) {
+                id = array[1]
+            }
+
+            if (id !== undefined) {
+                $http.get('/api/Solution/' + id).then(function (response) {
+                    $scope.Solution = response.data;
+                });
+            }
         }
 
         $scope.addTab = function (solutionId) {
+            if (!$scope.Solution.Items) $scope.Solution.Items = [];
             $scope.Solution.Items.push({ Id: 0, Name: 'Any Name', active: true, SolutionId: $scope.Solution.Id });
         }
     }])

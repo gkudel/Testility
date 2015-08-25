@@ -54,14 +54,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult Create()
         {
-            Solution s = new Solution()
-            {
-                Items = new HashSet<Item>()
-                {
-                    new Item()
-                }
-            };
-            return View("Solution", Mapper.Map<SolutionViewModel>(s));
+            return View("Solution");
         }
 
         public ActionResult Edit(int? id)
@@ -105,18 +98,25 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", solution.Name));
+                        ModelState.AddModelError(string.Empty, string.Format("An error occurred when updating {0}", solution.Name));
+                        foreach (Error e in errors)
+                        {
+                            ModelState.AddModelError(string.Empty, e.Message);
+                        }
+                        model.IncludeJson = true;
                         return View("Solution", model);
                     }
                 }
                 catch (Exception /* ex */ )
                 {
                     ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", solution.Name));
+                    model.IncludeJson = true;
                     return View("Solution", model);
                 }
             }
             else
             {
+                model.IncludeJson = true;
                 return View("Solution", model);
             }
         }
