@@ -1,11 +1,19 @@
 ﻿angular.module('ui.browser', ['ngAnimate', 'ui.bootstrap'])
     .directive('uiBrowser', ['ui.config', function (uiConfig) {
         return {
-            restrict: 'E',
+            restrict: 'A',
             replace: false,
             transclude: true,
-            scope: {
-                selected: "@result"
+            scope: {},
+            bindToController: {
+                itemsSelected: '&',
+                modelSize: '='
+            },
+            link: function($scope, $element) {
+                $element.bind('click', $scope.open);
+                $scope.$on('$destroy', function () {
+                    $element.unbind('click');
+                });
             },
             templateUrl: function(element, attrs) {
                 var options = {};
@@ -16,7 +24,8 @@
                 }
                 return '/Views/Shared/_Browser.html';
             },
-            controller: 'uiBrowserController'
+            controller: 'uiBrowserController',
+            controllerAs: 'ctrl'
         };
     }]);
 
@@ -26,16 +35,22 @@ angular.module('ui.browser')
         var options = {};
         if ($attrs.config !== undefined) options = uiConfig.browsersConfig[$attrs.config] || {};
         options = angular.extend({}, options, $attrs.uiBrowser);
+        var selectedItem = this.itemsSelected;
+        var modelSize = this.modelSize;
 
-        $scope.selected = [];
-
-        $scope.open = function (size) {
+        $scope.open = function () {
             var modalInstance = $modal.open({
                 animation: true,
                 templateUrl: 'Browser.html',
                 controller: 'BrowserInstnace',
-                size: size,
+                size: modelSize,
                 resolve: {
+                    selected: function() {
+                        return selectedItem().slice();
+                    },
+                    config: function() {
+                        return options;
+                    },
                     items: function () {
                         if (typeof options.DataSource === "function") {
                             return options.DataSource();
@@ -47,21 +62,14 @@ angular.module('ui.browser')
                             return d.promise;
                         }
                         return [];
-                    },
-                    config: function () {
-                        return options;
-                    },
-                    selected: function() {
-                        return $scope.selected;
                     }
                 }
             });
-            modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
+            modalInstance.result.then(function (items) {
+                selectedItem({ items: items });
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
-
         }
     }]);
 

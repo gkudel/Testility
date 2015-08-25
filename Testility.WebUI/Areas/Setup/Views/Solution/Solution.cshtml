@@ -11,7 +11,7 @@
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
 
-    <input ng-repeat="r in References " type="hidden" name="References"  id="References[{{$index}}]" ng-model="r" />
+    <input ng-repeat="r in Solution.References " type="hidden" name="References"  id="References[{{$index}}]" ng-model="r" />
 
     <div class="panel panel-default" ng-controller="SolutionController">
         <div class="panel-heading">
@@ -21,9 +21,7 @@
             <div class="text-right col-md-4 col-md-offset-8">
                 <div class="btn-group btn-group-justified">
                     <a href="" ng-click="addTab()" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> Item </a>
-                    <ui-browser config="References">
-                        <a ng-click ="open('lg')" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
-                    </ui-browser>
+                    <a ui-browser config="References" items-selected="References(items)" model-size="ReferencesModelSize" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
             </div>
             </div>
             <div>

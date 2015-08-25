@@ -1,5 +1,5 @@
 ﻿angular.module('Testility')
-    .controller('SolutionController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+    .controller('SolutionController', ['$scope', '$http', '$location', '$q', function ($scope, $http, $location, $q) {
         var array = /Solution\/Edit\/(\d+)/.exec($location.absUrl());
         var id = undefined;
         if (array && array.length > 1) {
@@ -13,6 +13,12 @@
             References: [],
             Items: []
         };
+
+        $scope.ReferencesModelSize = 'lg';
+        $scope.References = function (items) {
+            if (items !== undefined) $scope.Solution.References = items;
+            return $scope.Solution.References;
+        }
 
         if (id !== undefined) {
             $http.get('/api/Solution/' + id).then(function (response) {
