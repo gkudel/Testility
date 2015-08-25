@@ -186,7 +186,17 @@ angular.module('ui.directives').directive('uiCodemirror', ['ui.config', '$timeou
 				}
 			};
 
-			$timeout(deferCodeMirror);
+			if (attrs.uiCreate) {
+			    var unbindWatcher = scope.$watch(attrs.uiCreate, function (newVal, oldVal) {
+			        // Skip the initial watch firing
+			        if (newVal) {
+			            $timeout(deferCodeMirror);
+			            unbindWatcher();
+			        }
+			    });
+            } else {
+			    $timeout(deferCodeMirror);
+            }
 
 		}
 	};

@@ -52,7 +52,7 @@
                                     </div>
                                 </div>
                                 <div class="padding-non" ng-controller="CodeController">
-                                    <textarea  ui-codemirror ng-model="code" name="Items[{{$index}}].Code"></textarea>
+                                    <textarea  ui-codemirror ng-model="code" name="Items[{{$index}}].Code" ui-create="item.active"></textarea>
                                 </div>
                             </div>
                         </div>
