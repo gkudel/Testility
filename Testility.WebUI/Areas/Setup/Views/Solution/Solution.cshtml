@@ -21,8 +21,10 @@
             <div class="text-right col-md-4 col-md-offset-8">
                 <div class="btn-group btn-group-justified">
                     <a href="" ng-click="addTab()" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> Item </a>
-                    <a ui-browser config="References" ng-click="open('lg')" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
-                </div>
+                    <ui-browser config="References">
+                        <a ng-click ="open('lg')" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
+                    </ui-browser>
+            </div>
             </div>
             <div>
                 <div class="form-inline padding-bottom-10 container">

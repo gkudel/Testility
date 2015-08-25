@@ -1,15 +1,17 @@
 ﻿angular.module('ui.browser', ['ngAnimate', 'ui.bootstrap'])
     .directive('uiBrowser', ['ui.config', function (uiConfig) {
         return {
-            restrict: 'A',
-            scope: true,
+            restrict: 'E',
             replace: false,
             transclude: true,
+            scope: {
+                selected: "@result"
+            },
             templateUrl: function(element, attrs) {
-                var options;
+                var options = {};
                 if (attrs.config !== undefined) options = uiConfig.browsersConfig[attrs.config] || {};
-                opts = angular.extend({}, options, attrs.uiBrowser);
-                if (opts.hasOwnProperty('templateUrl')) {
+                options = angular.extend({}, options, attrs.uiBrowser);
+                if (options.hasOwnProperty('templateUrl')) {
                     return opts.templateUrl;
                 }
                 return '/Views/Shared/_Browser.html';
@@ -21,9 +23,11 @@
 angular.module('ui.browser')
     .controller('uiBrowserController', ['$scope', '$element', '$attrs', '$transclude', 'ui.config', '$modal', '$log', '$q', '$http',
             function ($scope, $element, $attrs, $transclude, uiConfig, $modal, $log, $q, $http) {
-        var options;
+        var options = {};
         if ($attrs.config !== undefined) options = uiConfig.browsersConfig[$attrs.config] || {};
-        opts = angular.extend({}, options, $attrs.uiBrowser);
+        options = angular.extend({}, options, $attrs.uiBrowser);
+
+        $scope.selected = [];
 
         $scope.open = function (size) {
             var modalInstance = $modal.open({
@@ -33,11 +37,11 @@ angular.module('ui.browser')
                 size: size,
                 resolve: {
                     items: function () {
-                        if (typeof opts.DataSource === "function") {
-                            return opts.DataSource();s
-                        } else if ((typeof opts.DataSource == 'string' || opts.DataSource instanceof String) && opts.DataSource.length > 0) {
-                            var d = $q.defer()
-                            $http.get(opts.DataSource).success(function (response) {
+                        if (typeof options.DataSource === "function") {
+                            return options.DataSource();
+                        } else if ((typeof options.DataSource == 'string' || options.DataSource instanceof String) && options.DataSource.length > 0) {
+                            var d = $q.defer();
+                            $http.get(options.DataSource).success(function (response) {
                                 d.resolve(response);
                             });
                             return d.promise;
@@ -45,9 +49,11 @@ angular.module('ui.browser')
                         return [];
                     },
                     config: function () {
-                        return opts;
+                        return options;
                     },
-                    selected: $scope.selected
+                    selected: function() {
+                        return $scope.selected;
+                    }
                 }
             });
             modalInstance.result.then(function (selectedItem) {
@@ -60,7 +66,7 @@ angular.module('ui.browser')
     }]);
 
 angular.module('ui.browser').controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', 'selected', function ($scope, $modalInstance, items, config, selected) {
-    $scope.allitems = items;
+    $scope.allitems = items || [];
     $scope.title = config.title;
     $scope.selectedItem = selected || [];
 
@@ -87,10 +93,11 @@ angular.module('ui.browser').controller('BrowserInstnace', ['$scope', '$modalIns
     };
 
     var indexOf = function(item) {
-        return $.grep($scope.selectedItem, function (e) { return config.Equal(e, item); })
+        return $scope.selectedItem.findIndex(function (e) { return config.Equal(e, item); });
     }
+
     $scope.selected = function (item) {
-        return indexOf(item) > 1
+        return indexOf(item) >= 0;
     };
 
     $scope.mark = function (item) {
@@ -112,7 +119,7 @@ angular.module('ui.browser').controller('BrowserInstnace', ['$scope', '$modalIns
     };    
 
     $scope.printItem = function (e) { return e; };
-    if (config.PrintElement !== undefined) {
+    if (typeof config.PrintElement === "function") {
         $scope.printItem = config.PrintElement;
     }
 
@@ -120,6 +127,17 @@ angular.module('ui.browser').controller('BrowserInstnace', ['$scope', '$modalIns
         if ($scope.selectedItem.length == 0) {
             return 'None';
         }
-        return $scope.selectedItem.map($scope.printItem).join();
+        var s = undefined;
+        for (var i = 0; i < $scope.allitems.length; i++) {
+            var ele = $scope.allitems[i];
+            if ($scope.selected(ele)) {
+                if (s == undefined) {
+                    s = $scope.printItem(ele);
+                } else {
+                    s = s + ',' + $scope.printItem(ele);
+                }
+            }
+        }
+        return s;
     };
 }]);
