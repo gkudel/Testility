@@ -32,6 +32,12 @@
     }])
     .controller("CodeController", ['$scope', function ($scope) {
         $scope.code = $scope.$parent.item.Code;
+        $scope.$watch("code", function (newValue, oldValue) {
+            if (newValue !== oldValue) {
+                $scope.$parent.item.Code = newValue;
+            }
+        });
+
     }]).directive('convertNumber', function() {
         return {
             require: 'ngModel',

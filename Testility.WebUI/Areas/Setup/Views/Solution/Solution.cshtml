@@ -9,11 +9,9 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
-
-    <input ng-repeat="r in Solution.References " type="hidden" name="References"  id="References[{{$index}}]" ng-model="r" />
-
     <div class="panel panel-default" ng-controller="SolutionController">
+        <input type="hidden" name="Id" id="Id" value="{{Solution.Id}}" />
+        <input ng-repeat="r in Solution.References " type="hidden" name="References[{{$index}}]" id="References[{{$index}}]" value="{{r}}" />
         <div class="panel-heading">
             <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
         </div>
@@ -40,8 +38,8 @@
                 <tabset>
                     <tab ng-repeat="item in Solution.Items" heading="{{item.Name}}" active="item.active" disable="item.disabled">
                         <div class="panel panel-default">
-                            <input type="hidden" name="Items[{{$index}}].Id" id= "Items[{{$index}}].Id" ng-model = "item.Id" />
-                            <input type="hidden" name="Items[{{$index}}].SolutionId" id="Items[{{$index}}].SolutionId" ng-model="item.SolutionId" />
+                            <input type="hidden" name="Items[{{$index}}].Id" id= "Items[{{$index}}].Id" value="{{item.Id}}" />
+                            <input type="hidden" name="Items[{{$index}}].SolutionId" id="Items[{{$index}}].SolutionId" value="{{item.SolutionId}}" />
 
                             <div class="form-horizontal  padding-top-10">
                                 <div class="form-group">
@@ -51,7 +49,7 @@
                                     </div>
                                 </div>
                                 <div class="padding-non" ng-controller="CodeController">
-                                    <textarea  ui-codemirror ng-model="code"></textarea>
+                                    <textarea  ui-codemirror ng-model="code" name="Items[{{$index}}].Code"></textarea>
                                 </div>
                             </div>
                         </div>

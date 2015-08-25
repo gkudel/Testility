@@ -32,7 +32,8 @@ namespace Testility.WebUI.Infrastructure.Mapping
             Mapper.CreateMap<Solution, SolutionViewModel>()
                 .ForMember(s => s.References, opt => opt.Ignore());
             Mapper.CreateMap<SolutionViewModel, Solution>()
-                .ForMember(s => s.CompiledDll, opt => opt.Ignore());                
+                .ForMember(s => s.CompiledDll, opt => opt.Ignore())
+                .ForMember(s => s.References, opt => opt.Ignore());
 
             Mapper.CreateMap<ICollection<ItemViewModel>, ICollection<Item>>()
                 .ConvertUsing(new CustomConvwerter<ItemViewModel, Item>((v, t) => v.Id == t.Id));
