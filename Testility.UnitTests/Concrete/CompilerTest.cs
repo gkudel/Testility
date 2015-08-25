@@ -76,26 +76,6 @@ namespace Testility.Engine.Concrete.Tests
         }
 
         [TestMethod]
-        public void Compile_TestedClassesWithOutTestedMethods_OneError()
-        {
-            Input input = new Input()
-            {
-                Code = new string[] { @" using System;
-                                        
-                    [TestedClasses(Name = ""Account"", Description = ""Account class"")]
-                    public class Account
-                    {}" },
-                Language = "CSharp",
-                SolutionName = "Test",
-                ReferencedAssemblies = new string[] { "System.dll" }
-            };
-
-            Result result = compiler.Compile(input);
-
-            Assert.AreEqual(1, result.Errors.Count);
-        }
-
-        [TestMethod]
         public void Compile_TestedClassesWithOneTestedMethod_Success()
         {
             Input input = new Input()

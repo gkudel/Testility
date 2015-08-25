@@ -21,6 +21,7 @@
         return -1;
       };
     }
+
     var myApp = angular.module("Testility", ['ui', 'ui.browser']);
     myApp.value('ui.config', {
         codemirror: {

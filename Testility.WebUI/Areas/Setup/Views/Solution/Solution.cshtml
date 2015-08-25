@@ -22,7 +22,7 @@
                 <div class="btn-group btn-group-justified">
                     <a href="" ng-click="addTab()" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> Item </a>
                     <a ui-browser config="References" items-selected="References(items)" model-size="ReferencesModelSize" class="btn btn-default btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
-            </div>
+                </div>
             </div>
             <div>
                 <div class="form-inline padding-bottom-10 container">
@@ -38,7 +38,8 @@
             </div>
             <div>
                 <tabset>
-                    <tab ng-repeat="item in Solution.Items" heading="{{item.Name}}" active="item.active" disable="item.disabled">
+                    <tab ng-repeat="item in Solution.Items" active="item.active" disable="item.disabled">
+                        <tab-heading>{{item.Name}}<a href="" ng-click="removeTab($index)" class="glyphicon glyphicon-remove" style="position: relative; right: -13px; top: -7px"></a></tab-heading>
                         <div class="panel panel-default">
                             <input type="hidden" name="Items[{{$index}}].Id" id= "Items[{{$index}}].Id" value="{{item.Id}}" />
                             <input type="hidden" name="Items[{{$index}}].SolutionId" id="Items[{{$index}}].SolutionId" value="{{item.SolutionId}}" />

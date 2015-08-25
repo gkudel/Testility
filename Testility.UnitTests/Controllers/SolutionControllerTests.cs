@@ -102,7 +102,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             var result = solutionController.Create() as ViewResult;
             Assert.AreEqual("Solution", result.ViewName);
-            Assert.AreNotEqual(null, result.Model);
+            Assert.AreEqual(null, result.Model);
         }
 
         [TestMethod]

@@ -1,10 +1,11 @@
 ﻿angular.module('Testility')
     .controller('SolutionController', ['$scope', '$http', '$location', '$q', function ($scope, $http, $location, $q) {
-        $scope.ReferencesModelSize = 'lg';
+
+        $scope.ReferencesModelSize = 'md';
         $scope.References = function (items) {
             if (items !== undefined) $scope.Solution.References = items;
             return $scope.Solution.References || [];
-        }
+        };
 
         $scope.Solution = {
             Id: 0,
@@ -22,7 +23,7 @@
             var array = /Solution\/Edit\/(\d+)/.exec($location.absUrl());
             var id = undefined;
             if (array && array.length > 1) {
-                id = array[1]
+                id = array[1];
             }
 
             if (id !== undefined) {
@@ -35,7 +36,14 @@
         $scope.addTab = function (solutionId) {
             if (!$scope.Solution.Items) $scope.Solution.Items = [];
             $scope.Solution.Items.push({ Id: 0, Name: 'Any Name', active: true, SolutionId: $scope.Solution.Id });
-        }
+        };
+
+        $scope.removeTab = function (index) {
+            if (!$scope.Solution.Items) $scope.Solution.Items = [];
+            if (index <= $scope.Solution.Items.length) {
+                $scope.Solution.Items.splice(index, 1);
+            }
+        };
     }])
     .controller("CodeController", ['$scope', function ($scope) {
         $scope.code = $scope.$parent.item.Code;

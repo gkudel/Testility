@@ -39,7 +39,7 @@ namespace Testility.Domain.Concrete
 
         public void Save(Solution solution, int[] references)
         {
-            var referencedAssemblies = solution.References.Where(r => references?.Contains(r.Id) ?? true).ToList();
+            var referencedAssemblies = solution.References.Where(r => !references?.Contains(r.Id) ?? true).ToList();
             foreach (Reference r in referencedAssemblies)
             {
                 solution.References.Remove(r);
@@ -82,6 +82,14 @@ namespace Testility.Domain.Concrete
                     else
                     {
                         context.Classes.Remove(c);
+                    }
+                }
+                var items = context.Items.Where(i => i.SolutionId == solution.Id).ToList();
+                foreach (Item item in items)
+                {
+                    if (solution.Items.FirstOrDefault(i => i.Id == item.Id) == null)
+                    {
+                        context.Items.Remove(item);
                     }
                 }
             }
