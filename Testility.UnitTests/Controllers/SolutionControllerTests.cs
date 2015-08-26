@@ -50,12 +50,30 @@ namespace Testility.WebUI.Controllers.Tests
         }
 
         [TestMethod()]
-        public void Get_All_Solutions()
+        public void Get_Contains_All_Solutions()
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost/api/products");
             HttpResponseMessage message = solutionController.Get();
             Assert.AreNotEqual(null, message);
             Assert.AreEqual(HttpStatusCode.OK, message.StatusCode);            
+        }
+
+        [TestMethod()]
+        public void Cannot_Get_Invalid_NotFound()
+        {
+            HttpResponseMessage message = solutionController.Get(11);
+            Assert.AreNotEqual(null, message);
+            Assert.AreEqual(HttpStatusCode.NotFound, message.StatusCode);
+        }
+
+        [TestMethod()]
+        public void Cannot_Get_Valid_NotFound()
+        {
+            Solution singleSolution = new Solution() { Id = 1 };
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
+            HttpResponseMessage message = solutionController.Get(1);
+            Assert.AreNotEqual(null, message);
+            Assert.AreEqual(HttpStatusCode.OK, message.StatusCode);
+            MockSetupRepository.Mock.Verify(m => m.GetSolution(1), Times.Once);
         }
     }
 }
