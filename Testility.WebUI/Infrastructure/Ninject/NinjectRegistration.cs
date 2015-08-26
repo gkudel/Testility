@@ -1,4 +1,6 @@
-﻿using Microsoft.Owin.Security;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataProtection;
 using Ninject.Modules;
 using System;
@@ -29,6 +31,9 @@ namespace Testility.WebUI.Infrastructure.Ninject
             Bind<ILogger>().To<TraceLogger>();
             Bind<IIdentityServices>().To<IdentityServices>();
 
+            Bind(typeof(IUserStore<>)).To(typeof(UserStore<>));
+            Bind(typeof(UserManager<>)).To(typeof(UserManager<>));
+          
             Bind<IAuthenticationManager>().ToMethod(c => HttpContext.Current.GetOwinContext().Authentication);
         }
     }

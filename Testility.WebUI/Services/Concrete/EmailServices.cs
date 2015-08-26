@@ -21,9 +21,10 @@ namespace Testility.Domain.Concrete
             message.Body
             );
 
-            SmtpClient client = new SmtpClient("xxxxx", 465) { Credentials = new NetworkCredential("xxx", "xxx") };
+            SmtpClient client = new SmtpClient("xxxx", 587) { Credentials = new NetworkCredential("xxxx", "xxxx") , EnableSsl = true};
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.SendMailAsync(mailMessage);
+            client.Send(mailMessage);
+            //client.SendMailAsync(mailMessage);
             return Task.FromResult(0);
         }
     }
