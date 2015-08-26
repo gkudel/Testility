@@ -98,7 +98,14 @@ namespace Testility.Engine.Concrete
                 {
                     foreach (CompilerError error in compilingResult.Errors)
                     {
-                        result.Errors.Add(new Error() { Message = error.ErrorText });
+                        result.Errors.Add(new Error()
+                        {
+                                ErrorText = error.ErrorText,
+                                Column = error.Column,
+                                ErrorNumber = error.ErrorNumber,
+                                IsWarning = error.IsWarning,
+                                Line = error.Line
+                        });
                     }
                 }
             }

@@ -49,7 +49,7 @@ namespace Testility.WebUI.Controllers
             if (errors.Count == 0)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, new[] {
-                    new { Message = "Succes", Alert = "success" }
+                    new { Message = "Succes!!!", Alert = "success" }
                 });
             }
             else
@@ -57,7 +57,7 @@ namespace Testility.WebUI.Controllers
                 List<object> ret = new List<object>();
                 foreach (Error e in errors)
                 {
-                    ret.Add(new { Message = e.Message, Alert = "danger" });
+                    ret.Add(new { Message = e.ToString(), Alert = e.IsWarning ? "warning" : "danger" });
                 }
                 return Request.CreateResponse(HttpStatusCode.OK, ret.ToArray());
             }

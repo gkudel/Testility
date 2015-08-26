@@ -101,7 +101,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                         ModelState.AddModelError(string.Empty, string.Format("An error occurred when updating {0}", solution.Name));
                         foreach (Error e in errors)
                         {
-                            ModelState.AddModelError(string.Empty, e.Message);
+                            ModelState.AddModelError(string.Empty, e.ToString());
                         }
                         model.IncludeJson = true;
                         return View("Solution", model);
