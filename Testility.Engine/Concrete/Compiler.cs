@@ -16,9 +16,8 @@ namespace Testility.Engine.Concrete
 {
     public class Compiler : MarshalByRefObject, ICompiler
     {
-        public Result Compile(Input input)
-        {
-            Contract.Requires<ArgumentNullException>(input.Code != null && input.Code.Length > 0);            
+        Result ICompiler.Compile(Input input)
+        {                      
             Result result = new Result();
             CodeDomProvider provider = null;
             try

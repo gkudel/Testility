@@ -254,6 +254,7 @@
     <Content Include="Scripts\angular\framework\angular.min.js" />
     <Content Include="Scripts\angular\main.js" />
     <Content Include="Scripts\angular\solution\controllers\solutioncontroller.js" />
+    <Content Include="Scripts\angular\solution\services\solutionservice.js" />
     <Content Include="Scripts\angular\unit-test\unit-test.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -1113,12 +1114,14 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\messagebox\messagebox.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\_references.js" />
+    <None Include="Views\Shared\_MessageBox.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

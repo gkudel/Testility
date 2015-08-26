@@ -30,8 +30,8 @@
     }]);
 
 angular.module('ui.browser')
-    .controller('uiBrowserController', ['$scope', '$element', '$attrs', '$transclude', 'ui.config', '$modal', '$log', '$q', '$http',
-            function ($scope, $element, $attrs, $transclude, uiConfig, $modal, $log, $q, $http) {
+    .controller('uiBrowserController', ['$scope', '$element', '$attrs', '$transclude', 'ui.config', '$modal', '$log', '$q', '$http', 'messagebox', 
+            function ($scope, $element, $attrs, $transclude, uiConfig, $modal, $log, $q, $http, messagebox) {
         var options = {};
         if ($attrs.config !== undefined) options = uiConfig.browsersConfig[$attrs.config] || {};
         options = angular.extend({}, options, $attrs.uiBrowser);
@@ -52,28 +52,33 @@ angular.module('ui.browser')
                         return options;
                     },
                     items: function () {
+                        var d = $q.defer();
                         if (typeof options.DataSource === "function") {
-                            return options.DataSource();
+                            d.resolve(options.DataSource());
                         } else if ((typeof options.DataSource == 'string' || options.DataSource instanceof String) && options.DataSource.length > 0) {
-                            var d = $q.defer();
-                            $http.get(options.DataSource).success(function (response) {
-                                d.resolve(response);
-                            });
-                            return d.promise;
+                            
+                            $http.get(options.DataSource)
+                                .success(function (response) {
+                                    d.resolve(response);
+                                }).error(function (data, status) {
+                                    d.reject(data);
+                                });;
                         }
-                        return [];
+                        return d.promise;
                     }
                 }
             });
             modalInstance.result.then(function (items) {
                 selectedItem({ items: items });
-            }, function () {
+            }, function (error) {
+                if (error.hasOwnProperty('Message')) messagebox.show(options.title, error.Message, 'Error');
                 $log.info('Modal dismissed at: ' + new Date());
             });
         }
     }]);
 
-angular.module('ui.browser').controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', 'selected', function ($scope, $modalInstance, items, config, selected) {
+angular.module('ui.browser')
+    .controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', 'selected', function ($scope, $modalInstance, items, config, selected) {
     $scope.allitems = items || [];
     $scope.title = config.title;
     $scope.selectedItem = selected || [];

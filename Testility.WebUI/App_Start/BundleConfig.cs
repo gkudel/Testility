@@ -39,12 +39,14 @@ namespace Testility.WebUI
                     "~/Scripts/angular-ui/angular-ui.js",
                     "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
                     "~/Scripts/angular/main.js",
-                    "~/Scripts/browser/browser.js"));
+                    "~/Scripts/browser/browser.js",
+                    "~/Scripts/messagebox/messagebox.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
                 "~/Scripts/codemirror-3.0/codemirror.js",
                 "~/Scripts/codemirror-3.0/util/matchbrackets.js",
                 "~/Scripts/codemirror-3.0/mode/clike.js",
+                "~/Scripts/angular/solution/services/solutionservice.js", 
                 "~/Scripts/angular/solution/controllers/solutioncontroller.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/unit-test").Include(

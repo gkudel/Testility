@@ -7,6 +7,7 @@ using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using AutoMapper;
 using System.Linq.Expressions;
+using System.Data;
 
 namespace Testility.Domain.Concrete
 {
@@ -119,7 +120,7 @@ namespace Testility.Domain.Concrete
         }
 
         public Reference GetReference(int id)
-        {
+        {            
             var query = context.References.Where(s => s.Id == id);
             return query.FirstOrDefault();
         }

@@ -68,7 +68,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return HttpNotFound();
             }
-            return View("Solution", Mapper.Map<SolutionViewModel>(solution));
+            return View("Solution");
         }
 
         [HttpPost, ActionName("Edit")]
