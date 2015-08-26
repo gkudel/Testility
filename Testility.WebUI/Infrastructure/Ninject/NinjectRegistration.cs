@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Ninject;
 using Testility.Domain.Abstract;
 using Testility.Domain.Concrete;
 using Testility.Egine.Concrete;
@@ -31,9 +32,10 @@ namespace Testility.WebUI.Infrastructure.Ninject
             Bind<ILogger>().To<TraceLogger>();
             Bind<IIdentityServices>().To<IdentityServices>();
 
-            Bind(typeof(IUserStore<>)).To(typeof(UserStore<>));
-            Bind(typeof(UserManager<>)).To(typeof(UserManager<>));
-          
+            Bind<EFDbContext>().ToSelf();
+            Bind(typeof(IUserStore<>)).To(typeof(UserStore<>)).WithConstructorArgument("context", Kernel.Get<EFDbContext>());
+            Bind(typeof(UserManager<>)).To(typeof(UserManager<>)).WithConstructorArgument("store", Kernel.Get<IUserStore<IdentityUser>>());
+
             Bind<IAuthenticationManager>().ToMethod(c => HttpContext.Current.GetOwinContext().Authentication);
         }
     }

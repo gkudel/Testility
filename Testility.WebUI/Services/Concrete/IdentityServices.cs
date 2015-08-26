@@ -24,13 +24,10 @@ namespace Testility.WebUI.Services.Concrete
         public IdentityServices(EFDbContext context, IAuthenticationManager authenticationMana, UserStore<IdentityUser> userStor, UserManager<IdentityUser> userMena)
         {
             db = context;
-
-            //userStore = userStor;
-            //userMenager = userMena;
-
+            userStore = userStor;
+            userMenager = userMena;
             authenticationManager = authenticationMana;
-            userStore = new UserStore<IdentityUser>(db);
-            userMenager = new UserManager<IdentityUser>(userStore);
+
             userMenager.UserValidator = new UserValidator<IdentityUser>(userMenager) { RequireUniqueEmail = true, AllowOnlyAlphanumericUserNames = false };
             userMenager.PasswordValidator = new PasswordValidator() { RequiredLength = 6, RequireLowercase = true, RequireUppercase = true, RequireDigit = true };
 
