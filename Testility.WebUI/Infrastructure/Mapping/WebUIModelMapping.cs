@@ -21,7 +21,9 @@ namespace Testility.WebUI.Infrastructure.Mapping
         {
             #region Setup
             Mapper.CreateMap<Solution, SolutionApi>()
-                .ForMember(s => s.References, opt => opt.MapFrom(s => s.References.Select(solution => solution.Id).ToArray()));
+                .ForMember(s => s.References, opt => opt.MapFrom(s => s.References != null ? s.References.Select(solution => solution.Id).ToArray() : new int[0]))
+                .ForMember(s => s.Language, opt => opt.MapFrom(s => (int)s.Language))
+                .ForMember(s => s.Items, opt => opt.Ignore());
             Mapper.CreateMap<Item, ItemApi>();
             Mapper.CreateMap<SolutionApi, Solution>()
                 .ForMember(s => s.References, opt => opt.Ignore());
