@@ -12,6 +12,7 @@ using Microsoft.Owin.Security;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Security;
 using Testility.WebUI.Infrastructure.ExternalLogin;
+using System.Net;
 
 namespace Testility.WebUI.Areas.Authorization.Controllers
 {
@@ -21,13 +22,12 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
 
         private readonly IIdentityServices identityServices;
 
-
         public AuthController(IIdentityServices identityService)
         {
             this.identityServices = identityService;
         }
 
-        public ActionResult LogIn(string returnUrl)
+        public ActionResult LogIn()
         {
             return View();
         }
@@ -35,12 +35,14 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
         [HttpPost]
         public async Task<ActionResult> LogIn(LoginVM model)
         {
-            if (ModelState.IsValid)
-            {
-                var user = await identityServices.GetUserAsync(identityServices.GetUserName(model.Email), model.Password);
-                if (user != null)
-                {
+            if (!ModelState.IsValid)return View(model);
+            if (model == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
+            var user = await identityServices.GetUserAsync(identityServices.GetUserName(model?.Email), model?.Password);
+            if (user != null)
+            {
+                try
+                {
                     if (!await identityServices.IsEmailConfirmed(user.Id))
                     {
                         ModelState.AddModelError("", "You must have a confirmed email to log on.");
@@ -51,17 +53,19 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                     identityServices.SetTwoFactorAuthCookie(user.Id);
                     return RedirectToAction("VerifyCode");
                 }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Something went wrong");
+                    return View();
+                }
             }
-            ModelState.AddModelError("", "Invalid email or password");
-            return View(model);
+            ModelState.AddModelError("", "Something went wrong");
+            return View();
         }
 
         public async Task<ActionResult> VerifyCode()
         {
-            if (String.IsNullOrEmpty(await identityServices.GetTwoFactorUserIdAsync()))
-            {
-                return RedirectToAction("LogIn");
-            }
+            if (String.IsNullOrEmpty(await identityServices.GetTwoFactorUserIdAsync())) return RedirectToAction("LogIn");
             return View();
         }
 
@@ -69,19 +73,19 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeVM model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+            if (model == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            string userId = await identityServices.GetTwoFactorUserIdAsync();
+
+            if (userId == null || String.IsNullOrEmpty(model.token)) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            var user = await identityServices.GetUserById(userId);
+
+            try
             {
-                string userId = await identityServices.GetTwoFactorUserIdAsync();
-                if (userId == null || String.IsNullOrEmpty(model.token))
+                if (await identityServices.VerifyTokenToLogin(user?.Id ?? string.Empty, model.token))
                 {
-
-                    return View("Error");
-                }
-                var user = await identityServices.GetUserById(userId);
-
-                if (await identityServices.VerifyTokenToLogin(user.Id, model.token))
-                {
-
                     var identity = await identityServices.CreateIdentityAsync(user, "ApplicationCookie");
                     await identityServices.SignInAsync(user);
                     return RedirectToAction("List", "Solution", new { area = "Setup" });
@@ -89,11 +93,15 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Invalid code");
+                    return View();
                 }
             }
-            return View();
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Exception durning request code");
+                return View();
+            }
         }
-
 
         [HttpGet]
         public ActionResult Register()
@@ -105,8 +113,9 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterVM model)
         {
-            if (ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) return View(model);
+            if (model == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
                 IdentityUser newUser = Mapper.Map<IdentityUser>(model);
                 if (model.Id == null)                                               //New one
                 {
@@ -130,6 +139,7 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                         return View();
                     }
                 }
+
                 IdentityUser orgUser = identityServices.GetUser(User.Identity.GetUserId());
                 if (orgUser != null) //Existing one
                 {
@@ -137,7 +147,6 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                     identityServices.UpdateUserData(orgUser);
                     return RedirectToAction("List", "Solution", new { area = "Setup" });
                 }
-            }
             ModelState.AddModelError("", "Error when reqistering a user");
             return View();
         }
@@ -274,8 +283,6 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
             return View();
         }
 
-
-
         [HttpGet]
         public ActionResult ConfirmPasswordResset(string passToken, string userId)
         {
@@ -287,7 +294,6 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
             ConfirmPasswordResetVM model = new ConfirmPasswordResetVM() { Token = passToken, Id = userId };
             return View("ConfirmNewPassword", model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]

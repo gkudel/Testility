@@ -118,10 +118,12 @@
   <ItemGroup>
     <Compile Include="Concrete\CompilerTest.cs" />
     <Compile Include="Concrete\UnitTestRepositoryTests.cs" />
+    <Compile Include="Controllers\AuthControllerTests.cs" />
     <Compile Include="Controllers\UnitTestControllerTests.cs" />
     <Compile Include="Concrete\EFSetupRepositoryTests.cs" />
     <Compile Include="DbContextMock\EntityFrameworkMockHelper.cs" />
     <Compile Include="DbContextMock\MockedDbContext.cs" />
+    <Compile Include="DbContextMock\MockIdentityService.cs" />
     <Compile Include="DbContextMock\MockSetupRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\SolutionControllerTests.cs" />
