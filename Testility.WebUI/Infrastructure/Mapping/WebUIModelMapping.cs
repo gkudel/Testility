@@ -23,7 +23,7 @@ namespace Testility.WebUI.Infrastructure.Mapping
             Mapper.CreateMap<Solution, SolutionApi>()
                 .ForMember(s => s.References, opt => opt.MapFrom(s => s.References != null ? s.References.Select(solution => solution.Id).ToArray() : new int[0]))
                 .ForMember(s => s.Language, opt => opt.MapFrom(s => (int)s.Language))
-                .ForMember(s => s.Items, opt => opt.Ignore());
+                .ForMember(s => s.Items, opt => opt.MapFrom(s => s.Items == null || s.Items.Count == 0 ? new ItemApi[0] : s.Items.Select(i => Mapper.Map<ItemApi>(i)).ToArray()));
             Mapper.CreateMap<Item, ItemApi>();
             Mapper.CreateMap<SolutionApi, Solution>()
                 .ForMember(s => s.References, opt => opt.Ignore());
