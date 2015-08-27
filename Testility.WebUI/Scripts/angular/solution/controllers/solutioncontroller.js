@@ -6,13 +6,17 @@
         $scope.Messages = [];
 
         $scope.References = function (items) {
-            if (items !== undefined) $scope.Solution.References = items;
-            return $scope.Solution.References || [];
+            if ($scope.Loaded) {
+                if (items !== undefined) $scope.Solution.References = items;
+                return $scope.Solution.References || [];
+            }
         };
 
         $scope.addTab = function (solutionId) {
-            if (!$scope.Solution.Items) $scope.Solution.Items = [];
-            $scope.Solution.Items.push({ Id: 0, Name: 'Any Name', active: true, SolutionId: $scope.Solution.Id });
+            if ($scope.Loaded) {
+                if (!$scope.Solution.Items) $scope.Solution.Items = [];
+                $scope.Solution.Items.push({ Id: 0, Name: 'Class.cs', active: true, SolutionId: $scope.Solution.Id });
+            }
         };
 
         $scope.removeTab = function (index) {
@@ -32,21 +36,29 @@
         $scope.refresh = function () {
             $scope.Messages = [];
             service.get().then(function (solution) {
-                $scope.Solution = solution;
-                $scope.Loaded = true;
+                if (solution) {
+                    $scope.Solution = solution;
+                    $scope.Loaded = true;
+                } else {
+                    $scope.Solution = service.empty();
+                    $scope.Loaded = false;
+                }
             }, function (error) {
                 $scope.Solution = service.empty();
+                $scope.Loaded = false;
                 messagebox.show('Solution', error, 'Error');
             });
         };
 
         $scope.compile = function () {
-            $scope.Messages = [];
-            service.compile($scope.Solution).then(function (status) {
-                $scope.Messages = $scope.Messages.concat(status);
-            }, function (error) {
-                messagebox.show('Solution', error, 'Error');
-            });
+            if ($scope.Loaded) {
+                $scope.Messages = [];
+                service.compile($scope.Solution).then(function (status) {
+                    $scope.Messages = $scope.Messages.concat(status);
+                }, function (error) {
+                    messagebox.show('Solution', error, 'Error');
+                });
+            }
         };
 
         $scope.submit = function () {

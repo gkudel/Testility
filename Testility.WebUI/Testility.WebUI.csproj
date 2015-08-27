@@ -260,6 +260,8 @@
     <Content Include="Content\codemirror-3.0\theme\twilight.css" />
     <Content Include="Content\codemirror-3.0\theme\vibrant-ink.css" />
     <Content Include="Content\codemirror-3.0\theme\xq-dark.css" />
+    <Content Include="Content\images\check.png" />
+    <Content Include="Content\images\cross.png" />
     <Content Include="Content\iosOverlay.css" />
     <Content Include="Content\select2.css" />
     <Content Include="Content\select2.png" />
