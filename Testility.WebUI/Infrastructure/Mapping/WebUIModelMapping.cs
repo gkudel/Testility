@@ -89,11 +89,19 @@ namespace Testility.WebUI.Infrastructure.Mapping
 
 
             #region Identity
+
             Mapper.CreateMap<RegisterVM, IdentityUser>()
                 .ForMember(x => x.UserName, opt => opt.MapFrom(a => a.Name))
                 .ForMember(z=>z.Id, opt => opt.Ignore());
+
             Mapper.CreateMap<IdentityUser, RegisterVM>().ForMember(x => x.Name, opt => opt.MapFrom(a => a.UserName));
+
             Mapper.CreateMap<LoginVM, IdentityUser>();
+
+            Mapper.CreateMap<ExternalLoginConfirmationVM, IdentityUser>()
+                  .ForMember(x => x.UserName, opt => opt.MapFrom(a => a.Name))
+                  .ForMember(x => x.Email, opt => opt.MapFrom(a => a.Email));
+
             #endregion Identity
         }
     }
