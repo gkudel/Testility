@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,7 +12,7 @@ namespace Testility.UnitTests.DbContextMock
 {
     public static class EntityFrameworkMockHelper
     {
-        public static MockedDbContext<T> GetMockContext<T>() where T : DbContext
+        public static MockedDbContext<T> GetMockContext<T>() where T : IdentityDbContext<IdentityUser>
         {
             var instance = new MockedDbContext<T>();
             instance.MockTables();
