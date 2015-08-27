@@ -85,6 +85,14 @@ namespace Testility.Domain.Concrete
                         context.Classes.Remove(c);
                     }
                 }
+                var items = context.Items.Where(i => i.SolutionId == solution.Id).ToList();
+                foreach (Item item in items)
+                {
+                    if (solution.Items.FirstOrDefault(i => i.Id == item.Id) == null)
+                    {
+                        context.Items.Remove(item);
+                    }
+                }
             }
             Commit();
         }
