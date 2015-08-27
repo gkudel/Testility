@@ -13,8 +13,8 @@ namespace Testility.Domain.Concrete
 {
     public class EFSetupRepository : ISetupRepository, IDisposable
     {
-        private EFDbContext context;
-        public EFSetupRepository(EFDbContext context)
+        private IEFDbContext context;
+        public EFSetupRepository(IEFDbContext context)
         {
             this.context = context;
         }
@@ -126,7 +126,6 @@ namespace Testility.Domain.Concrete
             else
             {
                 context.References.Attach(reference);
-                context.Entry(reference).State = EntityState.Modified;
             }
             Commit();
         }

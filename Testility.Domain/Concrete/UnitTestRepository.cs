@@ -10,8 +10,8 @@ namespace Testility.Domain.Concrete
 {
     public class UnitTestRepository : IUnitTestRepository, IDisposable
     {
-        private EFDbContext context;
-        public UnitTestRepository(EFDbContext context)
+        private IEFDbContext context;
+        public UnitTestRepository(IEFDbContext context)
         {
             this.context = context;
         }
