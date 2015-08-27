@@ -14,7 +14,7 @@ namespace Testility.Egine.Concrete
 {
     public class CompilerProxy : ICompiler, IDisposable
     {
-        private Compiler compiler;
+        private ICompiler compiler;
         System.AppDomain unitDomain;
         private void Init()
         {

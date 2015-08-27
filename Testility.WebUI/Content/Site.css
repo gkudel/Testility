@@ -31,6 +31,13 @@ textarea:not(.sourcecode) {
     padding-bottom: 10px;
 }
 
+.padding-non {
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+}
+
 .sourcecode {
     width: 100%;
 }
@@ -49,4 +56,23 @@ textarea:not(.sourcecode) {
 .td-right {
    display: table-cell;
    text-align: right;
+}
+
+.nav-tabs > li > a{
+	cursor:pointer;
+}
+
+.nav-tabs li a span:hover {
+    color: red;
+	cursor:pointer;
+}
+
+.center-modal {
+    position: fixed;
+    top: 10%;
+    left: 18.5%;
+    z-index: 1050;
+    width: 80%;
+    height: 80%;
+    margin-left: -10%;
 }

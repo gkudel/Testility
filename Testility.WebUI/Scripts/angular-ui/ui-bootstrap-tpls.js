@@ -2884,7 +2884,7 @@ angular.module('ui.bootstrap.modal', [])
               });
 
             }, function resolveError(reason) {
-              modalResultDeferred.reject(reason);
+                modalResultDeferred.reject(reason);
             });
 
             templateAndResolvePromise.then(function () {

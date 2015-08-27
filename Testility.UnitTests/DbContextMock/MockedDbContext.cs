@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Testility.UnitTests.DbContextMock
 {
-    public class MockedDbContext<T> : Mock<T> where T : DbContext
+    public class MockedDbContext<T> : Mock<T> where T : class
     {
+        
         public Dictionary<string, object> Tables
         {
             get { return _Tables ?? (_Tables = new Dictionary<string, object>()); }

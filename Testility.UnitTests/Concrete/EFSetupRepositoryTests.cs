@@ -6,6 +6,7 @@ using Moq;
 using Testility.Domain.Concrete;
 using Testility.Domain.Entities;
 using Testility.UnitTests.DbContextMock;
+using Testility.Domain.Abstract;
 
 namespace Testility.Domain.Concrete.Tests
 {
@@ -13,7 +14,7 @@ namespace Testility.Domain.Concrete.Tests
     public class EFSetupRepositoryTests
     {
         #region Members
-        public Mock<EFDbContext> MockContext { get; set; }
+        public Mock<IEFDbContext> MockContext { get; set; }
 
         public EFSetupRepository Service { get; set; }        
         #endregion
@@ -55,7 +56,7 @@ namespace Testility.Domain.Concrete.Tests
                 new Test() {Id = 2, Name = "12ok"}
             };
 
-            MockContext = EntityFrameworkMockHelper.GetMockContext<EFDbContext>();
+            MockContext = EntityFrameworkMockHelper.GetMockContext<IEFDbContext>();
             MockContext.Object.Solutions.AddRange(SolutionsData);
             MockContext.Object.References.AddRange(References);
             MockContext.Object.Items.AddRange(ItemsData);
@@ -157,6 +158,16 @@ namespace Testility.Domain.Concrete.Tests
             Assert.AreEqual(MockContext.Object.Tests.Count(), 0);
         }
 
+        [TestMethod]
+        public void Can_Edit_Solution_RemoveItem()
+        {
+            Solution solution = Service.GetSolution(1);
+            solution.Items = new HashSet<Item>();
+            MockContext.Object.Items.First().SolutionId = 1;
+            Service.Save(solution, null);
+            MockContext.Verify(x => x.SaveChanges(), Times.Once);
+            Assert.AreEqual(MockContext.Object.Items.Count(), 0);
+        }
 
         [TestMethod]
         public void Cannot_DeleteSolutionWithWrongId()

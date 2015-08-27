@@ -13,8 +13,8 @@ namespace Testility.Domain.Concrete
 {
     public class EFSetupRepository : ISetupRepository, IDisposable
     {
-        private EFDbContext context;
-        public EFSetupRepository(EFDbContext context)
+        private IEFDbContext context;
+        public EFSetupRepository(IEFDbContext context)
         {
             this.context = context;
         }
@@ -85,6 +85,14 @@ namespace Testility.Domain.Concrete
                         context.Classes.Remove(c);
                     }
                 }
+                var items = context.Items.Where(i => i.SolutionId == solution.Id).ToList();
+                foreach (Item item in items)
+                {
+                    if (solution.Items.FirstOrDefault(i => i.Id == item.Id) == null)
+                    {
+                        context.Items.Remove(item);
+                    }
+                }
             }
             Commit();
         }
@@ -126,7 +134,6 @@ namespace Testility.Domain.Concrete
             else
             {
                 context.References.Attach(reference);
-                context.Entry(reference).State = EntityState.Modified;
             }
             Commit();
         }

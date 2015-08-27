@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,9 +12,9 @@ namespace Testility.UnitTests.DbContextMock
 {
     public static class EntityFrameworkMockHelper
     {
-        public static MockedDbContext<T> GetMockContext<T>() where T : DbContext
+        public static MockedDbContext<T> GetMockContext<T>() where T : class
         {
-            var instance = new MockedDbContext<T>();
+            var instance = new MockedDbContext<T>() { CallBase = false };
             instance.MockTables();
             return instance;
         }
@@ -35,7 +36,7 @@ namespace Testility.UnitTests.DbContextMock
             return dbSet.Object;
         }
 
-        public static void MockTables<T>(this MockedDbContext<T> mockedContext) where T : DbContext
+        public static void MockTables<T>(this MockedDbContext<T> mockedContext) where T : class
         {
             Type contextType = typeof(T);
             var dbSetProperties = contextType.GetProperties().Where(prop => (prop.PropertyType.IsGenericType) && prop.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));

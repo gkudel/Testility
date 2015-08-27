@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\CompilerContract.cs" />
     <Compile Include="Abstract\ICompiler.cs" />
     <Compile Include="Attribute\TestAttribute.cs" />
     <Compile Include="Attribute\TestedClassesAttribute.cs" />

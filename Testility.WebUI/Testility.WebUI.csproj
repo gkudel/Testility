@@ -56,8 +56,15 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -77,6 +84,14 @@
     </Reference>
     <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -174,11 +189,17 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Authorization\AuthorizationAreaRegistration.cs" />
     <Compile Include="Areas\Authorization\Controllers\AuthController.cs" />
+    <Compile Include="Areas\Authorization\Models\ConfirmPasswordResetVM.cs" />
+    <Compile Include="Areas\Authorization\Models\ExternalAuthVM.cs" />
+    <Compile Include="Areas\Authorization\Models\ExternalLoginConfirmationVM.cs" />
     <Compile Include="Areas\Authorization\Models\LoginVM.cs" />
     <Compile Include="Areas\Authorization\Models\RegisterVM.cs" />
+    <Compile Include="Areas\Authorization\Models\ResetPasswordVM.cs" />
+    <Compile Include="Areas\Authorization\Models\VerifyCodeVM.cs" />
     <Compile Include="Areas\Setup\Controllers\ReferencesController.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
     <Compile Include="Areas\Setup\Model\SolutionIndexItemViewModel.cs" />
+    <Compile Include="Infrastructure\ExternalLogin\ExternalLogin.cs" />
     <Compile Include="Model\IndexViewModel.cs" />
     <Compile Include="Areas\Setup\Model\ReferencesViewModel.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
@@ -201,6 +222,7 @@
     <Compile Include="Infrastructure\Ninject\NinjectDependencyScope .cs" />
     <Compile Include="Infrastructure\Ninject\Ninject.cs" />
     <Compile Include="Infrastructure\Ninject\NinjectRegistration.cs" />
+    <Compile Include="Model\ItemApi.cs" />
     <Compile Include="Model\PagingInfo.cs" />
     <Compile Include="Areas\Setup\Model\SolutionViewModel.cs" />
     <Compile Include="Model\ReferenceApi.cs" />
@@ -208,18 +230,50 @@
     <Compile Include="Model\UnitTestIndexItemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\ICompilerService.cs" />
+    <Compile Include="Services\Abstract\IIdentityServices.cs" />
     <Compile Include="Services\Concrete\CompilerService.cs" />
+    <Compile Include="Services\Concrete\EmailServices.cs" />
+    <Compile Include="Services\Concrete\IdentityServices.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\angular-ui.css" />
+    <Content Include="Content\angular-ui.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\codemirror-3.0\codemirror.css" />
+    <Content Include="Content\codemirror-3.0\dialog.css" />
+    <Content Include="Content\codemirror-3.0\simple-hint.css" />
+    <Content Include="Content\codemirror-3.0\theme\ambiance-mobile.css" />
+    <Content Include="Content\codemirror-3.0\theme\ambiance.css" />
+    <Content Include="Content\codemirror-3.0\theme\blackboard.css" />
+    <Content Include="Content\codemirror-3.0\theme\cobalt.css" />
+    <Content Include="Content\codemirror-3.0\theme\eclipse.css" />
+    <Content Include="Content\codemirror-3.0\theme\elegant.css" />
+    <Content Include="Content\codemirror-3.0\theme\erlang-dark.css" />
+    <Content Include="Content\codemirror-3.0\theme\lesser-dark.css" />
+    <Content Include="Content\codemirror-3.0\theme\monokai.css" />
+    <Content Include="Content\codemirror-3.0\theme\neat.css" />
+    <Content Include="Content\codemirror-3.0\theme\night.css" />
+    <Content Include="Content\codemirror-3.0\theme\rubyblue.css" />
+    <Content Include="Content\codemirror-3.0\theme\solarized.css" />
+    <Content Include="Content\codemirror-3.0\theme\twilight.css" />
+    <Content Include="Content\codemirror-3.0\theme\vibrant-ink.css" />
+    <Content Include="Content\codemirror-3.0\theme\xq-dark.css" />
+    <Content Include="Content\select2.css" />
+    <Content Include="Content\select2.png" />
+    <Content Include="Content\select2x2.png" />
+    <Content Include="Content\spinner.gif" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\angular-ui\angular-ui-ieshiv.js" />
+    <Content Include="Scripts\angular-ui\angular-ui-ieshiv.min.js" />
+    <Content Include="Scripts\angular-ui\angular-ui.js" />
+    <Content Include="Scripts\angular-ui\angular-ui.min.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
@@ -249,117 +303,95 @@
     <Content Include="Scripts\angular\framework\angular-touch.min.js" />
     <Content Include="Scripts\angular\framework\angular.js" />
     <Content Include="Scripts\angular\framework\angular.min.js" />
-    <Content Include="Scripts\angular\solution\browser-config.js" />
-    <Content Include="Scripts\angular\solution\solution.js" />
-    <Content Include="Scripts\angular\unit-test\browser-config.js" />
+    <Content Include="Scripts\angular\main.js" />
+    <Content Include="Scripts\angular\solution\controllers\solutioncontroller.js" />
+    <Content Include="Scripts\angular\solution\services\solutionservice.js" />
+    <Content Include="Scripts\angular\unit-test\unit-test.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Setup\Views\web.config" />
     <Content Include="Areas\Setup\Views\_ViewStart.cshtml" />
     <Content Include="Scripts\browser\browser.js" />
-    <Content Include="Scripts\codemirror-2.37\keymap\emacs.js" />
-    <Content Include="Scripts\codemirror-2.37\keymap\vim.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\codemirror.css" />
-    <Content Include="Scripts\codemirror-2.37\lib\codemirror.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\closetag.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\continuecomment.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\continuelist.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\dialog.css" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\dialog.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\foldcode.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\formatting.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\javascript-hint.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\loadmode.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\match-highlighter.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\multiplex.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\overlay.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\pig-hint.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\runmode-standalone.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\runmode.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\search.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\searchcursor.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\simple-hint.css" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\simple-hint.js" />
-    <Content Include="Scripts\codemirror-2.37\lib\util\xml-hint.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\clike\clike.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\clojure\clojure.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\coffeescript\coffeescript.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\commonlisp\commonlisp.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\css\css.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\css\test.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\diff\diff.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\ecl\ecl.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\erlang\erlang.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\gfm\gfm.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\gfm\test.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\go\go.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\groovy\groovy.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\haskell\haskell.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\haxe\haxe.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\htmlembedded\htmlembedded.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\htmlmixed\htmlmixed.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\http\http.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\javascript\javascript.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\jinja2\jinja2.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\less\less.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\lua\lua.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\markdown\markdown.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\markdown\test.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\mysql\mysql.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\ntriples\ntriples.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\ocaml\ocaml.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\pascal\pascal.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\perl\perl.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\php\php.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\pig\pig.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\plsql\plsql.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\properties\properties.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\python\LICENSE.txt" />
-    <Content Include="Scripts\codemirror-2.37\mode\python\python.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\rpm\changes\changes.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\rpm\spec\spec.css" />
-    <Content Include="Scripts\codemirror-2.37\mode\rpm\spec\spec.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\rst\rst.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\ruby\ruby.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\rust\rust.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\r\r.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\scheme\scheme.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\shell\shell.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\sieve\sieve.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\smalltalk\smalltalk.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\smarty\smarty.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\sparql\sparql.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\sql\sql.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\stex\stex.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\stex\test.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\tiddlywiki\tiddlywiki.css" />
-    <Content Include="Scripts\codemirror-2.37\mode\tiddlywiki\tiddlywiki.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\tiki\tiki.css" />
-    <Content Include="Scripts\codemirror-2.37\mode\tiki\tiki.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\vbscript\vbscript.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\vb\LICENSE.txt" />
-    <Content Include="Scripts\codemirror-2.37\mode\vb\vb.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\velocity\velocity.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\verilog\verilog.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\xml\xml.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\xquery\test\testBase.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\xquery\test\testEmptySequenceKeyword.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\xquery\test\testMultiAttr.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\xquery\test\testNamespaces.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\xquery\test\testProcessingInstructions.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\xquery\test\testQuotes.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\xquery\xquery.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\yaml\yaml.js" />
-    <Content Include="Scripts\codemirror-2.37\mode\z80\z80.js" />
-    <Content Include="Scripts\codemirror-2.37\package.json" />
-    <Content Include="Scripts\codemirror-2.37\mode\xquery\LICENSE" />
-    <Content Include="Scripts\codemirror-2.37\mode\sieve\LICENSE" />
-    <Content Include="Scripts\codemirror-2.37\mode\r\LICENSE" />
-    <Content Include="Scripts\codemirror-2.37\mode\ruby\LICENSE" />
-    <Content Include="Scripts\codemirror-2.37\mode\perl\LICENSE" />
-    <Content Include="Scripts\codemirror-2.37\mode\pascal\LICENSE" />
-    <Content Include="Scripts\codemirror-2.37\mode\coffeescript\LICENSE" />
-    <Content Include="Scripts\codemirror-2.37\LICENSE" />
+    <Content Include="Scripts\codemirror-3.0\codemirror.js" />
+    <Content Include="Scripts\codemirror-3.0\keymap\emacs.js" />
+    <Content Include="Scripts\codemirror-3.0\keymap\vim.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\clike.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\clojure.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\coffeescript.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\commonlisp.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\css.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\diff.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\ecl.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\erlang.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\gfm.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\go.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\groovy.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\haskell.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\haxe.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\htmlembedded.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\htmlmixed.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\http.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\javascript.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\jinja2.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\less.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\lua.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\markdown.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\mysql.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\ntriples.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\ocaml.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\pascal.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\perl.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\php.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\pig.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\plsql.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\properties.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\python.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\r.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\rpm\changes.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\rpm\spec.css" />
+    <Content Include="Scripts\codemirror-3.0\mode\rpm\spec.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\rst.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\ruby.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\rust.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\scheme.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\shell.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\sieve.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\smalltalk.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\smarty.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\sparql.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\stex.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\tiddlywiki\tiddlywiki.css" />
+    <Content Include="Scripts\codemirror-3.0\mode\tiddlywiki\tiddlywiki.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\tiki\tiki.css" />
+    <Content Include="Scripts\codemirror-3.0\mode\tiki\tiki.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\vb.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\vbscript.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\velocity.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\verilog.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\xml.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\xquery.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\yaml.js" />
+    <Content Include="Scripts\codemirror-3.0\mode\z80.js" />
+    <Content Include="Scripts\codemirror-3.0\util\closetag.js" />
+    <Content Include="Scripts\codemirror-3.0\util\colorize.js" />
+    <Content Include="Scripts\codemirror-3.0\util\continuecomment.js" />
+    <Content Include="Scripts\codemirror-3.0\util\continuelist.js" />
+    <Content Include="Scripts\codemirror-3.0\util\dialog.js" />
+    <Content Include="Scripts\codemirror-3.0\util\foldcode.js" />
+    <Content Include="Scripts\codemirror-3.0\util\formatting.js" />
+    <Content Include="Scripts\codemirror-3.0\util\javascript-hint.js" />
+    <Content Include="Scripts\codemirror-3.0\util\loadmode.js" />
+    <Content Include="Scripts\codemirror-3.0\util\match-highlighter.js" />
+    <Content Include="Scripts\codemirror-3.0\util\matchbrackets.js" />
+    <Content Include="Scripts\codemirror-3.0\util\multiplex.js" />
+    <Content Include="Scripts\codemirror-3.0\util\overlay.js" />
+    <Content Include="Scripts\codemirror-3.0\util\pig-hint.js" />
+    <Content Include="Scripts\codemirror-3.0\util\runmode-standalone.js" />
+    <Content Include="Scripts\codemirror-3.0\util\runmode.js" />
+    <Content Include="Scripts\codemirror-3.0\util\search.js" />
+    <Content Include="Scripts\codemirror-3.0\util\searchcursor.js" />
+    <Content Include="Scripts\codemirror-3.0\util\simple-hint.js" />
+    <Content Include="Scripts\codemirror-3.0\util\xml-hint.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular\framework\angular.min.js.map" />
     <Content Include="Scripts\angular\framework\angular-touch.min.js.map" />
@@ -387,22 +419,14 @@
     <Content Include="Areas\Authorization\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Authorization\Views\Auth\LogIn.cshtml" />
     <Content Include="Areas\Authorization\Views\Auth\Register.cshtml" />
+    <Content Include="Areas\Authorization\Views\Shared\_ExternalLogin.cshtml" />
+    <Content Include="Areas\Authorization\Views\Auth\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Areas\Authorization\Views\Auth\ExternalLoginFailure.cshtml" />
+    <Content Include="Areas\Authorization\Views\Auth\ConfirmEmail.cshtml" />
+    <Content Include="Areas\Authorization\Views\Auth\VerifyCode.cshtml" />
+    <Content Include="Areas\Authorization\Views\Auth\ResetPassword.cshtml" />
+    <Content Include="Areas\Authorization\Views\Auth\ConfirmNewPassword.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\codemirror-2.37\theme\ambiance-mobile.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\ambiance.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\blackboard.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\cobalt.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\eclipse.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\elegant.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\erlang-dark.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\lesser-dark.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\monokai.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\neat.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\night.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\rubyblue.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\twilight.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\vibrant-ink.css" />
-    <Content Include="Scripts\codemirror-2.37\theme\xq-dark.css" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-et.js" />
@@ -1146,7 +1170,6 @@
     <Content Include="Scripts\i18n\angular-locale_zh.js" />
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
-    <Content Include="Scripts\ideconfig.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -1154,10 +1177,14 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\messagebox\messagebox.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\_references.js" />
+    <None Include="Views\Shared\_MessageBox.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1176,7 +1203,7 @@
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\UnitTest\List.cshtml" />
-    <Content Include="Views\Shared\_Browser.cshtml" />
+    <Content Include="Views\Shared\_Browser.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
