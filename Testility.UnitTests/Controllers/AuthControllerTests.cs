@@ -9,6 +9,7 @@ using Testility.UnitTests.DbContextMock;
 using System.Net;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using Testility.WebUI.Infrastructure;
 
 namespace Testility.UnitTests.Controllers
 {
@@ -24,6 +25,7 @@ namespace Testility.UnitTests.Controllers
         {
             serviceMock = new MockIdentityService();
             authController = new AuthController(serviceMock.Repository);
+            AutoMapperConfiguration.Configure();
         }
 
         [TestMethod]
@@ -217,9 +219,10 @@ namespace Testility.UnitTests.Controllers
             Assert.AreEqual(res.StatusCode, expected.StatusCode);
         }
 
-
-        //ToDo 
-
-
+        [TestMethod]
+        public void Cannot_Register_MapperNotConfigured()
+        {
+            throw new NotImplementedException();        
+        }
     }
 }
