@@ -28,7 +28,9 @@ namespace Testility.Domain.Concrete
         #endregion UnitTest Entities
 
         public EFDbContext() : base("EFDbContext")
-        { }        
+        {
+            GetValidationErrors();
+        }        
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

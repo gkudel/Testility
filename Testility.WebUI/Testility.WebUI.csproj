@@ -199,6 +199,7 @@
     <Compile Include="Areas\Setup\Controllers\ReferencesController.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
     <Compile Include="Areas\Setup\Model\SolutionIndexItemViewModel.cs" />
+    <Compile Include="Controllers\CompilerController.cs" />
     <Compile Include="Infrastructure\ExternalLogin\ExternalLogin.cs" />
     <Compile Include="Model\IndexViewModel.cs" />
     <Compile Include="Areas\Setup\Model\ReferencesViewModel.cs" />
@@ -217,16 +218,14 @@
     </Compile>
     <Compile Include="Infrastructure\AutoMapperConfiguration.cs" />
     <Compile Include="Infrastructure\Mapping\WebUIModelMapping.cs" />
-    <Compile Include="Areas\Setup\Model\ItemViewModel.cs" />
     <Compile Include="Infrastructure\Ninject\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\Ninject\NinjectDependencyScope .cs" />
     <Compile Include="Infrastructure\Ninject\Ninject.cs" />
     <Compile Include="Infrastructure\Ninject\NinjectRegistration.cs" />
-    <Compile Include="Model\ItemApi.cs" />
+    <Compile Include="Model\ItemViewModel.cs" />
     <Compile Include="Model\PagingInfo.cs" />
-    <Compile Include="Areas\Setup\Model\SolutionViewModel.cs" />
-    <Compile Include="Model\ReferenceApi.cs" />
-    <Compile Include="Model\SolutionApi.cs" />
+    <Compile Include="Model\ReferenceViewModel.cs" />
+    <Compile Include="Model\SolutionViewModel.cs" />
     <Compile Include="Model\UnitTestIndexItemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\ICompilerService.cs" />

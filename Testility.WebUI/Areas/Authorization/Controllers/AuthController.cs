@@ -124,7 +124,7 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                         result.Errors.ToList().ForEach(a => ModelState.AddModelError("", a));
                         return View();
                     }
-                    catch (Exception e)
+                    catch (Exception /*e */)
                     {
                         ModelState.AddModelError("", "Error when reqistering a user");
                         return View();

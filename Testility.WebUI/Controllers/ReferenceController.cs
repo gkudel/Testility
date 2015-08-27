@@ -21,7 +21,7 @@ namespace Testility.WebUI.Controllers
 
         public HttpResponseMessage Get()
         {
-            return Request.CreateResponse<IEnumerable<ReferenceApi>>(HttpStatusCode.OK, setupRepository.GetReferences().Project().To<ReferenceApi>().ToArray());
+            return Request.CreateResponse<IEnumerable<ReferenceViewModel>>(HttpStatusCode.OK, setupRepository.GetReferences().Project().To<ReferenceViewModel>().ToArray());
         }
     }
 }

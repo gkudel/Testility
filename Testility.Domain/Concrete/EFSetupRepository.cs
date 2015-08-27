@@ -8,6 +8,7 @@ using Testility.Domain.Entities;
 using AutoMapper;
 using System.Linq.Expressions;
 using Microsoft.AspNet.Identity;
+using System.Data.Entity.Validation;
 
 namespace Testility.Domain.Concrete
 {
@@ -40,7 +41,7 @@ namespace Testility.Domain.Concrete
 
         public void Save(Solution solution, int[] references)
         {
-            var referencedAssemblies = solution.References.Where(r => references?.Contains(r.Id) ?? true).ToList();
+            var referencedAssemblies = solution.References.Where(r => !references?.Contains(r.Id) ?? true).ToList();
             foreach (Reference r in referencedAssemblies)
             {
                 solution.References.Remove(r);
@@ -161,6 +162,11 @@ namespace Testility.Domain.Concrete
         private void Commit()
         {
             context.SaveChanges();
+        }
+
+        public IEnumerable<DbEntityValidationResult> GetValidationErrors()
+        {
+            return context.GetValidationErrors();
         }
 
         public void Dispose()

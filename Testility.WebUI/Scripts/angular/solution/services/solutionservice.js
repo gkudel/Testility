@@ -2,29 +2,36 @@
     .factory('solutionservice', ['$http', '$location', '$q', function ($http, $location, $q) {
 
         var service = {
-            get: function (json) {
+            get: function () {
                 var d = $q.defer();
-                if (json) {
-                    d.resolve(JSON.parse(json));
-                } else {
-                    var array = /Solution\/Edit\/(\d+)/.exec($location.absUrl());
-                    var id = undefined;
-                    if (array && array.length > 1) {
-                        id = array[1];
-                    }
-
-                    if (id) {
-                        $http.get('/api/Solution/' + id)
-                            .success(function (response) {
-                                d.resolve(response);
-                            })
-                            .error(function (data, status) {                                
-                                d.reject(data);
-                            });
-                    } else {
-                        d.resolve(empty());
-                    }
+                var array = /Solution\/Edit\/(\d+)/.exec($location.absUrl());
+                var id = undefined;
+                if (array && array.length > 1) {
+                    id = array[1];
                 }
+
+                if (id) {
+                    $http.get('/api/Solution/' + id)
+                        .success(function (response) {
+                            d.resolve(response);
+                        })
+                        .error(function (data, status) {                                
+                            d.reject(data);
+                        });
+                } else {
+                    d.resolve(empty());
+                }
+                return d.promise;
+            },
+            submit: function(Solution) {
+                var d = $q.defer();
+                $http.post('/api/Solution/', JSON.stringify(Solution))
+                    .success(function (response) {
+                        d.resolve(response);
+                    })
+                    .error(function (data, status) {
+                        d.reject(data);
+                    });
                 return d.promise;
             },
             empty: function () {
@@ -38,7 +45,7 @@
             },
             compile: function (Solution) {
                 var d = $q.defer();
-                $http.post('/api/Solution/Compile', JSON.stringify(Solution))
+                $http.post('/api/Compiler/', JSON.stringify(Solution))
                     .success(function (response) {
                         d.resolve(response);
                     })

@@ -9,14 +9,6 @@
             return $scope.Solution.References || [];
         };
 
-        service.get(Solution.Json.value).then(function (solution) {
-            $scope.Solution = solution;
-            $scope.Loaded = true;
-        }, function (error) {
-            $scope.Solution = service.empty();
-            if (error.hasOwnProperty('Message')) messagebox.show('Solution', error.Message, 'Error');
-        });
-        
         $scope.addTab = function (solutionId) {
             if (!$scope.Solution.Items) $scope.Solution.Items = [];
             $scope.Solution.Items.push({ Id: 0, Name: 'Any Name', active: true, SolutionId: $scope.Solution.Id });
@@ -29,19 +21,41 @@
             }
         };
 
-        $scope.compile = function () {
-            service.compile($scope.Solution).then(function (status) {
-                $scope.Messages = $scope.Messages.concat(status);
-            }, function (error) {
-
-            });
-        };
-
         $scope.removeMessage = function (index) {
             if (!$scope.Messages) $scope.Messages = [];
             if (index <= $scope.Messages.length) {
                 $scope.Messages.splice(index, 1);
             }
+        };
+
+        service.get().then(function (solution) {
+            $scope.Solution = solution;
+            $scope.Loaded = true;
+        }, function (error) {
+            $scope.Solution = service.empty();
+            if (error.hasOwnProperty('Message')) messagebox.show('Solution', error.Message, 'Error');
+        });
+        
+        $scope.compile = function () {
+            $scope.Messages = [];
+            service.compile($scope.Solution).then(function (status) {
+                $scope.Messages = $scope.Messages.concat(status);
+            }, function (error) {
+                if (error.hasOwnProperty('Message')) messagebox.show('Solution', error.Message, 'Error');
+            });
+        };
+
+        $scope.submit = function () {
+            $scope.Messages = [];
+            service.submit($scope.Solution).then(function (status) {
+                $scope.Messages = $scope.Messages.concat(status);
+            }, function (error) {
+                if (error.hasOwnProperty('Message')) {
+                    messagebox.show('Solution', error.Message, 'Error');
+                } else if (Array.isArray(error)) {
+                    $scope.Messages = error;
+                }
+            });
         };
     }])
     .controller("CodeController", ['$scope', function ($scope) {

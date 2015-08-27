@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -19,6 +20,7 @@ namespace Testility.Domain.Abstract
         Reference GetReference(int id);
         void Save(Reference reference);
         bool DeleteReference(int id);
-        string[] GetSelectedReferencesNames(int[] ids);        
+        string[] GetSelectedReferencesNames(int[] ids);
+        IEnumerable<DbEntityValidationResult> GetValidationErrors();
     }
 }

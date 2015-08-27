@@ -1,8 +1,10 @@
-﻿@model Testility.WebUI.Areas.Setup.Model.SolutionViewModel
+﻿@model Testility.WebUI.Model.SolutionViewModel
 @using Testility.WebUI.Extensions;
 
 @{
     ViewBag.Title = "Solution Explorer";
+    HtmlHelper.ClientValidationEnabled = false;
+    HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
 }
 
 <div ng-controller="SolutionController">
@@ -11,11 +13,9 @@
         <strong>{{msg.Message}}</strong>
     </div>
 
-    @using (Html.BeginForm("Edit", "Solution", FormMethod.Post, new { @enctype = "multipart/form-data", @id = "Solution", @name = "Solution", @role = "form" }))
-    {
+    <form id="Solution" method="post" name="Solution" role="form" ng-submit="submit()" novalidate>
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Json);
 
         <div class="panel panel-default">
             <input type="hidden" name="Id" id="Id" value="{{Solution.Id}}" />
@@ -88,7 +88,7 @@
                 </div>
             </div>
         </div>
-    }
+    </form>
 </div>
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
