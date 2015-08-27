@@ -3,7 +3,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Linq;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -12,6 +11,8 @@ using Testility.WebUI.Services.Abstract;
 using Microsoft.Owin.Security;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Security;
+using Testility.WebUI.Infrastructure.ExternalLogin;
+using System.Net;
 
 namespace Testility.WebUI.Areas.Authorization.Controllers
 {
@@ -21,47 +22,85 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
 
         private readonly IIdentityServices identityServices;
 
-
         public AuthController(IIdentityServices identityService)
         {
             this.identityServices = identityService;
         }
 
-        public ActionResult LogIn(string returnUrl)
+        public ActionResult LogIn()
         {
-            var model = new LoginVM() { ReturnUrl = returnUrl };
-            return View(model);
+            return View();
         }
-
 
         [HttpPost]
         public async Task<ActionResult> LogIn(LoginVM model)
         {
-            if (ModelState.IsValid)
-            {
-                var user = await identityServices.GetUserAsync(identityServices.GetUserName(model.Email), model.Password);
-                if (user != null)
-                {
-                    var identity = await identityServices.CreateIdentityAsync(user, "ApplicationCookie");
-                    SignInToSite(identity);
+            if (!ModelState.IsValid)return View(model);
+            if (model == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-                    return Redirect(GetRedirectUrl(model.ReturnUrl));
+            var user = await identityServices.GetUserAsync(identityServices.GetUserName(model?.Email), model?.Password);
+            if (user != null)
+            {
+                try
+                {
+                    if (!await identityServices.IsEmailConfirmed(user.Id))
+                    {
+                        ModelState.AddModelError("", "You must have a confirmed email to log on.");
+                        return View();
+                    }
+
+                    await identityServices.GenerateTokenToLogin(user.Id);
+                    identityServices.SetTwoFactorAuthCookie(user.Id);
+                    return RedirectToAction("VerifyCode");
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Something went wrong");
+                    return View();
                 }
             }
-
-            ModelState.AddModelError("", "Invalid email or password");
-            return View(model);
+            ModelState.AddModelError("", "Something went wrong");
+            return View();
         }
 
-
-        private string GetRedirectUrl(string returnUrl)
+        public async Task<ActionResult> VerifyCode()
         {
-            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
-            {
-                return Url.Action("List", "Solution", new { area = "Setup" });
-            }
+            if (String.IsNullOrEmpty(await identityServices.GetTwoFactorUserIdAsync())) return RedirectToAction("LogIn");
+            return View();
+        }
 
-            return returnUrl;
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> VerifyCode(VerifyCodeVM model)
+        {
+            if (!ModelState.IsValid) return View(model);
+            if (model == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            string userId = await identityServices.GetTwoFactorUserIdAsync();
+
+            if (userId == null || String.IsNullOrEmpty(model.token)) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            var user = await identityServices.GetUserById(userId);
+
+            try
+            {
+                if (await identityServices.VerifyTokenToLogin(user?.Id ?? string.Empty, model.token))
+                {
+                    var identity = await identityServices.CreateIdentityAsync(user, "ApplicationCookie");
+                    await identityServices.SignInAsync(user);
+                    return RedirectToAction("List", "Solution", new { area = "Setup" });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid code");
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Exception durning request code");
+                return View();
+            }
         }
 
         [HttpGet]
@@ -71,10 +110,12 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterVM model)
         {
-            if (ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) return View(model);
+            if (model == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
                 IdentityUser newUser = Mapper.Map<IdentityUser>(model);
                 if (model.Id == null)                                               //New one
                 {
@@ -83,20 +124,22 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                         var result = await identityServices.CreateAsync(newUser, model.Password);
                         if (result.Succeeded)
                         {
-                            await identityServices.SendConfirmationEMail(newUser.Id);
-                            var identity = await identityServices.CreateIdentityAsync(newUser, "ApplicationCookie");
-                            SignInToSite(identity);
-                            return RedirectToAction("List", "Solution", new { area = "Setup" });
+                            await identityServices.SetTwoFactorEnabledProtection(newUser.Id);
+                            string token = await identityServices.GenerateEmailToken(newUser.Id);
+                            await identityServices.SendConfirmationEMail(Url.Action("ConfirmEmail", "Auth", new { userId = newUser.Id, code = token }, protocol: Request.Url.Scheme), newUser.Id);
+                            TempData["EmailToken"] = string.Format("Email Confirmation has been send");
+                            return View();
                         }
                         result.Errors.ToList().ForEach(a => ModelState.AddModelError("", a));
-
                         return View();
                     }
                     catch (Exception e)
                     {
-
+                        ModelState.AddModelError("", "Error when reqistering a user");
+                        return View();
                     }
                 }
+
                 IdentityUser orgUser = identityServices.GetUser(User.Identity.GetUserId());
                 if (orgUser != null) //Existing one
                 {
@@ -104,27 +147,35 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                     identityServices.UpdateUserData(orgUser);
                     return RedirectToAction("List", "Solution", new { area = "Setup" });
                 }
-            }
             ModelState.AddModelError("", "Error when reqistering a user");
             return View();
         }
 
-        private ActionResult RedirectToLocal(string returnUrl)
+        [HttpGet]
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (Url.IsLocalUrl(returnUrl))
+            if (userId == null || code == null)
             {
-                return Redirect(returnUrl);
+                return View("Error");       //ToDo
             }
-            return RedirectToAction("Index", "Home");
-        }    
+
+            IdentityResult result = await identityServices.confirmEmail(userId, code);
+
+            if (result.Succeeded)
+            {
+                return View("ConfirmEmail");
+            }
+            else
+            {
+                //AddErrors(result);        //ToDo
+                return View();
+            }
+        }
 
 
         public ActionResult LogOut()
         {
-            var ctx = Request.GetOwinContext();
-            var authManager = ctx.Authentication;
-
-            authManager.SignOut("ApplicationCookie");
+            identityServices.SignOut();
             return RedirectToAction("LogIn");
         }
 
@@ -139,7 +190,7 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
 
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Auth", new { ReturnUrl = GetRedirectUrl(returnUrl) }));
+            return new ExternalLogin(provider, Url.Action("ExternalLoginCallback", "Auth", new { ReturnUrl = returnUrl }));
         }
 
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
@@ -154,7 +205,10 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    IdentityUser existingUser = await identityServices.FindUserByName(loginInfo.DefaultUserName);
+                    await identityServices.GenerateTokenToLogin(existingUser.Id); 
+                    identityServices.SetTwoFactorAuthCookie(existingUser.Id);
+                    return RedirectToAction("VerifyCode");
                 case SignInStatus.LockedOut:
                     //return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -167,7 +221,6 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationVM { Email = loginInfo.Email, Name= loginInfo.DefaultUserName });
             }
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -189,11 +242,12 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                 var result = await identityServices.CreateUserWithNoPassword(newUser);
                 if (result.Succeeded)
                 {
-                    result = await identityServices.AssociateLoginWithUser(newUser.Id, info);
-                    if (result.Succeeded)
+                    var res = await identityServices.AssociateLoginWithUser(newUser.Id, info);
+                    if (res.Succeeded)
                     {
-                        await identityServices.SignInAsync(newUser);
-                        return RedirectToLocal(returnUrl);
+                        await identityServices.GenerateTokenToLogin(newUser.Id);
+                        identityServices.SetTwoFactorAuthCookie(newUser.Id);
+                        return RedirectToAction("VerifyCode");
                     }
                 }
             }
@@ -202,40 +256,63 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
             return View(model);
         }
 
-        private void SignInToSite(ClaimsIdentity identity)
+
+        public ActionResult ResetPassword()
         {
-            var ctx = Request.GetOwinContext();
-            var authManager = ctx.Authentication;
-            authManager.SignIn(identity);
+            return View();
         }
 
-        internal class ChallengeResult : HttpUnauthorizedResult
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
-            public ChallengeResult(string provider, string redirectUri)
-                : this(provider, redirectUri, null)
+            if (!ModelState.IsValid)
             {
+                return View();
             }
-
-            public ChallengeResult(string provider, string redirectUri, string userId)
+            IdentityUser user = identityServices.GetUserByEmail(model.Email);
+            if (user != null)
             {
-                LoginProvider = provider;
-                RedirectUri = redirectUri;
-                UserId = userId;
-            }
+                var token = await identityServices.GeneratePasswordResetToken(user.Id);
+                await identityServices.SendResetPasswordMail(Url.Action("ConfirmPasswordResset", "Auth", new { passToken = token , userId = user.Id}, protocol: Request.Url.Scheme), user.Id);
 
-            public string LoginProvider { get; set; }
-            public string RedirectUri { get; set; }
-            public string UserId { get; set; }
-
-            public override void ExecuteResult(ControllerContext context)
-            {
-                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
-                if (UserId != null)
-                {
-                    properties.Dictionary["XsrfId"] = UserId;
-                }
-                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+                TempData["PasswordConfirmation"] = string.Format("Password reset email has been send");
+                return View();  
             }
+            ModelState.AddModelError("", "There is no such user");
+            return View();
         }
+
+        [HttpGet]
+        public ActionResult ConfirmPasswordResset(string passToken, string userId)
+        {
+            if (passToken == null || userId == null)
+            {
+                return View("Error");      
+            }
+
+            ConfirmPasswordResetVM model = new ConfirmPasswordResetVM() { Token = passToken, Id = userId };
+            return View("ConfirmNewPassword", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ConfirmPasswordResset(ConfirmPasswordResetVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();        
+            }
+            IdentityResult result = await identityServices.ResetPassword(model.Id, model.Token, model.NewPassword);
+
+            if (result.Succeeded)
+                return RedirectToAction("LogIn");
+
+            result.Errors.ToList().ForEach(x => ModelState.AddModelError("", x));
+            return View();          
+         }
+
+
+
     };
 }

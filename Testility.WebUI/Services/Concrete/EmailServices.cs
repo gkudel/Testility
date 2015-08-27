@@ -15,15 +15,16 @@ namespace Testility.Domain.Concrete
         {
 
             var mailMessage = new MailMessage(
-            "xxxx",
+            "lukasz.ozog@outlook.com",
             message.Destination,
             message.Subject,
             message.Body
             );
 
-            SmtpClient client = new SmtpClient("xxxxx", 465) { Credentials = new NetworkCredential("xxx", "xxx") };
+            SmtpClient client = new SmtpClient("smtp.live.com", 587) { Credentials = new NetworkCredential("lukasz.ozog@outlook.com", "q1w2e3r4t5y6") , EnableSsl = true};
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.SendMailAsync(mailMessage);
+            client.Send(mailMessage);
+            //client.SendMailAsync(mailMessage);
             return Task.FromResult(0);
         }
     }

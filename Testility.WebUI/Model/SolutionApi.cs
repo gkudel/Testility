@@ -10,5 +10,8 @@ namespace Testility.WebUI.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int Language { get; set; }
+        public int[] References { get; set; }
+        public ItemApi[] Items { get; set; }
     }
 }

@@ -10,11 +10,73 @@ using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using Testility.Engine.Abstract;
 using Testility.Engine.Model;
-using Testility.WebUI.Areas.Setup.Controllers;
 using Testility.WebUI.Areas.Setup.Model;
 using Testility.WebUI.Services.Abstract;
 using Testility.WebUI.Model;
 using Testility.WebUI.Infrastructure;
+using Testility.UnitTests.DbContextMock;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Routing;
+using System.Web.Http.Controllers;
+using System.Web.Http.Hosting;
+
+namespace Testility.WebUI.Controllers.Tests
+{   
+    [TestClass()]
+    public class SolutionControllerTests
+    {
+        #region Members
+        public MockSetupRepository MockSetupRepository { get; set; }
+        public Mock<ICompilerService> CompilerMock { get; set; }
+        public SolutionController solutionController { get; set; }
+
+        #endregion Members
+        [TestInitialize]
+        public void Int()
+        {
+            MockSetupRepository = new MockSetupRepository();
+            CompilerMock = new Mock<ICompilerService>();
+            solutionController = new SolutionController(MockSetupRepository.Repository, CompilerMock.Object);
+            var config = new HttpConfiguration();
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost/api/Solutions");
+            var route = config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}");
+            var routeData = new HttpRouteData(route, new HttpRouteValueDictionary { { "controller", "products" } });
+
+            solutionController.ControllerContext = new HttpControllerContext(config, routeData, request);
+            solutionController.Request = request;
+            solutionController.Request.Properties[HttpPropertyKeys.HttpConfigurationKey] = config;
+            AutoMapperConfiguration.Configure();
+        }
+
+        [TestMethod()]
+        public void Get_Contains_All_Solutions()
+        {
+            HttpResponseMessage message = solutionController.Get();
+            Assert.AreNotEqual(null, message);
+            Assert.AreEqual(HttpStatusCode.OK, message.StatusCode);            
+        }
+
+        [TestMethod()]
+        public void Cannot_Get_Invalid_NotFound()
+        {
+            HttpResponseMessage message = solutionController.Get(11);
+            Assert.AreNotEqual(null, message);
+            Assert.AreEqual(HttpStatusCode.NotFound, message.StatusCode);
+        }
+
+        [TestMethod()]
+        public void Cannot_Get_Valid_NotFound()
+        {
+            Solution singleSolution = new Solution() { Id = 1 };
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
+            HttpResponseMessage message = solutionController.Get(1);
+            Assert.AreNotEqual(null, message);
+            Assert.AreEqual(HttpStatusCode.OK, message.StatusCode);
+            MockSetupRepository.Mock.Verify(m => m.GetSolution(1), Times.Once);
+        }
+    }
+}
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
@@ -22,7 +84,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
     public class SolutionControllerTests
     {
         #region Members
-        public Mock<ISetupRepository> ServiceMock { get; set; }
+        public MockSetupRepository MockSetupRepository { get; set; }
         public Mock<ICompilerService> CompilerMock { get; set; }
         public SolutionController solutionController { get; set; }
         #endregion Members
@@ -30,31 +92,12 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         #region Init
         [TestInitialize]
         public void Int()
-        {          
-            IQueryable<Solution> SolutionList = new List<Solution>
-            {
-                new Solution() {Id = 1, Name = "ko"},
-                new Solution() {Id = 2, Name = "ko"},
-                new Solution() {Id = 3, Name = "ko"},
-                new Solution() {Id = 4, Name = "ko"}
-
-            }.AsQueryable();
-
-            IQueryable<Reference> ReferenceList = new List<Reference>
-            {
-                new Reference() {Id = 1, Name = "System.dll"}
-            }.AsQueryable();
-
-
-            ServiceMock = new Mock<ISetupRepository>();
-            ServiceMock.Setup(x => x.GetSolutions(It.IsAny<bool>())).Returns(SolutionList);
-            ServiceMock.Setup(x => x.DeleteSolution(It.IsAny<int>())).Returns(true);
-            ServiceMock.Setup(x => x.IsAlreadyDefined(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
-            
+        {
+            MockSetupRepository = new MockSetupRepository();
             CompilerMock = new Mock<ICompilerService>();
 
             AutoMapperConfiguration.Configure();
-            solutionController = new SolutionController(ServiceMock.Object, CompilerMock.Object);
+            solutionController = new SolutionController(MockSetupRepository.Repository, CompilerMock.Object);
         }
         #endregion Init
 
@@ -102,7 +145,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             var result = solutionController.Create() as ViewResult;
             Assert.AreEqual("Solution", result.ViewName);
-            Assert.AreNotEqual(null, result.Model);
+            Assert.AreEqual(null, result.Model);
         }
 
         [TestMethod]
@@ -117,7 +160,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [TestMethod]
         public void Cannot_EditNonExistsSolution_NotFound()
         {
-            ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((Solution)null);
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((Solution)null);
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
             var result = solutionController.Edit(It.IsAny<int>()) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
@@ -127,7 +170,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Can_Edit_Solution_Redirect()
         {
             Solution singleSolution = new Solution() { Id = 1 };
-            ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
             var result = solutionController.Edit(1) as ViewResult;
             Assert.AreEqual("Solution", result.ViewName);
         }
@@ -142,9 +185,9 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             var result = solutionController.EditPost(solution) as HttpStatusCodeResult;
 
             Solution singleSolution = new Solution() { Id = 1 };
-            ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
 
-            ServiceMock.Verify(m => m.GetSolution(11), Times.Once);
+            MockSetupRepository.Mock.Verify(m => m.GetSolution(11), Times.Once);
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
         }
 
@@ -169,14 +212,14 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Can_EditSolution_RedirectToAction()
         {
 
-            ServiceMock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
+            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
             CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>());
 
             SolutionViewModel solution = new SolutionViewModel() { Name = "ok" };
             var actionResult = solutionController.EditPost(solution) as RedirectToRouteResult;
 
 
-            ServiceMock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
+            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
             Assert.AreNotEqual(null, solutionController.TempData["savemessage"]);
             Assert.AreEqual("List", actionResult.RouteValues["action"]);
         }
@@ -184,12 +227,12 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [TestMethod]
         public void Cannot_EditSolution_CompileError()
         {
-            ServiceMock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
+            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
 
             SolutionViewModel solution = new SolutionViewModel() { Name = "ok" };
             var actionResult = solutionController.EditPost(solution) as ViewResult;
 
-            ServiceMock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Never);
+            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Never);
             Assert.AreEqual(null, solutionController.TempData["savemessage"]);
             Assert.AreEqual("Solution", actionResult.ViewName);
         }
@@ -198,13 +241,13 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [TestMethod]
         public void Cannot_EditSolution_Exception()
         {
-            ServiceMock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>())).Throws(new Exception());
+            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>())).Throws(new Exception());
             CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>());
 
             SolutionViewModel solution = new SolutionViewModel() { Name = "ok" };
             var actionResult = solutionController.EditPost(solution) as ViewResult;
 
-            ServiceMock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
+            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
             Assert.AreEqual("Solution", actionResult.ViewName);
 
         }
@@ -225,7 +268,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Cannot_Delete_NonExists_Solutions()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((Solution)null);
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((Solution)null);
 
             var result = solutionController.Delete(10) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
@@ -236,7 +279,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
 
             Solution solution = new Solution() { Id = 1, Name = "ok" };
-            ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(solution);
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(solution);
 
             ViewResult result = solutionController.Delete(1) as ViewResult;
             var model = (result as ViewResult).Model as SolutionViewModel;
@@ -246,9 +289,9 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [TestMethod]
         public void Cannot_Delete_Solution_WhenException()
         {
-            ServiceMock.Setup(x => x.DeleteSolution(It.IsAny<int>())).Throws(new Exception());
+            MockSetupRepository.Mock.Setup(x => x.DeleteSolution(It.IsAny<int>())).Throws(new Exception());
             var result = solutionController.DeleteConfirmed(1) as RedirectToRouteResult;
-            ServiceMock.Verify(x => x.DeleteSolution(It.IsAny<int>()), Times.Once);
+            MockSetupRepository.Mock.Verify(x => x.DeleteSolution(It.IsAny<int>()), Times.Once);
             Assert.AreEqual("List", result.RouteValues["action"]);
         }
 
@@ -256,7 +299,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Can_Delete_Solution()
         {
             var result = solutionController.DeleteConfirmed(1) as RedirectToRouteResult;
-            ServiceMock.Verify(x=>x.DeleteSolution(1), Times.Once);
+            MockSetupRepository.Mock.Verify(x=>x.DeleteSolution(1), Times.Once);
             Assert.AreNotEqual(null, solutionController.TempData["savemessage"]);
             Assert.AreEqual("List", result.RouteValues["action"]);
         }

@@ -1,42 +1,87 @@
-﻿angular.module('browser', ['ngAnimate', 'ui.bootstrap']);
-
-angular.module('browser').controller('BrowserController', function ($scope, $modal, $log, config) {
-
-    $scope.isResult = false;
-    if (config.isResult !== undefined) {
-        $scope.isResult = config.isResult;
-    }
-    $scope.resultName = config.resultName;
-    $scope.getResultValue = config.getResultValue;
-
-    $scope.open = function (size) {
-        var modalInstance = $modal.open({
-            animation: true,
-            templateUrl: 'Browser.html',
-            controller: 'BrowserInstnace',
-            size: size,
-            resolve: {
-                items: function () {
-                    return config.getDataSource();
-                },
-                config: function () {
-                    return config;
+﻿angular.module('ui.browser', ['ngAnimate', 'ui.bootstrap'])
+    .directive('uiBrowser', ['ui.config', function (uiConfig) {
+        return {
+            restrict: 'A',
+            replace: false,
+            transclude: true,
+            scope: {},
+            bindToController: {
+                itemsSelected: '&',
+                modelSize: '='
+            },
+            link: function($scope, $element) {
+                $element.bind('click', $scope.open);
+                $scope.$on('$destroy', function () {
+                    $element.unbind('click');
+                });
+            },
+            templateUrl: function(element, attrs) {
+                var options = {};
+                if (attrs.config !== undefined) options = uiConfig.browsersConfig[attrs.config] || {};
+                options = angular.extend({}, options, attrs.uiBrowser);
+                if (options.hasOwnProperty('templateUrl')) {
+                    return opts.templateUrl;
                 }
-            }
-        });       
-        modalInstance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
-        });
-    };
-});
+                return '/Views/Shared/_Browser.html';
+            },
+            controller: 'uiBrowserController',
+            controllerAs: 'ctrl'
+        };
+    }]);
 
+angular.module('ui.browser')
+    .controller('uiBrowserController', ['$scope', '$element', '$attrs', '$transclude', 'ui.config', '$modal', '$log', '$q', '$http', 'messagebox', 
+            function ($scope, $element, $attrs, $transclude, uiConfig, $modal, $log, $q, $http, messagebox) {
+        var options = {};
+        if ($attrs.config !== undefined) options = uiConfig.browsersConfig[$attrs.config] || {};
+        options = angular.extend({}, options, $attrs.uiBrowser);
+        var selectedItem = this.itemsSelected;
+        var modelSize = this.modelSize;
 
-angular.module('browser').controller('BrowserInstnace', function ($scope, $modalInstance, items, config) {
-    $scope.allitems = items;
+        $scope.open = function () {
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'Browser.html',
+                controller: 'BrowserInstnace',
+                size: modelSize,
+                resolve: {
+                    selected: function() {
+                        return selectedItem().slice();
+                    },
+                    config: function() {
+                        return options;
+                    },
+                    items: function () {
+                        var d = $q.defer();
+                        if (typeof options.DataSource === "function") {
+                            d.resolve(options.DataSource());
+                        } else if ((typeof options.DataSource == 'string' || options.DataSource instanceof String) && options.DataSource.length > 0) {
+                            
+                            $http.get(options.DataSource)
+                                .success(function (response) {
+                                    d.resolve(response);
+                                }).error(function (data, status) {
+                                    d.reject(data);
+                                });;
+                        }
+                        return d.promise;
+                    }
+                }
+            });
+            modalInstance.result.then(function (items) {
+                selectedItem({ items: items });
+            }, function (error) {
+                if (error.hasOwnProperty('Message')) messagebox.show(options.title, error.Message, 'Error');
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        }
+    }]);
+
+angular.module('ui.browser')
+    .controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', 'selected', function ($scope, $modalInstance, items, config, selected) {
+    $scope.allitems = items || [];
     $scope.title = config.title;
-    $scope.selectedItem = [];
+    $scope.selectedItem = selected || [];
 
     $scope.itemsPerPage = 3;
     $scope.currentPage = 1;
@@ -60,30 +105,34 @@ angular.module('browser').controller('BrowserInstnace', function ($scope, $modal
         $modalInstance.dismiss('cancel');
     };
 
+    var indexOf = function(item) {
+        return $scope.selectedItem.findIndex(function (e) { return config.Equal(e, item); });
+    }
+
     $scope.selected = function (item) {
-        return $scope.selectedItem.indexOf(item) >= 0;
+        return indexOf(item) >= 0;
     };
 
     $scope.mark = function (item) {
         if (config.MultiSelection) {
             if ($scope.selected(item)) {
-                var index = $scope.selectedItem.indexOf(item);
+                var index = indexOf(item);
                 $scope.selectedItem.splice(index, 1);
             } else {
-                $scope.selectedItem.push(item);
+                $scope.selectedItem.push(config.GetResultValue(item));
             }
         } else {
             if ($scope.selected(item)) {
                 $scope.selectedItem = [];
             } else {
-                $scope.selectedItem = [item];
+                $scope.selectedItem = [config.GetResultValue(item)];
 
             }
         }
     };    
 
     $scope.printItem = function (e) { return e; };
-    if (config.PrintElement !== undefined) {
+    if (typeof config.PrintElement === "function") {
         $scope.printItem = config.PrintElement;
     }
 
@@ -91,6 +140,17 @@ angular.module('browser').controller('BrowserInstnace', function ($scope, $modal
         if ($scope.selectedItem.length == 0) {
             return 'None';
         }
-        return $scope.selectedItem.map($scope.printItem).join();
+        var s = undefined;
+        for (var i = 0; i < $scope.allitems.length; i++) {
+            var ele = $scope.allitems[i];
+            if ($scope.selected(ele)) {
+                if (s == undefined) {
+                    s = $scope.printItem(ele);
+                } else {
+                    s = s + ',' + $scope.printItem(ele);
+                }
+            }
+        }
+        return s;
     };
-});
+}]);

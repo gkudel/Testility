@@ -32,11 +32,12 @@
                 }
                
                 <div class="col-md-6">
-                    @{Html.RenderPartial("_ExternalLogin", new ExternalAuthVM() { returnUrl = Model.ReturnUrl });}
+                    @{Html.RenderPartial("_ExternalLogin", new ExternalAuthVM() );}
                 </div>
             </div>
 
             <div class="panel-footer">
-
+                <a href="@Url.Action("Register", "Auth", new { area = "Authorization" })"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                <a href="@Url.Action("ResetPassword", "Auth", new { area = "Authorization" })"><span class="glyphicon glyphicon-alert"></span> Reset password</a>
             </div>
         </div>
