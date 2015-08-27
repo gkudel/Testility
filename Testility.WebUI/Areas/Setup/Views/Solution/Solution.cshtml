@@ -22,16 +22,19 @@
                 <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
             </div>
             <div class="panel-body">
-                <div class="text-right col-md-4 col-md-offset-8">
+                <div class="text-right col-md-6 col-md-offset-6">
                     <div class="btn-group btn-group-justified">
-                        <a ng-click="addTab()" class="btn btn-default btn-md" ng-disabled="!Loaded">
-                            <span class="glyphicon glyphicon-plus"></span> Item
-                        </a>
-                        <a ng-click="compile()" class="btn btn-default btn-md" ng-disabled="!Loaded">
-                            <span class="glyphicon glyphicon-wrench"></span> Compile
-                        </a>
-                        <a ui-browser config="References" items-selected="References(items)" model-size="ReferencesModelSize" class="btn btn-default btn-md" ng-disabled="!Loaded">
-                            <span class="glyphicon glyphicon-plus"></span> References
+                        <a ng-click="refresh()" class="btn btn-default btn-sm" ng-disabled="!Loaded">
+                            <span class="glyphicon glyphicon-refresh"></span><span class="hidden-sm hidden-xs"> Refresh</span>
+</a>
+                        <a ng-click="addTab()" class="btn btn-default btn-sm" ng-disabled="!Loaded">
+                            <span class="glyphicon glyphicon-plus"></span><span class="hidden-sm hidden-xs"> Item</span>
+</a>
+                        <a ng-click="compile()" class="btn btn-default btn-sm" ng-disabled="!Loaded">
+                            <span class="glyphicon glyphicon-wrench"></span><span class="hidden-sm hidden-xs"> Compile</span>
+</a>
+                        <a ui-browser config="References" items-selected="References(items)" model-size="ReferencesModelSize" class="btn btn-default btn-sm" ng-disabled="!Loaded">
+                            <span class="glyphicon glyphicon-plus"></span><span class="hidden-sm hidden-xs"> Ref.</span>
                         </a>
                     </div>
                 </div>

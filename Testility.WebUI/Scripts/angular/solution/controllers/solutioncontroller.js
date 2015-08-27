@@ -4,6 +4,7 @@
         $scope.Loaded = false;
         $scope.ReferencesModelSize = 'md';
         $scope.Messages = [];
+
         $scope.References = function (items) {
             if (items !== undefined) $scope.Solution.References = items;
             return $scope.Solution.References || [];
@@ -28,14 +29,17 @@
             }
         };
 
-        service.get().then(function (solution) {
-            $scope.Solution = solution;
-            $scope.Loaded = true;
-        }, function (error) {
-            $scope.Solution = service.empty();
-            messagebox.show('Solution', error, 'Error');
-        });
-        
+        $scope.refresh = function () {
+            $scope.Messages = [];
+            service.get().then(function (solution) {
+                $scope.Solution = solution;
+                $scope.Loaded = true;
+            }, function (error) {
+                $scope.Solution = service.empty();
+                messagebox.show('Solution', error, 'Error');
+            });
+        };
+
         $scope.compile = function () {
             $scope.Messages = [];
             service.compile($scope.Solution).then(function (status) {
@@ -57,6 +61,8 @@
                 }
             });
         };
+
+        $scope.refresh();
     }])
     .controller("CodeController", ['$scope', function ($scope) {
         $scope.code = $scope.$parent.item.Code;
