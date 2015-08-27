@@ -12,7 +12,7 @@ namespace Testility.WebUI.Model
     public class SolutionViewModel
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Solution Name is requred")]
+        [Required(ErrorMessage = "Solution Name is required")]
         [StringLength(100)]
         [Remote("IsNameUnique", "Validation", ErrorMessage = "Solution already exists.", AdditionalFields = "Id")]
         public string Name { get; set; }

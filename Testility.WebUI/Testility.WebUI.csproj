@@ -201,6 +201,7 @@
     <Compile Include="Areas\Setup\Model\SolutionIndexItemViewModel.cs" />
     <Compile Include="Controllers\CompilerController.cs" />
     <Compile Include="Infrastructure\ExternalLogin\ExternalLogin.cs" />
+    <Compile Include="Infrastructure\Filters\ArgumentNullExceptionFilterAttribute.cs" />
     <Compile Include="Model\IndexViewModel.cs" />
     <Compile Include="Areas\Setup\Model\ReferencesViewModel.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />

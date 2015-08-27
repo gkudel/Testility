@@ -19,7 +19,7 @@
                             d.reject(data);
                         });
                 } else {
-                    d.resolve(empty());
+                    d.resolve(this.empty());
                 }
                 return d.promise;
             },

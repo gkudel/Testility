@@ -61,7 +61,7 @@ angular.module('ui.browser')
                                 .success(function (response) {
                                     d.resolve(response);
                                 }).error(function (data, status) {
-                                    d.reject(data);
+                                    d.reject(data, status);
                                 });;
                         }
                         return d.promise;
@@ -70,9 +70,8 @@ angular.module('ui.browser')
             });
             modalInstance.result.then(function (items) {
                 selectedItem({ items: items });
-            }, function (error) {
-                if (error.hasOwnProperty('Message')) messagebox.show(options.title, error.Message, 'Error');
-                $log.info('Modal dismissed at: ' + new Date());
+            }, function (error, status) {
+                if(error !== 'cancel') messagebox.show(options.title, error, 'Error');                               
             });
         }
     }]);

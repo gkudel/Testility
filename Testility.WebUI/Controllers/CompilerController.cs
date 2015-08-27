@@ -8,6 +8,7 @@ using System.Web.Http;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using Testility.Engine.Model;
+using Testility.WebUI.Infrastructure.Filters;
 using Testility.WebUI.Model;
 using Testility.WebUI.Services.Abstract;
 
@@ -24,6 +25,7 @@ namespace Testility.WebUI.Controllers
             this.compilerService = compilerService;
         }
 
+        [ArgumentNullExceptionFilter]
         public HttpResponseMessage Post(SolutionViewModel solution)
         {
             if (solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
@@ -31,8 +33,8 @@ namespace Testility.WebUI.Controllers
             if (errors.Count == 0)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, new[] {
-                    new { Message = "Succes!!!", Alert = "success" }
-                });
+                new { Message = "Succes!!!", Alert = "success" }
+            });
             }
             else
             {

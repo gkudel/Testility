@@ -12,6 +12,7 @@ using AutoMapper;
 using Testility.WebUI.Services.Abstract;
 using Testility.Engine.Model;
 using System.Data.Entity.Validation;
+using Testility.WebUI.Infrastructure.Filters;
 
 namespace Testility.WebUI.Controllers
 {
@@ -42,6 +43,7 @@ namespace Testility.WebUI.Controllers
             return Request.CreateResponse<SolutionViewModel>(HttpStatusCode.OK, Mapper.Map<SolutionViewModel>(s));
         }
 
+        [ArgumentNullExceptionFilter]
         [System.Web.Mvc.ValidateAntiForgeryToken]
         public HttpResponseMessage Post(SolutionViewModel model)
         {

@@ -33,7 +33,7 @@
             $scope.Loaded = true;
         }, function (error) {
             $scope.Solution = service.empty();
-            if (error.hasOwnProperty('Message')) messagebox.show('Solution', error.Message, 'Error');
+            messagebox.show('Solution', error, 'Error');
         });
         
         $scope.compile = function () {
@@ -41,7 +41,7 @@
             service.compile($scope.Solution).then(function (status) {
                 $scope.Messages = $scope.Messages.concat(status);
             }, function (error) {
-                if (error.hasOwnProperty('Message')) messagebox.show('Solution', error.Message, 'Error');
+                messagebox.show('Solution', error, 'Error');
             });
         };
 
@@ -50,10 +50,10 @@
             service.submit($scope.Solution).then(function (status) {
                 $scope.Messages = $scope.Messages.concat(status);
             }, function (error) {
-                if (error.hasOwnProperty('Message')) {
-                    messagebox.show('Solution', error.Message, 'Error');
-                } else if (Array.isArray(error)) {
+                if (Array.isArray(error)) {
                     $scope.Messages = error;
+                } else {
+                    messagebox.show('Solution', error, 'Error');
                 }
             });
         };

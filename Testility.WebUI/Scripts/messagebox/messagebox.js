@@ -13,7 +13,12 @@
                             return caption
                         },
                         message: function () {
-                            return message;
+                            var m;
+                            if (message) {
+                                if (message.hasOwnProperty('Message')) m = message.Message;
+                                else m = message;
+                            }
+                            return m;
                         },
                         icon: function(){
                             return icon || 'Info';
