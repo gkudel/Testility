@@ -12,7 +12,7 @@ namespace Testility.WebUI
     public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
-        {
+        {            
             AreaRegistration.RegisterAllAreas();
             Infrastructure.Ninject.Ninject.Register();
             Logger.Concrete.Logger.Initalize(Infrastructure.Ninject.Ninject.GetService(typeof(ILogger)) as ILogger);

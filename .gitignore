@@ -9,6 +9,6 @@ Testility.Engine/obj/
 Testility.Engine/bin/
 Testility.Logger/obj/
 Testility.Logger/bin/
-Testility.WebUI/App_Data/EFDbContext.mdf
-Testility.WebUI/App_Data/EFDbContext_log.ldf
+Testility.WebUI/App_Data/
+Testility.WebUI/App_Data/
 .vs

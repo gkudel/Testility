@@ -1,28 +1,5 @@
-﻿(function(angular){
-    if (!Array.prototype.findIndex) {
-      Array.prototype.findIndex = function(predicate) {
-        if (this === null) {
-          throw new TypeError('Array.prototype.findIndex called on null or undefined');
-        }
-        if (typeof predicate !== 'function') {
-          throw new TypeError('predicate must be a function');
-        }
-        var list = Object(this);
-        var length = list.length >>> 0;
-        var thisArg = arguments[1];
-        var value;
-
-        for (var i = 0; i < length; i++) {
-          value = list[i];
-          if (predicate.call(thisArg, value, i, list)) {
-            return i;
-          }
-        }
-        return -1;
-      };
-    }
-
-    var myApp = angular.module("Testility", ['ui', 'ui.browser']);
+﻿(function (angular) {
+    var myApp = angular.module("Testility", ['ui', 'ui.browser', 'ui.spiner']);
     myApp.value('ui.config', {
         codemirror: {
             lineNumbers: true,
@@ -40,4 +17,46 @@
             }
         }
     });
+
+    myApp.config(['$httpProvider', function($httpProvider){
+        $httpProvider.interceptors.push(function ($q) {
+            return {
+                'request': function (config) {
+                    return config;
+                },
+                'requestError': function (rejection) {
+                    return rejection;
+                },
+                'response': function (response) {
+                    return response;
+                },
+                'responseError': function (rejection) {
+                    return rejection;
+                }
+            };
+        });
+    }]);
+
+    if (!Array.prototype.findIndex) {
+        Array.prototype.findIndex = function (predicate) {
+            if (this === null) {
+                throw new TypeError('Array.prototype.findIndex called on null or undefined');
+            }
+            if (typeof predicate !== 'function') {
+                throw new TypeError('predicate must be a function');
+            }
+            var list = Object(this);
+            var length = list.length >>> 0;
+            var thisArg = arguments[1];
+            var value;
+
+            for (var i = 0; i < length; i++) {
+                value = list[i];
+                if (predicate.call(thisArg, value, i, list)) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+    }
 })(window.angular);

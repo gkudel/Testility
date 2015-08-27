@@ -199,7 +199,6 @@
     <Compile Include="Areas\Setup\Controllers\ReferencesController.cs" />
     <Compile Include="Areas\Setup\Controllers\ValidationController.cs" />
     <Compile Include="Areas\Setup\Model\SolutionIndexItemViewModel.cs" />
-    <Compile Include="Controllers\CompilerController.cs" />
     <Compile Include="Infrastructure\ExternalLogin\ExternalLogin.cs" />
     <Compile Include="Infrastructure\Filters\ArgumentNullExceptionFilterAttribute.cs" />
     <Compile Include="Model\IndexViewModel.cs" />
@@ -261,6 +260,7 @@
     <Content Include="Content\codemirror-3.0\theme\twilight.css" />
     <Content Include="Content\codemirror-3.0\theme\vibrant-ink.css" />
     <Content Include="Content\codemirror-3.0\theme\xq-dark.css" />
+    <Content Include="Content\iosOverlay.css" />
     <Content Include="Content\select2.css" />
     <Content Include="Content\select2.png" />
     <Content Include="Content\select2x2.png" />
@@ -1170,6 +1170,7 @@
     <Content Include="Scripts\i18n\angular-locale_zh.js" />
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
+    <Content Include="Scripts\iosOverlay.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -1177,12 +1178,14 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\spiner\spiner.js" />
     <Content Include="Scripts\messagebox\messagebox.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\spin.min.js" />
     <Content Include="Scripts\_references.js" />
     <None Include="Views\Shared\_MessageBox.cshtml" />
     <Content Include="Web.config" />

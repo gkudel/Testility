@@ -86,5 +86,28 @@ namespace Testility.WebUI.Controllers
             }
         }
 
+        [ArgumentNullExceptionFilter]
+        [HttpPost]
+        [Route("api/Solution/Compile")]
+        public HttpResponseMessage Compile(SolutionViewModel solution)
+        {
+            if (solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
+            IList<Error> errors = compilerService.Compile(Mapper.Map<Solution>(solution), solution.References);
+            if (errors.Count == 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new[] {
+                new { Message = "Succes!!!", Alert = "success" }
+            });
+            }
+            else
+            {
+                List<object> ret = new List<object>();
+                foreach (Error e in errors)
+                {
+                    ret.Add(new { Message = e.ToString(), Alert = e.IsWarning ? "warning" : "danger" });
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, ret.ToArray());
+            }
+        }
     }
 }

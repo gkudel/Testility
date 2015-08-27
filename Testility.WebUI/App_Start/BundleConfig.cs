@@ -9,7 +9,9 @@ namespace Testility.WebUI
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/iosOverlay.js",
+                        "~/Scripts/spin.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -25,7 +27,8 @@ namespace Testility.WebUI
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/iosOverlay.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/ide").Include(
                         ));
@@ -40,7 +43,8 @@ namespace Testility.WebUI
                     "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
                     "~/Scripts/angular/main.js",
                     "~/Scripts/browser/browser.js",
-                    "~/Scripts/messagebox/messagebox.js"));
+                    "~/Scripts/messagebox/messagebox.js",
+                    "~/Scripts/spiner/spiner.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
                 "~/Scripts/codemirror-3.0/codemirror.js",
