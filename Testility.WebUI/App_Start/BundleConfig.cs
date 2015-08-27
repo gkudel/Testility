@@ -28,27 +28,29 @@ namespace Testility.WebUI
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/ide").Include(
-                        "~/Scripts/codemirror-2.37/lib/codemirror.js",
-                        "~/Scripts/codemirror-2.37/mode/clike/clike.js",
-                        "~/Scripts/ideconfig.js"));
+                        ));
 
             bundles.Add(new StyleBundle("~/Content/ide").Include(
-                    "~/Scripts/codemirror-2.37/lib/codemirror.css"));
+                    "~/Content/codemirror-3.0/codemirror.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/solution").Include(
-                    "~/Scripts/angular/solution/solution.js",
-                    "~/Scripts/browser/browser.js",
-                    "~/Scripts/angular/solution/browser-config.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/angular-ui").Include(
+            bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                     "~/Scripts/angular/framework/angular.js",
                     "~/Scripts/angular/framework/angular-animate.js",
-                    "~/Scripts/angular-ui/ui-bootstrap-tpls.js"));
+                    "~/Scripts/angular-ui/angular-ui.js",
+                    "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
+                    "~/Scripts/angular/main.js",
+                    "~/Scripts/browser/browser.js",
+                    "~/Scripts/messagebox/messagebox.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/solution").Include(
+                "~/Scripts/codemirror-3.0/codemirror.js",
+                "~/Scripts/codemirror-3.0/util/matchbrackets.js",
+                "~/Scripts/codemirror-3.0/mode/clike.js",
+                "~/Scripts/angular/solution/services/solutionservice.js", 
+                "~/Scripts/angular/solution/controllers/solutioncontroller.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/unit-test").Include(
-                   "~/Scripts/browser/browser.js",
-                   "~/Scripts/angular/unit-test/browser-config.js"));
-
+                   "~/Scripts/angular/unit-test/unit-test.js"));
         }
     }
 }

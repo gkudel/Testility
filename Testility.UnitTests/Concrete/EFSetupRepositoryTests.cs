@@ -157,6 +157,16 @@ namespace Testility.Domain.Concrete.Tests
             Assert.AreEqual(MockContext.Object.Tests.Count(), 0);
         }
 
+        [TestMethod]
+        public void Can_Edit_Solution_RemoveItem()
+        {
+            Solution solution = Service.GetSolution(1);
+            solution.Items = new HashSet<Item>();
+            MockContext.Object.Items.First().SolutionId = 1;
+            Service.Save(solution, null);
+            MockContext.Verify(x => x.SaveChanges(), Times.Once);
+            Assert.AreEqual(MockContext.Object.Items.Count(), 0);
+        }
 
         [TestMethod]
         public void Cannot_DeleteSolutionWithWrongId()

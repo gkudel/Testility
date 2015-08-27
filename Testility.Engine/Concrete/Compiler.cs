@@ -16,9 +16,8 @@ namespace Testility.Engine.Concrete
 {
     public class Compiler : MarshalByRefObject, ICompiler
     {
-        public Result Compile(Input input)
-        {
-            if(input.Code == null || input.Code.Length == 00) throw new ArgumentNullException("Source Code can not be null");
+        Result ICompiler.Compile(Input input)
+        {                      
             Result result = new Result();
             CodeDomProvider provider = null;
             try
@@ -52,30 +51,31 @@ namespace Testility.Engine.Concrete
 
                 if (compilingResult.Errors.Count == 0)
                 {
-                    var types = compilingResult.CompiledAssembly.GetTypes().SelectMany(t =>
-                        System.Attribute.GetCustomAttributes(t).Where(a => typeof(TestedClassesAttribute).IsInstanceOfType(a)),
-                                    (t, a) => new { type = t, attribute = a as TestedClassesAttribute });
+                    var types = compilingResult.CompiledAssembly.GetTypes();
 
                     foreach (var t in types)
                     {
+                        TestedClassesAttribute attribute = System.Attribute.GetCustomAttributes(t)
+                            .Where(a => typeof(TestedClassesAttribute).IsInstanceOfType(a)).FirstOrDefault() as TestedClassesAttribute;
                         Class testedclass = new Class()
                         {
-                            Name = t.attribute.Name,
-                            Description = t.attribute.Description,
+                            Name = attribute?.Name ?? t.Name,
+                            Description = attribute?.Description ?? t.Name,
                         };
-                        var methods = t.type.GetMethods().Where(m => m.IsPublic)
-                            .SelectMany(m => System.Attribute.GetCustomAttributes(m)
-                                    .Where(a => typeof(TestedMethodAttribute).IsInstanceOfType(a)),
-                                        (m, a) => new { method = m, attribute = a as TestedMethodAttribute });
+                        var methods = t.GetMethods().Where(m => m.IsPublic 
+                                        && !m.IsConstructor && m.DeclaringType == t
+                                        && !m.IsSpecialName);
                         foreach (var m in methods)
                         {
+                            TestedMethodAttribute methodAttribiute = System.Attribute.GetCustomAttributes(m)
+                                .Where(a => typeof(TestedMethodAttribute).IsInstanceOfType(a)).FirstOrDefault() as TestedMethodAttribute;
                             Method testedmethod = new Method()
                             {
-                                Name = m.attribute.Name,
-                                Description = m.attribute.Description
+                                Name = methodAttribiute?.Name ?? m.Name,
+                                Description = methodAttribiute?.Description ?? m.Name
                             };
                             testedclass.Methods.Add(testedmethod);
-                            var tests = System.Attribute.GetCustomAttributes(m.method)
+                            var tests = System.Attribute.GetCustomAttributes(m)
                                 .Where(a => typeof(TestAttribute).IsInstanceOfType(a))
                                 .Select(a => a as TestAttribute);
                             foreach (TestAttribute a in tests)
@@ -92,17 +92,20 @@ namespace Testility.Engine.Concrete
                         {
                             result.Classes.Add(testedclass);
                         }
-                        else
-                        {
-                            result.Errors.Add(new Error() { Message = "TestedClass class defined without TestedMethods" });
-                        }
                     }
                 }
                 else
                 {
                     foreach (CompilerError error in compilingResult.Errors)
                     {
-                        result.Errors.Add(new Error() { Message = error.ErrorText });
+                        result.Errors.Add(new Error()
+                        {
+                                ErrorText = error.ErrorText,
+                                Column = error.Column,
+                                ErrorNumber = error.ErrorNumber,
+                                IsWarning = error.IsWarning,
+                                Line = error.Line
+                        });
                     }
                 }
             }
