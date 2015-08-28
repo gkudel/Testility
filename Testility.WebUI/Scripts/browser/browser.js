@@ -30,8 +30,8 @@
     }]);
 
 angular.module('ui.browser')
-    .controller('uiBrowserController', ['$scope', '$element', '$attrs', '$transclude', 'ui.config', '$modal', '$log', '$q', '$http', 'messagebox', 
-            function ($scope, $element, $attrs, $transclude, uiConfig, $modal, $log, $q, $http, messagebox) {
+    .controller('uiBrowserController', ['$scope', '$element', '$attrs', '$transclude', 'ui.config', '$modal', '$log', '$q', '$http', 'dialogbox', 
+            function ($scope, $element, $attrs, $transclude, uiConfig, $modal, $log, $q, $http, dialogbox) {
         var options = {};
         if ($attrs.config !== undefined) options = uiConfig.browsersConfig[$attrs.config] || {};
         options = angular.extend({}, options, $attrs.uiBrowser);
@@ -71,7 +71,7 @@ angular.module('ui.browser')
             modalInstance.result.then(function (items) {
                 selectedItem({ items: items });
             }, function (error, status) {
-                if(error !== 'cancel') messagebox.show(options.title, error, 'Error');                               
+                if (error !== 'cancel') dialogbox.show({ caption: options.title, message: error, icon: 'Error' });
             });
         }
     }]);

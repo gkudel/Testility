@@ -42,8 +42,7 @@
             };
             this.defer = function (caption, config) {
                 if (!(!caption || caption.length === 0)) {
-                    var options = 
-                    options = angular.extend({}, options, config);
+                    var options = angular.extend({}, options, config);
 
                     var target = document.createElement("div");
                     document.body.appendChild(target);
@@ -95,6 +94,6 @@
                 valid();
                 return d.promise;
             };
-        };
+        };        
         return spinerService;
     }]);

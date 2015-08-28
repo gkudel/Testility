@@ -43,7 +43,7 @@ namespace Testility.WebUI
                     "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
                     "~/Scripts/angular/main.js",
                     "~/Scripts/browser/browser.js",
-                    "~/Scripts/messagebox/messagebox.js",
+                    "~/Scripts/dialogbox/dialogbox.js",
                     "~/Scripts/spiner/spiner.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(

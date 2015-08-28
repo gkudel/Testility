@@ -1181,7 +1181,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\spiner\spiner.js" />
-    <Content Include="Scripts\messagebox\messagebox.js" />
+    <Content Include="Scripts\dialogbox\dialogbox.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -1189,7 +1189,7 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\spin.min.js" />
     <Content Include="Scripts\_references.js" />
-    <None Include="Views\Shared\_MessageBox.cshtml" />
+    <None Include="Views\Shared\_DialogBox.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -1,5 +1,5 @@
 ﻿angular.module('Testility')
-    .controller('SolutionController', ['$scope', 'solutionservice', 'messagebox', function ($scope, service, messagebox) {
+    .controller('SolutionController', ['$scope', 'solutionservice', 'dialogbox', function ($scope, service, dialogbox) {
 
         $scope.Loaded = false;
         $scope.Solution = service.empty();
@@ -16,7 +16,18 @@
         $scope.addTab = function (solutionId) {
             if ($scope.Loaded) {
                 if (!$scope.Solution.Items) $scope.Solution.Items = [];
-                $scope.Solution.Items.push({ Id: 0, Name: 'Class.cs', active: true, SolutionId: $scope.Solution.Id });
+                var result = dialogbox.show({
+                    caption: 'Specify Name for Item',
+                    type: 'DialogBox',
+                    buttons: 'OkCancel', 
+                    value: 'Class.cs',
+                    modal: true
+                });
+                result.then(function (result) {
+                    $scope.Solution.Items.push({ Id: 0, Name: result, active: true, SolutionId: $scope.Solution.Id });
+                }
+                , function (result) {
+                });
             }
         };
 
@@ -43,11 +54,11 @@
                 } else {
                     $scope.Solution = service.empty();
                     $scope.Loaded = false;
-                }
+                }                
             }, function (error) {
                 $scope.Solution = service.empty();
                 $scope.Loaded = false;
-                messagebox.show('Solution', error, 'Error');
+                dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
             });
         };
 
@@ -62,7 +73,7 @@
                     if (Array.isArray(error)) {
                         $scope.Messages = $scope.Messages.concat(error);
                     } else {
-                        messagebox.show('Solution', error, 'Error');
+                        dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
                     }
                 });
             }
@@ -81,7 +92,7 @@
                 if (Array.isArray(error)) {
                     $scope.Messages = error;
                 } else {
-                    messagebox.show('Solution', error, 'Error');
+                    dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
                 }
             });
         };
