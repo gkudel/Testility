@@ -10,6 +10,10 @@ using System.Net;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using Testility.WebUI.Infrastructure;
+using System.Web;
+using System.Security.Principal;
+using System.Security.Claims;
+using Testility.UnitTests.Constants;
 
 namespace Testility.UnitTests.Controllers
 {
@@ -23,9 +27,18 @@ namespace Testility.UnitTests.Controllers
         [TestInitialize]
         public void Init()
         {
+
+            var context = new Mock<ControllerContext>();
+            var mockIdentity = new Mock<IIdentity>();
+            context.SetupGet(x => x.HttpContext.User.Identity).Returns(mockIdentity.Object);
+            mockIdentity.Setup(x => x.Name).Returns("someValidId");
+
             serviceMock = new MockIdentityService();
-            authController = new AuthController(serviceMock.Repository);
-            AutoMapperConfiguration.Configure();
+            authController = new AuthController(serviceMock.Repository) { ControllerContext = context.Object };
+
+
+
+        AutoMapperConfiguration.Configure();
         }
 
         [TestMethod]
@@ -220,9 +233,85 @@ namespace Testility.UnitTests.Controllers
         }
 
         [TestMethod]
-        public void Cannot_Register_MapperNotConfigured()
+        public void Cannot_Register_NewUserException()
         {
-            throw new NotImplementedException();        
+
+            RegisterVM model = new RegisterVM() {ConfirmPassword = "xx", Name = "",  Email = "xx", Password = "xx" };
+            serviceMock.Mock.Setup(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).Throws(new Exception());
+
+            var result =  authController.Register(model).Result as ViewResult;
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            serviceMock.Mock.Verify(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>()), Times.Once);
+            serviceMock.Mock.Verify(x => x.SetTwoFactorEnabledProtection(It.IsAny<string>()), Times.Never);
+            serviceMock.Mock.Verify(x => x.GenerateEmailToken(It.IsAny<string>()), Times.Never);
+            serviceMock.Mock.Verify(x => x.SendConfirmationEMail(It.IsAny<string>(), It.IsAny<string>()), Times.Never);      
         }
+
+        [TestMethod]
+        public void Can_Register_WithPramsReturnView()
+        {
+
+            RegisterVM model = new RegisterVM() { ConfirmPassword = "xx", Name = "", Email = "xx", Password = "xx" };
+
+            var result = authController.Register(model).Result as ViewResult;
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            serviceMock.Mock.Verify(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>()), Times.Once);
+            serviceMock.Mock.Verify(x => x.SetTwoFactorEnabledProtection(It.IsAny<string>()), Times.Once);
+            serviceMock.Mock.Verify(x => x.GenerateEmailToken(It.IsAny<string>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void Can_Update_User()
+        {
+            RegisterVM model = new RegisterVM() { Id="xx",  ConfirmPassword = "xx", Name = "", Email = "xx", Password = "xx" };
+            var result = authController.Register(model).Result as RedirectToRouteResult;
+
+            serviceMock.Mock.Verify(x => x.UpdateUserData(It.IsAny<IdentityUser>()), Times.Once);
+            Assert.AreEqual("List", result.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void Cannot_Update_UserException()
+        {
+            RegisterVM model = new RegisterVM() { Id = "xx", ConfirmPassword = "xx", Name = "", Email = "xx", Password = "xx" };
+            serviceMock.Mock.Setup(x => x.UpdateUserData(It.IsAny<IdentityUser>())).Throws(new Exception());
+
+            var result = authController.Register(model).Result as ViewResult;
+
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            Assert.IsNotInstanceOfType(result, typeof(RedirectToRouteResult));
+        }
+
+        [TestMethod]
+        public void Cannot_ConfirmEmail_InvalidData()
+        {
+            var result = authController.ConfirmEmail(AuthConstants.InvalidId, AuthConstants.InvalidToken).Result as ViewResult;
+            Assert.AreEqual(false, result.ViewData.ModelState.IsValid);
+            Assert.AreEqual("Error", result.ViewName);
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public void Cannot_ConfirmEmail_NullData()
+        {
+            var result = authController.ConfirmEmail( null, null ).Result as ViewResult;
+            Assert.AreEqual("Error", result.ViewName);
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public void Can_ConfirmEmail_NullData()
+        {
+            var result = authController.ConfirmEmail(AuthConstants.ValidId, AuthConstants.ValidToken).Result as ViewResult;
+            Assert.AreEqual("ConfirmEmail", result.ViewName);
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+
+
+
+
     }
 }

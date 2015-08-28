@@ -51,7 +51,9 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
 
                     await identityServices.GenerateTokenToLogin(user.Id);
                     identityServices.SetTwoFactorAuthCookie(user.Id);
+                    
                     return RedirectToAction("VerifyCode");
+                   
                 }
                 catch (Exception)
                 {
@@ -133,20 +135,29 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
                         result.Errors.ToList().ForEach(a => ModelState.AddModelError("", a));
                         return View();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         ModelState.AddModelError("", "Error when reqistering a user");
                         return View();
-                    }
+                }
                 }
 
                 IdentityUser orgUser = identityServices.GetUser(User.Identity.GetUserId());
                 if (orgUser != null) //Existing one
                 {
-                    Mapper.Map(model, orgUser);
-                    identityServices.UpdateUserData(orgUser);
-                    return RedirectToAction("List", "Solution", new { area = "Setup" });
+                    try
+                    {
+                        Mapper.Map(model, orgUser);
+                        identityServices.UpdateUserData(orgUser);
+                        return RedirectToAction("List", "Solution", new { area = "Setup" });
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError("", "Error when updating a user");
+                        return View();
+                    }
                 }
+
             ModelState.AddModelError("", "Error when reqistering a user");
             return View();
         }
@@ -154,22 +165,14 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
         [HttpGet]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null)
-            {
-                return View("Error");       //ToDo
-            }
+            if (userId == null || code == null) return View("Error");       //ToDo
 
             IdentityResult result = await identityServices.confirmEmail(userId, code);
 
-            if (result.Succeeded)
-            {
-                return View("ConfirmEmail");
-            }
-            else
-            {
-                //AddErrors(result);        //ToDo
-                return View();
-            }
+            if (result.Succeeded) return View("ConfirmEmail");
+
+             result.Errors.ToList().ForEach(x => ModelState.AddModelError("", x));
+             return View("Error");
         }
 
 
@@ -193,13 +196,12 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
             return new ExternalLogin(provider, Url.Action("ExternalLoginCallback", "Auth", new { ReturnUrl = returnUrl }));
         }
 
+
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await Request.GetOwinContext().Authentication.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
-            {
-                return RedirectToAction("LogIn");
-            }
+            if (loginInfo == null) return RedirectToAction("LogIn");
+
 
             var result = await identityServices.ExternalSignInAsync(loginInfo);
             switch (result)
@@ -226,10 +228,7 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationVM model, string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Manage");
-            }
+            if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Manage");
 
             if (ModelState.IsValid)
             {
@@ -256,7 +255,6 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
             return View(model);
         }
 
-
         public ActionResult ResetPassword()
         {
             return View();
@@ -266,10 +264,8 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+            if (!ModelState.IsValid) return View();
+
             IdentityUser user = identityServices.GetUserByEmail(model.Email);
             if (user != null)
             {
@@ -286,10 +282,7 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
         [HttpGet]
         public ActionResult ConfirmPasswordResset(string passToken, string userId)
         {
-            if (passToken == null || userId == null)
-            {
-                return View("Error");      
-            }
+            if (passToken == null || userId == null) return View("Error");      
 
             ConfirmPasswordResetVM model = new ConfirmPasswordResetVM() { Token = passToken, Id = userId };
             return View("ConfirmNewPassword", model);
@@ -299,14 +292,11 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ConfirmPasswordResset(ConfirmPasswordResetVM model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();        
-            }
+            if (!ModelState.IsValid) return View();        
+
             IdentityResult result = await identityServices.ResetPassword(model.Id, model.Token, model.NewPassword);
 
-            if (result.Succeeded)
-                return RedirectToAction("LogIn");
+            if (result.Succeeded) return RedirectToAction("LogIn");
 
             result.Errors.ToList().ForEach(x => ModelState.AddModelError("", x));
             return View();          

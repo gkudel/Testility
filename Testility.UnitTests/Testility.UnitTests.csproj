@@ -118,6 +118,7 @@
   <ItemGroup>
     <Compile Include="Concrete\CompilerTest.cs" />
     <Compile Include="Concrete\UnitTestRepositoryTests.cs" />
+    <Compile Include="Constants\AuthConstants.cs" />
     <Compile Include="Controllers\AuthControllerTests.cs" />
     <Compile Include="Controllers\UnitTestControllerTests.cs" />
     <Compile Include="Concrete\EFSetupRepositoryTests.cs" />

@@ -1188,7 +1188,9 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\_references.js" />
     <None Include="Views\Shared\_MessageBox.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
