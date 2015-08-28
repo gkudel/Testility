@@ -55,9 +55,15 @@
             if ($scope.Loaded) {
                 $scope.Messages = [];
                 service.compile($scope.Solution).then(function (response) {
-                    if (Array.isArray(response)) $scope.Messages = $scope.Messages.concat(status);
+                    if (Array.isArray(response)) {
+                        $scope.Messages = $scope.Messages.concat(status);
+                    }
                 }, function (error) {
-                    messagebox.show('Solution', error, 'Error');
+                    if (Array.isArray(error)) {
+                        $scope.Messages = $scope.Messages.concat(error);
+                    } else {
+                        messagebox.show('Solution', error, 'Error');
+                    }
                 });
             }
         };

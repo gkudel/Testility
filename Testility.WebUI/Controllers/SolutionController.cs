@@ -93,7 +93,6 @@ namespace Testility.WebUI.Controllers
         [Route("api/Solution/Compile")]
         public HttpResponseMessage Compile(SolutionViewModel solution)
         {
-            System.Threading.Thread.Sleep(2000);
             if (solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
             IList<Error> errors = compilerService.Compile(Mapper.Map<Solution>(solution), solution.References);
             if (errors.Count == 0)
@@ -107,7 +106,7 @@ namespace Testility.WebUI.Controllers
                 {
                     ret.Add(new { Message = e.ToString(), Alert = e.IsWarning ? "warning" : "danger" });
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, ret.ToArray());
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ret.ToArray());
             }
         }
     }
