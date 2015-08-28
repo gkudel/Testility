@@ -2,6 +2,7 @@
     .controller('SolutionController', ['$scope', 'solutionservice', 'messagebox', function ($scope, service, messagebox) {
 
         $scope.Loaded = false;
+        $scope.Solution = service.empty();
         $scope.ReferencesModelSize = 'md';
         $scope.Messages = [];
 
@@ -35,7 +36,7 @@
 
         $scope.refresh = function () {
             $scope.Messages = [];
-            service.get().then(function (solution) {
+            service.get($scope.Solution).then(function (solution) {
                 if (solution) {
                     $scope.Solution = solution;
                     $scope.Loaded = true;
@@ -53,8 +54,8 @@
         $scope.compile = function () {
             if ($scope.Loaded) {
                 $scope.Messages = [];
-                service.compile($scope.Solution).then(function (status) {
-                    $scope.Messages = $scope.Messages.concat(status);
+                service.compile($scope.Solution).then(function (response) {
+                    if (Array.isArray(response)) $scope.Messages = $scope.Messages.concat(status);
                 }, function (error) {
                     messagebox.show('Solution', error, 'Error');
                 });
@@ -63,8 +64,13 @@
 
         $scope.submit = function () {
             $scope.Messages = [];
-            service.submit($scope.Solution).then(function (status) {
-                $scope.Messages = $scope.Messages.concat(status);
+            service.submit($scope.Solution).then(function (response) {
+                if (response) {
+                    if (response.hasOwnProperty('compileErrors'))
+                        $scope.Messages = $scope.Messages.concat(response.compileErrors);
+                    if (response.hasOwnProperty('solution'))
+                        $scope.Solution = response.solution;
+                }
             }, function (error) {
                 if (Array.isArray(error)) {
                     $scope.Messages = error;

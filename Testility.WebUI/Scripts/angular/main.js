@@ -25,13 +25,13 @@
                     return config;
                 },
                 'requestError': function (rejection) {
-                    return rejection;
+                    return $q.reject(rejection);
                 },
                 'response': function (response) {
                     return response;
                 },
                 'responseError': function (rejection) {
-                    return rejection;
+                    return $q.reject(rejection);
                 }
             };
         });

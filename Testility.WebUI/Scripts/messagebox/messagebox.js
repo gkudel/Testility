@@ -16,7 +16,7 @@
                             var m;
                             if (message) {
                                 if (message.hasOwnProperty('Message')) m = message.Message;
-                                else m = message;
+                                else m = message || 'NotDefined';
                             }
                             return m;
                         },

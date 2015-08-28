@@ -69,8 +69,10 @@ namespace Testility.WebUI.Controllers
                     }
                 }
                 setupRepository.Save(solution, model.References);
-                ret.Insert(0, new { Message = "Saved!!!", Alert = "success" });
-                return Request.CreateResponse(HttpStatusCode.OK, ret.ToArray());
+                return Request.CreateResponse(HttpStatusCode.OK, new {
+                    compileErrors = ret.ToArray(),
+                    solution = Mapper.Map<SolutionViewModel>(solution)
+                });
             }
             else
             {
@@ -91,13 +93,12 @@ namespace Testility.WebUI.Controllers
         [Route("api/Solution/Compile")]
         public HttpResponseMessage Compile(SolutionViewModel solution)
         {
+            System.Threading.Thread.Sleep(2000);
             if (solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
             IList<Error> errors = compilerService.Compile(Mapper.Map<Solution>(solution), solution.References);
             if (errors.Count == 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new[] {
-                new { Message = "Succes!!!", Alert = "success" }
-            });
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             else
             {
