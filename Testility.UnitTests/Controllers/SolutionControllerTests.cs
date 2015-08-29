@@ -21,7 +21,7 @@ using System.Web.Http.Routing;
 using System.Web.Http.Controllers;
 using System.Web.Http.Hosting;
 
-namespace Testility.WebUI.Controllers.Tests
+namespace Testility.WebUI.Areas.WebApi.Controllers
 {   
     [TestClass()]
     public class SolutionControllerTests

@@ -8,7 +8,7 @@ using Testility.Domain.Abstract;
 using AutoMapper.QueryableExtensions;
 using Testility.WebUI.Model;
 
-namespace Testility.WebUI.Controllers
+namespace Testility.WebUI.Areas.WebApi
 {
     public class ReferenceController : ApiController
     {

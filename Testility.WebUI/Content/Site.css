@@ -76,3 +76,7 @@ textarea:not(.sourcecode) {
     height: 80%;
     margin-left: -10%;
 }
+
+input.ng-invalid {
+    border: 1px solid red;
+}

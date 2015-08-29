@@ -14,7 +14,7 @@ using Testility.Engine.Model;
 using System.Data.Entity.Validation;
 using Testility.WebUI.Infrastructure.Filters;
 
-namespace Testility.WebUI.Controllers
+namespace Testility.WebUI.Areas.WebApi.Controllers
 {
     public class SolutionController : ApiController
     {
@@ -108,6 +108,19 @@ namespace Testility.WebUI.Controllers
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ret.ToArray());
             }
+        }
+
+        [HttpPost]
+        [Route("api/Solution/IsNameUnique")]
+        public bool IsNameUnique(Info info)
+        {
+            return !setupRepository.IsAlreadyDefined(info.Name, info.Id);
+        }
+
+        public class Info
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
         }
     }
 }

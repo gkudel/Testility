@@ -71,7 +71,6 @@ angular.module('ui.browser')
             modalInstance.result.then(function (items) {
                 selectedItem({ items: items });
             }, function (error, status) {
-                if (error !== 'cancel') dialogbox.show({ caption: options.title, message: error, icon: 'Error' });
             });
         }
     }]);

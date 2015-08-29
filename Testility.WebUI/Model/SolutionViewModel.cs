@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Testility.Domain.Entities;
+using Testility.WebUI.Infrastructure.Attributes;
 
 namespace Testility.WebUI.Model
 {
@@ -14,7 +15,7 @@ namespace Testility.WebUI.Model
         public int Id { get; set; }
         [Required(ErrorMessage = "Solution Name is required")]
         [StringLength(100)]
-        [Remote("IsNameUnique", "Validation", ErrorMessage = "Solution already exists.", AdditionalFields = "Id")]
+        [RemoteApi("IsNameUnique", "api/Solution", "", HttpMethod = "GET", ErrorMessage = "Solution already exists.", AdditionalFields = "Id")]
         public string Name { get; set; }
         public Language Language { get; set; }
         [Display(Name = "References")]

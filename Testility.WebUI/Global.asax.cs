@@ -12,12 +12,13 @@ namespace Testility.WebUI
     public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
-        {            
+        {
+            GlobalConfiguration.Configure(WebApiConfig.Register);
+
             AreaRegistration.RegisterAllAreas();
             Infrastructure.Ninject.Ninject.Register();
             Logger.Concrete.Logger.Initalize(Infrastructure.Ninject.Ninject.GetService(typeof(ILogger)) as ILogger);
-            AutoMapperConfiguration.Configure();
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            AutoMapperConfiguration.Configure();            
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

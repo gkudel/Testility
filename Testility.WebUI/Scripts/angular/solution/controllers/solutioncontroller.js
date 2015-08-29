@@ -2,20 +2,12 @@
     .controller('SolutionController', ['$scope', 'solutionservice', 'dialogbox', function ($scope, service, dialogbox) {
 
         $scope.Loaded = false;
-        $scope.Solution = service.empty();
         $scope.ReferencesModelSize = 'md';
+        $scope.Solution = service.empty();
         $scope.Messages = [];
 
-        $scope.References = function (items) {
-            if ($scope.Loaded) {
-                if (items !== undefined) $scope.Solution.References = items;
-                return $scope.Solution.References || [];
-            }
-        };
-
         $scope.addTab = function (solutionId) {
-            if ($scope.Loaded) {
-                if (!$scope.Solution.Items) $scope.Solution.Items = [];
+            if ($scope.Loaded) {                
                 var result = dialogbox.show({
                     caption: 'Specify Name for Item',
                     type: 'DialogBox',
@@ -24,7 +16,7 @@
                     modal: true
                 });
                 result.then(function (result) {
-                    $scope.Solution.Items.push({ Id: 0, Name: result, active: true, SolutionId: $scope.Solution.Id });
+                    $scope.Solution.ItemsList.push({ Id: 0, Name: result, active: true, SolutionId: $scope.Solution.Id });
                 }
                 , function (result) {
                 });
@@ -32,9 +24,8 @@
         };
 
         $scope.removeTab = function (index) {
-            if (!$scope.Solution.Items) $scope.Solution.Items = [];
-            if (index <= $scope.Solution.Items.length) {
-                $scope.Solution.Items.splice(index, 1);
+            if (index <= $scope.Solution.ItemsList.length) {
+                $scope.Solution.ItemsList.splice(index, 1);
             }
         };
 
@@ -49,7 +40,7 @@
             $scope.Messages = [];
             service.get($scope.Solution).then(function (solution) {
                 if (solution) {
-                    $scope.Solution = solution;
+                    $scope.Solution = solution;                    
                     $scope.Loaded = true;
                 } else {
                     $scope.Solution = service.empty();
@@ -81,20 +72,29 @@
 
         $scope.submit = function () {
             $scope.Messages = [];
-            service.submit($scope.Solution).then(function (response) {
-                if (response) {
-                    if (response.hasOwnProperty('compileErrors'))
-                        $scope.Messages = $scope.Messages.concat(response.compileErrors);
-                    if (response.hasOwnProperty('solution'))
-                        $scope.Solution = response.solution;
-                }
-            }, function (error) {
-                if (Array.isArray(error)) {
-                    $scope.Messages = error;
-                } else {
-                    dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
-                }
-            });
+            if(!SolutionForm.$invalid) {
+                service.submit($scope.Solution).then(function (response) {
+                    if (response) {
+                        if (response.hasOwnProperty('compileErrors'))
+                            $scope.Messages = $scope.Messages.concat(response.compileErrors);
+                        if (response.hasOwnProperty('solution'))
+                            $scope.Solution = response.solution;
+                    }
+                }, function (error) {
+                    if (Array.isArray(error)) {
+                        $scope.Messages = error;
+                    } else {
+                        dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
+                    }
+                });
+            }
+        };
+
+        $scope.References = function (ref) {
+            if ($scope.Loaded) {
+                if (ref !== undefined) $scope.Solution.RefList = ref;
+                return $scope.Solution.RefList;
+            }
         };
 
         $scope.refresh();

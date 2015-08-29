@@ -6,12 +6,12 @@
 }
 
 <div ng-controller="SolutionController">
-    <div class="alert alert-{{msg.Alert}} fade in" ng-repeat="msg in Messages">
+    <div class="alert alert-{{msg.Alert}} fade in" ng-repeat="msg in Messages" ng-show="Messages">
         <a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="removeMessage($index)">&times;</a>
         <strong>{{msg.Message}}</strong>
     </div>
 
-    <form id="Solution" method="post" name="Solution" role="form" ng-submit="submit()" novalidate>
+    <form id="Solution" method="post" name="SolutionForm" role="form" ng-submit="submit()" novalidate>
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
@@ -27,7 +27,7 @@
                         <div class="form-inline">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @ng_model = "Solution.Name", @ng_disabled = "!Loaded" } })
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @ng_model = "Solution.Name", @ng_disabled = "!Loaded", @remote_fields = "{{Solution.Id}}" } })
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
@@ -54,7 +54,7 @@
                 </div>
                 <div>
                     <tabset>
-                        <tab ng-repeat="item in Solution.Items" active="item.active" disable="item.disabled">
+                        <tab ng-repeat="item in Solution.ItemsList" active="item.active" disable="item.disabled">
                             <tab-heading>{{item.Name}}<a href="" ng-click="removeTab($index)" class="glyphicon glyphicon-remove" style="position: relative; right: -13px; top: -7px"></a></tab-heading>
                             <div class="panel panel-default">
                                 <input type="hidden" name="Items[{{$index}}].Id" id="Items[{{$index}}].Id" value="{{item.Id}}" />
@@ -79,7 +79,7 @@
                         </a>
                     </div>
                     <div class="td-right">
-                        <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Solution" ng-disabled="!Loaded">
+                        <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Solution" ng-disabled="!Loaded || SolutionForm.$invalid">
                             <span class="glyphicon glyphicon-floppy-disk"></span> Save
                         </button>
                     </div>
@@ -90,7 +90,4 @@
 </div>
 @section Scripts {
 	@Scripts.Render("~/bundles/solution")
-}
-@section css{
-	@Styles.Render("~/Content/ide")
 }
