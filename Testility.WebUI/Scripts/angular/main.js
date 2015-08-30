@@ -1,5 +1,5 @@
 ﻿(function (angular) {
-    var myApp = angular.module("Testility", ['ui', 'ui.browser', 'ui.dialogbox', 'ui.spiner', 'validation']);
+    var myApp = angular.module("Testility", ['ui', 'ui.browser', 'ui.messaging', 'ui.dialogbox', 'ui.spiner', 'validation']);
     myApp.value('ui.config', {
         codemirror: {
             lineNumbers: true,

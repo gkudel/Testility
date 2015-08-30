@@ -17,7 +17,7 @@
             },
             templateUrl: function(element, attrs) {
                 var options = {};
-                if (attrs.config !== undefined) options = uiConfig.browsersConfig[attrs.config] || {};
+                if (attrs.config) options = uiConfig.browsersConfig[attrs.config] || {};
                 options = angular.extend({}, options, attrs.uiBrowser);
                 if (options.hasOwnProperty('templateUrl')) {
                     return opts.templateUrl;

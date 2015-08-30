@@ -58,16 +58,15 @@
 
         var remoteAdditionalFields = function (element) {
             var fields = element.attr('data-val-remote-additionalfields');
-            var prefix = getPrefix(element.attr('ng-model'));
-            if (fields) {
+            if (!fields) fields = element.attr('val-remote-additionalfields');            
+            if (fields) {                
                 var array = fields.split(',');
                 var out;
                 if (array) {
+                    var prefix = getPrefix(element.attr('ng-model'));
                     for (var i = 0; i < array.length; i++) {
                         var field = array[i];
-                        if (field.indexOf('*.') === 0) {
-                            field = field.substring(2);
-                        }
+                        if (field.indexOf('*.') === 0) field = field.substring(2);                        
                         if (out) out = out + ', ' + "\"" + field + "\": \"{{" + prefix + field + "}}\"";
                         else out = "\"" + field + "\": \"{{" + prefix + field + "}}\"";
                     }
@@ -100,6 +99,7 @@
                 }
                 element.removeAttr("val");
                 element.removeAttr("data-val");
+                element.attr("client-validation-enabled", "true");
                 return {
                     pre: function preLink(scope, iElement, iAttrs, controller) { },
                     post: function postLink(scope, iElement, iAttrs, controller) {

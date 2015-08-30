@@ -6,12 +6,8 @@
 }
 
 <div ng-controller="SolutionController">
-    <div class="alert alert-{{msg.Alert}} fade in" ng-repeat="msg in Messages" ng-show="Messages">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="removeMessage($index)">&times;</a>
-        <strong>{{msg.Message}}</strong>
-    </div>
-
     <form id="Solution" method="post" name="SolutionForm" role="form" ng-submit="submit()" novalidate>
+        <div ui-Messaging></div>
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
@@ -73,7 +69,7 @@
                         </a>
                     </div>
                     <div class="td-right">
-                        <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Solution" ng-disabled="!Loaded || SolutionForm.$invalid">
+                        <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Solution" ng-disabled="!Loaded || SolutionForm.$invalid || SolutionForm.$pending">
                             <span class="glyphicon glyphicon-floppy-disk"></span> Save
                         </button>
                     </div>

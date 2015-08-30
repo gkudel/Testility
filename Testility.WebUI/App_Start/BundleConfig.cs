@@ -38,6 +38,7 @@ namespace Testility.WebUI
                     "~/Scripts/angular/main.js",
                     "~/Scripts/angular/validation/validation.js",
                     "~/Scripts/angular/browser/browser.js",
+                    "~/Scripts/angular/messaging/messaging.js",
                     "~/Scripts/angular/dialogbox/dialogbox.js",
                     "~/Scripts/iosOverlay.js",
                     "~/Scripts/spin.min.js",

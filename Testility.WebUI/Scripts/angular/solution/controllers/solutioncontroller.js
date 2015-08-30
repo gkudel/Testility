@@ -1,10 +1,10 @@
 ﻿angular.module('Testility')
-    .controller('SolutionController', ['$scope', 'solutionservice', 'dialogbox', function ($scope, service, dialogbox) {
+    .controller('SolutionController', ['$scope', 'solutionservice', 'dialogbox', 'messaging', function ($scope, service, dialogbox, messaging) {
 
         $scope.Loaded = false;
         $scope.ReferencesModelSize = 'md';
         $scope.Solution = service.empty();
-        $scope.Messages = [];
+        messaging.init($scope, SolutionForm);
 
         $scope.addTab = function (solutionId) {
             if ($scope.Loaded) {                
@@ -29,15 +29,8 @@
             }
         };
 
-        $scope.removeMessage = function (index) {
-            if (!$scope.Messages) $scope.Messages = [];
-            if (index <= $scope.Messages.length) {
-                $scope.Messages.splice(index, 1);
-            }
-        };
-
         $scope.refresh = function () {
-            $scope.Messages = [];
+            $scope.clearMessages();
             service.get($scope.Solution).then(function (solution) {
                 if (solution) {
                     $scope.Solution = solution;                    
@@ -55,14 +48,14 @@
 
         $scope.compile = function () {
             if ($scope.Loaded) {
-                $scope.Messages = [];
+                $scope.clearMessages();
                 service.compile($scope.Solution).then(function (response) {
                     if (Array.isArray(response)) {
-                        $scope.Messages = $scope.Messages.concat(status);
+                        $scope.addMessage(response);
                     }
                 }, function (error) {
                     if (Array.isArray(error)) {
-                        $scope.Messages = $scope.Messages.concat(error);
+                        $scope.addMessage(error);
                     } else {
                         dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
                     }
@@ -71,18 +64,18 @@
         };
 
         $scope.submit = function () {
-            $scope.Messages = [];
-            if(!SolutionForm.$invalid) {
+            $scope.clearMessages();
+            if (!SolutionForm.$invalid && !SolutionForm.$pending) {
                 service.submit($scope.Solution).then(function (response) {
                     if (response) {
                         if (response.hasOwnProperty('compileErrors'))
-                            $scope.Messages = $scope.Messages.concat(response.compileErrors);
+                            $scope.addMessage(response.compileErrors);
                         if (response.hasOwnProperty('solution'))
                             $scope.Solution = response.solution;
                     }
                 }, function (error) {
                     if (Array.isArray(error)) {
-                        $scope.Messages = error;
+                        $scope.addMessage(error);
                     } else {
                         dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
                     }
@@ -92,7 +85,7 @@
 
         $scope.References = function (ref) {
             if ($scope.Loaded) {
-                if (ref !== undefined) $scope.Solution.RefList = ref;
+                if (ref) $scope.Solution.RefList = ref;
                 return $scope.Solution.RefList;
             }
         };
