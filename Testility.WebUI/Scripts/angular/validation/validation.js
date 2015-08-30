@@ -15,43 +15,49 @@
     })
     .directive('val', ['$compile', 'getPrefix', function ($compile, getPrefix) {
         var required = function (element) {
-            mapper([{ source: 'val-required', destination: 'required', value: 'true' }], element);
+            mapper([{ source: 'val-required', destination: [ { key: 'required', value: 'true'}, { key: 'required-errormsg' }] }], element);
         };
         var length = function (element) {
-            mapper([{ source: 'val-length' },
-                    { source: 'val-length-max', destination: 'ng-maxlength' },
-                    { source: 'val-length-min', destination: 'ng-minlength' }],
+            mapper([{ source: 'val-length', destination: [{ key: 'length-errormsg' }] },
+                    { source: 'val-length-max', destination:  [{ key: 'ng-maxlength' }] },
+                    { source: 'val-length-min', destination:  [{ key: 'ng-minlength' }] }],
                     element);
         };
-        var onBlur = function(element) {
-            mapper([{destination: 'ng-model-options', value: '{ updateOn: \'blur\' }'}], element);
+        var onBlur = function (element) {
+            mapper([{ source: 'val-remote', destination: [{ key: 'remote-errormsg' }] }], element);
+            mapper([{destination: [{ key: 'ng-model-options', value: '{ updateOn: \'blur\' }' }] }], element);
         };
 
         var mapper = function (map, element) {
-            for (var i = 0; i < map.length; i++) {
-                var match = map[i];
-                var source = undefined;
-                if(match.hasOwnProperty('source')) {
-                    source = match.source;
-                }
-                if (match.hasOwnProperty('destination')) {
-                    if (match.hasOwnProperty('value')) {
-                        element.attr(match.destination, match.value);
-                    } else {
-                        if(source) {
-                            var val = element.attr(source);
-                            if (!val) {
-                                val = element.attr('data-' +source);
-                            }
-                            if (val) {
-                                element.attr(match.destination, val);
+            if (element) {
+                for (var i = 0; i < map.length; i++) {
+                    var match = map[i];
+                    var source = undefined;
+                    if (match.hasOwnProperty('source')) {
+                        source = match.source;
+                    }
+                    if (match.hasOwnProperty('destination')) {
+                        for (var j = 0; j < match.destination.length; j++) {
+                            var dest = match.destination[j];
+                            if (dest.hasOwnProperty('value')) {
+                                element.attr(dest.key, dest.value);
+                            } else {
+                                if (source) {
+                                    var val = element.attr(source);
+                                    if (!val) {
+                                        val = element.attr('data-' + source);
+                                    }
+                                    if (val) {
+                                        element.attr(dest.key, val);
+                                    }
+                                }
                             }
                         }
                     }
-                }
-                if(source) {
-                    element.removeAttr(match.source);
-                    element.removeAttr('data-' + match.source);
+                    if (source) {
+                        element.removeAttr(match.source);
+                        element.removeAttr('data-' + match.source);
+                    }
                 }
             }
         };
