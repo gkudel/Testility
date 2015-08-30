@@ -1,5 +1,19 @@
 ﻿angular.module('validation', [])
-    .directive('val', ['$compile', function ($compile) {
+    .value('getPrefix', function (ngModel) {
+        var prefix = '';
+        if (ngModel) {
+            var array = ngModel.split('.');
+            for (var i = 0; i < array.length - 1; i++) {
+                if (prefix) prefix = prefix + '.' + array[i];
+                else prefix = array[i];
+            }
+            if (prefix) {
+                prefix = prefix + '.';
+            }
+        }
+        return prefix;
+    })
+    .directive('val', ['$compile', 'getPrefix', function ($compile, getPrefix) {
         var required = function (element) {
             mapper([{ source: 'val-required', destination: 'required', value: 'true' }], element);
         };
@@ -41,11 +55,35 @@
                 }
             }
         };
+
+        var remoteAdditionalFields = function (element) {
+            var fields = element.attr('data-val-remote-additionalfields');
+            var prefix = getPrefix(element.attr('ng-model'));
+            if (fields) {
+                var array = fields.split(',');
+                var out;
+                if (array) {
+                    for (var i = 0; i < array.length; i++) {
+                        var field = array[i];
+                        if (field.indexOf('*.') === 0) {
+                            field = field.substring(2);
+                        }
+                        if (out) out = out + ', ' + "\"" + field + "\": \"{{" + prefix + field + "}}\"";
+                        else out = "\"" + field + "\": \"{{" + prefix + field + "}}\"";
+                    }
+                }
+                if (out) {
+                    out = "{" + out + "}";
+                    element.attr('remote-fields', out);
+                }
+            }
+        };
+
         var handlers = {
             'valRequired': required,
             'valLength': length,
-            'valRemote': onBlur
-            //'valRemoteAdditionalfields': additionalFields
+            'valRemote': onBlur,
+            'valRemoteAdditionalfields': remoteAdditionalFields
         };
         return {
             restrict: 'A',
@@ -71,7 +109,7 @@
             }
         };        
     }])
-    .directive('valRemote', ['$http', '$q', function ($http, $q) {
+    .directive('valRemote', ['$http', '$q', 'getPrefix', function ($http, $q, getPrefix) {
         return {
             restrict: 'A',
             require: [ '^form','ngModel' ],
@@ -92,17 +130,18 @@
                     valRemoteAdditionalfields: [],
                     valRemoteUrl: undefined
                 };
-                var prepareData = function (newValue) {
-                    var data = {};
-                    for (var i = 0; i < options.valRemoteAdditionalfields.length; i++) {
-                        var field = options.valRemoteAdditionalfields[i];
-                    }
-                };
                 angular.extend(options, iAttrs);
                 if (options.valRemoteUrl) {
                     ngModel.$asyncValidators.remote = function (newValue, oldValue) {                        
                         if (shouldProcess()) {
-                            return $http.post(options.valRemoteUrl, { Id: iAttrs.remoteFields, Name: newValue })
+                            var obj = newValue;
+                            var remote = iAttrs.remoteFields;
+                            if (remote) {
+                                var name = iAttrs.ngModel.substring(getPrefix(iAttrs.ngModel).length);
+                                obj = angular.fromJson(remote);
+                                obj[name] = newValue;
+                            }
+                            return $http.post(options.valRemoteUrl, obj)
                                 .then(function (response) {
                                     if (!response || !response.hasOwnProperty('data') || !response.data)
                                         return $q.reject(response.data);
