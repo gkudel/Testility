@@ -14,21 +14,45 @@
     .factory('messaging', function () {
         var service = function () {
             var _Messages = [];
+            var _ErrorMessages = {};
             var _remove = function (index) {
                 if (index <= _Messages.length) {
                     _Messages.splice(index, 1);
                 }
             };
-            var _clear = function() {
-                _Messages.length = 0;
-            };
-            var _add = function(message) {
-                if(Array.isArray(message)) {
-                    _Messages = _Messages.concat(message);
+            var _clear = function (predicat) {
+                if (predicat) {
+                    for (var i = _Messages.length - 1; i >= 0; i--) {
+                        if (predicat(_Messages[i])) {
+                            _Messages.splice(i, 1);
+                        }
+                    }
                 } else {
-                    _Messages.push(message);
+                    _Messages.length = 0;
                 }
             };
+            var _add = function (message) {               
+                if (Array.isArray(message)) {
+                    for (var i = 0; i < message.length; i++) {
+                        _Messages.push(_createMessage(message[i]));
+                    }
+                } else {
+                    _Messages.push(_createMessage(message));
+                }
+            };
+            var _createMessage = function (message) {
+                var m = {
+                    Id: '',
+                    Alert: 'danger',
+                    Message: ''
+                };
+                if (typeof message === 'object') {
+                    m = angular.extend({}, m, message);
+                } else {
+                    m.Message = message;
+                }
+                return m;
+            }
             return {
                 init: function (scope, form) {
                     if (scope) {
@@ -47,17 +71,32 @@
                         if (form) {
                             angular.forEach(form, function (value, key) {
                                 if (value.attributes.getNamedItem('client-validation-enabled')) {
+                                    for (var i = 0; i < value.attributes.length; i++) {
+                                        var item = value.attributes[i];
+                                        if (item.name.indexOf('errormsg-') === 0) {
+                                            var name = item.name.substring('errormsg-'.length);
+                                            _ErrorMessages[name] = item.value;
+                                        }
+                                    }
                                     scope.$watchGroup(
                                         [form.name + ".$submitted",
                                          form.name + "." + value.name + '.$touched',
                                          form.name + "." + value.name + '.$invalid',
-                                         form.name + "." + value.name + '.$error'],
+                                         form.name + "." + value.name + '.$error',
+                                         form.name + "." + value.name + '.$name'],
                                         function (n, o, scope) {
-                                            if ((n[0] || n[1]) && n[2]) {
-                                                _Messages.push({ Alert: 'danger', Message: 'ValidationError' });
-                                            } else {
-                                                _clear();
-                                            }
+                                            if ((n[0] || n[1])) {
+                                                _clear(function (message) {
+                                                    return message.Id.indexOf(n[4] + '-') === 0;
+                                                });
+                                                if (n[2] && n[3]) {                                                    
+                                                    for (var key in n[3]) {
+                                                        if (_ErrorMessages.hasOwnProperty(key)) {
+                                                            _add({ Alert: 'danger', Message: _ErrorMessages[key], Id: n[4] + '-' + key });
+                                                        }
+                                                    }                                                    
+                                                }                                                
+                                            } 
                                         });
                                 }
                             });
@@ -74,7 +113,7 @@
                     _remove(index);
                 },
                 clear: function(){
-                    _clear
+                    _clear();
                 }
             };
         };

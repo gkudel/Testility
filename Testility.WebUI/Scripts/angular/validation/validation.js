@@ -15,23 +15,26 @@
     })
     .directive('val', ['$compile', 'getPrefix', function ($compile, getPrefix) {
         var required = function (element) {
-            mapper([{ source: 'val-required', destination: [ { key: 'required', value: 'true'}, { key: 'required-errormsg' }] }], element);
+            mapper([{ source: 'val-required', destination: [ { key: 'required', value: 'true'}, { key: 'errormsg-required' }] }], element);
         };
         var length = function (element) {
-            mapper([{ source: 'val-length', destination: [{ key: 'length-errormsg' }] },
+            mapper([{ source: 'val-length', destination: [{ key: 'errormsg-length' }] },
                     { source: 'val-length-max', destination:  [{ key: 'ng-maxlength' }] },
                     { source: 'val-length-min', destination:  [{ key: 'ng-minlength' }] }],
                     element);
         };
         var onBlur = function (element) {
-            mapper([{ source: 'val-remote', destination: [{ key: 'remote-errormsg' }] }], element);
+            mapper([{ source: 'val-remote', destination: [{ key: 'errormsg-remote' }], removesource: false }], element);
             mapper([{destination: [{ key: 'ng-model-options', value: '{ updateOn: \'blur\' }' }] }], element);
         };
 
         var mapper = function (map, element) {
             if (element) {
                 for (var i = 0; i < map.length; i++) {
-                    var match = map[i];
+                    var match = {
+                        removesource: true
+                    };
+                    var match = angular.extend({}, match, map[i]);
                     var source = undefined;
                     if (match.hasOwnProperty('source')) {
                         source = match.source;
@@ -54,7 +57,7 @@
                             }
                         }
                     }
-                    if (source) {
+                    if (source && match.removeMessage) {
                         element.removeAttr(match.source);
                         element.removeAttr('data-' + match.source);
                     }
