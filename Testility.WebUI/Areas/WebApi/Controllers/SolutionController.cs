@@ -13,6 +13,7 @@ using Testility.WebUI.Services.Abstract;
 using Testility.Engine.Model;
 using System.Data.Entity.Validation;
 using Testility.WebUI.Infrastructure.Filters;
+using Testility.WebUI.Areas.Setup.Model;
 
 namespace Testility.WebUI.Areas.WebApi.Controllers
 {
@@ -29,7 +30,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
 
         public HttpResponseMessage Get()
         {
-            return Request.CreateResponse<IEnumerable<SolutionViewModel>>(HttpStatusCode.OK, setupRepository.GetSolutions().Project().To<SolutionViewModel>().ToArray());
+            return Request.CreateResponse<IEnumerable<SolutionIndexItemViewModel>>(HttpStatusCode.OK, setupRepository.GetSolutions().ToList().Select(s => Mapper.Map<Solution, SolutionIndexItemViewModel>(s)).ToArray());
         }
 
         public HttpResponseMessage Get(int id)

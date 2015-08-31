@@ -1,10 +1,6 @@
 ﻿@model Testility.WebUI.Model.SolutionViewModel
 @using Testility.WebUI.Extensions;
 
-@{
-    ViewBag.Title = "Solution Explorer";
-}
-
 <div ng-controller="SolutionController">
     <form id="Solution" method="post" name="SolutionForm" role="form" ng-submit="submit()" novalidate>
         <div ui-Messaging></div>
@@ -13,7 +9,7 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Solution Explorer</strong></h2></div>
+                <div><h2><strong><span class="glyphicon glyphicon-edit"></span> @ViewBag.Title</strong></h2></div>
             </div>
             <div class="panel-body">
                 <div class="row padding-bottom-10">
@@ -31,6 +27,9 @@
                     </div>
                     <div class="text-right col-md-6">
                         <div class="btn-group btn-group-justified">
+                            <a ng-click="changeSolution()" class="btn btn-default btn-sm" ng-show="Entry === 'UnitTest'">
+                                <span class="glyphicon glyphicon-paperclip"></span><span class="hidden-sm hidden-xs"> Solution</span>
+                            </a>
                             <a ng-click="refresh()" class="btn btn-default btn-sm">
                                 <span class="glyphicon glyphicon-refresh"></span><span class="hidden-sm hidden-xs"> Refresh</span>
                             </a>

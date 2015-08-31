@@ -15,67 +15,76 @@
                     $element.unbind('click');
                 });
             },
-            templateUrl: function(element, attrs) {
-                var options = {};
-                if (attrs.config) options = uiConfig.browsersConfig[attrs.config] || {};
-                options = angular.extend({}, options, attrs.uiBrowser);
-                if (options.hasOwnProperty('templateUrl')) {
-                    return opts.templateUrl;
-                }
-                return '/Views/Shared/_Browser.html';
-            },
+            template: '<span ng-transclude></span>',
             controller: 'uiBrowserController',
             controllerAs: 'ctrl'
         };
-    }]);
+    }])
+    .factory('uiBrowserDialog', ['$modal', '$q', '$http', 'dialogbox', function ($modal, $q, $http, dialogbox) {
+        var service = {
+            show: function (options, modelSize, selectedItem, cancelled) {
+                var opt = {
+                    templateUrl: '/Views/Shared/_Browser.html',
+                    DataSource: function() { return []; },
+                    title: 'Browser',
+                    MultiSelection: false,
+                    Equal: function (e) { return false; },
+                    GetResultValue: function (e) { return undefined; },
+                    PrintElement: function(e) { return ''; }
+                };
+                options = angular.extend({}, opt, options);
+                if (options.hasOwnProperty('templateUrl')) {
+                    templateUrl = options.templateUrl;
+                }
+                var modalInstance = $modal.open({
+                    animation: true,
+                    templateUrl: function () { return templateUrl; },
+                    controller: 'BrowserInstnace',
+                    size: modelSize,
+                    resolve: {
+                        selected: function () {
+                            return selectedItem().slice();
+                        },
+                        config: function () {
+                            return options;
+                        },
+                        items: function () {
+                            var d = $q.defer();
+                            if (typeof options.DataSource === "function") {
+                                d.resolve(options.DataSource());
+                            } else if ((typeof options.DataSource == 'string' || options.DataSource instanceof String) && options.DataSource.length > 0) {
 
-angular.module('ui.browser')
-    .controller('uiBrowserController', ['$scope', '$element', '$attrs', '$transclude', 'ui.config', '$modal', '$log', '$q', '$http', 'dialogbox', 
-            function ($scope, $element, $attrs, $transclude, uiConfig, $modal, $log, $q, $http, dialogbox) {
+                                $http.get(options.DataSource)
+                                    .success(function (response) {
+                                        d.resolve(response);
+                                    }).error(function (data, status) {
+                                        d.reject(data, status);
+                                    });;
+                            }
+                            return d.promise;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (items) {
+                    selectedItem({ items: items });
+                }, function (error, status) {
+                    if (cancelled) cancelled();
+                });
+            }
+        };
+        return service;
+    }])
+    .controller('uiBrowserController', ['$scope', '$attrs', 'ui.config', 'uiBrowserDialog',
+            function ($scope, $attrs, uiConfig, uiBrowserDialog) {
         var options = {};
-        if ($attrs.config !== undefined) options = uiConfig.browsersConfig[$attrs.config] || {};
+        if ($attrs.config) options = uiConfig.browsersConfig[$attrs.config] || {};
         options = angular.extend({}, options, $attrs.uiBrowser);
         var selectedItem = this.itemsSelected;
         var modelSize = this.modelSize;
-
         $scope.open = function () {
-            var modalInstance = $modal.open({
-                animation: true,
-                templateUrl: 'Browser.html',
-                controller: 'BrowserInstnace',
-                size: modelSize,
-                resolve: {
-                    selected: function() {
-                        return selectedItem().slice();
-                    },
-                    config: function() {
-                        return options;
-                    },
-                    items: function () {
-                        var d = $q.defer();
-                        if (typeof options.DataSource === "function") {
-                            d.resolve(options.DataSource());
-                        } else if ((typeof options.DataSource == 'string' || options.DataSource instanceof String) && options.DataSource.length > 0) {
-                            
-                            $http.get(options.DataSource)
-                                .success(function (response) {
-                                    d.resolve(response);
-                                }).error(function (data, status) {
-                                    d.reject(data, status);
-                                });;
-                        }
-                        return d.promise;
-                    }
-                }
-            });
-            modalInstance.result.then(function (items) {
-                selectedItem({ items: items });
-            }, function (error, status) {
-            });
-        }
-    }]);
-
-angular.module('ui.browser')
+            uiBrowserDialog.show(options, modelSize, selectedItem);
+        }        
+    }])
     .controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', 'selected', function ($scope, $modalInstance, items, config, selected) {
     $scope.allitems = items || [];
     $scope.title = config.title;
@@ -96,7 +105,15 @@ angular.module('ui.browser')
 
 
     $scope.ok = function () {
-        $modalInstance.close($scope.selectedItem);
+        if (config.MultiSelection) {
+            $modalInstance.close($scope.selectedItem);
+        } else {
+            if ($scope.selectedItem.length > 0) {
+                $modalInstance.close($scope.selectedItem[0]);
+            } else {
+                $modalInstance.dismiss('cancel');
+            }
+        }
     };
 
     $scope.cancel = function () {

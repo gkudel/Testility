@@ -54,11 +54,15 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.Menu = "~/Areas/Setup/Views/Shared/_Menu.cshtml";
+            ViewBag.Title = "Solution Explorer";
             return View("Solution");
         }
 
         public ActionResult Edit(int? id)
         {
+            ViewBag.Menu = "~/Areas/Setup/Views/Shared/_Menu.cshtml";
+            ViewBag.Title = "Solution Explorer";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
