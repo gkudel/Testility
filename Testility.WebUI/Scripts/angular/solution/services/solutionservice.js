@@ -87,7 +87,7 @@
                         options = uiConfig.browsersConfig['Solutions'] || {};
                         var selected = function (solution) {
                             if (solution) {
-                                $http.get('/api/UnitTest/' + solution.items)
+                                $http.get('/api/UnitTest/Create/' + solution.items)
                                     .success(function (response) {
                                         resolve(ctr(response));
                                     })

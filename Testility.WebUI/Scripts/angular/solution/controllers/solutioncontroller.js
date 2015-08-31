@@ -8,7 +8,6 @@
             $scope.Loaded = newVal;
         });
         $scope.Entry = service.Entry;
-        $scope.ReferencesModelSize = 'md';
         messaging.init($scope, SolutionForm);
 
         $scope.addTab = function (solutionId) {
