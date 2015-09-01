@@ -69,7 +69,7 @@ namespace Testility.UnitTests.DbContextMock
 
 
             _mock.Setup(x => x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).Returns(Task.FromResult(IdentityResult.Success));
-            _mock.Setup(x => x.GenerateEmailToken(It.IsAny<string>())).Returns(Task.FromResult("someToken"));
+            _mock.Setup(x => x.GenerateEmailToken(It.IsAny<string>())).Returns(Task.FromResult(AuthConstants.Token));
 
             _mock.Setup(x => x.SendConfirmationEMail(It.IsAny<string>(), It.IsAny<string>()));
 

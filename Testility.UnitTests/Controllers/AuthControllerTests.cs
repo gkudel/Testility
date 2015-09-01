@@ -131,14 +131,14 @@ namespace Testility.UnitTests.Controllers
         public void Cannot_VerifyCode_RedirectModelInvalid()
         {
             authController.ModelState.AddModelError("Error", "Error");
-            VerifyCodeVM model = new VerifyCodeVM() { token = "someToken"};
+            VerifyCodeVM model = new VerifyCodeVM() { token = AuthConstants.Token};
             ActionResult res = authController.VerifyCode(model).Result;
 
             var returnedModel = (res as ViewResult).Model as VerifyCodeVM;
 
             Assert.AreNotEqual(null, res);
             Assert.IsInstanceOfType(res, typeof(ViewResult));
-            Assert.AreEqual("someToken", returnedModel.token);
+            Assert.AreEqual(AuthConstants.Token, returnedModel.token);
         }
 
         [TestMethod]
@@ -167,7 +167,7 @@ namespace Testility.UnitTests.Controllers
         public void Cannot_VerifyCode_UserNull_Redirect()
         {
             serviceMock.Mock.Setup(x => x.GetTwoFactorUserIdAsync()).Returns(Task.FromResult("someId"));
-            VerifyCodeVM model = new VerifyCodeVM() { token = "someToken" };
+            VerifyCodeVM model = new VerifyCodeVM() { token = AuthConstants.Token };
             ActionResult res = authController.VerifyCode(model).Result as ViewResult;
 
             Assert.IsInstanceOfType(res, typeof(ViewResult));
@@ -181,7 +181,7 @@ namespace Testility.UnitTests.Controllers
             serviceMock.Mock.Setup(x => x.CreateIdentityAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).Throws(new Exception());
             serviceMock.Mock.Setup(x => x.GetTwoFactorUserIdAsync()).Returns(Task.FromResult("someValidId"));
 
-            VerifyCodeVM model = new VerifyCodeVM() { token = "someToken" };
+            VerifyCodeVM model = new VerifyCodeVM() { token = AuthConstants.Token };
             ActionResult res = authController.VerifyCode(model).Result as ViewResult;
 
             Assert.IsInstanceOfType(res, typeof(ViewResult));
@@ -193,7 +193,7 @@ namespace Testility.UnitTests.Controllers
         public void Can_VerifyCode_ValidateToSite()
         {
             serviceMock.Mock.Setup(x => x.GetTwoFactorUserIdAsync()).Returns(Task.FromResult("someValidId"));
-            VerifyCodeVM model = new VerifyCodeVM() { token = "someToken" };
+            VerifyCodeVM model = new VerifyCodeVM() { token = AuthConstants.Token };
 
             var res = authController.VerifyCode(model).Result as RedirectToRouteResult;
 
@@ -308,9 +308,6 @@ namespace Testility.UnitTests.Controllers
             Assert.AreEqual("ConfirmEmail", result.ViewName);
             Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
-
-
-
 
 
     }

@@ -11,11 +11,11 @@ namespace Testility.UnitTests.Constants
 
         public static string InvalidToken = "invalidToken";
         public static string ValidToken = "validToken";
+        public static string Token = "someToken";
 
         public static string InvalidId = "invalidId";
         public static string ValidId = "validId";
 
         public static string Error = "some error";
-
     }
 }
