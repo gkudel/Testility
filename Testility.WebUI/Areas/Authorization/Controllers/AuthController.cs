@@ -108,7 +108,7 @@ namespace Testility.WebUI.Areas.Authorization.Controllers
             if (ModelState.IsValid)
             {
                 IdentityUser newUser = Mapper.Map<IdentityUser>(model);
-                if (model.Id == null)                                               //New one
+                if (model.Id == null)                                              
                 {
                     try
                     {

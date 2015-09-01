@@ -14,7 +14,7 @@ namespace Testility.Domain.Entities
         CSharp, VisualBasic
     }
 
-    public class Solution
+    public class SolutionApi
     {
         private ICollection<Reference> references;
 

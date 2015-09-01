@@ -24,10 +24,10 @@ namespace Testility.Domain.Concrete.Tests
         [TestInitialize]
         public void Init()
         {
-            ICollection<Solution> SolutionsData = new HashSet<Solution>
+            ICollection<SolutionApi> SolutionsData = new HashSet<SolutionApi>
             {
-                new Solution() {Id = 2, Name = "12ok"},
-                new Solution() {Id = 1, Name = "1"}
+                new SolutionApi() {Id = 2, Name = "12ok"},
+                new SolutionApi() {Id = 1, Name = "1"}
             };
 
             ICollection<Reference> References = new HashSet<Reference>
@@ -90,7 +90,7 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Add_Solution()
         {
-            Solution solution = new Solution() { Name = "ok" };
+            SolutionApi solution = new SolutionApi() { Name = "ok" };
             Service.Save(solution, null);            
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
             Assert.AreEqual(MockContext.Object.Solutions.Count(), 3);
@@ -99,7 +99,7 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Add_Solution_WhitReferences()
         {
-            Solution solution = new Solution() { Name = "ok" };
+            SolutionApi solution = new SolutionApi() { Name = "ok" };
             Service.Save(solution, new int[] { 1 } );
             Assert.AreEqual(MockContext.Object.Solutions.Count(), 3);
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
@@ -110,7 +110,7 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Edit_Solution()
         {
-            Solution solution = Service.GetSolution(1);
+            SolutionApi solution = Service.GetSolution(1);
             Service.Save(solution, null);
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
@@ -118,7 +118,7 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Edit_Solution_RemoveClass()
         {
-            Solution solution = Service.GetSolution(1);
+            SolutionApi solution = Service.GetSolution(1);
             solution.Classes = new HashSet<Class>();
             MockContext.Object.Classes.First().SolutionId = 1;
             Service.Save(solution, null);
@@ -129,7 +129,7 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Edit_Solution_RemoveMethod()
         {
-            Solution solution = Service.GetSolution(1);
+            SolutionApi solution = Service.GetSolution(1);
             solution.Classes = new HashSet<Class>() { MockContext.Object.Classes.First() };
             MockContext.Object.Classes.First().SolutionId = 1;
             MockContext.Object.Classes.First().Methods = new HashSet<Method>();
@@ -143,7 +143,7 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Edit_Solution_RemoveTest()
         {
-            Solution solution = Service.GetSolution(1);
+            SolutionApi solution = Service.GetSolution(1);
             solution.Classes = new HashSet<Class>() { MockContext.Object.Classes.First() };
             MockContext.Object.Classes.First().SolutionId = 1;
             MockContext.Object.Classes.First().Methods = new HashSet<Method>() { MockContext.Object.Methods.First() } ;
@@ -161,7 +161,7 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Edit_Solution_RemoveItem()
         {
-            Solution solution = Service.GetSolution(1);
+            SolutionApi solution = Service.GetSolution(1);
             solution.Items = new HashSet<Item>();
             MockContext.Object.Items.First().SolutionId = 1;
             Service.Save(solution, null);

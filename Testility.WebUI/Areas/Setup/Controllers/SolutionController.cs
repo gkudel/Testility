@@ -40,7 +40,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize)
                     .ToList()
-                    .Select(s => Mapper.Map<Solution, SolutionIndexItemViewModel>(s)),
+                    .Select(s => Mapper.Map<SolutionApi, SolutionIndexItemViewModel>(s)),
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
@@ -67,7 +67,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Solution solution = setupRepository.GetSolution(id.Value);
+            SolutionApi solution = setupRepository.GetSolution(id.Value);
             if (solution == null)
             {
                 return HttpNotFound();
@@ -81,7 +81,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Solution solution = setupRepository.GetSolution(id.Value);
+            SolutionApi solution = setupRepository.GetSolution(id.Value);
             if (solution == null)
             {
                return HttpNotFound();

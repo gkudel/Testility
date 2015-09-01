@@ -200,6 +200,7 @@
     <Compile Include="Areas\Authorization\Models\VerifyCodeVM.cs" />
     <Compile Include="Areas\Setup\Controllers\ReferencesController.cs" />
     <Compile Include="Areas\Setup\Model\SolutionIndexItemViewModel.cs" />
+    <Compile Include="Areas\WebApi\Controllers\UnitTestController.cs" />
     <Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
     <Compile Include="Infrastructure\Attributes\RemoteApiAttribute.cs" />
     <Compile Include="Infrastructure\ExternalLogin\ExternalLogin.cs" />

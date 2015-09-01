@@ -15,7 +15,7 @@ namespace Testility.Domain.Concrete
     public class EFDbContext : IdentityDbContext<IdentityUser>, IEFDbContext
     {   
         #region Setup Entities
-        public virtual DbSet<Solution> Solutions { get; set; }
+        public virtual DbSet<SolutionApi> Solutions { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<Method> Methods { get; set; }
@@ -29,7 +29,6 @@ namespace Testility.Domain.Concrete
 
         public EFDbContext() : base("EFDbContext")
         {
-            GetValidationErrors();
         }        
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

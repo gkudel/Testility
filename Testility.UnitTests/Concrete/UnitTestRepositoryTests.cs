@@ -27,11 +27,11 @@ namespace Testility.Domain.Concrete.Tests
         {
             ICollection<UnitTestSolution> unitTestList = new HashSet<UnitTestSolution>
             {
-                new UnitTestSolution() {Id = 1, SolutionId = 1, Solution = new Solution(){ Id = 1, Name = "S1"} },
-                new UnitTestSolution() {Id = 2, SolutionId = 2, Solution = new Solution(){ Id = 2, Name = "S2"} },
-                new UnitTestSolution() {Id = 3, SolutionId = 3, Solution = new Solution(){ Id = 3, Name = "S3"} },
-                new UnitTestSolution() {Id = 4, SolutionId = 4, Solution = new Solution(){ Id = 4, Name = "S4"} },
-                new UnitTestSolution() {Id = 5, SolutionId = 5, Solution = new Solution(){ Id = 5, Name = "S5"} }
+                new UnitTestSolution() {Id = 1, SolutionId = 1, Solution = new SolutionApi(){ Id = 1, Name = "S1"} },
+                new UnitTestSolution() {Id = 2, SolutionId = 2, Solution = new SolutionApi(){ Id = 2, Name = "S2"} },
+                new UnitTestSolution() {Id = 3, SolutionId = 3, Solution = new SolutionApi(){ Id = 3, Name = "S3"} },
+                new UnitTestSolution() {Id = 4, SolutionId = 4, Solution = new SolutionApi(){ Id = 4, Name = "S4"} },
+                new UnitTestSolution() {Id = 5, SolutionId = 5, Solution = new SolutionApi(){ Id = 5, Name = "S5"} }
             };
 
             MockContext = EntityFrameworkMockHelper.GetMockContext<IEFDbContext>();

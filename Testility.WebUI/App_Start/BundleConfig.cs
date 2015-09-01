@@ -27,7 +27,8 @@ namespace Testility.WebUI
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/iosOverlay.css",
-                      "~/Content/codemirror-3.0/codemirror.css"));
+                      "~/Content/codemirror-3.0/codemirror.css",
+                      "~/Content/angular-block-ui.min.css"));
 
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
@@ -35,6 +36,7 @@ namespace Testility.WebUI
                     "~/Scripts/angular/framework/angular-animate.js",
                     "~/Scripts/angular-ui/angular-ui.js",
                     "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
+                    "~/Scripts/angular-ui/angular-block-ui.js",
                     "~/Scripts/angular/main.js",
                     "~/Scripts/angular/validation/validation.js",
                     "~/Scripts/angular/browser/browser.js",

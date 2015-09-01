@@ -10,6 +10,6 @@ namespace Testility.Domain.Entities
     {
         public int Id { get; set; }
         public int SolutionId { get; set; }
-        public virtual Solution Solution { get; set; }
+        public virtual SolutionApi Solution { get; set; }
     }
 }

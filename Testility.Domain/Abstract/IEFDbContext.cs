@@ -12,7 +12,7 @@ namespace Testility.Domain.Abstract
     public interface IEFDbContext: IDisposable
     {
         #region Setup Entities
-        DbSet<Solution> Solutions { get; set; }
+        DbSet<SolutionApi> Solutions { get; set; }
         DbSet<Item> Items { get; set; }
         DbSet<Class> Classes { get; set; }
         DbSet<Method> Methods { get; set; }

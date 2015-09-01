@@ -85,17 +85,21 @@
                     var promise = new Promise(function (resolve, reject) {
                         var options = {};
                         options = uiConfig.browsersConfig['Solutions'] || {};
-                        var selected = function (solution) {
+                        var selected = function (solution) {                            
                             if (solution) {
-                                $http.get('/api/UnitTest/Create/' + solution.items)
+                                var d = qSpiner.defer('Initializing');
+                                $http.post('/api/UnitTest/Create/' + solution.items)
                                     .success(function (response) {
+                                        d.resolve();
                                         resolve(ctr(response));
                                     })
                                     .error(function (data, status) {
+                                        d.reject();
                                         reject(data);
                                     });
-                            }
-                            return [];
+                            } else {
+                                return [];
+                            }                            
                         }
                         var cancelled = function () {
                             reject("Please select setup solution");

@@ -20,7 +20,7 @@ namespace Testility.Domain.Concrete
             this.context = context;
         }
 
-        public IQueryable<Solution> GetSolutions(bool lazyloading = true)
+        public IQueryable<SolutionApi> GetSolutions(bool lazyloading = true)
         {
             var ret = context.Solutions.AsQueryable();
             if (!lazyloading)
@@ -31,7 +31,7 @@ namespace Testility.Domain.Concrete
             return ret; 
         }
         
-        public Solution GetSolution(int id)
+        public SolutionApi GetSolution(int id)
         {
             var query = context.Solutions.Where(s => s.Id == id)
                 .Include(s => s.Items)
@@ -39,7 +39,7 @@ namespace Testility.Domain.Concrete
             return query.FirstOrDefault();
         }
 
-        public void Save(Solution solution, int[] references)
+        public void Save(SolutionApi solution, int[] references)
         {
             var referencedAssemblies = solution.References.Where(r => !references?.Contains(r.Id) ?? true).ToList();
             foreach (Reference r in referencedAssemblies)
@@ -100,7 +100,7 @@ namespace Testility.Domain.Concrete
 
         public bool DeleteSolution(int id)
         {
-            Solution solution = context.Solutions.FirstOrDefault(s => s.Id == id);
+            SolutionApi solution = context.Solutions.FirstOrDefault(s => s.Id == id);
             if (solution != null)
             {
                 context.Solutions.Remove(solution);

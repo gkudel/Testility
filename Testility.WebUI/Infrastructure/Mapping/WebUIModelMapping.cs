@@ -22,10 +22,10 @@ namespace Testility.WebUI.Infrastructure.Mapping
         protected override void Configure()
         {
             #region Setup
-            Mapper.CreateMap<Solution, SolutionViewModel>()
+            Mapper.CreateMap<SolutionApi, SolutionViewModel>()
                 .ForMember(s => s.References, opt => opt.MapFrom(s => s.References != null ? s.References.Select(solution => solution.Id).ToArray() : new int[0]))
                 .ForMember(s => s.Items, opt => opt.MapFrom(s => s.Items == null || s.Items.Count == 0 ? new ItemViewModel[0] : s.Items.Select(i => Mapper.Map<ItemViewModel>(i)).ToArray()));            
-            Mapper.CreateMap<SolutionViewModel, Solution>()
+            Mapper.CreateMap<SolutionViewModel, SolutionApi>()
                 .ForMember(s => s.References, opt => opt.Ignore());
 
             Mapper.CreateMap<ICollection<ItemViewModel>, ICollection<Item>>()
@@ -35,16 +35,16 @@ namespace Testility.WebUI.Infrastructure.Mapping
             Mapper.CreateMap<ItemViewModel, Item>()
                 .ForMember(i => i.Solution, opt => opt.Ignore());
 
-            Mapper.CreateMap<Solution, SolutionIndexItemViewModel>()
+            Mapper.CreateMap<SolutionApi, SolutionIndexItemViewModel>()
                 .ForMember(i => i.Classes, opt => opt.ResolveUsing<ClassesCountResolver>().ConstructedBy(() => new ClassesCountResolver()))
                 .ForMember(i => i.Methods, opt => opt.ResolveUsing<MethodsCountResolver>().ConstructedBy(() => new MethodsCountResolver()))
                 .ForMember(i => i.Tests, opt => opt.ResolveUsing<TestsCountResolver>().ConstructedBy(() => new TestsCountResolver()));
 
-            Mapper.CreateMap<Solution, Input>()
+            Mapper.CreateMap<SolutionApi, Input>()
               .ForMember(i => i.SolutionName, opt => opt.MapFrom(s => s.Name))
               .ForMember(i => i.Code, opt => opt.ResolveUsing<CodeResolver>().ConstructedBy(() => new CodeResolver()));
 
-            Mapper.CreateMap<Result, Solution>()
+            Mapper.CreateMap<Result, SolutionApi>()
                 .ForMember(e => e.Id, opt => opt.Ignore())
                 .ForMember(e => e.Name, opt => opt.Ignore())
                 .ForMember(e => e.Language, opt => opt.Ignore())
@@ -95,9 +95,9 @@ namespace Testility.WebUI.Infrastructure.Mapping
         }
     }
 
-    public class CodeResolver : ValueResolver<Solution, string[]>
+    public class CodeResolver : ValueResolver<SolutionApi, string[]>
     {
-        protected override string[] ResolveCore(Solution solution)
+        protected override string[] ResolveCore(SolutionApi solution)
         {
             List<string> codes = new List<string>();
             var items = solution.Items?.ToList() ?? new List<Item>();
@@ -109,24 +109,24 @@ namespace Testility.WebUI.Infrastructure.Mapping
         }
     }
 
-    public class ClassesCountResolver : ValueResolver<Solution, int>
+    public class ClassesCountResolver : ValueResolver<SolutionApi, int>
     {
-        protected override int ResolveCore(Solution solution)
+        protected override int ResolveCore(SolutionApi solution)
         {
             return solution.Classes?.Count() ?? 0;
         }
     }
 
-    public class MethodsCountResolver : ValueResolver<Solution, int>
+    public class MethodsCountResolver : ValueResolver<SolutionApi, int>
     {
-        protected override int ResolveCore(Solution solution)
+        protected override int ResolveCore(SolutionApi solution)
         {
             return solution.Classes?.SelectMany(c => c.Methods)?.Count() ?? 0;
         }
     }
-    public class TestsCountResolver : ValueResolver<Solution, int>
+    public class TestsCountResolver : ValueResolver<SolutionApi, int>
     {
-        protected override int ResolveCore(Solution solution)
+        protected override int ResolveCore(SolutionApi solution)
         {
             return solution.Classes?.SelectMany(c => c.Methods)?.SelectMany(m => m.Tests)?.Count() ?? 0;
         }

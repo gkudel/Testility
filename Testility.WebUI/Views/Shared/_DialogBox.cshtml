@@ -5,8 +5,13 @@
             <b>{{Caption}}</b>
         </h3>
     </div>
-    <div class="modal-body">
-        <div ng-include src="type"></div>
+    <div class="modal-body" ng-switch on="type">
+        <div ng-switch-when="MessageBox.html">
+            <div dialog-body template="MessageBox.html"></div>
+        </div>
+        <div ng-switch-when="InputBox.html">
+            <div dialog-body template="InputBox.html">sssss</div>
+        </div>
     </div>
     <div class="modal-footer">
         <div ng-include src="buttons"></div>
