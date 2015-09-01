@@ -6,7 +6,20 @@
                 return attr.template;
             } 
         };
+    }).
+    directive('inputBox', function(){
+        return {
+            restrict: 'A',
+            controller: 'inputBoxController'
+        };
     })
+    .controller('inputBoxController', ['$scope', function ($scope) {
+        $scope.$watch('Value', function (n, o) {
+            if (n !== o) {
+                $scope.$emit('Value_Changed', n);
+            }
+        });
+    }])
     .factory('dialogbox', ['$modal', '$q', function ($modal, $q) {
         var icons = {
             Info: {
@@ -130,6 +143,10 @@ angular.module('ui.dialogbox')
         $scope.Icon = icon.icon;
         $scope.BackGround = icon.background;
 
+        $scope.$on('Value_Changed', function (e, v) {
+            e.stopPropagation();
+            $scope.Value = v;
+        });
         $scope.ok = function () {
             $modalInstance.close($scope.Value);
         };
