@@ -6,6 +6,7 @@ using Moq;
 using Testility.Domain.Concrete;
 using Testility.Domain.Entities;
 using Testility.UnitTests.DbContextMock;
+using Testility.Domain.Abstract;
 
 namespace Testility.Domain.Concrete.Tests
 {
@@ -13,7 +14,7 @@ namespace Testility.Domain.Concrete.Tests
     public class EFSetupRepositoryTests
     {
         #region Members
-        public Mock<EFDbContext> MockContext { get; set; }
+        public Mock<IEFDbContext> MockContext { get; set; }
 
         public EFSetupRepository Service { get; set; }        
         #endregion
@@ -55,7 +56,7 @@ namespace Testility.Domain.Concrete.Tests
                 new Test() {Id = 2, Name = "12ok"}
             };
 
-            MockContext = EntityFrameworkMockHelper.GetMockContext<EFDbContext>();
+            MockContext = EntityFrameworkMockHelper.GetMockContext<IEFDbContext>();
             MockContext.Object.Solutions.AddRange(SolutionsData);
             MockContext.Object.References.AddRange(References);
             MockContext.Object.Items.AddRange(ItemsData);

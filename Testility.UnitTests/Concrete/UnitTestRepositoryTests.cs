@@ -9,6 +9,7 @@ using Moq;
 using System.Data.Entity;
 using Testility.Domain.Entities;
 using Testility.UnitTests.DbContextMock;
+using Testility.Domain.Abstract;
 
 namespace Testility.Domain.Concrete.Tests
 {
@@ -16,7 +17,7 @@ namespace Testility.Domain.Concrete.Tests
     public class UnitTestRepositoryTests
     {
         #region Members
-        public Mock<EFDbContext> MockContext { get; set; }
+        public Mock<IEFDbContext> MockContext { get; set; }
 
         public UnitTestRepository Service { get; set; }
         #endregion
@@ -33,7 +34,7 @@ namespace Testility.Domain.Concrete.Tests
                 new UnitTestSolution() {Id = 5, SolutionId = 5, Solution = new Solution(){ Id = 5, Name = "S5"} }
             };
 
-            MockContext = EntityFrameworkMockHelper.GetMockContext<EFDbContext>();
+            MockContext = EntityFrameworkMockHelper.GetMockContext<IEFDbContext>();
             MockContext.Object.UnitTestSolutions.AddRange(unitTestList);
             Service = new UnitTestRepository(MockContext.Object);
         }

@@ -97,6 +97,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IEFDbContext.cs" />
     <Compile Include="Abstract\ISetupRepository.cs" />
     <Compile Include="Abstract\IUnitTestRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />

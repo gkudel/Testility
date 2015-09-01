@@ -42,9 +42,10 @@ namespace Testility.WebUI.Controllers
             return View(data);
         }
 
-        public ActionResult Create(int? solutionId)
+        public ActionResult Create()
         {
-            return View();
+            ViewBag.Title = "UnitTest Entry";
+            return View("Solution");
         }
     }
 }

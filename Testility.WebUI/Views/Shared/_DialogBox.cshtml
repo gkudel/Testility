@@ -1,0 +1,35 @@
+﻿<script type="text/ng-template" id="DialogBox.html">
+    <div class="modal-header {{BackGround}}">
+        <h3 class="modal-title">
+            <span class="glyphicon {{Icon}}"></span>
+            <b>{{Caption}}</b>
+        </h3>
+    </div>
+    <div class="modal-body">
+        <div ng-include src="type"></div>
+    </div>
+    <div class="modal-footer">
+        <div ng-include src="buttons"></div>
+    </div>
+    <script type="text/ng-template" id="MessageBox.html">
+        <pre>{{ Message }}</pre>
+    </script>
+    <script type="text/ng-template" id="InputBox.html">
+        <div class="form-group">
+            <input type="text" class="form-control inputbox" id="text" placeholder="Enter Name" ng-model="Value">
+        </div>
+    </script>
+    <script type="text/ng-template" id="Ok.html">
+        <div class="text-center col-md-4 col-md-offset-4">
+            <a class="btn btn-default btn-block" href="" ng-click="ok()">OK</a>
+        </div>
+    </script>
+    <script type="text/ng-template" id="OkCancel.html">
+        <div class="text-center col-md-4 col-md-offset-4">
+            <div class="btn-group btn-group-justified">
+                <a class="btn btn-default btn-md" href="" ng-click="ok()">OK</a>
+                <a class="btn btn-default btn-md" href="" ng-click="cancel()">Cancel</a>
+            </div>
+        </div>
+    </script>
+</script>

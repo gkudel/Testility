@@ -25,6 +25,7 @@ namespace Testility.WebUI.Infrastructure.Ninject
     {
         public override void Load()
         {
+            Bind<IEFDbContext>().To<EFDbContext>();
             Bind<ISetupRepository>().To<EFSetupRepository>();
             Bind<IUnitTestRepository>().To<UnitTestRepository>();
             Bind<ICompiler>().To<CompilerProxy>();

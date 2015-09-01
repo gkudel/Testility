@@ -22,25 +22,10 @@ namespace Testility.WebUI.Infrastructure.Mapping
         protected override void Configure()
         {
             #region Setup
-            Mapper.CreateMap<Solution, SolutionApi>()
-                .ForMember(s => s.References, opt => opt.MapFrom(s => s.References != null ? s.References.Select(solution => solution.Id).ToArray() : new int[0]))
-                .ForMember(s => s.Language, opt => opt.MapFrom(s => (int)s.Language))
-                .ForMember(s => s.Items, opt => opt.MapFrom(s => s.Items == null || s.Items.Count == 0 ? new ItemApi[0] : s.Items.Select(i => Mapper.Map<ItemApi>(i)).ToArray()));
-            Mapper.CreateMap<Item, ItemApi>();
-            Mapper.CreateMap<SolutionApi, Solution>()
-                .ForMember(s => s.References, opt => opt.Ignore());
-                
-            Mapper.CreateMap<ItemApi, Item>();
-
-            Mapper.CreateMap<Solution, SolutionIndexItemViewModel>()
-                .ForMember(i => i.Classes, opt => opt.ResolveUsing<ClassesCountResolver>().ConstructedBy(() => new ClassesCountResolver()))
-                .ForMember(i => i.Methods, opt => opt.ResolveUsing<MethodsCountResolver>().ConstructedBy(() => new MethodsCountResolver()))
-                .ForMember(i => i.Tests, opt => opt.ResolveUsing<TestsCountResolver>().ConstructedBy(() => new TestsCountResolver()));
-
             Mapper.CreateMap<Solution, SolutionViewModel>()
-                .ForMember(s => s.References, opt => opt.MapFrom(s => s.References.Select(r => r.Id).ToArray()));
+                .ForMember(s => s.References, opt => opt.MapFrom(s => s.References != null ? s.References.Select(solution => solution.Id).ToArray() : new int[0]))
+                .ForMember(s => s.Items, opt => opt.MapFrom(s => s.Items == null || s.Items.Count == 0 ? new ItemViewModel[0] : s.Items.Select(i => Mapper.Map<ItemViewModel>(i)).ToArray()));            
             Mapper.CreateMap<SolutionViewModel, Solution>()
-                .ForMember(s => s.CompiledDll, opt => opt.Ignore())
                 .ForMember(s => s.References, opt => opt.Ignore());
 
             Mapper.CreateMap<ICollection<ItemViewModel>, ICollection<Item>>()
@@ -50,14 +35,14 @@ namespace Testility.WebUI.Infrastructure.Mapping
             Mapper.CreateMap<ItemViewModel, Item>()
                 .ForMember(i => i.Solution, opt => opt.Ignore());
 
+            Mapper.CreateMap<Solution, SolutionIndexItemViewModel>()
+                .ForMember(i => i.Classes, opt => opt.ResolveUsing<ClassesCountResolver>().ConstructedBy(() => new ClassesCountResolver()))
+                .ForMember(i => i.Methods, opt => opt.ResolveUsing<MethodsCountResolver>().ConstructedBy(() => new MethodsCountResolver()))
+                .ForMember(i => i.Tests, opt => opt.ResolveUsing<TestsCountResolver>().ConstructedBy(() => new TestsCountResolver()));
+
             Mapper.CreateMap<Solution, Input>()
               .ForMember(i => i.SolutionName, opt => opt.MapFrom(s => s.Name))
               .ForMember(i => i.Code, opt => opt.ResolveUsing<CodeResolver>().ConstructedBy(() => new CodeResolver()));
-
-
-            Mapper.CreateMap<ReferencesViewModel, Reference>();
-            Mapper.CreateMap<Reference, ReferencesViewModel>();
-            Mapper.CreateMap<Reference, ReferenceApi>();
 
             Mapper.CreateMap<Result, Solution>()
                 .ForMember(e => e.Id, opt => opt.Ignore())
@@ -81,6 +66,10 @@ namespace Testility.WebUI.Infrastructure.Mapping
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Test, Domain.Entities.Test>((i, o) => i.Name == o.Name));
             Mapper.CreateMap<Engine.Model.Test, Domain.Entities.Test>()
                 .ForMember(e => e.Id, opt => opt.Ignore());
+
+            Mapper.CreateMap<ReferencesViewModel, Reference>();
+            Mapper.CreateMap<Reference, ReferencesViewModel>();
+            Mapper.CreateMap<Reference, ReferenceViewModel>();
             #endregion Setup
 
             #region UnitTes

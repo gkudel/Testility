@@ -21,7 +21,7 @@ using System.Web.Http.Routing;
 using System.Web.Http.Controllers;
 using System.Web.Http.Hosting;
 
-namespace Testility.WebUI.Controllers.Tests
+namespace Testility.WebUI.Areas.WebApi.Controllers
 {   
     [TestClass()]
     public class SolutionControllerTests
@@ -49,6 +49,7 @@ namespace Testility.WebUI.Controllers.Tests
             AutoMapperConfiguration.Configure();
         }
 
+        #region Get
         [TestMethod()]
         public void Get_Contains_All_Solutions()
         {
@@ -74,7 +75,88 @@ namespace Testility.WebUI.Controllers.Tests
             Assert.AreNotEqual(null, message);
             Assert.AreEqual(HttpStatusCode.OK, message.StatusCode);
             MockSetupRepository.Mock.Verify(m => m.GetSolution(1), Times.Once);
+            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Never);
         }
+        #endregion Get
+
+        #region POST
+        [TestMethod]
+        public void Cannot_EditPostNonExistsSolution_NotFound()
+        {
+            SolutionViewModel solution = new SolutionViewModel() { Id = 11 };
+            var result = solutionController.Post(solution) as HttpResponseMessage;
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+            MockSetupRepository.Mock.Verify(m => m.GetSolution(11), Times.Once);
+            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void Cannot_EditPostNullSolution_BadRequest()
+        {
+            var result = solutionController.Post(null) as HttpResponseMessage;
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+            MockSetupRepository.Mock.Verify(m => m.GetSolution(11), Times.Never);
+            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Never);        
+        }
+
+        [TestMethod]
+        public void Cannot_EditPostInvalidSolution_Redirect()
+        {
+            solutionController.ModelState.AddModelError("Error", "Error");
+            SolutionViewModel solution = new SolutionViewModel() { Name = "ok" };
+            var actionResult = solutionController.Post(solution) as HttpResponseMessage;
+            Assert.AreEqual(HttpStatusCode.BadRequest, actionResult.StatusCode);
+            MockSetupRepository.Mock.Verify(m => m.GetSolution(11), Times.Never);
+            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void Can_EditSolution_RedirectToAction()
+        {
+            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>());
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(1)).Returns(new Solution());
+            SolutionViewModel solution = new SolutionViewModel() { Id = 1, Name = "ok" };
+
+            var actionResult = solutionController.Post(solution) as HttpResponseMessage;
+
+            MockSetupRepository.Mock.Verify(m => m.GetSolution(1), Times.Once);
+            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
+            Assert.AreEqual(HttpStatusCode.OK, actionResult.StatusCode);
+        }
+
+        [TestMethod]
+        public void Can_EditSolution_CompileError()
+        {
+            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(1)).Returns(new Solution());
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>() { new Error()});
+            SolutionViewModel solution = new SolutionViewModel() { Id = 1, Name = "ok" };
+
+            var actionResult = solutionController.Post(solution) as HttpResponseMessage;
+
+            MockSetupRepository.Mock.Verify(m => m.GetSolution(1), Times.Once);
+            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
+            Assert.AreEqual(HttpStatusCode.OK, actionResult.StatusCode); ;
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void Cannot_EditSolution_Exception()
+        {
+            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>())).Throws(new Exception());
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>());
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(1)).Returns(new Solution());
+            SolutionViewModel solution = new SolutionViewModel() { Id = 1, Name = "ok" };
+
+            var actionResult = solutionController.Post(solution) as HttpResponseMessage;
+
+            MockSetupRepository.Mock.Verify(m => m.GetSolution(1), Times.Once);
+            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
+        }
+        #endregion POST
     }
 }
 
@@ -175,83 +257,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             Assert.AreEqual("Solution", result.ViewName);
         }
         #endregion GET
-
-        #region POST
-        [TestMethod]
-        public void Cannot_EditPostNonExistsSolution_NotFound()
-        {
-            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            SolutionViewModel solution = new SolutionViewModel() { Id = 11 };
-            var result = solutionController.EditPost(solution) as HttpStatusCodeResult;
-
-            Solution singleSolution = new Solution() { Id = 1 };
-            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
-
-            MockSetupRepository.Mock.Verify(m => m.GetSolution(11), Times.Once);
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-        }
-
-        [TestMethod]
-        public void Cannot_EditPostNullSolution_BadRequest()
-        {
-            HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            var result = solutionController.EditPost(null) as HttpStatusCodeResult;
-            Assert.AreEqual(expected.StatusCode, result.StatusCode);
-        }
-
-        [TestMethod]
-        public void Cannot_EditPostInvalidSolution_Redirect()
-        {
-            solutionController.ModelState.AddModelError("Error", "Error");
-            SolutionViewModel solution = new SolutionViewModel() { Name = "ok" };
-            var actionResult = solutionController.EditPost(solution) as ViewResult;
-            Assert.AreEqual("Solution", actionResult.ViewName);
-        }
-
-        [TestMethod]
-        public void Can_EditSolution_RedirectToAction()
-        {
-
-            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
-            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>());
-
-            SolutionViewModel solution = new SolutionViewModel() { Name = "ok" };
-            var actionResult = solutionController.EditPost(solution) as RedirectToRouteResult;
-
-
-            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
-            Assert.AreNotEqual(null, solutionController.TempData["savemessage"]);
-            Assert.AreEqual("List", actionResult.RouteValues["action"]);
-        }
-
-        [TestMethod]
-        public void Cannot_EditSolution_CompileError()
-        {
-            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()));
-
-            SolutionViewModel solution = new SolutionViewModel() { Name = "ok" };
-            var actionResult = solutionController.EditPost(solution) as ViewResult;
-
-            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Never);
-            Assert.AreEqual(null, solutionController.TempData["savemessage"]);
-            Assert.AreEqual("Solution", actionResult.ViewName);
-        }
-
-
-        [TestMethod]
-        public void Cannot_EditSolution_Exception()
-        {
-            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>())).Throws(new Exception());
-            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>());
-
-            SolutionViewModel solution = new SolutionViewModel() { Name = "ok" };
-            var actionResult = solutionController.EditPost(solution) as ViewResult;
-
-            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<Solution>(), It.IsAny<int[]>()), Times.Once);
-            Assert.AreEqual("Solution", actionResult.ViewName);
-
-        }
-        #endregion POST
 
         #endregion Edit & Create
 

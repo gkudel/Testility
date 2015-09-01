@@ -8,7 +8,7 @@ using Testility.Domain.Abstract;
 using AutoMapper.QueryableExtensions;
 using Testility.WebUI.Model;
 
-namespace Testility.WebUI.Controllers
+namespace Testility.WebUI.Areas.WebApi
 {
     public class ReferenceController : ApiController
     {
@@ -21,7 +21,7 @@ namespace Testility.WebUI.Controllers
 
         public HttpResponseMessage Get()
         {
-            return Request.CreateResponse<IEnumerable<ReferenceApi>>(HttpStatusCode.OK, setupRepository.GetReferences().Project().To<ReferenceApi>().ToArray());
+            return Request.CreateResponse<IEnumerable<ReferenceViewModel>>(HttpStatusCode.OK, setupRepository.GetReferences().Project().To<ReferenceViewModel>().ToArray());
         }
     }
 }

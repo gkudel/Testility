@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Testility.WebUI.Model
 {
-    public class ReferenceApi
+    public class ReferenceViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -7,12 +7,13 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 
 namespace Testility.Domain.Concrete
 {
-    public class EFDbContext : IdentityDbContext<IdentityUser>
-    {
+    public class EFDbContext : IdentityDbContext<IdentityUser>, IEFDbContext
+    {   
         #region Setup Entities
         public virtual DbSet<Solution> Solutions { get; set; }
         public virtual DbSet<Item> Items { get; set; }
@@ -27,7 +28,9 @@ namespace Testility.Domain.Concrete
         #endregion UnitTest Entities
 
         public EFDbContext() : base("EFDbContext")
-        { }
+        {
+            GetValidationErrors();
+        }        
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

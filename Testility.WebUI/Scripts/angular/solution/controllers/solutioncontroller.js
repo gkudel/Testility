@@ -1,48 +1,101 @@
 ﻿angular.module('Testility')
-    .controller('SolutionController', ['$scope', 'solutionservice', 'messagebox', function ($scope, service, messagebox) {
+    .controller('SolutionController', ['$scope', 'solutionservice', 'dialogbox', 'messaging', function ($scope, service, dialogbox, messaging) {
 
-        $scope.Loaded = false;
-        $scope.ReferencesModelSize = 'md';
-        $scope.Messages = [];
-        $scope.References = function (items) {
-            if (items !== undefined) $scope.Solution.References = items;
-            return $scope.Solution.References || [];
-        };
-
-        service.get(Solution.Json.value).then(function (solution) {
-            $scope.Solution = solution;
-            $scope.Loaded = true;
-        }, function (error) {
-            $scope.Solution = service.empty();
-            if (error.hasOwnProperty('Message')) messagebox.show('Solution', error.Message, 'Error');
+        service.init();        
+        $scope.Solution = service.empty();
+        $scope.Loaded = service.Loaded;
+        $scope.$watch(function () { return service.Loaded; }, function (newVal) {
+            $scope.Loaded = newVal;
         });
-        
+        $scope.Entry = service.Entry;
+        messaging.init($scope, SolutionForm);
+
         $scope.addTab = function (solutionId) {
-            if (!$scope.Solution.Items) $scope.Solution.Items = [];
-            $scope.Solution.Items.push({ Id: 0, Name: 'Any Name', active: true, SolutionId: $scope.Solution.Id });
+            if (service.Loaded) {
+                var result = dialogbox.show({
+                    caption: 'Specify Name for Item',
+                    type: 'DialogBox',
+                    buttons: 'OkCancel', 
+                    value: 'Class.cs',
+                    modal: true
+                });
+                result.then(function (result) {
+                    $scope.Solution.ItemsList.push({ Id: 0, Name: result, active: true, SolutionId: $scope.Solution.Id });
+                }
+                , function (result) {
+                });
+            }
         };
 
         $scope.removeTab = function (index) {
-            if (!$scope.Solution.Items) $scope.Solution.Items = [];
-            if (index <= $scope.Solution.Items.length) {
-                $scope.Solution.Items.splice(index, 1);
+            if (index <= $scope.Solution.ItemsList.length) {
+                $scope.Solution.ItemsList.splice(index, 1);
             }
         };
 
-        $scope.compile = function () {
-            service.compile($scope.Solution).then(function (status) {
-                $scope.Messages = $scope.Messages.concat(status);
+        $scope.refresh = function () {
+            $scope.clearMessages();
+            service.get($scope.Solution).then(function (solution) {
+                if (solution) {
+                    $scope.Solution = solution;                    
+                } else {
+                    $scope.Solution = service.empty();
+                }                
             }, function (error) {
-
+                $scope.Solution = service.empty();
+                dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
             });
         };
 
-        $scope.removeMessage = function (index) {
-            if (!$scope.Messages) $scope.Messages = [];
-            if (index <= $scope.Messages.length) {
-                $scope.Messages.splice(index, 1);
+        $scope.compile = function () {
+            if (service.Loaded) {
+                $scope.clearMessages();
+                service.compile($scope.Solution).then(function (response) {
+                    if (Array.isArray(response)) {
+                        $scope.addMessage(response);
+                    }
+                }, function (error) {
+                    if (Array.isArray(error)) {
+                        $scope.addMessage(error);
+                    } else {
+                        dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
+                    }
+                });
             }
         };
+
+        $scope.submit = function () {
+            $scope.clearMessages();
+            if (!SolutionForm.$invalid && !SolutionForm.$pending) {
+                service.submit($scope.Solution).then(function (response) {
+                    if (response) {
+                        if (response.hasOwnProperty('compileErrors'))
+                            $scope.addMessage(response.compileErrors);
+                        if (response.hasOwnProperty('solution'))
+                            $scope.Solution = response.solution;
+                    }
+                }, function (error) {
+                    if (Array.isArray(error)) {
+                        $scope.addMessage(error);
+                    } else {
+                        dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
+                    }
+                });
+            }
+        };
+
+        $scope.References = function (ref) {
+            if (service.Loaded) {
+                if (ref) $scope.Solution.RefList = ref;
+                return $scope.Solution.RefList;
+            }
+        };
+
+        $scope.changeSolution = function () {
+            service.changeSolution();
+        };
+
+        $scope.refresh();        
     }])
     .controller("CodeController", ['$scope', function ($scope) {
         $scope.code = $scope.$parent.item.Code;

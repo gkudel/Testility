@@ -1,0 +1,4 @@
+﻿<div class="alert alert-{{msg.Alert}} fade in" ng-repeat="msg in Messages" ng-show="Messages">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close" ng-click="removeMessage($index)">&times;</a>
+    <strong>{{msg.Message}}</strong>
+</div>

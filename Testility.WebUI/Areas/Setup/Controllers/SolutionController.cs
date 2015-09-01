@@ -54,11 +54,15 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.Menu = "~/Areas/Setup/Views/Shared/_Menu.cshtml";
+            ViewBag.Title = "Solution Explorer";
             return View("Solution");
         }
 
         public ActionResult Edit(int? id)
         {
+            ViewBag.Menu = "~/Areas/Setup/Views/Shared/_Menu.cshtml";
+            ViewBag.Title = "Solution Explorer";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -69,56 +73,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 return HttpNotFound();
             }
             return View("Solution");
-        }
-
-        [HttpPost, ActionName("Edit")]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditPost(SolutionViewModel model)
-        {
-            if (model == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            Solution solution = new Solution();
-            if (ModelState.IsValid)
-            {
-                if (model?.Id > 0)
-                {
-                    solution = setupRepository.GetSolution(model.Id);
-                    if (solution == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);                       
-                }
-              
-                Mapper.Map(model, solution);
-
-                try
-                {
-                    IList<Error> errors = compilerService.Compile(solution, model.References);
-                    if (errors.Count == 0)
-                    {
-                        setupRepository.Save(solution, model.References);
-                        TempData["savemessage"] = string.Format("{0} has been edited", model.Name);
-                        return RedirectToAction("List");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, string.Format("An error occurred when updating {0}", solution.Name));
-                        foreach (Error e in errors)
-                        {
-                            ModelState.AddModelError(string.Empty, e.ToString());
-                        }
-                        model.IncludeJson = true;
-                        return View("Solution", model);
-                    }
-                }
-                catch (Exception /* ex */ )
-                {
-                    ModelState.AddModelError(String.Empty, string.Format("An error occurred when updating {0}", solution.Name));
-                    model.IncludeJson = true;
-                    return View("Solution", model);
-                }
-            }
-            else
-            {
-                model.IncludeJson = true;
-                return View("Solution", model);
-            }
         }
 
         public ActionResult Delete(int? id)

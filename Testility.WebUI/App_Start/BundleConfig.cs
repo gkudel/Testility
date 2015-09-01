@@ -25,13 +25,10 @@ namespace Testility.WebUI
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/iosOverlay.css",
+                      "~/Content/codemirror-3.0/codemirror.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/ide").Include(
-                        ));
-
-            bundles.Add(new StyleBundle("~/Content/ide").Include(
-                    "~/Content/codemirror-3.0/codemirror.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                     "~/Scripts/angular/framework/angular.js",
@@ -39,9 +36,14 @@ namespace Testility.WebUI
                     "~/Scripts/angular-ui/angular-ui.js",
                     "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
                     "~/Scripts/angular/main.js",
-                    "~/Scripts/browser/browser.js",
-                    "~/Scripts/messagebox/messagebox.js"));
-
+                    "~/Scripts/angular/validation/validation.js",
+                    "~/Scripts/angular/browser/browser.js",
+                    "~/Scripts/angular/messaging/messaging.js",
+                    "~/Scripts/angular/dialogbox/dialogbox.js",
+                    "~/Scripts/iosOverlay.js",
+                    "~/Scripts/spin.min.js",
+                    "~/Scripts/angular/spiner/spiner.js"));
+            
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
                 "~/Scripts/codemirror-3.0/codemirror.js",
                 "~/Scripts/codemirror-3.0/util/matchbrackets.js",

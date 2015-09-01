@@ -1,0 +1,82 @@
+﻿@model Testility.WebUI.Model.SolutionViewModel
+@using Testility.WebUI.Extensions;
+
+<div ng-controller="SolutionController">
+    <form id="Solution" method="post" name="SolutionForm" role="form" ng-submit="submit()" novalidate>
+        <div ui-Messaging></div>
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div><h2><strong><span class="glyphicon glyphicon-edit"></span> @ViewBag.Title</strong></h2></div>
+            </div>
+            <div class="panel-body">
+                <div class="row padding-bottom-10">
+                    <div class="col-md-6">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @ng_model = "Solution.Name", @ng_disabled = "!Loaded"} })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
+                                @Html.EnumDropDownListFor(model => model.Language, htmlAttributes: new { @class = "form-control", @ng_model = "Solution.Language", @convert_number = "", @ng_disabled = "!Loaded" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right col-md-6">
+                        <div class="btn-group btn-group-justified">
+                            <a ng-click="changeSolution()" class="btn btn-default btn-sm" ng-show="Entry === 'UnitTest'">
+                                <span class="glyphicon glyphicon-paperclip"></span><span class="hidden-sm hidden-xs"> Solution</span>
+                            </a>
+                            <a ng-click="refresh()" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-refresh"></span><span class="hidden-sm hidden-xs"> Refresh</span>
+                            </a>
+                            <a ng-click="addTab()" class="btn btn-default btn-sm" ng-disabled="!Loaded">
+                                <span class="glyphicon glyphicon-plus"></span><span class="hidden-sm hidden-xs"> Item</span>
+                            </a>
+                            <a ng-click="compile()" class="btn btn-default btn-sm" ng-disabled="!Loaded">
+                                <span class="glyphicon glyphicon-wrench"></span><span class="hidden-sm hidden-xs"> Compile</span>
+                            </a>
+                            <a ui-browser config="References" items-selected="References(items)" model-size="md" class="btn btn-default btn-sm" ng-disabled="!Loaded">
+                                <span class="glyphicon glyphicon-plus"></span><span class="hidden-sm hidden-xs"> Ref.</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <tabset>
+                        <tab ng-repeat="item in Solution.ItemsList" active="item.active" disable="item.disabled">
+                            <tab-heading>{{item.Name}}<a href="" ng-click="removeTab($index)" class="glyphicon glyphicon-remove" style="position: relative; right: -13px; top: -7px"></a></tab-heading>
+                            <div class="panel panel-default">
+                                <div class="form-horizontal  padding-top-10">
+                                    <div class="padding-non" ng-controller="CodeController">
+                                        <textarea ui-codemirror ng-model="code" name="Items[{{$index}}].Code" ui-create="item.active"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="table">
+                    <div class="td-left">
+                        <a href="@Url.Action("List")">
+                            <span class="glyphicon glyphicon-step-backward"></span> Back to Projects Explorer
+                        </a>
+                    </div>
+                    <div class="td-right">
+                        <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Solution" ng-disabled="!Loaded || SolutionForm.$invalid || SolutionForm.$pending">
+                            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts {
+	@Scripts.Render("~/bundles/solution")
+}
