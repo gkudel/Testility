@@ -14,27 +14,45 @@ using Testility.Engine.Model;
 
 namespace Testility.Egine.Concrete
 {
-    public class CompilerProxy : ICompiler, IDisposable
+    public class CompilerProxy : ICompiler
     {
-        private ICompiler compiler;
-        System.AppDomain unitDomain;
-        private void Init()
+
+        public Result Compile(Input input)
         {
-            Evidence evidence = new Evidence(AppDomain.CurrentDomain.Evidence);
-            AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
-            unitDomain = AppDomain.CreateDomain("DiscoveryRegion", evidence, setup);
-            Type type = typeof(Compiler);
-            compiler = (Compiler)unitDomain.CreateInstanceFrom(
-                    type.Assembly.Location,
-                    type.FullName).Unwrap();
-            foreach (string s in GetAssemblies(type.Assembly))
+            Result r = null;
+            ICompiler compiler;
+            System.AppDomain unitDomain = null;
+            try
             {
-                compiler.LoadAssembly(s);
+                Evidence evidence = new Evidence(AppDomain.CurrentDomain.Evidence);
+                AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
+                unitDomain = AppDomain.CreateDomain("uTestDomain", evidence, setup);
+                Type type = typeof(Compiler);
+                compiler = (Compiler)unitDomain.CreateInstanceFrom(
+                        type.Assembly.Location,
+                        type.FullName).Unwrap();
+                foreach (string s in GetAssemblies(type.Assembly))
+                {
+                    compiler.LoadAssembly(s);
+                }
+                r = compiler.Compile(input);
             }
+            finally
+            {
+                if (unitDomain != null) System.AppDomain.Unload(unitDomain);
+                if (!string.IsNullOrEmpty(r?.TemporaryFile ?? ""))
+                {
+                    if (File.Exists(r.TemporaryFile))
+                    {
+                        File.Delete(r.TemporaryFile);
+                    }
+                }
+            }
+            return r;
         }
 
         private IEnumerable<string> GetAssemblies(Assembly ass)
-        {
+        {            
             AssemblyName[] assNames = ass.GetReferencedAssemblies();
             foreach (AssemblyName assName in assNames)
             {
@@ -45,36 +63,6 @@ namespace Testility.Egine.Concrete
                     GetAssemblies(referedAss);
                 }
             }
-        }
-
-        private void Finish(Result r)
-        {
-            if (unitDomain != null) System.AppDomain.Unload(unitDomain);
-            if (!string.IsNullOrEmpty(r?.TemporaryFile ?? ""))
-            {
-                if (File.Exists(r.TemporaryFile))
-                {
-                    File.Delete(r.TemporaryFile);
-                }
-            }
-        }
-        public Result Compile(Input input)
-        {
-            Result r = null;
-            try
-            {
-                Init();
-                r = compiler.Compile(input);
-            }
-            finally
-            {
-                Finish(r);
-            }
-            return r;
-        }
-        public void Dispose()
-        {
-            Finish(null);
         }
 
         public void LoadAssembly(string assemblyPath)

@@ -14,6 +14,7 @@ using Testility.Engine.Model;
 using System.Data.Entity.Validation;
 using Testility.WebUI.Infrastructure.Filters;
 using Testility.WebUI.Areas.Setup.Model;
+using Ninject;
 
 namespace Testility.WebUI.Areas.WebApi.Controllers
 {
@@ -22,10 +23,10 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         private readonly ISetupRepository setupRepository;
         private readonly ICompilerService compilerService;
 
-        public SolutionController(ISetupRepository setupRepository, ICompilerService compilerService)
+        public SolutionController(ISetupRepository setupRepository, ICompilerService setupCompilerService)
         {
             this.setupRepository = setupRepository;
-            this.compilerService = compilerService;
+            this.compilerService = setupCompilerService;
         }
 
         public HttpResponseMessage Get()

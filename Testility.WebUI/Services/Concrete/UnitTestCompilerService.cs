@@ -12,11 +12,11 @@ using Testility.WebUI.Services.Abstract;
 
 namespace Testility.WebUI.Services.Concrete
 {
-    public class CompilerService : ICompilerService
+    public class UnitTestCompilerService : ICompilerService
     {
         private readonly ICompiler compilerRepository;
         private ISetupRepository setupRepository;
-        public CompilerService(ICompiler compilerRepository, ISetupRepository setupRepository)
+        public UnitTestCompilerService(ICompiler compilerRepository, ISetupRepository setupRepository)
         {
             this.compilerRepository = compilerRepository;
             this.setupRepository = setupRepository;

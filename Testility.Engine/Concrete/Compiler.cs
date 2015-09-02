@@ -19,19 +19,6 @@ namespace Testility.Engine.Concrete
 {
     public class Compiler : MarshalByRefObject, ICompiler
     {
-        private IEnumerable<string> GetAssemblies(Assembly ass)
-        {
-            AssemblyName[] assNames = ass.GetReferencedAssemblies();
-            foreach (AssemblyName assName in assNames)
-            {
-                Assembly referedAss = Assembly.Load(assName);
-                if (!referedAss.GlobalAssemblyCache)
-                {
-                    yield return referedAss.Location;
-                    GetAssemblies(referedAss);
-                }
-            }
-        }
 
         Result ICompiler.Compile(Input input)
         {                         
@@ -52,11 +39,12 @@ namespace Testility.Engine.Concrete
                 result.TemporaryFile = compilerparameters.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), input.SolutionName+ ".dll");
                 compilerparameters.TreatWarningsAsErrors = false;
 
-                compilerparameters.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
-                foreach (string s in GetAssemblies(Assembly.GetExecutingAssembly()))
-                {
-                    compilerparameters.ReferencedAssemblies.Add(s);
-                }
+                var assemblies = Assembly.GetExecutingAssembly().GetReferencedAssemblies().ToList();
+                var assemblyLocations = assemblies.Select(a =>
+                  Assembly.ReflectionOnlyLoad(a.FullName).Location).ToList();
+                assemblyLocations.Add(Assembly.GetExecutingAssembly().Location);
+
+                compilerparameters.ReferencedAssemblies.AddRange(assemblyLocations.ToArray());
 
                 foreach (string reference in input.ReferencedAssemblies)
                 {

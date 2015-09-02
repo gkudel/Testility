@@ -167,7 +167,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
     {
         #region Members
         public MockSetupRepository MockSetupRepository { get; set; }
-        public Mock<ICompilerService> CompilerMock { get; set; }
         public SolutionController solutionController { get; set; }
         #endregion Members
 
@@ -176,10 +175,9 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Int()
         {
             MockSetupRepository = new MockSetupRepository();
-            CompilerMock = new Mock<ICompilerService>();
 
             AutoMapperConfiguration.Configure();
-            solutionController = new SolutionController(MockSetupRepository.Repository, CompilerMock.Object);
+            solutionController = new SolutionController(MockSetupRepository.Repository);
         }
         #endregion Init
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,11 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         private readonly ITestGenarator testGenerator;
         private readonly ICompilerService compilerService;
 
-        public UnitTestController(ISetupRepository setupRepository, ITestGenarator testGenerator, ICompilerService compilerService)
+        public UnitTestController(ISetupRepository setupRepository, ITestGenarator testGenerator, ICompilerService unitTestCompilerService)
         {
             this.setupRepository = setupRepository;
             this.testGenerator = testGenerator;
-            this.compilerService = compilerService;
+            this.compilerService = unitTestCompilerService;
         }
 
         [HttpPost]

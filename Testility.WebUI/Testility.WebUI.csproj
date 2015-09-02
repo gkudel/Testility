@@ -237,7 +237,8 @@
     <Compile Include="Services\Abstract\ICodeProvider.cs" />
     <Compile Include="Services\Abstract\ITestGenarator.cs" />
     <Compile Include="Services\Concrete\CodeProvider.cs" />
-    <Compile Include="Services\Concrete\CompilerService.cs" />
+    <Compile Include="Services\Concrete\UnitTestCompilerService.cs" />
+    <Compile Include="Services\Concrete\SetupCompilerService.cs" />
     <Compile Include="Services\Concrete\CSharpCodeProvider.cs" />
     <Compile Include="Services\Concrete\EmailServices.cs" />
     <Compile Include="Services\Concrete\IdentityServices.cs" />
