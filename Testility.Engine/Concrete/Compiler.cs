@@ -11,13 +11,30 @@ using System.Threading.Tasks;
 using Testility.Engine.Abstract;
 using Testility.Engine.Attribute;
 using Testility.Engine.Model;
+using NUnit.Core;
+using NUnit.Framework;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Testility.Engine.Concrete
 {
     public class Compiler : MarshalByRefObject, ICompiler
     {
+        private IEnumerable<string> GetAssemblies(Assembly ass)
+        {
+            AssemblyName[] assNames = ass.GetReferencedAssemblies();
+            foreach (AssemblyName assName in assNames)
+            {
+                Assembly referedAss = Assembly.Load(assName);
+                if (!referedAss.GlobalAssemblyCache)
+                {
+                    yield return referedAss.Location;
+                    GetAssemblies(referedAss);
+                }
+            }
+        }
+
         Result ICompiler.Compile(Input input)
-        {                      
+        {                         
             Result result = new Result();
             CodeDomProvider provider = null;
             try
@@ -27,7 +44,7 @@ namespace Testility.Engine.Concrete
             catch (ConfigurationException)
             { }
             if (provider != null)
-            {
+            {                
                 CompilerParameters compilerparameters = new CompilerParameters();
                 CompilerResults compilingResult = null;
                 compilerparameters.GenerateExecutable = false;
@@ -35,16 +52,15 @@ namespace Testility.Engine.Concrete
                 result.TemporaryFile = compilerparameters.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), input.SolutionName+ ".dll");
                 compilerparameters.TreatWarningsAsErrors = false;
 
-                for(int i =0; i<input.Code.Length; i++)
-                {
-                    input.Code[i] = "using Testility.Engine.Attribute; " + input.Code[i];
-                    
-                }
                 compilerparameters.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
-
-                foreach (String references in input.ReferencedAssemblies)
+                foreach (string s in GetAssemblies(Assembly.GetExecutingAssembly()))
                 {
-                    compilerparameters.ReferencedAssemblies.Add(references);
+                    compilerparameters.ReferencedAssemblies.Add(s);
+                }
+
+                foreach (string reference in input.ReferencedAssemblies)
+                {
+                    compilerparameters.ReferencedAssemblies.Add(reference);
                 }
 
                 compilingResult = provider.CompileAssemblyFromSource(compilerparameters, input.Code);
@@ -76,11 +92,11 @@ namespace Testility.Engine.Concrete
                             };
                             testedclass.Methods.Add(testedmethod);
                             var tests = System.Attribute.GetCustomAttributes(m)
-                                .Where(a => typeof(TestAttribute).IsInstanceOfType(a))
-                                .Select(a => a as TestAttribute);
-                            foreach (TestAttribute a in tests)
+                                .Where(a => typeof(Attribute.TestAttribute).IsInstanceOfType(a))
+                                .Select(a => a as Attribute.TestAttribute);
+                            foreach (Attribute.TestAttribute a in tests)
                             {
-                                testedmethod.Tests.Add(new Test()
+                                testedmethod.Tests.Add(new Model.Test()
                                 {
                                     Name = a.Name,
                                     Description = a.Description,
@@ -115,5 +131,41 @@ namespace Testility.Engine.Concrete
             }
             return result;
         }
+
+        [SuppressMessage("Microsoft.Performance",
+                     "CA1822:MarkMembersAsStatic")]
+        public void LoadAssembly(String assemblyPath)
+        {
+            try
+            {
+                Assembly.LoadFile(assemblyPath);
+            }
+            catch (FileNotFoundException)
+            {
+            }
+        }
+
+        [TestFixture]
+        private class FakeClass
+        {
+            [TestFixtureSetUp]
+            private void Init()
+            {
+                {
+                }
+            }
+
+            [TestFixtureTearDown]
+            private void Dispose()
+            {
+                {
+                }
+            }
+
+            [NUnit.Framework.Test]
+            private void Test()
+            { }
+        }
+
     }
 }

@@ -30,6 +30,7 @@ namespace Testility.WebUI.Infrastructure.Ninject
             Bind<IUnitTestRepository>().To<UnitTestRepository>();
             Bind<ICompiler>().To<CompilerProxy>();
             Bind<ICompilerService>().To<CompilerService>();
+            Bind<ITestGenarator>().To<TestGenarator>();
             Bind<ILogger>().To<TraceLogger>();
             Bind<IIdentityServices>().To<IdentityServices>();
 

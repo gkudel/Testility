@@ -12,5 +12,6 @@ namespace Testility.Engine.Abstract
     public interface ICompiler
     {
         Result Compile(Input input);
+        void LoadAssembly(String assemblyPath);
     }
 }

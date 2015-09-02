@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -18,18 +20,33 @@ namespace Testility.Egine.Concrete
         System.AppDomain unitDomain;
         private void Init()
         {
-            AppDomainSetup setup = new AppDomainSetup();
-            setup.ApplicationBase = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            Evidence evidence = System.AppDomain.CurrentDomain.Evidence;
-
-            unitDomain = System.AppDomain.CreateDomain("uTest", evidence, setup);
-            
-            Assembly asm = unitDomain.Load(File.ReadAllBytes(Assembly.GetExecutingAssembly().Location));
+            Evidence evidence = new Evidence(AppDomain.CurrentDomain.Evidence);
+            AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
+            unitDomain = AppDomain.CreateDomain("DiscoveryRegion", evidence, setup);
             Type type = typeof(Compiler);
-            compiler = (Compiler)unitDomain.CreateInstanceAndUnwrap(
-                    asm.GetName().Name,
-                    type.FullName);
+            compiler = (Compiler)unitDomain.CreateInstanceFrom(
+                    type.Assembly.Location,
+                    type.FullName).Unwrap();
+            foreach (string s in GetAssemblies(type.Assembly))
+            {
+                compiler.LoadAssembly(s);
+            }
         }
+
+        private IEnumerable<string> GetAssemblies(Assembly ass)
+        {
+            AssemblyName[] assNames = ass.GetReferencedAssemblies();
+            foreach (AssemblyName assName in assNames)
+            {
+                Assembly referedAss = Assembly.Load(assName);
+                if (!referedAss.GlobalAssemblyCache)
+                {
+                    yield return referedAss.Location;
+                    GetAssemblies(referedAss);
+                }
+            }
+        }
+
         private void Finish(Result r)
         {
             if (unitDomain != null) System.AppDomain.Unload(unitDomain);
@@ -58,6 +75,11 @@ namespace Testility.Egine.Concrete
         public void Dispose()
         {
             Finish(null);
+        }
+
+        public void LoadAssembly(string assemblyPath)
+        {
+            throw new NotImplementedException();
         }
     }
 }

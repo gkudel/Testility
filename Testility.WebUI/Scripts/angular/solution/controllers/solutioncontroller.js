@@ -35,12 +35,13 @@
 
         $scope.refresh = function () {
             $scope.clearMessages();
+            
             service.get($scope.Solution).then(function (solution) {
                 if (solution) {
-                    $scope.Solution = solution;                    
+                    $scope.Solution = solution;
                 } else {
                     $scope.Solution = service.empty();
-                }                
+                }
             }, function (error) {
                 $scope.Solution = service.empty();
                 dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
@@ -92,7 +93,16 @@
         };
 
         $scope.changeSolution = function () {
-            service.changeSolution();
+            service.changeSolution(function (solution) {
+                if (solution) {
+                    $scope.Solution = solution;
+                } else {
+                    $scope.Solution = service.empty();
+                }
+            }, function (error) {
+                $scope.Solution = service.empty();
+                dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
+            });
         };
 
         $scope.refresh();        

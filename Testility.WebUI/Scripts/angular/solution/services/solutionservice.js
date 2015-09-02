@@ -81,7 +81,7 @@
     .factory('unitTestService', ['$http', '$location', 'qSpiner', 'uiBrowserDialog', 'ui.config', 'ctr', function ($http, $location, qSpiner, uiBrowserDialog, uiConfig, ctr) {
         var service = function () {
             this.init = function (id) {
-                var _changeSolution = function () {
+                var _changeSolution = function (instance) {                    
                     var promise = new Promise(function (resolve, reject) {
                         var options = {};
                         options = uiConfig.browsersConfig['Solutions'] || {};
@@ -90,15 +90,23 @@
                                 var d = qSpiner.defer('Initializing');
                                 $http.post('/api/UnitTest/Create/' + solution.items)
                                     .success(function (response) {
+                                        var ret = ctr(response);
+                                        instance.SolutionId = ret.Id;
+                                        instance.Loaded = true;
                                         d.resolve();
-                                        resolve(ctr(response));
+                                        resolve(ret);
                                     })
                                     .error(function (data, status) {
                                         d.reject();
+                                        instance.Loaded = false;
                                         reject(data);
                                     });
                             } else {
-                                return [];
+                                if (instance.SolutionId === undefined) {
+                                    return [];
+                                } else {
+                                    return [instance.SolutionId];
+                                }
                             }                            
                         }
                         var cancelled = function () {
@@ -114,9 +122,9 @@
                     SolutionId: undefined,
                     Loaded: false,
                     get: function (solution) {
+                        var instance = this;
                         if (this.Id) {
-                            var d = qSpiner.defer('Loading');
-                            var instance = this;
+                            var d = qSpiner.defer('Loading');                            
                             $http.get('/api/UnitTest/' + this.Id)
                                 .success(function (response) {
                                     instance.Loaded = true;
@@ -128,20 +136,24 @@
                                 });
                             return d.promise;
                         } else {
-                            if (!this.SolutionId) {
-                                return _changeSolution();
+                            if (this.SolutionId === undefined) {
+                                return _changeSolution(instance);
                             } else {
-                                var d = qSpiner.defer();
-                                Loaded = true;
+                                var d = qSpiner.defer('Loading');
+                                instance.Loaded = true;
                                 d.resolve(solution);
                                 return d.promise;
                             }
                         }
                     },
-                    changeSolution: function () {
-                        return _changeSolution().then(function (response) {
-                                }, function (reject) { });
-                    }
+                    changeSolution: function (resolve, reject) {
+                        var instance = this;
+                        return _changeSolution(instance).then(function (response) {
+                                    resolve(response);
+                                }, function (error) {
+                                    reject(error);
+                                });
+                    },
                     /*submit: function (solution) {
                         var d = qSpiner.defer('Saving');
                         $http.post('/api/Solution/', JSON.stringify(solution))
@@ -156,19 +168,10 @@
                                 d.reject(data);
                             });
                         return d.promise;
-                    },
-                    empty: function () {
-                        return ctr({
-                            Id: 0,
-                            Name: '',
-                            Language: 0,
-                            References: [],
-                            Items: []
-                        });
-                    },
+                    },*/
                     compile: function (Solution) {
                         var d = qSpiner.defer('Compiling');
-                        $http.post('/api/Solution/Compile/', JSON.stringify(Solution))
+                        $http.post('/api/UnitTest/Compile/', JSON.stringify(Solution))
                             .success(function (response) {
                                 d.resolve(response);
                             })
@@ -176,7 +179,7 @@
                                 d.reject(data);
                             });
                         return d.promise;
-                    }*/
+                    }
                 };
             };
         };

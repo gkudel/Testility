@@ -23,7 +23,7 @@ namespace Testility.WebUI.Infrastructure.Ninject
         }
 
         public static object GetService(Type serviceType)
-        {
+        {            
             return DependencyResolver.Current.GetService(serviceType);
         }
     }
