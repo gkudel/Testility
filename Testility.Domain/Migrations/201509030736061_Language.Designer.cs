@@ -7,13 +7,13 @@ namespace Testility.Domain.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Init : IMigrationMetadata
+    public sealed partial class Language : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Init));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Language));
         
         string IMigrationMetadata.Id
         {
-            get { return "201508191223177_Init"; }
+            get { return "201509030736061_Language"; }
         }
         
         string IMigrationMetadata.Source

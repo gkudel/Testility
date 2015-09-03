@@ -69,13 +69,13 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         [TestMethod()]
         public void Cannot_Get_Valid_NotFound()
         {
-            SolutionApi singleSolution = new SolutionApi() { Id = 1 };
+            SetupSolution singleSolution = new SetupSolution() { Id = 1 };
             MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
             HttpResponseMessage message = solutionController.Get(1);
             Assert.AreNotEqual(null, message);
             Assert.AreEqual(HttpStatusCode.OK, message.StatusCode);
             MockSetupRepository.Mock.Verify(m => m.GetSolution(1), Times.Once);
-            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<SolutionApi>(), It.IsAny<int[]>()), Times.Never);
+            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<SetupSolution>(), It.IsAny<int[]>()), Times.Never);
         }
         #endregion Get
 
@@ -88,7 +88,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
 
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
             MockSetupRepository.Mock.Verify(m => m.GetSolution(11), Times.Once);
-            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<SolutionApi>(), It.IsAny<int[]>()), Times.Never);
+            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<SetupSolution>(), It.IsAny<int[]>()), Times.Never);
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
             var result = solutionController.Post(null) as HttpResponseMessage;
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
             MockSetupRepository.Mock.Verify(m => m.GetSolution(11), Times.Never);
-            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<SolutionApi>(), It.IsAny<int[]>()), Times.Never);        
+            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<SetupSolution>(), It.IsAny<int[]>()), Times.Never);        
         }
 
         [TestMethod]
@@ -108,36 +108,36 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
             var actionResult = solutionController.Post(solution) as HttpResponseMessage;
             Assert.AreEqual(HttpStatusCode.BadRequest, actionResult.StatusCode);
             MockSetupRepository.Mock.Verify(m => m.GetSolution(11), Times.Never);
-            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<SolutionApi>(), It.IsAny<int[]>()), Times.Never);
+            MockSetupRepository.Mock.Verify(m => m.Save(It.IsAny<SetupSolution>(), It.IsAny<int[]>()), Times.Never);
         }
 
         [TestMethod]
         public void Can_EditSolution_RedirectToAction()
         {
-            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<SolutionApi>(), It.IsAny<int[]>()));
-            CompilerMock.Setup(x => x.Compile(It.IsAny<SolutionApi>(), It.IsAny<int[]>())).Returns(new List<Error>());
-            MockSetupRepository.Mock.Setup(x => x.GetSolution(1)).Returns(new SolutionApi());
+            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<SetupSolution>(), It.IsAny<int[]>()));
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>());
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(1)).Returns(new SetupSolution());
             SolutionViewModel solution = new SolutionViewModel() { Id = 1, Name = "ok" };
 
             var actionResult = solutionController.Post(solution) as HttpResponseMessage;
 
             MockSetupRepository.Mock.Verify(m => m.GetSolution(1), Times.Once);
-            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<SolutionApi>(), It.IsAny<int[]>()), Times.Once);
+            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<SetupSolution>(), It.IsAny<int[]>()), Times.Once);
             Assert.AreEqual(HttpStatusCode.OK, actionResult.StatusCode);
         }
 
         [TestMethod]
         public void Can_EditSolution_CompileError()
         {
-            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<SolutionApi>(), It.IsAny<int[]>()));
-            MockSetupRepository.Mock.Setup(x => x.GetSolution(1)).Returns(new SolutionApi());
-            CompilerMock.Setup(x => x.Compile(It.IsAny<SolutionApi>(), It.IsAny<int[]>())).Returns(new List<Error>() { new Error()});
+            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<SetupSolution>(), It.IsAny<int[]>()));
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(1)).Returns(new SetupSolution());
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>() { new Error()});
             SolutionViewModel solution = new SolutionViewModel() { Id = 1, Name = "ok" };
 
             var actionResult = solutionController.Post(solution) as HttpResponseMessage;
 
             MockSetupRepository.Mock.Verify(m => m.GetSolution(1), Times.Once);
-            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<SolutionApi>(), It.IsAny<int[]>()), Times.Once);
+            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<SetupSolution>(), It.IsAny<int[]>()), Times.Once);
             Assert.AreEqual(HttpStatusCode.OK, actionResult.StatusCode); ;
         }
 
@@ -146,15 +146,15 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         [ExpectedException(typeof(Exception))]
         public void Cannot_EditSolution_Exception()
         {
-            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<SolutionApi>(), It.IsAny<int[]>())).Throws(new Exception());
-            CompilerMock.Setup(x => x.Compile(It.IsAny<SolutionApi>(), It.IsAny<int[]>())).Returns(new List<Error>());
-            MockSetupRepository.Mock.Setup(x => x.GetSolution(1)).Returns(new SolutionApi());
+            MockSetupRepository.Mock.Setup(x => x.Save(It.IsAny<SetupSolution>(), It.IsAny<int[]>())).Throws(new Exception());
+            CompilerMock.Setup(x => x.Compile(It.IsAny<Solution>(), It.IsAny<int[]>())).Returns(new List<Error>());
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(1)).Returns(new SetupSolution());
             SolutionViewModel solution = new SolutionViewModel() { Id = 1, Name = "ok" };
 
             var actionResult = solutionController.Post(solution) as HttpResponseMessage;
 
             MockSetupRepository.Mock.Verify(m => m.GetSolution(1), Times.Once);
-            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<SolutionApi>(), It.IsAny<int[]>()), Times.Once);
+            MockSetupRepository.Mock.Verify(x => x.Save(It.IsAny<SetupSolution>(), It.IsAny<int[]>()), Times.Once);
         }
         #endregion POST
     }
@@ -240,7 +240,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [TestMethod]
         public void Cannot_EditNonExistsSolution_NotFound()
         {
-            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((SolutionApi)null);
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((SetupSolution)null);
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
             var result = solutionController.Edit(It.IsAny<int>()) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
@@ -249,7 +249,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [TestMethod]
         public void Can_Edit_Solution_Redirect()
         {
-            SolutionApi singleSolution = new SolutionApi() { Id = 1 };
+            SetupSolution singleSolution = new SetupSolution() { Id = 1 };
             MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(singleSolution);
             var result = solutionController.Edit(1) as ViewResult;
             Assert.AreEqual("Solution", result.ViewName);
@@ -271,7 +271,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Cannot_Delete_NonExists_Solutions()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((SolutionApi)null);
+            MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((SetupSolution)null);
 
             var result = solutionController.Delete(10) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
@@ -281,7 +281,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Can_Delete_Solution_RedirectToIndex()
         {
 
-            SolutionApi solution = new SolutionApi() { Id = 1, Name = "ok" };
+            SetupSolution solution = new SetupSolution() { Id = 1, Name = "ok" };
             MockSetupRepository.Mock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns(solution);
 
             ViewResult result = solutionController.Delete(1) as ViewResult;

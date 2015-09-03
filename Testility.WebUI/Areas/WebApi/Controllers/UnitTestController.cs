@@ -32,7 +32,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         [Route("api/UnitTest/Create/{solutionId}")]
         public HttpResponseMessage Create(int solutionId)
         {
-            SolutionApi s = setupRepository.GetSolution(solutionId);
+            SetupSolution s = setupRepository.GetSolution(solutionId);
             if (s == null)
             {
                 var message = string.Format("Solution with id = {0} not found", solutionId);
@@ -57,7 +57,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         public HttpResponseMessage Compile(SolutionViewModel solution)
         {
             if (solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
-            IList<Error> errors = compilerService.Compile(Mapper.Map<SolutionApi>(solution), solution.References);
+            IList<Error> errors = compilerService.Compile(Mapper.Map<UnitTestSolution>(solution), solution.References);
             if (errors.Count == 0)
             {
                 return Request.CreateResponse(HttpStatusCode.OK);

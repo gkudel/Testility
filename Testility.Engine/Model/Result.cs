@@ -15,7 +15,6 @@ namespace Testility.Engine.Model
             Errors = new List<Error>();
         }
         public string TemporaryFile { get; set; }
-        public byte[] RawData { get; set; }
         public ICollection<Class> Classes { get; set; }
         public IList<Error> Errors { get; set; }
     }

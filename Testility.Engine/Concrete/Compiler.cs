@@ -44,12 +44,15 @@ namespace Testility.Engine.Concrete
                   Assembly.ReflectionOnlyLoad(a.FullName).Location).ToList();
                 assemblyLocations.Add(Assembly.GetExecutingAssembly().Location);
 
+                foreach (string reference in input.ReferencedAssemblies)
+                {                    
+                    if (assemblies.FirstOrDefault(a => a.Name == Path.GetFileNameWithoutExtension(reference)) == null)
+                    {
+                        compilerparameters.ReferencedAssemblies.Add(reference);
+                    }
+                }
                 compilerparameters.ReferencedAssemblies.AddRange(assemblyLocations.ToArray());
 
-                foreach (string reference in input.ReferencedAssemblies)
-                {
-                    compilerparameters.ReferencedAssemblies.Add(reference);
-                }
 
                 compilingResult = provider.CompileAssemblyFromSource(compilerparameters, input.Code);
 

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Testility.Domain.Entities
 {
-    public class UnitTestSolution
+    public class UnitTestSolution : Solution
     {
-        public int Id { get; set; }
-        public int SolutionId { get; set; }
-        public virtual SolutionApi Solution { get; set; }
+        public int SetupSolutionId { get; set; }
+        public virtual SetupSolution SetupSolution { get; set;  }
     }
 }

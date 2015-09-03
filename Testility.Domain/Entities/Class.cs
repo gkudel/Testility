@@ -16,7 +16,7 @@ namespace Testility.Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public int SolutionId { get; set; }
-        public virtual SolutionApi Solution { get; set; }
+        public virtual Solution Solution { get; set; }
         public virtual ICollection<Method> Methods { get; set; }
     }
 }

@@ -104,6 +104,7 @@
     <Compile Include="Concrete\EFSetupRepository.cs" />
     <Compile Include="Concrete\UnitTestRepository.cs" />
     <Compile Include="Entities\Reference.cs" />
+    <Compile Include="Entities\SetupSolution.cs" />
     <Compile Include="Entities\Solution.cs" />
     <Compile Include="Entities\Item.cs" />
     <Compile Include="Entities\Test.cs" />
@@ -114,13 +115,13 @@
     <Compile Include="Infrastructure\EFDbContextInterceptorError.cs" />
     <Compile Include="Infrastructure\EFDbContextInterceptorLogging.cs" />
     <Compile Include="Infrastructure\Mapping\DomainModelMapping.cs" />
-    <Compile Include="Migrations\201508191223177_Init.cs" />
-    <Compile Include="Migrations\201508191223177_Init.Designer.cs">
-      <DependentUpon>201508191223177_Init.cs</DependentUpon>
+    <Compile Include="Migrations\201509030615394_Init.cs" />
+    <Compile Include="Migrations\201509030615394_Init.Designer.cs">
+      <DependentUpon>201509030615394_Init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201508240653438_Init1.cs" />
-    <Compile Include="Migrations\201508240653438_Init1.Designer.cs">
-      <DependentUpon>201508240653438_Init1.cs</DependentUpon>
+    <Compile Include="Migrations\201509030736061_Language.cs" />
+    <Compile Include="Migrations\201509030736061_Language.Designer.cs">
+      <DependentUpon>201509030736061_Language.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -136,15 +137,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508191223177_Init.resx">
-      <DependentUpon>201508191223177_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508240653438_Init1.resx">
-      <DependentUpon>201508240653438_Init1.cs</DependentUpon>
-    </EmbeddedResource>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <EmbeddedResource Include="Migrations\201509030615394_Init.resx">
+      <DependentUpon>201509030615394_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509030736061_Language.resx">
+      <DependentUpon>201509030736061_Language.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

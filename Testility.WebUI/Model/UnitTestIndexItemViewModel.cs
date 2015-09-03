@@ -11,6 +11,8 @@ namespace Testility.WebUI.Model
     {
         public int Id { get; set; }
         [Display(Name ="Solution Name")]
-        public String SolutionName { get; set; }
+        public string Name { get; set; }
+        [Display(Name = "Setup Solution Name")]
+        public string SetupName { get; set; }
     }
 }

@@ -22,15 +22,9 @@ namespace Testility.WebUI.Services.Concrete
             this.setupRepository = setupRepository;
         }
 
-        public IList<Error> Compile(SolutionApi solution, int[] referencesIds)
+        public IList<Error> Compile(Solution solution, int[] referencesIds)
         {
-            Input input = Mapper.Map<Input>(solution);
-            input.ReferencedAssemblies = setupRepository.GetSelectedReferencesNames(referencesIds);
-            Result r = compilerRepository.Compile(input);
-            if (r.Errors.Count == 0)
-            {
-                Mapper.Map<Result, SolutionApi>(r, solution);
-            }
+            Result r = Compiler.GetInstance(compilerRepository, setupRepository).Compile<UnitTestSolution>(solution as UnitTestSolution, referencesIds);
             return r.Errors;
         }
     }

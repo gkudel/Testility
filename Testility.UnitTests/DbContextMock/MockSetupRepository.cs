@@ -37,12 +37,12 @@ namespace Testility.UnitTests.DbContextMock
 
         private void Init()
         {
-            IQueryable<SolutionApi> SolutionList = new List<SolutionApi>
+            IQueryable<SetupSolution> SolutionList = new List<SetupSolution>
             {
-                new SolutionApi() {Id = 1, Name = "ko", Language= Language.CSharp},
-                new SolutionApi() {Id = 2, Name = "ko", Language= Language.CSharp},
-                new SolutionApi() {Id = 3, Name = "ko", Language= Language.CSharp},
-                new SolutionApi() {Id = 4, Name = "ko", Language= Language.CSharp}
+                new SetupSolution() {Id = 1, Name = "ko", Language= Language.CSharp},
+                new SetupSolution() {Id = 2, Name = "ko", Language= Language.CSharp},
+                new SetupSolution() {Id = 3, Name = "ko", Language= Language.CSharp},
+                new SetupSolution() {Id = 4, Name = "ko", Language= Language.CSharp}
 
             }.AsQueryable();
 

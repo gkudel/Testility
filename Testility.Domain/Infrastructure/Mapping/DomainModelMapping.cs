@@ -21,7 +21,7 @@ namespace Testility.Domain.Infrastructure.Mapping
             Mapper.CreateMap<ICollection<Item>, ICollection<Item>>()
                 .ConvertUsing(new CustomConvwerter<Item, Item>((v, t) => v.Id == t.Id));
 
-            Mapper.CreateMap<SolutionApi, SolutionApi>()
+            Mapper.CreateMap<SetupSolution, SetupSolution>()
                 .ForMember(s => s.Classes, opt => opt.Ignore());
         }
     }

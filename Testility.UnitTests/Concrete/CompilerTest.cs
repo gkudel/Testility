@@ -81,7 +81,9 @@ namespace Testility.Engine.Concrete.Tests
             Input input = new Input()
             {
                 Code = new string[] { @" using System;
-                                        
+                              
+                    using Testility.Engine.Attribute;
+          
                     [TestedClasses(Name = ""Account"", Description = ""Account class"")]
                     public class Account
                     {
@@ -117,7 +119,9 @@ namespace Testility.Engine.Concrete.Tests
             Input input = new Input()
             {
                 Code = new string[] { @" using System;
-                                        
+                                
+                    using Testility.Engine.Attribute;        
+
                     [TestedClasses(Name = ""Account"", Description = ""Account class"")]
                     public class Account
                     {

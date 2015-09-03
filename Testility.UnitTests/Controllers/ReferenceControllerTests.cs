@@ -144,7 +144,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Cannot_Delete_NonExists_Reference()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((SolutionApi)null);
+            ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((SetupSolution)null);
 
             var result = referencesController.Delete(10) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);

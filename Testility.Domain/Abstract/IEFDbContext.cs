@@ -12,7 +12,6 @@ namespace Testility.Domain.Abstract
     public interface IEFDbContext: IDisposable
     {
         #region Setup Entities
-        DbSet<SolutionApi> Solutions { get; set; }
         DbSet<Item> Items { get; set; }
         DbSet<Class> Classes { get; set; }
         DbSet<Method> Methods { get; set; }
@@ -20,9 +19,11 @@ namespace Testility.Domain.Abstract
         DbSet<Reference> References { get; set; }
         #endregion Setup Entities
 
-        #region UnitTest Entities
+        #region Solution
+        DbSet<Solution> Solutions { get; set; }
+        DbSet<SetupSolution> SetupSolutions { get; set; }
         DbSet<UnitTestSolution> UnitTestSolutions { get; set; }
-        #endregion UnitTest Entities
+        #endregion Solution
 
         int SaveChanges();
         IEnumerable<DbEntityValidationResult> GetValidationErrors();

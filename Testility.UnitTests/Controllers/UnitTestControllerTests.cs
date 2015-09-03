@@ -24,11 +24,11 @@ namespace Testility.WebUI.Controllers.Tests
         {
             IQueryable<UnitTestSolution> SolutionList = new HashSet<UnitTestSolution>
             {
-                new UnitTestSolution() {Id = 1, SolutionId = 1, Solution = new SolutionApi(){ Id = 1, Name = "S1"} },
-                new UnitTestSolution() {Id = 2, SolutionId = 2, Solution = new SolutionApi(){ Id = 2, Name = "S2"} },
-                new UnitTestSolution() {Id = 3, SolutionId = 3, Solution = new SolutionApi(){ Id = 3, Name = "S3"} },
-                new UnitTestSolution() {Id = 4, SolutionId = 4, Solution = new SolutionApi(){ Id = 4, Name = "S4"} },
-                new UnitTestSolution() {Id = 5, SolutionId = 5, Solution = new SolutionApi(){ Id = 5, Name = "S5"} }
+                new UnitTestSolution() {Id = 1, SetupSolutionId = 1, SetupSolution = new SetupSolution(){ Id = 1, Name = "S1"} },
+                new UnitTestSolution() {Id = 2, SetupSolutionId = 2, SetupSolution = new SetupSolution(){ Id = 2, Name = "S2"} },
+                new UnitTestSolution() {Id = 3, SetupSolutionId = 3, SetupSolution = new SetupSolution(){ Id = 3, Name = "S3"} },
+                new UnitTestSolution() {Id = 4, SetupSolutionId = 4, SetupSolution = new SetupSolution(){ Id = 4, Name = "S4"} },
+                new UnitTestSolution() {Id = 5, SetupSolutionId = 5, SetupSolution = new SetupSolution(){ Id = 5, Name = "S5"} }
             }.AsQueryable();
 
             ServiceMock = new Mock<IUnitTestRepository>();
@@ -47,11 +47,11 @@ namespace Testility.WebUI.Controllers.Tests
 
             Assert.AreEqual(result.Length, 3);
             Assert.AreEqual(1, result[0].Id);
-            Assert.AreEqual("S1", result[0].SolutionName);
+            Assert.AreEqual("S1", result[0].SetupName);
             Assert.AreEqual(2, result[1].Id);
-            Assert.AreEqual("S2", result[1].SolutionName);
+            Assert.AreEqual("S2", result[1].SetupName);
             Assert.AreEqual(3, result[2].Id);
-            Assert.AreEqual("S3", result[2].SolutionName);
+            Assert.AreEqual("S3", result[2].SetupName);
         }
 
         [TestMethod()]

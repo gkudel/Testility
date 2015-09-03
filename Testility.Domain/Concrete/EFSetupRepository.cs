@@ -20,9 +20,9 @@ namespace Testility.Domain.Concrete
             this.context = context;
         }
 
-        public IQueryable<SolutionApi> GetSolutions(bool lazyloading = true)
+        public IQueryable<SetupSolution> GetSolutions(bool lazyloading = true)
         {
-            var ret = context.Solutions.AsQueryable();
+            var ret = context.SetupSolutions.AsQueryable();
             if (!lazyloading)
             {
                 ret = ret.Include(s => s.Items)
@@ -31,15 +31,15 @@ namespace Testility.Domain.Concrete
             return ret; 
         }
         
-        public SolutionApi GetSolution(int id)
+        public SetupSolution GetSolution(int id)
         {
-            var query = context.Solutions.Where(s => s.Id == id)
+            var query = context.SetupSolutions.Where(s => s.Id == id)
                 .Include(s => s.Items)
                 .Include("Classes.Methods.Tests");
             return query.FirstOrDefault();
         }
 
-        public void Save(SolutionApi solution, int[] references)
+        public void Save(SetupSolution solution, int[] references)
         {
             var referencedAssemblies = solution.References.Where(r => !references?.Contains(r.Id) ?? true).ToList();
             foreach (Reference r in referencedAssemblies)
@@ -52,7 +52,7 @@ namespace Testility.Domain.Concrete
             }
             if (solution.Id == 0)
             {
-                context.Solutions.Add(solution);
+                context.SetupSolutions.Add(solution);
             }
             else
             {           
@@ -100,10 +100,10 @@ namespace Testility.Domain.Concrete
 
         public bool DeleteSolution(int id)
         {
-            SolutionApi solution = context.Solutions.FirstOrDefault(s => s.Id == id);
+            SetupSolution solution = context.SetupSolutions.FirstOrDefault(s => s.Id == id);
             if (solution != null)
             {
-                context.Solutions.Remove(solution);
+                context.SetupSolutions.Remove(solution);
                 Commit();
                 return true;
             }

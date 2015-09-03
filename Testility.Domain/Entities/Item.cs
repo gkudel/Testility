@@ -23,6 +23,6 @@ namespace Testility.Domain.Entities
         public string Code { get; set; }
         public ItemType Type { get; set; }
         public int SolutionId { get; set; }
-        public virtual SolutionApi Solution { get; set; }        
+        public virtual Solution Solution { get; set; }        
     }
 }

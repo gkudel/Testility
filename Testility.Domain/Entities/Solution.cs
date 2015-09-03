@@ -14,7 +14,7 @@ namespace Testility.Domain.Entities
         CSharp, VisualBasic
     }
 
-    public class SolutionApi
+    public abstract class Solution
     {
         private ICollection<Reference> references;
 
@@ -24,10 +24,8 @@ namespace Testility.Domain.Entities
         [Index("IX_Solution_Name", IsUnique = true)]
         public string Name { get; set; }
         public Language Language { get; set; }
-        public byte[] CompiledDll { get; set; }
 
         public virtual ICollection<Item> Items { get; set; }
-        public virtual ICollection<Class> Classes { get; set; }
         public virtual ICollection<Reference> References
         {
             get { return references ?? (references = new HashSet<Reference>()); }
