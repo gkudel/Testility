@@ -79,7 +79,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Solution solution = setupRepository.GetSolution(id.Value);
+            SetupSolution solution = setupRepository.GetSolution(id.Value);
             if (solution == null)
             {
                return HttpNotFound();

@@ -1,5 +1,5 @@
 ﻿(function (angular) {
-    var myApp = angular.module("Testility", ['ui', 'ui.browser', 'ui.messaging', 'ui.dialogbox', 'ui.spiner', 'validation']);
+    var myApp = angular.module("Testility", ['ui', 'ui.browser', 'ui.messaging', 'ui.dialogbox', 'ui.spiner', 'validation', 'restangular']);
     myApp.value('ui.config', {
         codemirror: {
             lineNumbers: true,
@@ -26,7 +26,7 @@
         }
     });
 
-    myApp.config(['$httpProvider', function($httpProvider){
+    myApp.config(['$httpProvider', 'RestangularProvider', function ($httpProvider, RestangularProvider) {
         $httpProvider.interceptors.push(function ($q) {
             return {
                 'request': function (config) {
@@ -43,6 +43,7 @@
                 }
             };
         });
+        RestangularProvider.setBaseUrl('/api')
     }]);
 
     if (!Array.prototype.findIndex) {

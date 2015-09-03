@@ -6,7 +6,8 @@
             transclude: true,
             scope: {},
             bindToController: {
-                itemsSelected: '&',
+                getSelected: '&',
+                setSelected: '&',
                 modelSize: '='
             },
             link: function($scope, $element) {
@@ -22,7 +23,7 @@
     }])
     .factory('uiBrowserDialog', ['$modal', '$q', '$http', 'dialogbox', function ($modal, $q, $http, dialogbox) {
         var service = {
-            show: function (options, modelSize, selectedItem, cancelled) {
+            show: function (options, modelSize, getSelected, setSelected, cancelled) {
                 var opt = {
                     templateUrl: '/Views/Shared/_Browser.html',
                     DataSource: function() { return []; },
@@ -43,7 +44,7 @@
                     size: modelSize,
                     resolve: {
                         selected: function () {
-                            return selectedItem().slice();
+                            return getSelected().slice();
                         },
                         config: function () {
                             return options;
@@ -66,7 +67,7 @@
                     }
                 });
                 modalInstance.result.then(function (items) {
-                    selectedItem({ items: items });
+                    setSelected({ items: items });
                 }, function (error, status) {
                     if (cancelled) cancelled();
                 });
@@ -79,10 +80,11 @@
         var options = {};
         if ($attrs.config) options = uiConfig.browsersConfig[$attrs.config] || {};
         options = angular.extend({}, options, $attrs.uiBrowser);
-        var selectedItem = this.itemsSelected;
+        var getSelectedItem = this.getSelected;
+        var setSelectedItem = this.setSelected;
         var modelSize = this.modelSize;
         $scope.open = function () {
-            uiBrowserDialog.show(options, modelSize, selectedItem);
+            uiBrowserDialog.show(options, modelSize, getSelectedItem, setSelectedItem);
         }        
     }])
     .controller('BrowserInstnace', ['$scope', '$modalInstance', 'items', 'config', 'selected', function ($scope, $modalInstance, items, config, selected) {

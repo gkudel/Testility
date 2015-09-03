@@ -37,8 +37,8 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
             {
                 var message = string.Format("Solution with id = {0} not found", solutionId);
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, message);
-            }        
-            SolutionViewModel ret = Mapper.Map<SolutionViewModel>(s);            
+            }
+            UnitTestViewModel ret = Mapper.Map<UnitTestViewModel>(s);            
             List<ItemViewModel> items = new List<ItemViewModel>();
             foreach (Domain.Entities.Class c in s.Classes)
             {
@@ -47,17 +47,22 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
                 items.Add(item);
             }
             ret.Items = items.ToArray();
-            return Request.CreateResponse<SolutionViewModel>(HttpStatusCode.OK, ret);
+            return Request.CreateResponse<UnitTestViewModel>(HttpStatusCode.OK, ret);
         }
 
 
         [ArgumentNullExceptionFilter]
         [HttpPost]
         [Route("api/UnitTest/Compile")]
-        public HttpResponseMessage Compile(SolutionViewModel solution)
+        public HttpResponseMessage Compile(UnitTestViewModel solution)
         {
             if (solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
-            IList<Error> errors = compilerService.Compile(Mapper.Map<UnitTestSolution>(solution), solution.References);
+            UnitTestSolution u = Mapper.Map<UnitTestSolution>(solution);
+            if (u.SetupSolutionId > 0)
+            {
+                u.SetupSolution = setupRepository.GetSolution(u.SetupSolutionId);
+            }
+            IList<Error> errors = compilerService.Compile(u, solution.References);
             if (errors.Count == 0)
             {
                 return Request.CreateResponse(HttpStatusCode.OK);

@@ -231,6 +231,7 @@
     <Compile Include="Model\ReferenceViewModel.cs" />
     <Compile Include="Model\SolutionViewModel.cs" />
     <Compile Include="Model\UnitTestIndexItemViewModel.cs" />
+    <Compile Include="Model\UnitTestViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\ICompilerService.cs" />
     <Compile Include="Services\Abstract\IIdentityServices.cs" />
@@ -319,7 +320,9 @@
     <Content Include="Scripts\angular\main.js" />
     <Content Include="Scripts\angular\messaging\messaging.js" />
     <Content Include="Scripts\angular\solution\controllers\solutioncontroller.js" />
+    <Content Include="Scripts\angular\solution\services\setupservice.js" />
     <Content Include="Scripts\angular\solution\services\solutionservice.js" />
+    <Content Include="Scripts\angular\solution\services\unittestservice.js" />
     <Content Include="Scripts\angular\unit-test\unit-test.js" />
     <Content Include="Scripts\angular\validation\validation.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1195,9 +1198,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\angular\spiner\spiner.js" />
     <Content Include="Scripts\angular\dialogbox\dialogbox.js" />
+    <Content Include="Scripts\angular\framework\lodash.js" />
+    <Content Include="Scripts\angular\framework\lodash.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\angular\framework\restangular.js" />
+    <Content Include="Scripts\angular\framework\restangular.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\spin.min.js" />

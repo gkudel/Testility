@@ -44,13 +44,17 @@ namespace Testility.WebUI
                     "~/Scripts/angular/dialogbox/dialogbox.js",
                     "~/Scripts/iosOverlay.js",
                     "~/Scripts/spin.min.js",
-                    "~/Scripts/angular/spiner/spiner.js"));
-            
+                    "~/Scripts/angular/spiner/spiner.js",
+                    "~/Scripts/angular/framework/restangular.min.js",
+                    "~/Scripts/angular/framework/lodash.min.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
                 "~/Scripts/codemirror-3.0/codemirror.js",
                 "~/Scripts/codemirror-3.0/util/matchbrackets.js",
                 "~/Scripts/codemirror-3.0/mode/clike.js",
-                "~/Scripts/angular/solution/services/solutionservice.js", 
+                "~/Scripts/angular/solution/services/solutionservice.js",
+                "~/Scripts/angular/solution/services/setupservice.js",
+                "~/Scripts/angular/solution/services/unittestservice.js",
                 "~/Scripts/angular/solution/controllers/solutioncontroller.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/unit-test").Include(
