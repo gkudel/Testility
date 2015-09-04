@@ -1,5 +1,5 @@
 ﻿angular.module('Testility')
-    .factory('unitTestService', ['$http', '$location', 'qSpiner', 'uiBrowserDialog', 'ui.config', 'ctr', function ($http, $location, qSpiner, uiBrowserDialog, uiConfig, ctr) {
+    .factory('unitTestService', ['Restangular', '$location', 'qSpiner', 'uiBrowserDialog', 'ui.config', 'ctr', function (Restangular, $location, qSpiner, uiBrowserDialog, uiConfig, ctr) {
         var service = function () {
             var _changeSolution = function (instance) {
                 var promise = new Promise(function (resolve, reject) {
@@ -10,18 +10,20 @@
                         if (solutionId) {
                             var d = qSpiner.defer('Initializing');
                             if (instance.Solution.SetupId !== solutionId.items) {
-                                $http.post('/api/UnitTest/Create/' + solutionId.items)
-                                    .success(function (response) {
+                                Restangular.one('UnitTest/Init', solutionId.items).get()
+                                    .then(function (solution) {
                                         instance.Loaded = true;
-                                        angular.copy(response, instance.Solution);
+                                        angular.extend(instance.Solution, solution.plain());
                                         d.resolve();
-                                        resolve(instance.Solution);
-                                    })
-                                    .error(function (data, status) {
+                                        resolve();
+                                    }, function (data, status) {
+                                        instance.Solution = instance.empty();
                                         instance.Loaded = false;
                                         d.reject();
-                                        reject(data);
-                                    });
+                                        if (data.hasOwnProperty('data'))
+                                            data = data.data;
+                                        d.reject(data);
+                                    });                                
                             } else {
                                 d.resolve();
                                 resolve("Unchanged");
@@ -43,10 +45,11 @@
                 });
                 return promise;
             };
+            var solutuions = Restangular.all("UnitTest");
             this.getInstance = function () {
                 return {
-                    Entry: 'UnitTest',
-                    Loaded: false,
+                    Entry: 'UnitTest',                    
+                    WebApi: 'UnitTest',
                     init: function() {
                         Object.defineProperty(this.Solution, 'SetupId', { value: 0, writable: true });
                     },
@@ -54,7 +57,7 @@
                         var instance = this;
                         if (this.Solution.Id) {
                             var d = qSpiner.defer('Loading');                            
-                            $http.get('/api/UnitTest/' + this.Solution.Id)
+                            /*$http.get('/api/UnitTest/' + this.Solution.Id)
                                 .success(function (response) {
                                     instance.Loaded = true;
                                     angular.copy(response, instance.Solution);
@@ -63,7 +66,7 @@
                                 .error(function (data, status) {
                                     instance.Loaded = false;
                                     d.reject(data);
-                                });
+                                });*/
                             return d.promise;
                         } else {
                             if (!this.Solution.SetupId) {
@@ -99,17 +102,6 @@
                             });
                         return d.promise;
                     },*/
-                    compile: function () {
-                        var d = qSpiner.defer('Compiling');
-                        $http.post('/api/UnitTest/Compile/', JSON.stringify(this.Solution))
-                            .success(function (response) {
-                                d.resolve(response);
-                            })
-                            .error(function (data, status) {
-                                d.reject(data);
-                            });
-                        return d.promise;
-                    }
                 };
             };
         };

@@ -25,9 +25,8 @@ namespace Testility.WebUI.Infrastructure.Ninject
     {
         public override void Load()
         {
-            Bind<IEFDbContext>().To<EFDbContext>();
-            Bind<ISetupRepository>().To<EFSetupRepository>();
-            Bind<IUnitTestRepository>().To<UnitTestRepository>();
+            Bind<IDbContext>().To<DbContext>();
+            Bind<IDbRepository>().To<DbRepository>();
             Bind<ICompiler>().To<CompilerProxy>();
             Bind<ICompilerService>().To<SetupCompilerService>().When(c => c.Target.Name.StartsWith("setup"));
             Bind<ICompilerService>().To<UnitTestCompilerService>().When(c => c.Target.Name.StartsWith("unitTest"));
@@ -35,8 +34,8 @@ namespace Testility.WebUI.Infrastructure.Ninject
             Bind<ILogger>().To<TraceLogger>();
             Bind<IIdentityServices>().To<IdentityServices>();
 
-            Bind<EFDbContext>().ToSelf();
-            Bind(typeof(IUserStore<>)).To(typeof(UserStore<>)).WithConstructorArgument("context", Kernel.Get<EFDbContext>());
+            Bind<DbContext>().ToSelf();
+            Bind(typeof(IUserStore<>)).To(typeof(UserStore<>)).WithConstructorArgument("context", Kernel.Get<DbContext>());
             Bind(typeof(UserManager<>)).To(typeof(UserManager<>)).WithConstructorArgument("store", Kernel.Get<IUserStore<IdentityUser>>());
 
             Bind<IAuthenticationManager>().ToMethod(c => HttpContext.Current.GetOwinContext().Authentication);

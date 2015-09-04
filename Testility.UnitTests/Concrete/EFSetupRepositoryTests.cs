@@ -14,9 +14,9 @@ namespace Testility.Domain.Concrete.Tests
     public class EFSetupRepositoryTests
     {
         #region Members
-        public Mock<IEFDbContext> MockContext { get; set; }
+        public Mock<IDbContext> MockContext { get; set; }
 
-        public EFSetupRepository Service { get; set; }        
+        public DbRepository Service { get; set; }        
         #endregion
 
 
@@ -56,7 +56,7 @@ namespace Testility.Domain.Concrete.Tests
                 new Test() {Id = 2, Name = "12ok"}
             };
 
-            MockContext = EntityFrameworkMockHelper.GetMockContext<IEFDbContext>();
+            MockContext = EntityFrameworkMockHelper.GetMockContext<IDbContext>();
             MockContext.Object.SetupSolutions.AddRange(SolutionsData);
             MockContext.Object.References.AddRange(References);
             MockContext.Object.Items.AddRange(ItemsData);
@@ -64,34 +64,34 @@ namespace Testility.Domain.Concrete.Tests
             MockContext.Object.Methods.AddRange(MethodsData);
             MockContext.Object.Tests.AddRange(TestsData);
 
-            Service = new EFSetupRepository(MockContext.Object);
+            Service = new DbRepository(MockContext.Object);
         }
         #endregion
 
         [TestMethod]
         public void Can_Get_All_Solutions()
         {
-            Assert.AreEqual(2, Service.GetSolutions().Count());
+            Assert.AreEqual(2, Service.GetSetupSolutions().Count());
         }
 
         [TestMethod]
         public void Can_Get_Single_Solution()
         {
-            Assert.AreEqual("1", Service.GetSolution(1).Name);
+            Assert.AreEqual("1", Service.GetSetupSolution(1).Name);
         }
 
         [TestMethod]
         [ExpectedException(typeof(System.NullReferenceException))]
         public void Cannot_Get_Single_Solution()
         {
-            Assert.AreEqual(null, Service.GetSolution(10).Name);
+            Assert.AreEqual(null, Service.GetSetupSolution(10).Name);
         }
 
         [TestMethod]
         public void Can_Add_Solution()
         {
             SetupSolution solution = new SetupSolution() { Name = "ok" };
-            Service.Save(solution, null);            
+            Service.SaveSetupSolution(solution, null);            
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
             Assert.AreEqual(MockContext.Object.SetupSolutions.Count(), 3);
         }
@@ -100,7 +100,7 @@ namespace Testility.Domain.Concrete.Tests
         public void Can_Add_Solution_WhitReferences()
         {
             SetupSolution solution = new SetupSolution() { Name = "ok" };
-            Service.Save(solution, new int[] { 1 } );
+            Service.SaveSetupSolution(solution, new int[] { 1 } );
             Assert.AreEqual(MockContext.Object.SetupSolutions.Count(), 3);
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
             Assert.AreEqual(solution.References.Count, 1);
@@ -110,18 +110,18 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Edit_Solution()
         {
-            SetupSolution solution = Service.GetSolution(1);
-            Service.Save(solution, null);
+            SetupSolution solution = Service.GetSetupSolution(1);
+            Service.SaveSetupSolution(solution, null);
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
         }
 
         [TestMethod]
         public void Can_Edit_Solution_RemoveClass()
         {
-            SetupSolution solution = Service.GetSolution(1);
+            SetupSolution solution = Service.GetSetupSolution(1);
             solution.Classes = new HashSet<Class>();
             MockContext.Object.Classes.First().SolutionId = 1;
-            Service.Save(solution, null);
+            Service.SaveSetupSolution(solution, null);
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
             Assert.AreEqual(MockContext.Object.Classes.Count(), 0);
         }
@@ -129,12 +129,12 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Edit_Solution_RemoveMethod()
         {
-            SetupSolution solution = Service.GetSolution(1);
+            SetupSolution solution = Service.GetSetupSolution(1);
             solution.Classes = new HashSet<Class>() { MockContext.Object.Classes.First() };
             MockContext.Object.Classes.First().SolutionId = 1;
             MockContext.Object.Classes.First().Methods = new HashSet<Method>();
             MockContext.Object.Methods.First().ClassId = 2;
-            Service.Save(solution, null);
+            Service.SaveSetupSolution(solution, null);
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
             Assert.AreEqual(MockContext.Object.Classes.Count(), 1);
             Assert.AreEqual(MockContext.Object.Methods.Count(), 0);
@@ -143,7 +143,7 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Edit_Solution_RemoveTest()
         {
-            SetupSolution solution = Service.GetSolution(1);
+            SetupSolution solution = Service.GetSetupSolution(1);
             solution.Classes = new HashSet<Class>() { MockContext.Object.Classes.First() };
             MockContext.Object.Classes.First().SolutionId = 1;
             MockContext.Object.Classes.First().Methods = new HashSet<Method>() { MockContext.Object.Methods.First() } ;
@@ -151,7 +151,7 @@ namespace Testility.Domain.Concrete.Tests
             MockContext.Object.Classes.First().Methods.First().Tests = new HashSet<Test>();
             MockContext.Object.Tests.First().MethodId = 2;
 
-            Service.Save(solution, null);
+            Service.SaveSetupSolution(solution, null);
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
             Assert.AreEqual(MockContext.Object.Classes.Count(), 1);
             Assert.AreEqual(MockContext.Object.Methods.Count(), 1);
@@ -161,10 +161,10 @@ namespace Testility.Domain.Concrete.Tests
         [TestMethod]
         public void Can_Edit_Solution_RemoveItem()
         {
-            SetupSolution solution = Service.GetSolution(1);
+            SetupSolution solution = Service.GetSetupSolution(1);
             solution.Items = new HashSet<Item>();
             MockContext.Object.Items.First().SolutionId = 1;
-            Service.Save(solution, null);
+            Service.SaveSetupSolution(solution, null);
             MockContext.Verify(x => x.SaveChanges(), Times.Once);
             Assert.AreEqual(MockContext.Object.Items.Count(), 0);
         }

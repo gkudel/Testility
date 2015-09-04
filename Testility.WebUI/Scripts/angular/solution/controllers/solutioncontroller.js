@@ -3,9 +3,9 @@
 
         service.getInstance();
         $scope.Solution = service.Solution;
-        $scope.$watch(function () { return service.Loaded; }, function (newVal) {
-            $scope.Loaded = newVal;
-        });
+        $scope.Loaded = function() {
+            return service.Loaded;
+        }
         $scope.Entry = service.Entry;
         messaging.init($scope, SolutionForm);
 
@@ -88,15 +88,7 @@
 
         $scope.changeSolution = function () {
             service.changeSolution(function (response) {                
-                if (response) {
-                    if (response !== 'Unchanged') {
-                        $scope.Solution = response;
-                    }
-                } else {
-                    $scope.Solution = service.empty();
-                }
-            }, function (error) {
-                $scope.Solution = service.empty();
+            }, function (error) {                
                 dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
             });
         };

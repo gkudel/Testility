@@ -20,10 +20,10 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
 {
     public class SolutionController : ApiController
     {
-        private readonly ISetupRepository setupRepository;
+        private readonly IDbRepository setupRepository;
         private readonly ICompilerService compilerService;
 
-        public SolutionController(ISetupRepository setupRepository, ICompilerService setupCompilerService)
+        public SolutionController(IDbRepository setupRepository, ICompilerService setupCompilerService)
         {
             this.setupRepository = setupRepository;
             this.compilerService = setupCompilerService;
@@ -31,12 +31,12 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
 
         public HttpResponseMessage Get()
         {
-            return Request.CreateResponse<IEnumerable<SolutionIndexItemViewModel>>(HttpStatusCode.OK, setupRepository.GetSolutions().ToList().Select(s => Mapper.Map<Solution, SolutionIndexItemViewModel>(s)).ToArray());
+            return Request.CreateResponse<IEnumerable<SolutionIndexItemViewModel>>(HttpStatusCode.OK, setupRepository.GetSetupSolutions().ToList().Select(s => Mapper.Map<Solution, SolutionIndexItemViewModel>(s)).ToArray());
         }
 
         public HttpResponseMessage Get(int id)
         {
-            Solution s = setupRepository.GetSolution(id);
+            Solution s = setupRepository.GetSetupSolution(id);
             if(s == null)
             {
                 var message = string.Format("Solution with id = {0} not found", id);
@@ -45,9 +45,8 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
             return Request.CreateResponse<SolutionViewModel>(HttpStatusCode.OK, Mapper.Map<SolutionViewModel>(s));
         }
 
-        [ArgumentNullExceptionFilter]
-        [System.Web.Mvc.ValidateAntiForgeryToken]
-        public HttpResponseMessage Post(SolutionViewModel model)
+        [NonAction]
+        private HttpResponseMessage CreateOrUpdate(SolutionViewModel model)
         {
             if (model == null) return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Solution can't be null");
             SetupSolution solution = new SetupSolution();
@@ -55,7 +54,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
             {
                 if (model?.Id > 0)
                 {
-                    solution = setupRepository.GetSolution(model.Id);
+                    solution = setupRepository.GetSetupSolution(model.Id);
                     if (solution == null) return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Solution doesn't exist");
                 }
 
@@ -64,14 +63,15 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
                 IList<Error> errors = compilerService.Compile(solution, model.References);
                 if (errors.Count > 0)
                 {
-                    if(solution.Classes?.Count() > 0) solution.Classes.Clear();
+                    if (solution.Classes?.Count() > 0) solution.Classes.Clear();
                     foreach (Error e in errors)
                     {
                         ret.Add(new { Message = e.ToString(), Alert = e.IsWarning ? "warning" : "danger" });
                     }
                 }
-                setupRepository.Save(solution, model.References);
-                return Request.CreateResponse(HttpStatusCode.OK, new {
+                setupRepository.SaveSetupSolution(solution, model.References);
+                return Request.CreateResponse(HttpStatusCode.OK, new
+                {
                     compileErrors = ret.ToArray(),
                     solution = Mapper.Map<SolutionViewModel>(solution)
                 });
@@ -91,25 +91,32 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         }
 
         [ArgumentNullExceptionFilter]
+        [System.Web.Mvc.ValidateAntiForgeryToken]
+        public HttpResponseMessage Put(SolutionViewModel model)
+        {
+            return CreateOrUpdate(model);
+        }
+
+        [ArgumentNullExceptionFilter]
+        [System.Web.Mvc.ValidateAntiForgeryToken]
+        public HttpResponseMessage Post(SolutionViewModel model)
+        {
+            return CreateOrUpdate(model);
+        }
+
+        [ArgumentNullExceptionFilter]
         [HttpPost]
         [Route("api/Solution/Compile")]
         public HttpResponseMessage Compile(SolutionViewModel solution)
         {
             if (solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
             IList<Error> errors = compilerService.Compile(Mapper.Map<SetupSolution>(solution), solution.References);
-            if (errors.Count == 0)
+            List<object> ret = new List<object>();
+            foreach (Error e in errors)
             {
-                return Request.CreateResponse(HttpStatusCode.OK);
+                ret.Add(new { Message = e.ToString(), Alert = e.IsWarning ? "warning" : "danger" });
             }
-            else
-            {
-                List<object> ret = new List<object>();
-                foreach (Error e in errors)
-                {
-                    ret.Add(new { Message = e.ToString(), Alert = e.IsWarning ? "warning" : "danger" });
-                }
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ret.ToArray());
-            }
+            return Request.CreateResponse(HttpStatusCode.OK, ret.ToArray());
         }
 
         [HttpPost]

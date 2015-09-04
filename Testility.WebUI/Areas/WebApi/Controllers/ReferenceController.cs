@@ -12,9 +12,9 @@ namespace Testility.WebUI.Areas.WebApi
 {
     public class ReferenceController : ApiController
     {
-        private readonly ISetupRepository setupRepository;
+        private readonly IDbRepository setupRepository;
 
-        public ReferenceController(ISetupRepository setupRepository)
+        public ReferenceController(IDbRepository setupRepository)
         {
             this.setupRepository = setupRepository;
         }

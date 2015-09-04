@@ -9,11 +9,13 @@ using Testility.Domain.Entities;
 
 namespace Testility.Domain.Abstract
 {
-    public interface ISetupRepository : IDisposable
+    public interface IDbRepository : IDisposable
     {
-        IQueryable<SetupSolution> GetSolutions(bool lazyloading = true);
-        SetupSolution GetSolution(int id);
-        void Save(SetupSolution solution, int[] references);
+        IQueryable<SetupSolution> GetSetupSolutions(bool lazyloading = true);
+        SetupSolution GetSetupSolution(int id);
+        void SaveSetupSolution(SetupSolution solution, int[] references);
+        IQueryable<UnitTestSolution> GetUnitTestSolutions(bool lazyloading = true);
+        UnitTestSolution GetUnitTestSolution(int id);
         bool DeleteSolution(int id);
         bool IsAlreadyDefined(string name, int? id = null);
         IQueryable<Reference> GetReferences();

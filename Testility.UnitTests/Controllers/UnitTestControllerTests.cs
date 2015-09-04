@@ -16,7 +16,7 @@ namespace Testility.WebUI.Controllers.Tests
     [TestClass()]
     public class UnitTestControllerTests
     {
-        public Mock<IUnitTestRepository> ServiceMock { get; set; }
+        public Mock<IDbRepository> ServiceMock { get; set; }
         public UnitTestController unitTestController { get; set; }
 
         [TestInitialize]
@@ -31,8 +31,8 @@ namespace Testility.WebUI.Controllers.Tests
                 new UnitTestSolution() {Id = 5, SetupSolutionId = 5, SetupSolution = new SetupSolution(){ Id = 5, Name = "S5"} }
             }.AsQueryable();
 
-            ServiceMock = new Mock<IUnitTestRepository>();
-            ServiceMock.Setup(x => x.GetSolutions()).Returns(SolutionList);
+            ServiceMock = new Mock<IDbRepository>();
+            ServiceMock.Setup(x => x.GetUnitTestSolutions(It.IsAny<bool>())).Returns(SolutionList);
 
             AutoMapperConfiguration.Configure();
             unitTestController = new UnitTestController(ServiceMock.Object);

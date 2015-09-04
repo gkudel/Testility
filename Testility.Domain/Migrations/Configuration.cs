@@ -5,14 +5,14 @@ namespace Testility.Domain.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Testility.Domain.Concrete.EFDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Testility.Domain.Concrete.DbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(Testility.Domain.Concrete.EFDbContext context)
+        protected override void Seed(Testility.Domain.Concrete.DbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

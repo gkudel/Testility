@@ -15,8 +15,8 @@ namespace Testility.WebUI.Services.Concrete
     public class UnitTestCompilerService : ICompilerService
     {
         private readonly ICompiler compilerRepository;
-        private ISetupRepository setupRepository;
-        public UnitTestCompilerService(ICompiler compilerRepository, ISetupRepository setupRepository)
+        private IDbRepository setupRepository;
+        public UnitTestCompilerService(ICompiler compilerRepository, IDbRepository setupRepository)
         {
             this.compilerRepository = compilerRepository;
             this.setupRepository = setupRepository;

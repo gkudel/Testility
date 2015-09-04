@@ -6,7 +6,6 @@ using System.Linq;
 using AutoMapper.QueryableExtensions;
 using Testility.Engine.Model;
 using Testility.WebUI.Model;
-using Testility.Domain.Infrastructure.Mapping;
 using Testility.WebUI.Areas.Setup.Model;
 using Testility.WebUI.Areas.Authorization.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -22,6 +21,15 @@ namespace Testility.WebUI.Infrastructure.Mapping
         protected override void Configure()
         {
             #region Setup
+            Mapper.CreateMap<Item, Item>()
+                .ForMember(i => i.Solution, opt => opt.Ignore());
+
+            Mapper.CreateMap<ICollection<Item>, ICollection<Item>>()
+                .ConvertUsing(new CustomConvwerter<Item, Item>((v, t) => v.Id == t.Id));
+
+            Mapper.CreateMap<SetupSolution, SetupSolution>()
+                .ForMember(s => s.Classes, opt => opt.Ignore());
+
             Mapper.CreateMap<SetupSolution, UnitTestViewModel>()
                 .ForMember(s => s.References, opt => opt.MapFrom(s => s.References != null ? s.References.Select(solution => solution.Id).ToArray() : new int[0]))
                 .ForMember(s => s.Items, opt => opt.MapFrom(s => s.Items == null || s.Items.Count == 0 ? new ItemViewModel[0] : s.Items.Select(i => Mapper.Map<ItemViewModel>(i)).ToArray()))
@@ -63,28 +71,47 @@ namespace Testility.WebUI.Infrastructure.Mapping
                 .ForMember(i => i.SolutionName, opt => opt.MapFrom(s => s.Name))
                 .ForMember(i => i.Code, opt => opt.ResolveUsing<UnitTestCodeResolver>().ConstructedBy(() => new UnitTestCodeResolver()));
 
-            Mapper.CreateMap<Result, Solution>()                
+            Mapper.CreateMap<Result, Solution>()
                 .Include<Result, UnitTestSolution>()
                 .ForMember(e => e.Id, opt => opt.Ignore())
                 .ForMember(e => e.Name, opt => opt.Ignore())
                 .ForMember(e => e.Language, opt => opt.Ignore())
-                .ForMember(e => e.References, opt => opt.Ignore());
-                
+                .ForMember(e => e.References, opt => opt.Ignore())
+                .AfterMap((r, s) =>
+                {
+                    s.Items.Where(i => i.SolutionId == 0).ToList().ForEach(i => i.Id = s.Id);
+                });
+
 
             Mapper.CreateMap<Result, SetupSolution>()
                 .IncludeBase<Result, Solution>()
-                .ForMember(e => e.Classes, opt => opt.MapFrom(src => src.Classes));
+                .ForMember(e => e.Classes, opt => opt.MapFrom(src => src.Classes))
+                .AfterMap((r, s) =>
+                {
+                    s.Classes.Where(c => c.SolutionId == 0).ToList().ForEach(c => c.SolutionId = s.Id);
+                });
+
 
             Mapper.CreateMap<ICollection<Engine.Model.Class>, ICollection<Domain.Entities.Class>>()
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Class, Domain.Entities.Class>((i, o) => i.Name == o.Name));
 
             Mapper.CreateMap<Engine.Model.Class, Domain.Entities.Class>()
-               .ForMember(e => e.Id, opt => opt.Ignore());
+                .ForMember(e => e.Id, opt => opt.Ignore())
+                .AfterMap((c1, c2) =>
+                {
+                    c2.Methods.Where(m => m.ClassId == 0).ToList().ForEach(m => m.ClassId = c2.Id);
+                });
 
             Mapper.CreateMap<ICollection<Engine.Model.Method>, ICollection<Domain.Entities.Method>>()
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Method, Domain.Entities.Method>((i, o) => i.Name == o.Name));
+
             Mapper.CreateMap<Engine.Model.Method, Domain.Entities.Method>()
-                .ForMember(e => e.Id, opt => opt.Ignore());
+                .ForMember(e => e.Id, opt => opt.Ignore())
+                .AfterMap((m1, m2) =>
+                {
+                    m2.Tests.Where(t => t.MethodId == 0).ToList().ForEach(t => t.MethodId = m2.Id);
+                });
+
 
             Mapper.CreateMap<ICollection<Engine.Model.Test>, ICollection<Domain.Entities.Test>>()
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Test, Domain.Entities.Test>((i, o) => i.Name == o.Name));
@@ -178,4 +205,51 @@ namespace Testility.WebUI.Infrastructure.Mapping
         }
     }
 
+    public class CustomConvwerter<T, V> : ITypeConverter<ICollection<T>, ICollection<V>>
+    {
+        private Func<T, V, bool> predicate;
+        public CustomConvwerter(Func<T, V, bool> predicate)
+        {
+            this.predicate = predicate;
+        }
+
+        public ICollection<V> Convert(ResolutionContext context)
+        {
+            ICollection<T> s = context.SourceValue as ICollection<T>;
+            ICollection<V> dest = null;
+            if (s != null)
+            {
+                dest = context.DestinationValue as ICollection<V>;
+                if (dest == null)
+                {
+                    dest = new HashSet<V>(s.Select(c => Mapper.Map<T, V>(c)));
+                }
+                else
+                {
+                    List<V> toRemove = new List<V>();
+                    foreach (V v in dest)
+                    {
+                        if (!s.Any(i => predicate(i, v)))
+                        {
+                            toRemove.Add(v);
+                        }
+                    }
+                    toRemove.ForEach(r => dest.Remove(r));
+                    foreach (T i in s)
+                    {
+                        V o = dest.FirstOrDefault(c => predicate(i, c));
+                        if (o == null)
+                        {
+                            dest.Add(Mapper.Map<T, V>(i));
+                        }
+                        else
+                        {
+                            Mapper.Map<T, V>(i, o);
+                        }
+                    }
+                }
+            }
+            return dest;
+        }
+    }
 }

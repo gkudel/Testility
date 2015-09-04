@@ -12,8 +12,8 @@ namespace Testility.UnitTests.DbContextMock
     public class MockSetupRepository 
     {
         #region Members
-        private Mock<ISetupRepository> _mock;
-        public ISetupRepository Repository
+        private Mock<IDbRepository> _mock;
+        public IDbRepository Repository
         {
             get
             {
@@ -21,7 +21,7 @@ namespace Testility.UnitTests.DbContextMock
                 return _mock.Object;
             }
         }
-        public Mock<ISetupRepository> Mock
+        public Mock<IDbRepository> Mock
         {
             get
             {
@@ -51,8 +51,8 @@ namespace Testility.UnitTests.DbContextMock
                 new Reference() {Id = 1, Name = "System.dll"}
             }.AsQueryable();
 
-            _mock = new Mock<ISetupRepository>();
-            _mock.Setup(x => x.GetSolutions(It.IsAny<bool>())).Returns(SolutionList);
+            _mock = new Mock<IDbRepository>();
+            _mock.Setup(x => x.GetSetupSolutions(It.IsAny<bool>())).Returns(SolutionList);
             _mock.Setup(x => x.DeleteSolution(It.IsAny<int>())).Returns(true);
             _mock.Setup(x => x.IsAlreadyDefined(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
         }

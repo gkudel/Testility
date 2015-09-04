@@ -14,7 +14,7 @@ namespace Testility.Engine.Model
             Tests = new HashSet<Test>();
         }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; }       
         public ICollection<Test> Tests { get; set; }
     }
 }

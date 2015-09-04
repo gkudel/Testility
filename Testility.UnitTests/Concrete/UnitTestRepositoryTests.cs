@@ -17,9 +17,9 @@ namespace Testility.Domain.Concrete.Tests
     public class UnitTestRepositoryTests
     {
         #region Members
-        public Mock<IEFDbContext> MockContext { get; set; }
+        public Mock<IDbContext> MockContext { get; set; }
 
-        public UnitTestRepository Service { get; set; }
+        public DbRepository Service { get; set; }
         #endregion
 
         [TestInitialize]
@@ -34,15 +34,15 @@ namespace Testility.Domain.Concrete.Tests
                 new UnitTestSolution() {Id = 5, SetupSolutionId = 5, SetupSolution = new SetupSolution(){ Id = 5, Name = "S5"} }
             };
 
-            MockContext = EntityFrameworkMockHelper.GetMockContext<IEFDbContext>();
+            MockContext = EntityFrameworkMockHelper.GetMockContext<IDbContext>();
             MockContext.Object.UnitTestSolutions.AddRange(unitTestList);
-            Service = new UnitTestRepository(MockContext.Object);
+            Service = new DbRepository(MockContext.Object);
         }
 
         [TestMethod]
         public void Can_Get_All_UnitTestSolutions()
         {
-            Assert.AreEqual(5, Service.GetSolutions().Count());
+            Assert.AreEqual(5, Service.GetUnitTestSolutions().Count());
         }
     }
 }

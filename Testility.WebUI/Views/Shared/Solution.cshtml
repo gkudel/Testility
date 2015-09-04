@@ -17,11 +17,11 @@
                         <div class="form-inline">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
-                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @ng_model = "Solution.Name", @ng_disabled = "!Loaded"} })
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @ng_model = "Solution.Name", @ng_disabled = "!Loaded()"} })
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Language, htmlAttributes: new { @class = "control-label" })
-                                @Html.EnumDropDownListFor(model => model.Language, htmlAttributes: new { @class = "form-control", @ng_model = "Solution.Language", @convert_number = "", @ng_disabled = "!Loaded" })
+                                @Html.EnumDropDownListFor(model => model.Language, htmlAttributes: new { @class = "form-control", @ng_model = "Solution.Language", @convert_number = "", @ng_disabled = "!Loaded()" })
                             </div>
                         </div>
                     </div>
@@ -33,13 +33,13 @@
                             <a ng-click="refresh()" class="btn btn-default btn-sm">
                                 <span class="glyphicon glyphicon-refresh"></span><span class="hidden-sm hidden-xs"> Refresh</span>
                             </a>
-                            <a ng-click="addTab()" class="btn btn-default btn-sm" ng-disabled="!Loaded">
+                            <a ng-click="addTab()" class="btn btn-default btn-sm" ng-disabled="!Loaded()">
                                 <span class="glyphicon glyphicon-plus"></span><span class="hidden-sm hidden-xs"> Item</span>
                             </a>
-                            <a ng-click="compile()" class="btn btn-default btn-sm" ng-disabled="!Loaded">
+                            <a ng-click="compile()" class="btn btn-default btn-sm" ng-disabled="!Loaded()">
                                 <span class="glyphicon glyphicon-wrench"></span><span class="hidden-sm hidden-xs"> Compile</span>
                             </a>
-                            <a ui-browser config="References" get-selected="getReferences()" set-selected="setReferences(items)" model-size="md" class="btn btn-default btn-sm" ng-disabled="!Loaded">
+                            <a ui-browser config="References" get-selected="getReferences()" set-selected="setReferences(items)" model-size="md" class="btn btn-default btn-sm" ng-disabled="!Loaded()">
                                 <span class="glyphicon glyphicon-plus"></span><span class="hidden-sm hidden-xs"> Ref.</span>
                             </a>
                         </div>
@@ -68,7 +68,7 @@
                         </a>
                     </div>
                     <div class="td-right">
-                        <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Solution" ng-disabled="!Loaded || SolutionForm.$invalid || SolutionForm.$pending">
+                        <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Solution" ng-disabled="!Loaded() || SolutionForm.$invalid || SolutionForm.$pending">
                             <span class="glyphicon glyphicon-floppy-disk"></span> Save
                         </button>
                     </div>

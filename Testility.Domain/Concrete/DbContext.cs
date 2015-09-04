@@ -12,7 +12,7 @@ using Testility.Domain.Entities;
 
 namespace Testility.Domain.Concrete
 {
-    public class EFDbContext : IdentityDbContext<IdentityUser>, IEFDbContext
+    public class DbContext : IdentityDbContext<IdentityUser>, IDbContext
     {   
         #region Setup Entities
         public virtual DbSet<Item> Items { get; set; }
@@ -29,7 +29,7 @@ namespace Testility.Domain.Concrete
         #endregion Solution 
 
 
-        public EFDbContext() : base("EFDbContext")
+        public DbContext() : base("EFDbContext")
         {
         }        
 

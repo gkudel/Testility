@@ -16,12 +16,12 @@ namespace Testility.WebUI.Services.Concrete
     {
         private readonly UserManager<IdentityUser> userMenager;
         private readonly UserStore<IdentityUser> userStore;
-        private readonly EFDbContext db;
+        private readonly DbContext db;
         private readonly SignInManager<IdentityUser, string> signInMenager;
 
         private readonly IAuthenticationManager authenticationManager;
 
-        public IdentityServices(EFDbContext context, IAuthenticationManager authenticationMana, UserStore<IdentityUser> userStor, UserManager<IdentityUser> userMena)
+        public IdentityServices(DbContext context, IAuthenticationManager authenticationMana, UserStore<IdentityUser> userStor, UserManager<IdentityUser> userMena)
         {
             db = context;
             userStore = userStor;

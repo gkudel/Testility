@@ -15,10 +15,10 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class ReferencesController : Controller
     {
-        private readonly ISetupRepository setupRepository;
+        private readonly IDbRepository setupRepository;
         public int PageSize { get; set; }
 
-        public ReferencesController(ISetupRepository setupRepository)
+        public ReferencesController(IDbRepository setupRepository)
         {
             this.setupRepository = setupRepository;
             PageSize = 3;
@@ -38,7 +38,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = setupRepository.GetSolutions().Count()
+                    TotalItems = setupRepository.GetSetupSolutions().Count()
                 }
             };
             return View(data);

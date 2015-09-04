@@ -45,8 +45,8 @@ namespace Testility.WebUI
                     "~/Scripts/iosOverlay.js",
                     "~/Scripts/spin.min.js",
                     "~/Scripts/angular/spiner/spiner.js",
-                    "~/Scripts/angular/framework/restangular.min.js",
-                    "~/Scripts/angular/framework/lodash.min.js"));
+                    "~/Scripts/angular/framework/restangular.js",
+                    "~/Scripts/angular/framework/lodash.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
                 "~/Scripts/codemirror-3.0/codemirror.js",

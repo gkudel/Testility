@@ -19,10 +19,10 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class SolutionController : Controller
     {
-        private readonly ISetupRepository setupRepository;
+        private readonly IDbRepository setupRepository;
         public int PageSize { get; set; }
 
-        public SolutionController(ISetupRepository setupRepository)
+        public SolutionController(IDbRepository setupRepository)
         {
             this.setupRepository = setupRepository;
             PageSize = 3;
@@ -33,7 +33,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             ViewBag.SelecttedSolution = selecttedSolution;
             IndexViewModel<SolutionIndexItemViewModel> data = new IndexViewModel<SolutionIndexItemViewModel>()
             {
-                List = setupRepository.GetSolutions(false)
+                List = setupRepository.GetSetupSolutions(false)
                     .OrderBy(p => p.Id)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize)
@@ -43,7 +43,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = setupRepository.GetSolutions().Count()
+                    TotalItems = setupRepository.GetSetupSolutions().Count()
                 }
             };
 
@@ -65,7 +65,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SetupSolution solution = setupRepository.GetSolution(id.Value);
+            SetupSolution solution = setupRepository.GetSetupSolution(id.Value);
             if (solution == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SetupSolution solution = setupRepository.GetSolution(id.Value);
+            SetupSolution solution = setupRepository.GetSetupSolution(id.Value);
             if (solution == null)
             {
                return HttpNotFound();

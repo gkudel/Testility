@@ -12,12 +12,12 @@ namespace Testility.WebUI.Controllers
 {
     public class UnitTestController : Controller
     {
-        private readonly IUnitTestRepository unitTestRepository;
+        private readonly IDbRepository dbRepository;
         public int PageSize { get; set; }
 
-        public UnitTestController(IUnitTestRepository unitTestRepository)
+        public UnitTestController(IDbRepository unitTestRepository)
         {
-            this.unitTestRepository = unitTestRepository;
+            this.dbRepository = unitTestRepository;
             PageSize = 3;
         }
 
@@ -26,7 +26,7 @@ namespace Testility.WebUI.Controllers
         {
             IndexViewModel<UnitTestIndexItemViewModel> data = new IndexViewModel<UnitTestIndexItemViewModel>()
             {
-                List = unitTestRepository.GetSolutions()
+                List = dbRepository.GetUnitTestSolutions()
                         .OrderBy(p => p.Id)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize)
@@ -36,7 +36,7 @@ namespace Testility.WebUI.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = unitTestRepository.GetSolutions().Count()
+                    TotalItems = dbRepository.GetUnitTestSolutions().Count()
                 }
             };
             return View(data);

@@ -12,15 +12,15 @@ using System.Data.Entity.Validation;
 
 namespace Testility.Domain.Concrete
 {
-    public class EFSetupRepository : ISetupRepository, IDisposable
+    public class DbRepository : IDbRepository, IDisposable
     {
-        private IEFDbContext context;
-        public EFSetupRepository(IEFDbContext context)
+        private IDbContext context;
+        public DbRepository(IDbContext context)
         {
             this.context = context;
         }
 
-        public IQueryable<SetupSolution> GetSolutions(bool lazyloading = true)
+        public IQueryable<SetupSolution> GetSetupSolutions(bool lazyloading = true)
         {
             var ret = context.SetupSolutions.AsQueryable();
             if (!lazyloading)
@@ -31,7 +31,7 @@ namespace Testility.Domain.Concrete
             return ret; 
         }
         
-        public SetupSolution GetSolution(int id)
+        public SetupSolution GetSetupSolution(int id)
         {
             var query = context.SetupSolutions.Where(s => s.Id == id)
                 .Include(s => s.Items)
@@ -39,7 +39,7 @@ namespace Testility.Domain.Concrete
             return query.FirstOrDefault();
         }
 
-        public void Save(SetupSolution solution, int[] references)
+        public void SaveSetupSolution(SetupSolution solution, int[] references)
         {
             var referencedAssemblies = solution.References.Where(r => !references?.Contains(r.Id) ?? true).ToList();
             foreach (Reference r in referencedAssemblies)
@@ -109,7 +109,21 @@ namespace Testility.Domain.Concrete
             }
             return false;
         }
+        public IQueryable<UnitTestSolution> GetUnitTestSolutions(bool lazyloading = true)
+        {
+            var ret = context.UnitTestSolutions.AsQueryable();
+            if (!lazyloading)
+            {
+                ret = ret.Include(s => s.SetupSolution);                    
+            }
+            return ret;
+        }
 
+        public UnitTestSolution GetUnitTestSolution(int id)
+        {
+            throw new NotImplementedException();
+        }
+    
         public bool IsAlreadyDefined(string name, int? id = null)
         {
             return context.Solutions.FirstOrDefault(s => s.Name == name && (id == null || s.Id != id)) != null;

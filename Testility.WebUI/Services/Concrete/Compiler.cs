@@ -13,13 +13,13 @@ namespace Testility.WebUI.Services.Concrete
     public sealed class Compiler
     {
         private readonly ICompiler compilerRepository;
-        private ISetupRepository setupRepository;
-        private Compiler(ICompiler compilerRepository, ISetupRepository setupRepository)
+        private IDbRepository setupRepository;
+        private Compiler(ICompiler compilerRepository, IDbRepository setupRepository)
         {
             this.compilerRepository = compilerRepository;
             this.setupRepository = setupRepository;
         }
-        public static Compiler GetInstance(ICompiler compilerRepository, ISetupRepository setupRepository)
+        public static Compiler GetInstance(ICompiler compilerRepository, IDbRepository setupRepository)
         {
             return new Compiler(compilerRepository, setupRepository);
         }

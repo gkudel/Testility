@@ -18,7 +18,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
     public class ReferenceControllerTests
     {
         #region Members
-        public Mock<ISetupRepository> ServiceMock { get; set; }
+        public Mock<IDbRepository> ServiceMock { get; set; }
         public ReferencesController referencesController { get; set; }
         #endregion Members
 
@@ -33,7 +33,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
             Reference singleRef = new Reference() { Id = 3, Name = "okoko" };
 
-            ServiceMock = new Mock<ISetupRepository>();
+            ServiceMock = new Mock<IDbRepository>();
             ServiceMock.Setup(x => x.GetReferences()).Returns(RefList);
             ServiceMock.Setup(x => x.GetReference(3)).Returns(singleRef);
             ServiceMock.Setup(x => x.DeleteReference(It.IsAny<int>())).Returns(true);
@@ -144,7 +144,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Cannot_Delete_NonExists_Reference()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            ServiceMock.Setup(x => x.GetSolution(It.IsAny<int>())).Returns((SetupSolution)null);
+            ServiceMock.Setup(x => x.GetSetupSolution(It.IsAny<int>())).Returns((SetupSolution)null);
 
             var result = referencesController.Delete(10) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);

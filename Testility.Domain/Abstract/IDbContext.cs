@@ -9,7 +9,7 @@ using Testility.Domain.Entities;
 
 namespace Testility.Domain.Abstract
 {
-    public interface IEFDbContext: IDisposable
+    public interface IDbContext: IDisposable
     {
         #region Setup Entities
         DbSet<Item> Items { get; set; }

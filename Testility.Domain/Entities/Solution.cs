@@ -9,9 +9,10 @@ using System.Web.Mvc;
 
 namespace Testility.Domain.Entities
 {
-    public enum Language
+    public enum Language : byte
     {
-        CSharp, VisualBasic
+        CSharp = 0,
+        VisualBasic = 1
     }
 
     public abstract class Solution
