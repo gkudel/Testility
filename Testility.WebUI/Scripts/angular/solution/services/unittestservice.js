@@ -28,6 +28,9 @@
                                 d.resolve();
                                 resolve("Unchanged");
                             }
+                        } else {
+                            d.reject();
+                            reject("Please select setup solution");
                         }
                     }
 
@@ -39,7 +42,7 @@
                         }
                     }
                     var cancelled = function () {
-                        reject("Please select setup solution");
+                        reject();
                     };
                     uiBrowserDialog.show(options, 'md', getSelected, setSelected, cancelled);
                 });
@@ -57,16 +60,17 @@
                         var instance = this;
                         if (this.Solution.Id) {
                             var d = qSpiner.defer('Loading');                            
-                            /*$http.get('/api/UnitTest/' + this.Solution.Id)
-                                .success(function (response) {
-                                    instance.Loaded = true;
-                                    angular.copy(response, instance.Solution);
-                                    d.resolve(instance.Solution);
-                                })
-                                .error(function (data, status) {
-                                    instance.Loaded = false;
-                                    d.reject(data);
-                                });*/
+                            Restangular.one('UnitTest', this.Solution.Id).get()
+                            .then(function (solution) {
+                                instance.Loaded = true;
+                                angular.extend(instance.Solution, solution);
+                                d.resolve(instance.Solution);
+                            }, function (data, status) {
+                                instance.Loaded = false;
+                                if (data.hasOwnProperty('data'))
+                                    data = data.data;
+                                d.reject(data);
+                            });
                             return d.promise;
                         } else {
                             if (!this.Solution.SetupId) {
@@ -86,22 +90,7 @@
                                 }, function (error) {
                                     reject(error);
                                 });
-                    },
-                    /*submit: function (solution) {
-                        var d = qSpiner.defer('Saving');
-                        $http.post('/api/Solution/', JSON.stringify(solution))
-                            .success(function (response) {
-                                if (response.hasOwnProperty('solution')) {
-                                    ctr(response.solution);
-                                    this.Id = response.solution.Id;
-                                }
-                                d.resolve(response);
-                            })
-                            .error(function (data, status) {
-                                d.reject(data);
-                            });
-                        return d.promise;
-                    },*/
+                    }
                 };
             };
         };

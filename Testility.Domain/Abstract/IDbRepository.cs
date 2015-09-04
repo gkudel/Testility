@@ -16,6 +16,7 @@ namespace Testility.Domain.Abstract
         void SaveSetupSolution(SetupSolution solution, int[] references);
         IQueryable<UnitTestSolution> GetUnitTestSolutions(bool lazyloading = true);
         UnitTestSolution GetUnitTestSolution(int id);
+        void SaveUnitTestSolution(UnitTestSolution solution, int[] references);
         bool DeleteSolution(int id);
         bool IsAlreadyDefined(string name, int? id = null);
         IQueryable<Reference> GetReferences();

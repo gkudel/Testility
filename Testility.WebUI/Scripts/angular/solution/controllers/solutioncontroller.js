@@ -88,8 +88,10 @@
 
         $scope.changeSolution = function () {
             service.changeSolution(function (response) {                
-            }, function (error) {                
-                dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
+            }, function (error) {
+                if(error) {
+                    dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
+                }
             });
         };
 

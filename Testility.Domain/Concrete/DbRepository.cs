@@ -98,6 +98,32 @@ namespace Testility.Domain.Concrete
             Commit();
         }
 
+        public void SaveUnitTestSolution(UnitTestSolution solution, int[] references)
+        {
+            var referencedAssemblies = solution.References.Where(r => !references?.Contains(r.Id) ?? true).ToList();
+            foreach (Reference r in referencedAssemblies)
+            {
+                solution.References.Remove(r);
+            }
+            foreach (int id in references?.Where(id => solution.References.FirstOrDefault(r => r.Id == id) == null) ?? new int[0])
+            {
+                solution.References.Add(GetReference(id));
+            }
+            if (solution.Id == 0)
+            {
+                context.UnitTestSolutions.Add(solution);
+            }
+
+            var items = context.Items.Where(i => i.SolutionId == solution.Id).ToList();
+            foreach (Item item in items)
+            {
+                if (solution.Items.FirstOrDefault(i => i.Id == item.Id) == null)
+                {
+                    context.Items.Remove(item);
+                }
+            }
+            Commit();
+        }        
         public bool DeleteSolution(int id)
         {
             SetupSolution solution = context.SetupSolutions.FirstOrDefault(s => s.Id == id);
@@ -121,7 +147,9 @@ namespace Testility.Domain.Concrete
 
         public UnitTestSolution GetUnitTestSolution(int id)
         {
-            throw new NotImplementedException();
+            var query = context.UnitTestSolutions.Where(s => s.Id == id)
+                .Include(s => s.SetupSolution);
+            return query.FirstOrDefault();
         }
     
         public bool IsAlreadyDefined(string name, int? id = null)

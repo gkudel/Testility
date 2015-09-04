@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Testility.Domain.Abstract;
@@ -45,6 +46,21 @@ namespace Testility.WebUI.Controllers
         public ActionResult Create()
         {
             ViewBag.Title = "UnitTest Entry";
+            return View("Solution");
+        }
+
+        public ActionResult Edit(int? id)
+        {
+            ViewBag.Title = "UnitTest Entry";            
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            UnitTestSolution solution = dbRepository.GetUnitTestSolution(id.Value);
+            if (solution == null)
+            {
+                return HttpNotFound();
+            }
             return View("Solution");
         }
     }

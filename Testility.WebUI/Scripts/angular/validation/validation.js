@@ -132,7 +132,7 @@
                             otherRulesInValid = true;
                             break;
                         }
-                    }
+                    } 
                     return !( ngModel.$pristine || otherRulesInValid );
                 };
                 var options = {

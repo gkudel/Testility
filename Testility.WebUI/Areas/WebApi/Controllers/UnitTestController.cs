@@ -38,7 +38,8 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
                 var message = string.Format("Solution with id = {0} not found", solutionId);
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, message);
             }
-            UnitTestViewModel ret = Mapper.Map<UnitTestViewModel>(s);            
+            UnitTestViewModel ret = Mapper.Map<UnitTestViewModel>(s);
+            ret.Name = "";
             List<ItemViewModel> items = new List<ItemViewModel>();
             foreach (Domain.Entities.Class c in s.Classes)
             {
@@ -50,16 +51,32 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
             return Request.CreateResponse<UnitTestViewModel>(HttpStatusCode.OK, ret);
         }
 
+        public HttpResponseMessage Get()
+        {
+            return Request.CreateResponse(HttpStatusCode.NotImplemented);
+        }
+
+        public HttpResponseMessage Get(int id)
+        {
+            UnitTestSolution s = dbRepository.GetUnitTestSolution(id);
+            if (s == null)
+            {
+                var message = string.Format("Solution with id = {0} not found", id);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, message);
+            }
+            return Request.CreateResponse<UnitTestViewModel>(HttpStatusCode.OK, Mapper.Map<UnitTestViewModel>(s));
+        }
+
         [NonAction]
         private HttpResponseMessage CreateOrUpdate(UnitTestViewModel model)
         {
-            /*if (model == null) return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Solution can't be null");
+            if (model == null) return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Solution can't be null");
             UnitTestSolution solution = new UnitTestSolution();
             if (ModelState.IsValid)
             {
                 if (model?.Id > 0)
                 {
-                    solution = dbRepository.GetSolution(model.Id);
+                    solution = dbRepository.GetUnitTestSolution(model.Id);
                     if (solution == null) return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Solution doesn't exist");
                 }
 
@@ -68,17 +85,16 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
                 IList<Error> errors = compilerService.Compile(solution, model.References);
                 if (errors.Count > 0)
                 {
-                    if (solution.Classes?.Count() > 0) solution.Classes.Clear();
                     foreach (Error e in errors)
                     {
                         ret.Add(new { Message = e.ToString(), Alert = e.IsWarning ? "warning" : "danger" });
                     }
                 }
-                dbRepository.Save(solution, model.References);
+                dbRepository.SaveUnitTestSolution(solution, model.References);
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     compileErrors = ret.ToArray(),
-                    solution = Mapper.Map<SolutionViewModel>(solution)
+                    solution = Mapper.Map<UnitTestViewModel>(solution)
                 });
             }
             else
@@ -92,8 +108,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
                     }
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ret.ToArray());
-            }*/
-            return Request.CreateResponse(HttpStatusCode.NotImplemented);
+            }
         }
 
         [ArgumentNullExceptionFilter]

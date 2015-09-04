@@ -56,9 +56,6 @@ namespace Testility.WebUI
                 "~/Scripts/angular/solution/services/setupservice.js",
                 "~/Scripts/angular/solution/services/unittestservice.js",
                 "~/Scripts/angular/solution/controllers/solutioncontroller.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/unit-test").Include(
-                   "~/Scripts/angular/unit-test/unit-test.js"));
         }
     }
 }

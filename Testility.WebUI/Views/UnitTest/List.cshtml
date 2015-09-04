@@ -20,8 +20,11 @@
             <table class="table table-hover table-striped col-md-12 padding-bottom-10">
                 <thead>
                     <tr>
-                        <th class="col-md-8">
-                            @Html.DisplayNameFor(model => model.List, s => s.SolutionName)
+                        <th class="col-md-4">
+                            @Html.DisplayNameFor(model => model.List, s => s.Name)
+                        </th>
+                        <th class="col-md-4">
+                            @Html.DisplayNameFor(model => model.List, s => s.SetupName)
                         </th>
                         <th class="col-md-4"></th>
                     </tr>
@@ -31,7 +34,10 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.SolutionName)
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SetupName)
                             </td>
                             <td class="text-right">
                                 <div class="btn-group">
@@ -54,9 +60,5 @@
     </div>    
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/angular-ui")
-    @Scripts.Render("~/bundles/unit-test")
-}
 
 
