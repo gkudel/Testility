@@ -86,6 +86,10 @@
                 if (this.Solution.Id) {
                     Restangular.copy(this.Solution)
                         .put().then(function (response) {
+                            if (response.hasOwnProperty('solution')) {
+                                angular.extend(instance.Solution, response.solution);
+                            }
+                            angular.extend(instance.Solution, response);
                             d.resolve(response);
                         },
                         function (data, status) {

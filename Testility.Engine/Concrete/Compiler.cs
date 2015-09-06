@@ -14,6 +14,7 @@ using Testility.Engine.Model;
 using NUnit.Core;
 using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
+using System.Data.Entity;
 
 namespace Testility.Engine.Concrete
 {
@@ -36,7 +37,7 @@ namespace Testility.Engine.Concrete
                 CompilerResults compilingResult = null;
                 compilerparameters.GenerateExecutable = false;
                 compilerparameters.GenerateInMemory = false;
-                result.TemporaryFile = compilerparameters.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), input.SolutionName+ ".dll");
+                result.TemporaryFile = compilerparameters.OutputAssembly = string.Format(@"{0}\{1}", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), (string.IsNullOrEmpty(input.SolutionName) ? Guid.NewGuid().ToString() : input.SolutionName) + ".dll");
                 compilerparameters.TreatWarningsAsErrors = false;
 
                 var assemblies = Assembly.GetExecutingAssembly().GetReferencedAssemblies().ToList();
@@ -58,7 +59,7 @@ namespace Testility.Engine.Concrete
 
                 if (compilingResult.Errors.Count == 0)
                 {
-                    var types = compilingResult.CompiledAssembly.GetTypes();
+                    var types = compilingResult.CompiledAssembly.GetTypes().Where(t => t.IsClass);
 
                     foreach (var t in types)
                     {
@@ -134,6 +135,11 @@ namespace Testility.Engine.Concrete
             catch (FileNotFoundException)
             {
             }
+        }
+
+        private class FakeContext : DbContext
+        {
+            private DbSet<string> List { get; set; }
         }
 
         [TestFixture]

@@ -71,11 +71,12 @@
                         if (form) {
                             angular.forEach(form, function (value, key) {
                                 if (value.attributes.getNamedItem('client-validation-enabled')) {
+                                    _ErrorMessages[value.name] = {};
                                     for (var i = 0; i < value.attributes.length; i++) {
                                         var item = value.attributes[i];
                                         if (item.name.indexOf('errormsg-') === 0) {
                                             var name = item.name.substring('errormsg-'.length);
-                                            _ErrorMessages[name] = item.value;
+                                            _ErrorMessages[value.name][name] = item.value;
                                         }
                                     }
                                     scope.$watchGroup(
@@ -91,8 +92,12 @@
                                                 });
                                                 if (n[2] && n[3]) {                                                    
                                                     for (var key in n[3]) {
-                                                        if (_ErrorMessages.hasOwnProperty(key)) {
-                                                            _add({ Alert: 'danger', Message: _ErrorMessages[key], Id: n[4] + '-' + key });
+                                                        var messages = {};
+                                                        if (_ErrorMessages.hasOwnProperty(n[4])) {
+                                                            messages = _ErrorMessages[n[4]];
+                                                        }
+                                                        if (messages.hasOwnProperty(key)) {
+                                                            _add({ Alert: 'danger', Message: messages[key], Id: n[4] + '-' + key });
                                                         }
                                                     }                                                    
                                                 }                                                

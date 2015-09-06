@@ -42,7 +42,11 @@
                         }
                     }
                     var cancelled = function () {
-                        reject();
+                        if(instance.Solution.SetupId) {
+                            reject();
+                        } else {
+                            reject("Please select setup solution");
+                        }
                     };
                     uiBrowserDialog.show(options, 'md', getSelected, setSelected, cancelled);
                 });

@@ -21,15 +21,6 @@ namespace Testility.WebUI.Infrastructure.Mapping
         protected override void Configure()
         {
             #region Setup
-            Mapper.CreateMap<Item, Item>()
-                .ForMember(i => i.Solution, opt => opt.Ignore());
-
-            Mapper.CreateMap<ICollection<Item>, ICollection<Item>>()
-                .ConvertUsing(new CustomConvwerter<Item, Item>((v, t) => v.Id == t.Id));
-
-            Mapper.CreateMap<SetupSolution, SetupSolution>()
-                .ForMember(s => s.Classes, opt => opt.Ignore());
-
             Mapper.CreateMap<UnitTestSolution, UnitTestViewModel>()
                 .ForMember(s => s.References, opt => opt.MapFrom(s => s.References != null ? s.References.Select(solution => solution.Id).ToArray() : new int[0]))
                 .ForMember(s => s.Items, opt => opt.MapFrom(s => s.Items == null || s.Items.Count == 0 ? new ItemViewModel[0] : s.Items.Select(i => Mapper.Map<ItemViewModel>(i)).ToArray()))

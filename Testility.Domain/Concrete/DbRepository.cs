@@ -2,19 +2,15 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Xml.Linq;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
-using AutoMapper;
-using System.Linq.Expressions;
-using Microsoft.AspNet.Identity;
 using System.Data.Entity.Validation;
 
 namespace Testility.Domain.Concrete
 {
     public class DbRepository : IDbRepository, IDisposable
     {
-        private IDbContext context;
+        private readonly IDbContext context;
         public DbRepository(IDbContext context)
         {
             this.context = context;
