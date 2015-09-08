@@ -11,7 +11,7 @@ using Testility.Domain.Abstract;
 namespace Testility.Domain.Concrete.Tests
 {
     [TestClass]
-    public class EFSetupRepositoryTests
+    public class DbRepositoryTests
     {
         #region Members
         public Mock<IDbContext> MockContext { get; set; }

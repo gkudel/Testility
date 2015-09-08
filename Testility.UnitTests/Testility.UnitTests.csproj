@@ -119,7 +119,7 @@
     <Compile Include="Concrete\CompilerTest.cs" />
     <Compile Include="Concrete\UnitTestRepositoryTests.cs" />
     <Compile Include="Controllers\UnitTestControllerTests.cs" />
-    <Compile Include="Concrete\EFSetupRepositoryTests.cs" />
+    <Compile Include="Concrete\DbRepositoryTests.cs" />
     <Compile Include="DbContextMock\EntityFrameworkMockHelper.cs" />
     <Compile Include="DbContextMock\MockedDbContext.cs" />
     <Compile Include="DbContextMock\MockDbRepository.cs" />

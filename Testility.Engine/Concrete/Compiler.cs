@@ -142,26 +142,23 @@ namespace Testility.Engine.Concrete
             private DbSet<string> List { get; set; }
         }
 
-        [TestFixture]
-        private class FakeClass
+        [TestFixture()]
+        public class FakeClass
         {
             [TestFixtureSetUp]
-            private void Init()
+            public void Init()
             {
-                {
-                }
             }
 
             [TestFixtureTearDown]
-            private void Dispose()
+            public void Dispose()
             {
-                {
-                }
             }
 
-            [NUnit.Framework.Test]
-            private void Test()
-            { }
+            [NUnit.Framework.Test()]
+            public void Dont_Care()
+            {                
+            }
         }
 
     }
