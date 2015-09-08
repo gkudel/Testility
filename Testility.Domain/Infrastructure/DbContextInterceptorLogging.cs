@@ -11,11 +11,11 @@ using Testility.Logger.Concrete;
 
 namespace Testility.Domain.Infrastructure
 {
-    public class EFDbContextInterceptorLogging : DbCommandInterceptor
+    public class DbContextInterceptorLogging : DbCommandInterceptor
     {
         private ILogger logger;
 
-        public EFDbContextInterceptorLogging()
+        public DbContextInterceptorLogging()
         {
             this.logger = Logger.Concrete.Logger.GetInstance();
         }

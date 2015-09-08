@@ -21,22 +21,17 @@ namespace Testility.WebUI.Infrastructure.Mapping
         protected override void Configure()
         {
             #region Setup
-            Mapper.CreateMap<UnitTestSolution, UnitTestViewModel>()
+            Mapper.CreateMap<UnitTestSolution, SolutionViewModel>()
                 .ForMember(s => s.References, opt => opt.MapFrom(s => s.References != null ? s.References.Select(solution => solution.Id).ToArray() : new int[0]))
                 .ForMember(s => s.Items, opt => opt.MapFrom(s => s.Items == null || s.Items.Count == 0 ? new ItemViewModel[0] : s.Items.Select(i => Mapper.Map<ItemViewModel>(i)).ToArray()))
                 .ForMember(s => s.SetupId, opt => opt.MapFrom(u => u.SetupSolutionId));
 
-            Mapper.CreateMap<SetupSolution, UnitTestViewModel>()
-                .ForMember(s => s.References, opt => opt.MapFrom(s => s.References != null ? s.References.Select(solution => solution.Id).ToArray() : new int[0]))
-                .ForMember(s => s.Items, opt => opt.MapFrom(s => s.Items == null || s.Items.Count == 0 ? new ItemViewModel[0] : s.Items.Select(i => Mapper.Map<ItemViewModel>(i)).ToArray()))
-                .ForMember(s => s.Id, opt => opt.UseValue<int>(0))
-                .ForMember(s => s.SetupId, opt => opt.MapFrom(s => s.Id));
-                
             Mapper.CreateMap<SetupSolution, SolutionViewModel>()
                 .ForMember(s => s.References, opt => opt.MapFrom(s => s.References != null ? s.References.Select(solution => solution.Id).ToArray() : new int[0]))
-                .ForMember(s => s.Items, opt => opt.MapFrom(s => s.Items == null || s.Items.Count == 0 ? new ItemViewModel[0] : s.Items.Select(i => Mapper.Map<ItemViewModel>(i)).ToArray()));
+                .ForMember(s => s.Items, opt => opt.MapFrom(s => s.Items == null || s.Items.Count == 0 ? new ItemViewModel[0] : s.Items.Select(i => Mapper.Map<ItemViewModel>(i)).ToArray()))
+                .ForMember(s => s.SetupId, opt => opt.MapFrom(s => s.Id));                
 
-            Mapper.CreateMap<UnitTestViewModel, UnitTestSolution>()
+            Mapper.CreateMap<SolutionViewModel, UnitTestSolution>()
                 .ForMember(s => s.References, opt => opt.Ignore())
                 .ForMember(s => s.SetupSolutionId, opt => opt.MapFrom(u => u.SetupId));
 

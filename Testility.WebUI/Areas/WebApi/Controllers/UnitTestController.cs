@@ -38,8 +38,9 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
                 var message = string.Format("Solution with id = {0} not found", solutionId);
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, message);
             }
-            UnitTestViewModel ret = Mapper.Map<UnitTestViewModel>(s);
+            SolutionViewModel ret = Mapper.Map<SolutionViewModel>(s);
             ret.Name = "";
+            ret.Id = 0;
             List<ItemViewModel> items = new List<ItemViewModel>();
             foreach (Domain.Entities.Class c in s.Classes)
             {
@@ -48,7 +49,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
                 items.Add(item);
             }
             ret.Items = items.ToArray();
-            return Request.CreateResponse<UnitTestViewModel>(HttpStatusCode.OK, ret);
+            return Request.CreateResponse<SolutionViewModel>(HttpStatusCode.OK, ret);
         }
 
         public HttpResponseMessage Get()
@@ -64,11 +65,11 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
                 var message = string.Format("Solution with id = {0} not found", id);
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, message);
             }
-            return Request.CreateResponse<UnitTestViewModel>(HttpStatusCode.OK, Mapper.Map<UnitTestViewModel>(s));
+            return Request.CreateResponse<SolutionViewModel>(HttpStatusCode.OK, Mapper.Map<SolutionViewModel>(s));
         }
 
         [NonAction]
-        private HttpResponseMessage CreateOrUpdate(UnitTestViewModel model)
+        private HttpResponseMessage CreateOrUpdate(SolutionViewModel model)
         {
             if (model == null) return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Solution can't be null");
             UnitTestSolution solution = new UnitTestSolution();
@@ -94,7 +95,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     compileErrors = ret.ToArray(),
-                    solution = Mapper.Map<UnitTestViewModel>(solution)
+                    solution = Mapper.Map<SolutionViewModel>(solution)
                 });
             }
             else
@@ -113,7 +114,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
 
         [ArgumentNullExceptionFilter]
         [System.Web.Mvc.ValidateAntiForgeryToken]
-        public HttpResponseMessage Post(UnitTestViewModel model)
+        public HttpResponseMessage Post(SolutionViewModel model)
         {
             return CreateOrUpdate(model);
         }
@@ -121,7 +122,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         [ArgumentNullExceptionFilter]
         [HttpPost]
         [Route("api/UnitTest/Compile")]
-        public HttpResponseMessage Compile(UnitTestViewModel solution)
+        public HttpResponseMessage Compile(SolutionViewModel solution)
         {
             if (solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
             UnitTestSolution u = Mapper.Map<UnitTestSolution>(solution);

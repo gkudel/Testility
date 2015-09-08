@@ -30,6 +30,12 @@ namespace Testility.Domain.Concrete.Tests
                 new SetupSolution() {Id = 1, Name = "1"}
             };
 
+            ICollection<UnitTestSolution> UnitSolutionsData = new HashSet<UnitTestSolution>
+            {
+                new UnitTestSolution() {Id = 1, Name = "1", SetupSolutionId = 1},
+                new UnitTestSolution() {Id = 2, Name = "2", SetupSolutionId = 2}
+            };
+
             ICollection<Reference> References = new HashSet<Reference>
             {
                 new Reference() {Id = 1, Name = "System.dll"},
@@ -58,6 +64,7 @@ namespace Testility.Domain.Concrete.Tests
 
             MockContext = EntityFrameworkMockHelper.GetMockContext<IDbContext>();
             MockContext.Object.SetupSolutions.AddRange(SolutionsData);
+            MockContext.Object.UnitTestSolutions.AddRange(UnitSolutionsData);
             MockContext.Object.References.AddRange(References);
             MockContext.Object.Items.AddRange(ItemsData);
             MockContext.Object.Classes.AddRange(ClassesData);
@@ -170,9 +177,9 @@ namespace Testility.Domain.Concrete.Tests
         }
 
         [TestMethod]
-        public void Cannot_DeleteSolutionWithWrongId()
+        public void Cannot_Delete_SetupSolutionWithWrongId()
         {
-            var result = Service.DeleteSolution(10);
+            var result = Service.DeleteSetupSolution(10);
 
             Assert.AreEqual(MockContext.Object.SetupSolutions.Count(), 2);
             MockContext.Verify(m => m.SaveChanges(), Times.Never);
@@ -180,13 +187,57 @@ namespace Testility.Domain.Concrete.Tests
         }
 
         [TestMethod]
-        public void Can_DeleteSolution()
+        public void Can_Delete_SetupSolution()
         {
-            var result = Service.DeleteSolution(1);
+            var result = Service.DeleteSetupSolution(1);
 
             Assert.AreEqual(MockContext.Object.SetupSolutions.Count(), 1);
             MockContext.Verify(m => m.SaveChanges(), Times.Once);
             Assert.AreEqual(true, result);
         }
+
+        [TestMethod]
+        public void Can_Delete_SetupSolution_WithUnitTest()
+        {
+            SetupSolution s = MockContext.Object.SetupSolutions.First();
+            UnitTestSolution u = MockContext.Object.UnitTestSolutions.First();
+            int sc = MockContext.Object.SetupSolutions.Count();
+            int uc = MockContext.Object.UnitTestSolutions.Count();
+            u.SetupSolutionId = s.Id;
+            s.UnitTests = new List<UnitTestSolution>();
+            s.UnitTests.Add(u);
+
+            var result = Service.DeleteSetupSolution(s.Id);
+
+            Assert.AreEqual(MockContext.Object.SetupSolutions.Count(), sc - 1);
+            Assert.AreEqual(MockContext.Object.UnitTestSolutions.Count(), uc - 1);
+            MockContext.Verify(m => m.SaveChanges(), Times.Once);
+            Assert.AreEqual(true, result);
+        }
+
+        [TestMethod]
+        public void Cannot_Delete_UnitSolutionWithWrongId()
+        {
+            int uc = MockContext.Object.UnitTestSolutions.Count();
+
+            var result = Service.DeleteUnitSolution(10);
+
+            Assert.AreEqual(MockContext.Object.SetupSolutions.Count(), uc);
+            MockContext.Verify(m => m.SaveChanges(), Times.Never);
+            Assert.AreEqual(false, result);
+        }
+
+        [TestMethod]
+        public void Can_Delete_UnitSolution()
+        {
+            int uc = MockContext.Object.UnitTestSolutions.Count();
+                    
+            var result = Service.DeleteUnitSolution(1);
+
+            Assert.AreEqual(MockContext.Object.UnitTestSolutions.Count(), uc - 1);
+            MockContext.Verify(m => m.SaveChanges(), Times.Once);
+            Assert.AreEqual(true, result);
+        }
+
     }
 }

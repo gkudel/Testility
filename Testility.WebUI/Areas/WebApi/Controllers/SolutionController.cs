@@ -92,7 +92,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
 
         [ArgumentNullExceptionFilter]
         [System.Web.Mvc.ValidateAntiForgeryToken]
-        public HttpResponseMessage Put(int id, SolutionViewModel model)
+        public HttpResponseMessage Put(SolutionViewModel model)
         {
             return CreateOrUpdate(model);
         }

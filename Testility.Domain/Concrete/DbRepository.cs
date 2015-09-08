@@ -120,17 +120,34 @@ namespace Testility.Domain.Concrete
             }
             Commit();
         }        
-        public bool DeleteSolution(int id)
+        public bool DeleteSetupSolution(int id)
         {
             SetupSolution solution = context.SetupSolutions.FirstOrDefault(s => s.Id == id);
             if (solution != null)
             {
+                var list = solution.UnitTests?.ToList() ?? new List<UnitTestSolution>();
+                foreach (UnitTestSolution u in list)
+                {
+                    context.UnitTestSolutions.Remove(u);
+                }
                 context.SetupSolutions.Remove(solution);
                 Commit();
                 return true;
             }
             return false;
         }
+        public bool DeleteUnitSolution(int id)
+        {
+            UnitTestSolution solution = context.UnitTestSolutions.FirstOrDefault(s => s.Id == id);
+            if (solution != null)
+            {
+                context.UnitTestSolutions.Remove(solution);
+                Commit();
+                return true;
+            }
+            return false;
+        }
+
         public IQueryable<UnitTestSolution> GetUnitTestSolutions(bool lazyloading = true)
         {
             var ret = context.UnitTestSolutions.AsQueryable();

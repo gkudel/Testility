@@ -63,5 +63,45 @@ namespace Testility.WebUI.Controllers
             }
             return View("Solution");
         }
+
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            UnitTestSolution solution = dbRepository.GetUnitTestSolution(id.Value);
+            if (solution == null)
+            {
+                return HttpNotFound();
+            }
+            return View(Mapper.Map<SolutionViewModel>(solution));
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            try
+            {
+                dbRepository.DeleteUnitSolution(id);
+                TempData["savemessage"] = string.Format("Solution has been deleted");
+            }
+            catch (Exception /*ex*/ )
+            {
+                ModelState.AddModelError(string.Empty, string.Format("An error occurred when deleting"));
+            }
+
+            return RedirectToAction("List");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                dbRepository.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Testility.Domain.Infrastructure
 {
-    public class EFDbContextInterceptorError : DbCommandInterceptor
+    public class DbContextInterceptorError : DbCommandInterceptor
     {
         public override void NonQueryExecuting(DbCommand command, DbCommandInterceptionContext<int> interceptionContext)
         {

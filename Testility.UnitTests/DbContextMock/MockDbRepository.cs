@@ -9,7 +9,7 @@ using Testility.Domain.Entities;
 
 namespace Testility.UnitTests.DbContextMock
 {
-    public class MockSetupRepository 
+    public class MockDbRepository 
     {
         #region Members
         private Mock<IDbRepository> _mock;
@@ -31,7 +31,7 @@ namespace Testility.UnitTests.DbContextMock
         }
         #endregion Members
 
-        public MockSetupRepository()
+        public MockDbRepository()
         {
         }
 
@@ -53,7 +53,7 @@ namespace Testility.UnitTests.DbContextMock
 
             _mock = new Mock<IDbRepository>();
             _mock.Setup(x => x.GetSetupSolutions(It.IsAny<bool>())).Returns(SolutionList);
-            _mock.Setup(x => x.DeleteSolution(It.IsAny<int>())).Returns(true);
+            _mock.Setup(x => x.DeleteSetupSolution(It.IsAny<int>())).Returns(true);
             _mock.Setup(x => x.IsAlreadyDefined(It.IsAny<string>(), It.IsAny<int>())).Returns(true);
         }
     }

@@ -22,6 +22,7 @@ namespace Testility.WebUI.Model
         public int[] References { get; set; }
         public ItemViewModel[] Items { get; set; }
         public string Title { get; set; }
+        public int SetupId { get; set; }
 
     }
 }

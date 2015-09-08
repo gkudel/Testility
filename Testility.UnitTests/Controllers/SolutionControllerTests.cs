@@ -27,7 +27,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
     public class SolutionControllerTests
     {
         #region Members
-        public MockSetupRepository MockSetupRepository { get; set; }
+        public MockDbRepository MockSetupRepository { get; set; }
         public Mock<ICompilerService> CompilerMock { get; set; }
         public SolutionController solutionController { get; set; }
 
@@ -35,7 +35,7 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         [TestInitialize]
         public void Int()
         {
-            MockSetupRepository = new MockSetupRepository();
+            MockSetupRepository = new MockDbRepository();
             CompilerMock = new Mock<ICompilerService>();
             solutionController = new SolutionController(MockSetupRepository.Repository, CompilerMock.Object);
             var config = new HttpConfiguration();
@@ -166,7 +166,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
     public class SolutionControllerTests
     {
         #region Members
-        public MockSetupRepository MockSetupRepository { get; set; }
+        public MockDbRepository MockDbRepository { get; set; }
         public SolutionController solutionController { get; set; }
         #endregion Members
 
@@ -174,10 +174,10 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [TestInitialize]
         public void Int()
         {
-            MockSetupRepository = new MockSetupRepository();
+            MockDbRepository = new MockDbRepository();
 
             AutoMapperConfiguration.Configure();
-            solutionController = new SolutionController(MockSetupRepository.Repository);
+            solutionController = new SolutionController(MockDbRepository.Repository);
         }
         #endregion Init
 
@@ -240,7 +240,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [TestMethod]
         public void Cannot_EditNonExistsSolution_NotFound()
         {
-            MockSetupRepository.Mock.Setup(x => x.GetSetupSolution(It.IsAny<int>())).Returns((SetupSolution)null);
+            MockDbRepository.Mock.Setup(x => x.GetSetupSolution(It.IsAny<int>())).Returns((SetupSolution)null);
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
             var result = solutionController.Edit(It.IsAny<int>()) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
@@ -250,7 +250,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Can_Edit_Solution_Redirect()
         {
             SetupSolution singleSolution = new SetupSolution() { Id = 1 };
-            MockSetupRepository.Mock.Setup(x => x.GetSetupSolution(It.IsAny<int>())).Returns(singleSolution);
+            MockDbRepository.Mock.Setup(x => x.GetSetupSolution(It.IsAny<int>())).Returns(singleSolution);
             var result = solutionController.Edit(1) as ViewResult;
             Assert.AreEqual("Solution", result.ViewName);
         }
@@ -271,7 +271,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Cannot_Delete_NonExists_Solutions()
         {
             HttpStatusCodeResult expected = new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            MockSetupRepository.Mock.Setup(x => x.GetSetupSolution(It.IsAny<int>())).Returns((SetupSolution)null);
+            MockDbRepository.Mock.Setup(x => x.GetSetupSolution(It.IsAny<int>())).Returns((SetupSolution)null);
 
             var result = solutionController.Delete(10) as HttpStatusCodeResult;
             Assert.AreEqual(expected.StatusCode, result.StatusCode);
@@ -282,7 +282,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
 
             SetupSolution solution = new SetupSolution() { Id = 1, Name = "ok" };
-            MockSetupRepository.Mock.Setup(x => x.GetSetupSolution(It.IsAny<int>())).Returns(solution);
+            MockDbRepository.Mock.Setup(x => x.GetSetupSolution(It.IsAny<int>())).Returns(solution);
 
             ViewResult result = solutionController.Delete(1) as ViewResult;
             var model = (result as ViewResult).Model as SolutionViewModel;
@@ -292,9 +292,9 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         [TestMethod]
         public void Cannot_Delete_Solution_WhenException()
         {
-            MockSetupRepository.Mock.Setup(x => x.DeleteSolution(It.IsAny<int>())).Throws(new Exception());
+            MockDbRepository.Mock.Setup(x => x.DeleteSetupSolution(It.IsAny<int>())).Throws(new Exception());
             var result = solutionController.DeleteConfirmed(1) as RedirectToRouteResult;
-            MockSetupRepository.Mock.Verify(x => x.DeleteSolution(It.IsAny<int>()), Times.Once);
+            MockDbRepository.Mock.Verify(x => x.DeleteSetupSolution(It.IsAny<int>()), Times.Once);
             Assert.AreEqual("List", result.RouteValues["action"]);
         }
 
@@ -302,7 +302,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Can_Delete_Solution()
         {
             var result = solutionController.DeleteConfirmed(1) as RedirectToRouteResult;
-            MockSetupRepository.Mock.Verify(x=>x.DeleteSolution(1), Times.Once);
+            MockDbRepository.Mock.Verify(x => x.DeleteSetupSolution(1), Times.Once);
             Assert.AreNotEqual(null, solutionController.TempData["savemessage"]);
             Assert.AreEqual("List", result.RouteValues["action"]);
         }

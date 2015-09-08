@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Testility.Domain.Infrastructure
 {
-    public class EFDbContextConfiguration : DbConfiguration
+    public class DbContextConfiguration : DbConfiguration
     {
-        public EFDbContextConfiguration()
+        public DbContextConfiguration()
         {
-            DbInterception.Add(new EFDbContextInterceptorError());
-            DbInterception.Add(new EFDbContextInterceptorLogging());
+            DbInterception.Add(new DbContextInterceptorError());
+            DbInterception.Add(new DbContextInterceptorLogging());
         }
     }
 }

@@ -8,10 +8,10 @@
     <div class="panel-heading">
         <div><h2><strong><span class="glyphicon glyphicon-trash"></span> Are you sure you want to delete this solution?</strong></h2></div>
     </div>
-    @Html.EditorForModel();
+    @Html.EditorForModel()
     <div class="panel-footer">
         <div class="text-center">
-            @using (Html.BeginForm("Delete", "Solution", FormMethod.Post, new { id = "Delete", role = "form" }))
+            @using (Html.BeginForm("Delete", "UnitTest", FormMethod.Post, new { id = "Delete", role = "form" }))
             {
                 @Html.AntiForgeryToken()
 

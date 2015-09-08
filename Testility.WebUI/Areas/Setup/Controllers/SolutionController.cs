@@ -19,12 +19,12 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class SolutionController : Controller
     {
-        private readonly IDbRepository setupRepository;
+        private readonly IDbRepository dbRepository;
         public int PageSize { get; set; }
 
         public SolutionController(IDbRepository setupRepository)
         {
-            this.setupRepository = setupRepository;
+            this.dbRepository = setupRepository;
             PageSize = 3;
         }
 
@@ -33,7 +33,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             ViewBag.SelecttedSolution = selecttedSolution;
             IndexViewModel<SolutionIndexItemViewModel> data = new IndexViewModel<SolutionIndexItemViewModel>()
             {
-                List = setupRepository.GetSetupSolutions(false)
+                List = dbRepository.GetSetupSolutions(false)
                     .OrderBy(p => p.Id)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize)
@@ -43,7 +43,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = setupRepository.GetSetupSolutions().Count()
+                    TotalItems = dbRepository.GetSetupSolutions().Count()
                 }
             };
 
@@ -65,7 +65,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SetupSolution solution = setupRepository.GetSetupSolution(id.Value);
+            SetupSolution solution = dbRepository.GetSetupSolution(id.Value);
             if (solution == null)
             {
                 return HttpNotFound();
@@ -79,7 +79,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            SetupSolution solution = setupRepository.GetSetupSolution(id.Value);
+            SetupSolution solution = dbRepository.GetSetupSolution(id.Value);
             if (solution == null)
             {
                return HttpNotFound();
@@ -93,12 +93,12 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             try
             {
-                setupRepository.DeleteSolution(id);
+                dbRepository.DeleteSetupSolution(id);
                 TempData["savemessage"] = string.Format("Solution has been deleted");
             }
             catch (Exception /*ex*/ )
             {
-                ModelState.AddModelError(String.Empty, string.Format("An error occurred when deleting"));
+                ModelState.AddModelError(string.Empty, string.Format("An error occurred when deleting"));
             } 
             
             return RedirectToAction("List");
@@ -108,7 +108,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             if (disposing)
             {
-                setupRepository.Dispose();
+                dbRepository.Dispose();
             }
             base.Dispose(disposing);
         }
