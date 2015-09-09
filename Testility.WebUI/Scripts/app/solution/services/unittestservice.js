@@ -1,4 +1,4 @@
-﻿angular.module('Testility')
+﻿angular.module('testility')
     .factory('unitTestService', ['Restangular', '$location', 'qSpiner', 'uiBrowserDialog', 'ui.config', 'ctr', function (Restangular, $location, qSpiner, uiBrowserDialog, uiConfig, ctr) {
         var service = function () {
             var _changeSolution = function (instance) {

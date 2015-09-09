@@ -12,3 +12,4 @@ Testility.Logger/bin/
 Testility.WebUI/App_Data/
 Testility.WebUI/App_Data/
 .vs
+Testility.WebUI/node_modules/

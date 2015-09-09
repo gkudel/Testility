@@ -1,4 +1,4 @@
-﻿angular.module('Testility')
+﻿angular.module('testility')
     .factory('ctr', function () {
         return function (solution) {
             Object.defineProperty(solution, 'RefList', {
@@ -21,7 +21,7 @@
             return solution;
         };
     })        
-    .factory('solutionservice', ['$location', 'setupservice', 'unitTestService', 'ctr', 'Restangular', 'qSpiner', function ($location, setupservice, unitTestService, ctr, Restangular, qSpiner) {
+    .factory('solutionservice', ['$location', 'Restangular', 'setupservice', 'unitTestService', 'ctr', 'qSpiner', function ($location, Restangular, setupservice, unitTestService, ctr, qSpiner) {
         var serivce = {
             Solution: {},
             Loaded: false,
@@ -43,6 +43,8 @@
             removeItem: function (index) {
                 if (index <= this.Solution.ItemsList.length) {
                     this.Solution.ItemsList.splice(index, 1);
+                } else {
+                    throw 'Index Out of Bounds';
                 }
             },
             getInstance: function () {

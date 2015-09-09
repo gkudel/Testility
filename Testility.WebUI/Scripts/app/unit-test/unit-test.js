@@ -1,4 +1,4 @@
-﻿angular.module('Testility')
+﻿angular.module('testility')
     .factory('config', function ($http, $q) {
         return {
             getDataSource: function () {

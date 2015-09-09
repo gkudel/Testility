@@ -9,19 +9,19 @@ namespace Testility.WebUI
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/lib/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                        "~/Scripts/lib/jquery.validate*"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+                        "~/Scripts/lib/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/lib/bootstrap.js",
+                      "~/Scripts/lib/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
@@ -32,30 +32,35 @@ namespace Testility.WebUI
 
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                    "~/Scripts/angular/framework/angular.js",
-                    "~/Scripts/angular/framework/angular-animate.js",
-                    "~/Scripts/angular-ui/angular-ui.js",
-                    "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
-                    "~/Scripts/angular-ui/angular-block-ui.js",
-                    "~/Scripts/angular/main.js",
-                    "~/Scripts/angular/validation/validation.js",
-                    "~/Scripts/angular/browser/browser.js",
-                    "~/Scripts/angular/messaging/messaging.js",
-                    "~/Scripts/angular/dialogbox/dialogbox.js",
-                    "~/Scripts/iosOverlay.js",
-                    "~/Scripts/spin.min.js",
-                    "~/Scripts/angular/spiner/spiner.js",
-                    "~/Scripts/angular/framework/restangular.js",
-                    "~/Scripts/angular/framework/lodash.js"));
+                    "~/Scripts/lib/angular/angular.js",
+                    "~/Scripts/lib/angular/angular-animate.js",
+                    "~/Scripts/lib/angular-ui/angular-ui.js",
+                    "~/Scripts/lib/angular-ui/ui-bootstrap-tpls.js",
+                    "~/Scripts/lib/angular-ui/angular-block-ui.js",
+                    "~/Scripts/lib/iosOverlay.js",
+                    "~/Scripts/lib/spin.min.js",
+                    "~/Scripts/lib/angular/restangular.js",
+                    "~/Scripts/lib/angular/lodash.js",
+                    "~/Scripts/app/testility.module.js",
+                    "~/Scripts/app/testility.value.js",
+                    "~/Scripts/app/testility.config.js",
+                    "~/Scripts/app/validation/validation.js",
+                    "~/Scripts/app/browser/browser.module.js",
+                    "~/Scripts/app/browser/browser.directive.js",
+                    "~/Scripts/app/browser/browser.service.js",
+                    "~/Scripts/app/browser/browser.controller.js",
+                    "~/Scripts/app/messaging/messaging.js",
+                    "~/Scripts/app/dialogbox/dialogbox.js",
+                    "~/Scripts/app/spiner/spiner.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
-                "~/Scripts/codemirror-3.0/codemirror.js",
-                "~/Scripts/codemirror-3.0/util/matchbrackets.js",
-                "~/Scripts/codemirror-3.0/mode/clike.js",
-                "~/Scripts/angular/solution/services/solutionservice.js",
-                "~/Scripts/angular/solution/services/setupservice.js",
-                "~/Scripts/angular/solution/services/unittestservice.js",
-                "~/Scripts/angular/solution/controllers/solutioncontroller.js"));
+                "~/Scripts/lib/codemirror-3.0/codemirror.js",
+                "~/Scripts/lib/codemirror-3.0/util/matchbrackets.js",
+                "~/Scripts/lib/codemirror-3.0/mode/clike.js",
+                "~/Scripts/app/solution/services/solutionservice.js",
+                "~/Scripts/app/solution/services/setupservice.js",
+                "~/Scripts/app/solution/services/unittestservice.js",
+                "~/Scripts/app/solution/controllers/solutioncontroller.js"));
         }
     }
 }

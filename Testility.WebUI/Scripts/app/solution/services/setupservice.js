@@ -1,4 +1,4 @@
-﻿angular.module('Testility')
+﻿angular.module('testility')
     .factory('setupservice', ['Restangular', 'qSpiner', 'ctr', function (Restangular, qSpiner, ctr) {
         var service = function () {
             this.getInstance = function () {

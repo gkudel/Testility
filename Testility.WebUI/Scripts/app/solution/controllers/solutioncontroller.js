@@ -1,4 +1,4 @@
-﻿angular.module('Testility')
+﻿angular.module('testility')
     .controller('SolutionController', ['$scope', 'solutionservice', 'dialogbox', 'messaging', function ($scope, service, dialogbox, messaging) {
 
         service.getInstance();
