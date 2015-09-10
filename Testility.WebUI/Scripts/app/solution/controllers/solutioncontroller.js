@@ -105,6 +105,9 @@
             }
         });
 
+        $scope.EditorLoaded = function (codemirror) {
+            codemirror.refresh();
+        };
     }]).directive('convertNumber', function() {
         return {
             require: 'ngModel',

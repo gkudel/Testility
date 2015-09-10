@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title </title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
     @RenderSection("css", required: false)
 </head>
 <body>    
@@ -33,9 +32,8 @@
     </div>
 
     @{  Html.RenderPartial("_DialogBox"); }
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/angular")
-    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bower_components")
+    @Scripts.Render("~/bundles/testility")
     @RenderSection("scripts", required: false)
 </body>
 </html>

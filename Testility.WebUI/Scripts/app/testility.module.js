@@ -1,4 +1,11 @@
 ﻿(function (angular) {
     angular
-        .module("testility", ['ui', 'ui.browser', 'ui.messaging', 'ui.dialogbox', 'ui.spiner', 'validation', 'restangular']);
+        .module('testility', [
+            'restangular',
+            'ui.codemirror',
+            'ui.browser',
+            'ui.messaging',
+            'ui.dialogbox',
+            'ui.spiner',
+            'validation']);
 })(window.angular);

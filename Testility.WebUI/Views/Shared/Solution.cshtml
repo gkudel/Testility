@@ -52,7 +52,7 @@
                             <div class="panel panel-default">
                                 <div class="form-horizontal  padding-top-10">
                                     <div class="padding-non" ng-controller="CodeController">
-                                        <textarea ui-codemirror ng-model="code" name="Items[{{$index}}].Code" ui-create="item.active"></textarea>
+                                        <textarea ui-codemirror="{onLoad: EditorLoaded}" ng-model="code" name="Items[{{$index}}].Code"></textarea>
                                     </div>
                                 </div>
                             </div>

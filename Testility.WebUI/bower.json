@@ -1,0 +1,18 @@
+{
+  "name": "ASP.NET",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.5",
+    "angular-animate": "~1.4.5",
+    "angular-bootstrap": "~0.13.4",
+    "angular-mocks": "~1.4.5",
+    "angular-ui-codemirror": "~0.3.0",
+    "bootstrap": "~3.3.5",
+    "iOS-Overlay": "~0.0.1",
+    "jquery": "jQuery#~2.1.4",
+    "Microsoft.jQuery.Unobtrusive.Validation": "~3.2.3",
+    "modernizr": "~2.8.3",
+    "respond": "~1.4.2",
+    "restangular": "~1.5.1"
+  }
+}
