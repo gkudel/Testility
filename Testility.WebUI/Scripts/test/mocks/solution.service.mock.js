@@ -17,6 +17,8 @@
                         resolve('Ok');
                     });
                     return p;
+                },
+                removeItem: function (index) {
                 }
             };
         });
