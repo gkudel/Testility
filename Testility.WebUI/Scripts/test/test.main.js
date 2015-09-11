@@ -13,10 +13,10 @@ require.config({
     paths: {
         angular: '/base/bower_components/angular/angular',
         angularMocks: '/base/bower_components/angular-mocks/angular-mocks',
-        testility: '/base/Scripts/app/testility.module',
-        solutionController: '/base/Scripts/app/solution/controllers/solutioncontroller',
+        solutionModule: '/base/Scripts/app/solution/solution.module',
+        solutionController: '/base/Scripts/app/solution/solution.controller',
         //Mocks
-        setupserviceMock: '/base/Scripts/test/mocks/solutionservice.mock',
+        solutionServiceMock: '/base/Scripts/test/mocks/solution.service.mock',
         restangularMock: '/base/Scripts/test/mocks/restangular.mock',
         uiCodemirrorMock: '/base/Scripts/test/mocks/ui.codemirror.mock',
         uiBrowserMock: '/base/Scripts/test/mocks/ui.browser.mock',
@@ -31,16 +31,16 @@ require.config({
             deps: ['angular'],
             'exports': 'angular.mock'
         },
-        'testility': {
+        'solutionModule': {
             deps: ['angular', 'angularMocks'],
-            'exports': 'testility'
+            'exports': 'solutionModule'
         },
         'solutionController': {
-            deps: ['angular', 'angularMocks', 'testility']
+            deps: ['angular', 'angularMocks', 'solutionModule']
         },
         //Mocks
-        'setupserviceMock': {
-            deps: ['angular', 'angularMocks', 'testility']
+        'solutionServiceMock': {
+            deps: ['angular', 'angularMocks', 'solutionModule']
         },
         'restangularMock': {
             deps: ['angular', 'angularMocks']

@@ -8,7 +8,7 @@
         var vm = this;
 
         service.init();
-        messaging.init(SolutionForm, $scope, vm);
+        //messaging.init(SolutionForm, $scope, vm);
 
         //Members
         vm.Entry = service.Entry;
@@ -24,7 +24,7 @@
         vm.SetReferences = setReferences;
         vm.ChangeSolution = changeSolution;
 
-        refresh();
+        //refresh();
 
         function addTab(solutionId) {
             if (service.Loaded) {

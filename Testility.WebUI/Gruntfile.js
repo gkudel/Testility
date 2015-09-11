@@ -1,3 +1,4 @@
+/// <binding Clean='karma:unit' />
 'use strict';
 
 module.exports = function(grunt) {
