@@ -2,6 +2,7 @@
     angular
         .module('testility.solution').factory('SolutionService', function () {
             return {
+                Loaded: true,
                 init: function () {
                 },
                 Solution: {
@@ -13,13 +14,16 @@
                     RefList: []
                 },
                 get: function () {
-                    var p = new Promise(function (resolve, reject) {
-                        resolve('Ok');
-                    });
-                    return p;
+                    return {
+                        then: function (f) {
+                            if (f) {
+                                f('Ok');
+                            }
+                        }
+                    }
                 },
-                removeItem: function (index) {
-                }
+                removeItem: jasmine.createSpy('removeItem'),
+                newItem: jasmine.createSpy('newItem')
             };
         });
 })(window.angular);

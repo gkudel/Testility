@@ -40,6 +40,8 @@
                 }
                 , function (result) {
                 });
+            } else {
+                throw 'Solution not loaded';
             }
         };
 
