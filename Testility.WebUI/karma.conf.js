@@ -6,6 +6,7 @@ module.exports = function(config) {
         { pattern: 'bower_components/**/*.js', included: false },
         { pattern: 'Scripts/app/**/*.js', included: false },
         { pattern: 'Scripts/test/**/*spec.js', included: false },
+        { pattern: 'Scripts/test/**/*mock.js', included: false },
         'Scripts/test/test.main.js'
     ],
     exclude: ['**/*min.js'],

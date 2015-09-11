@@ -1,5 +1,5 @@
 ﻿angular.module('testility')
-    .factory('unitTestService', ['Restangular', '$location', 'qSpiner', 'uiBrowserDialog', 'ui.config', 'ctr', function (Restangular, $location, qSpiner, uiBrowserDialog, uiConfig, ctr) {
+    .factory('unitTestService', ['Restangular', '$location', 'qSpiner', 'uiBrowserDialog', 'ui.config', 'ctr', function (Restangular, qSpiner, uiBrowserDialog, uiConfig, ctr) {
         var service = function () {
             var _changeSolution = function (instance) {
                 var promise = new Promise(function (resolve, reject) {

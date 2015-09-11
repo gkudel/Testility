@@ -313,19 +313,35 @@
     <Content Include="Scripts\app\browser\browser.directive.js" />
     <Content Include="Scripts\app\browser\browser.module.js" />
     <Content Include="Scripts\app\browser\browser.service.js" />
-    <Content Include="Scripts\app\dialogbox\dialogbox.js" />
-    <Content Include="Scripts\app\messaging\messaging.js" />
-    <Content Include="Scripts\app\solution\controllers\solutioncontroller.js" />
-    <Content Include="Scripts\app\solution\services\setupservice.js" />
-    <Content Include="Scripts\app\solution\services\solutionservice.js" />
+    <Content Include="Scripts\app\dialogbox\dialogbox.controller.js" />
+    <Content Include="Scripts\app\dialogbox\dialogbox.directive.js" />
+    <Content Include="Scripts\app\dialogbox\dialogbox.module.js" />
+    <Content Include="Scripts\app\dialogbox\dialogbox.service.js" />
+    <Content Include="Scripts\app\messaging\messaging.directive.js" />
+    <Content Include="Scripts\app\messaging\messaging.module.js" />
+    <Content Include="Scripts\app\messaging\messaging.service.js" />
+    <Content Include="Scripts\app\solution\solution.controller.js" />
     <Content Include="Scripts\app\solution\services\unittestservice.js" />
-    <Content Include="Scripts\app\spiner\spiner.js" />
+    <Content Include="Scripts\app\solution\solution.module.js" />
+    <Content Include="Scripts\app\solution\solution.service.js" />
+    <Content Include="Scripts\app\spiner\spiner.module.js" />
+    <Content Include="Scripts\app\spiner\spiner.service.js" />
     <Content Include="Scripts\app\testility.config.js" />
     <Content Include="Scripts\app\testility.module.js" />
-    <Content Include="Scripts\app\unit-test\unit-test.js" />
     <Content Include="Scripts\app\testility.value.js" />
-    <Content Include="Scripts\app\validation\validation.js" />
+    <Content Include="Scripts\app\util\util.directive.js" />
+    <Content Include="Scripts\app\util\util.module.js" />
+    <Content Include="Scripts\app\validation\data.validation.directive.js" />
+    <Content Include="Scripts\app\validation\data.validation.module.js" />
     <Content Include="package.json" />
+    <Content Include="Scripts\test\mocks\restangular.mock.js" />
+    <Content Include="Scripts\test\mocks\solutionservice.mock.js" />
+    <Content Include="Scripts\test\mocks\ui.browser.mock.js" />
+    <Content Include="Scripts\test\mocks\ui.codemirror.mock.js" />
+    <Content Include="Scripts\test\mocks\ui.dialogbox.mock.js" />
+    <Content Include="Scripts\test\mocks\ui.messaging.mock.js" />
+    <Content Include="Scripts\test\mocks\ui.spiner.mock.js" />
+    <Content Include="Scripts\test\mocks\validation.mock.js" />
     <Content Include="Scripts\test\test.main.js" />
     <Content Include="Views\Shared\Solution.cshtml" />
     <Content Include="Scripts\test\solution.service.spec.js" />
@@ -351,7 +367,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\test\mocks\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

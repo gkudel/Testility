@@ -1,31 +1,22 @@
-﻿angular.module('validation', [])
-    .value('getPrefix', function (ngModel) {
-        var prefix = '';
-        if (ngModel) {
-            var array = ngModel.split('.');
-            for (var i = 0; i < array.length - 1; i++) {
-                if (prefix) prefix = prefix + '.' + array[i];
-                else prefix = array[i];
-            }
-            if (prefix) {
-                prefix = prefix + '.';
-            }
-        }
-        return prefix;
-    })
-    .directive('val', ['$compile', 'getPrefix', function ($compile, getPrefix) {
+﻿(function (angular) {
+    angular.module('data.validation')
+        .directive('val', valDirective)
+        .directive('valRemote', valRemoteDirective);
+
+    valDirective.$inject = ['$compile'];
+    function valDirective($compile) {
         var required = function (element) {
-            mapper([{ source: 'val-required', destination: [ { key: 'required', value: 'true'}, { key: 'errormsg-required' }] }], element);
+            mapper([{ source: 'val-required', destination: [{ key: 'required', value: 'true' }, { key: 'errormsg-required' }] }], element);
         };
         var length = function (element) {
             mapper([{ source: 'val-length', destination: [{ key: 'errormsg-length' }] },
-                    { source: 'val-length-max', destination:  [{ key: 'ng-maxlength' }] },
-                    { source: 'val-length-min', destination:  [{ key: 'ng-minlength' }] }],
+                    { source: 'val-length-max', destination: [{ key: 'ng-maxlength' }] },
+                    { source: 'val-length-min', destination: [{ key: 'ng-minlength' }] }],
                     element);
         };
         var onBlur = function (element) {
             mapper([{ source: 'val-remote', destination: [{ key: 'errormsg-remote' }], removesource: false }], element);
-            mapper([{destination: [{ key: 'ng-model-options', value: '{ updateOn: \'blur\' }' }] }], element);
+            mapper([{ destination: [{ key: 'ng-model-options', value: '{ updateOn: \'blur\' }' }] }], element);
         };
 
         var mapper = function (map, element) {
@@ -67,15 +58,15 @@
 
         var remoteAdditionalFields = function (element) {
             var fields = element.attr('data-val-remote-additionalfields');
-            if (!fields) fields = element.attr('val-remote-additionalfields');            
-            if (fields) {                
+            if (!fields) fields = element.attr('val-remote-additionalfields');
+            if (fields) {
                 var array = fields.split(',');
                 var out;
                 if (array) {
                     var prefix = getPrefix(element.attr('ng-model'));
                     for (var i = 0; i < array.length; i++) {
                         var field = array[i];
-                        if (field.indexOf('*.') === 0) field = field.substring(2);                        
+                        if (field.indexOf('*.') === 0) field = field.substring(2);
                         if (out) out = out + ', ' + "\"" + field + "\": \"{{" + prefix + field + "}}\"";
                         else out = "\"" + field + "\": \"{{" + prefix + field + "}}\"";
                     }
@@ -103,7 +94,7 @@
                         var h = handlers[attr];
                         if (h && typeof h === 'function') {
                             h(element);
-                        } 
+                        }
                     }
                 }
                 element.removeAttr("val");
@@ -116,24 +107,26 @@
                     }
                 };
             }
-        };        
-    }])
-    .directive('valRemote', ['$http', '$q', 'getPrefix', function ($http, $q, getPrefix) {
+        };
+    };
+    
+    valRemoteDirective.$inject = ['$http', '$q'];
+    function valRemoteDirective($http, $q) {
         return {
             restrict: 'A',
-            require: [ '^form','ngModel' ],
+            require: ['^form', 'ngModel'],
             link: function (scope, iElement, iAttrs, controller) {
                 var ngForm = controller[0];
                 var ngModel = controller[1];
-                var shouldProcess = function() {
+                var shouldProcess = function () {
                     var otherRulesInValid = false;
-                    for ( var p in ngModel.$error ) {
-                        if ( ngModel.$error[ p ] && p != 'remote' ) {
+                    for (var p in ngModel.$error) {
+                        if (ngModel.$error[p] && p != 'remote') {
                             otherRulesInValid = true;
                             break;
                         }
-                    } 
-                    return !( ngModel.$pristine || otherRulesInValid );
+                    }
+                    return !(ngModel.$pristine || otherRulesInValid);
                 };
                 var options = {
                     valRemoteAdditionalfields: [],
@@ -141,7 +134,7 @@
                 };
                 angular.extend(options, iAttrs);
                 if (options.valRemoteUrl) {
-                    ngModel.$asyncValidators.remote = function (newValue, oldValue) {                        
+                    ngModel.$asyncValidators.remote = function (newValue, oldValue) {
                         if (shouldProcess()) {
                             var obj = newValue;
                             var remote = iAttrs.remoteFields;
@@ -160,9 +153,25 @@
                             var d = $q.defer();
                             d.resolve(true);
                             return d.promise;
-                        }                        
+                        }
                     };
                 }
             }
         };
-    }]);
+    };
+
+    function getPrefix(ngModel) {
+        var prefix = '';
+        if (ngModel) {
+            var array = ngModel.split('.');
+            for (var i = 0; i < array.length - 1; i++) {
+                if (prefix) prefix = prefix + '.' + array[i];
+                else prefix = array[i];
+            }
+            if (prefix) {
+                prefix = prefix + '.';
+            }
+        }
+        return prefix;
+    };
+})(window.angular);

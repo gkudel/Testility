@@ -41,20 +41,30 @@ namespace Testility.WebUI
                     "~/Scripts/app/testility.module.js",
                     "~/Scripts/app/testility.value.js",
                     "~/Scripts/app/testility.config.js",
+                    "~/Scripts/app/util/util.module.js",
+                    "~/Scripts/app/util/util.directive.js",
                     "~/Scripts/app/browser/browser.module.js",
                     "~/Scripts/app/browser/browser.directive.js",
                     "~/Scripts/app/browser/browser.service.js",
                     "~/Scripts/app/browser/browser.controller.js",
-                    "~/Scripts/app/validation/validation.js",
-                    "~/Scripts/app/messaging/messaging.js",
-                    "~/Scripts/app/dialogbox/dialogbox.js",
-                    "~/Scripts/app/spiner/spiner.js"));
+                    "~/Scripts/app/dialogbox/dialogbox.module.js",
+                    "~/Scripts/app/dialogbox/dialogbox.directive.js",
+                    "~/Scripts/app/dialogbox/dialogbox.service.js",
+                    "~/Scripts/app/dialogbox/dialogbox.controller.js",
+                    "~/Scripts/app/messaging/messaging.module.js",
+                    "~/Scripts/app/messaging/messaging.directive.js",
+                    "~/Scripts/app/messaging/messaging.service.js",
+                    "~/Scripts/app/validation/data.validation.module.js",
+                    "~/Scripts/app/validation/data.validation.directive.js",
+                    "~/Scripts/app/spiner/spiner.module.js",
+                    "~/Scripts/app/spiner/spiner.service.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/solution").Include(
-                "~/Scripts/app/solution/services/solutionservice.js",
-                "~/Scripts/app/solution/services/setupservice.js",
-                "~/Scripts/app/solution/services/unittestservice.js",
-                "~/Scripts/app/solution/controllers/solutioncontroller.js"));
+                "~/Scripts/app/solution/solution.module.js",
+                "~/Scripts/app/solution/solution.service.js",
+                "~/Scripts/app/solution/solution.controller.js"
+               //"~/Scripts/app/solution/services/unittestservice.js",
+               ));
         }
     }
 }

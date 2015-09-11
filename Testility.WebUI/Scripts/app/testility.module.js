@@ -7,5 +7,7 @@
             'ui.messaging',
             'ui.dialogbox',
             'ui.spiner',
-            'validation']);
+            'data.validation',
+            'testility.util',
+            'testility.solution']);
 })(window.angular);

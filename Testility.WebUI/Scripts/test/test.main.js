@@ -13,7 +13,17 @@ require.config({
     paths: {
         angular: '/base/bower_components/angular/angular',
         angularMocks: '/base/bower_components/angular-mocks/angular-mocks',
-        testility: '/base/Scripts/app/testility.module'
+        testility: '/base/Scripts/app/testility.module',
+        solutionController: '/base/Scripts/app/solution/controllers/solutioncontroller',
+        //Mocks
+        setupserviceMock: '/base/Scripts/test/mocks/solutionservice.mock',
+        restangularMock: '/base/Scripts/test/mocks/restangular.mock',
+        uiCodemirrorMock: '/base/Scripts/test/mocks/ui.codemirror.mock',
+        uiBrowserMock: '/base/Scripts/test/mocks/ui.browser.mock',
+        uiMessagingMock: '/base/Scripts/test/mocks/ui.messaging.mock',
+        uiDialogboxMock: '/base/Scripts/test/mocks/ui.dialogbox.mock',
+        uiSpinerMock: '/base/Scripts/test/mocks/ui.spiner.mock',
+        validationMock: '/base/Scripts/test/mocks/validation.mock'
     },
     shim: {
         'angular': { 'exports': 'angular' },
@@ -24,8 +34,35 @@ require.config({
         'testility': {
             deps: ['angular', 'angularMocks'],
             'exports': 'testility'
+        },
+        'solutionController': {
+            deps: ['angular', 'angularMocks', 'testility']
+        },
+        //Mocks
+        'setupserviceMock': {
+            deps: ['angular', 'angularMocks', 'testility']
+        },
+        'restangularMock': {
+            deps: ['angular', 'angularMocks']
+        },
+        'uiCodemirrorMock': {
+            deps: ['angular', 'angularMocks']
+        },
+        'uiBrowserMock': {
+            deps: ['angular', 'angularMocks']
+        },
+        'uiMessagingMock': {
+            deps: ['angular', 'angularMocks']
+        },
+        'uiDialogboxMock': {
+            deps: ['angular', 'angularMocks']
+        },
+        'uiSpinerMock': {
+            deps: ['angular', 'angularMocks']
+        },
+        'validationMock': {
+            deps: ['angular', 'angularMocks']
         }
-
     },
 
     priority: [

@@ -1,5 +1,9 @@
-﻿angular.module('ui.spiner',[])
-    .factory('qSpiner', ['$q', '$timeout', function ($q, $timeout) {
+﻿(function (angular) {
+    angular.module('ui.spiner')
+        .factory('qSpiner', qSpinerService);
+    
+    qSpinerService.$inject = ['$q', '$timeout'];
+    function qSpinerService($q, $timeout) {
         var spinerService = {
             defer: function (caption, config) {
                 var s = new qSpiner();
@@ -16,8 +20,8 @@
         function qSpiner() {
             var overlay = undefined;
             var d = undefined;
-            var valid = function() {
-                if(!d) throw "Defer was not invoked";
+            var valid = function () {
+                if (!d) throw "Defer was not invoked";
             };
             var options = {
                 lines: 13,
@@ -54,7 +58,7 @@
                 }
                 d = $q.defer();
             };
-            this.resolve = function(result) {
+            this.resolve = function (result) {
                 valid();
                 d.resolve(result);
                 if (overlay) {
@@ -63,7 +67,7 @@
                             icon: options.resolve,
                             text: options.resolveText
                         });
-                        
+
                         $timeout(function () {
                             overlay.hide();
                         }, 300);
@@ -72,7 +76,7 @@
                     }
                 }
             };
-            this.reject = function(result) {
+            this.reject = function (result) {
                 valid();
                 d.reject(result);
                 if (overlay) {
@@ -94,6 +98,7 @@
                 valid();
                 return d.promise;
             };
-        };        
+        };
         return spinerService;
-    }]);
+    };
+})(window.angular);

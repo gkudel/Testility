@@ -1,17 +1,8 @@
-﻿angular.module('ui.messaging', [])
-    .directive('uiMessaging', ['ui.config', function (uiConfig) {
-        return {
-            restrict: 'A',
-            templateUrl: function (element, attrs) {
-                var options = uiConfig.messagingConfig || {
-                    templateUrl: '/Views/Shared/_Messaging.html'
-                };
-                options = angular.extend({}, options, attrs.uiMessaging);
-                return options.templateUrl;
-            },
-        };
-    }])
-    .factory('messaging', function () {
+﻿(function (angular) {
+    angular.module('ui.messaging')
+        .factory('messaging', messagingService); 
+        
+    function messagingService() {
         var service = function () {
             var _Messages = [];
             var _ErrorMessages = {};
@@ -31,7 +22,7 @@
                     _Messages.length = 0;
                 }
             };
-            var _add = function (message) {               
+            var _add = function (message) {
                 if (Array.isArray(message)) {
                     for (var i = 0; i < message.length; i++) {
                         _Messages.push(_createMessage(message[i]));
@@ -54,21 +45,23 @@
                 return m;
             }
             return {
-                init: function (scope, form) {
-                    if (scope) {
-                        Object.defineProperty(scope, 'Messages', {
+                init: function (form, scope, vm) {
+                    if (!form) throw 'Form is required';
+                    var obj = vm || scope;
+                    if (obj) {
+                        Object.defineProperty(obj, 'Messages', {
                             get: function () { return _Messages; }
                         });
-                        Object.getPrototypeOf(scope).removeMessage = function (index) {
+                        Object.getPrototypeOf(obj).removeMessage = function (index) {
                             _remove(index);
                         };
-                        Object.getPrototypeOf(scope).clearMessages = function () {
+                        Object.getPrototypeOf(obj).clearMessages = function () {
                             _clear();
                         };
-                        Object.getPrototypeOf(scope).addMessage = function (message) {
+                        Object.getPrototypeOf(obj).addMessage = function (message) {
                             _add(message);
                         };
-                        if (form) {
+                        if (scope) {
                             angular.forEach(form, function (value, key) {
                                 if (value.attributes.getNamedItem('client-validation-enabled')) {
                                     _ErrorMessages[value.name] = {};
@@ -90,7 +83,7 @@
                                                 _clear(function (message) {
                                                     return message.Id.indexOf(n[4] + '-') === 0;
                                                 });
-                                                if (n[2] && n[3]) {                                                    
+                                                if (n[2] && n[3]) {
                                                     for (var key in n[3]) {
                                                         var messages = {};
                                                         if (_ErrorMessages.hasOwnProperty(n[4])) {
@@ -99,9 +92,9 @@
                                                         if (messages.hasOwnProperty(key)) {
                                                             _add({ Alert: 'danger', Message: messages[key], Id: n[4] + '-' + key });
                                                         }
-                                                    }                                                    
-                                                }                                                
-                                            } 
+                                                    }
+                                                }
+                                            }
                                         });
                                 }
                             });
@@ -117,10 +110,11 @@
                 remove: function (index) {
                     _remove(index);
                 },
-                clear: function(){
+                clear: function () {
                     _clear();
                 }
             };
         };
         return new service();
-    });
+    };
+})(window.angular);
