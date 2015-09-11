@@ -11,6 +11,12 @@
                     References: [],
                     Items: [],
                     RefList: []
+                },
+                get: function () {
+                    var p = new Promise(function (resolve, reject) {
+                        resolve('Ok');
+                    });
+                    return p;
                 }
             };
         });

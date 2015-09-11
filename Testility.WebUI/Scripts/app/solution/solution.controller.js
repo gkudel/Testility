@@ -8,7 +8,7 @@
         var vm = this;
 
         service.init();
-        //messaging.init(SolutionForm, $scope, vm);
+        messaging.init($scope.SolutionForm, $scope);
 
         //Members
         vm.Entry = service.Entry;
@@ -24,7 +24,7 @@
         vm.SetReferences = setReferences;
         vm.ChangeSolution = changeSolution;
 
-        //refresh();
+        refresh();
 
         function addTab(solutionId) {
             if (service.Loaded) {
@@ -48,7 +48,7 @@
         };
 
         function refresh() {
-            vm.clearMessages();
+            messaging.clearMessages();
 
             service.get()
                 .then(function (solution) { },
@@ -61,14 +61,14 @@
 
         function compile() {
             if (service.Loaded) {
-                vm.clearMessages();
+                messaging.clearMessages();
                 service.compile().then(function (response) {
                     if (Array.isArray(response)) {
-                        vm.addMessage(response);
+                        messaging.addMessage(response);
                     }
                 }, function (error) {
                     if (Array.isArray(error)) {
-                        vm.addMessage(error);
+                        messaging.addMessage(error);
                     } else {
                         dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
                     }
@@ -77,16 +77,16 @@
         };
 
         function submit() {
-            vm.clearMessages();
+            messaging.clearMessages();
             if (!SolutionForm.$invalid && !SolutionForm.$pending) {
                 service.submit().then(function (response) {
                     if (response) {
                         if (response.hasOwnProperty('compileErrors'))
-                            vm.addMessage(response.compileErrors);
+                            messaging.addMessage(response.compileErrors);
                     }
                 }, function (error) {
                     if (Array.isArray(error)) {
-                        vm.addMessage(error);
+                        messaging.addMessage(error);
                     } else {
                         dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
                     }

@@ -335,7 +335,8 @@
     <Content Include="Scripts\app\validation\data.validation.module.js" />
     <Content Include="package.json" />
     <Content Include="Scripts\test\mocks\restangular.mock.js" />
-    <Content Include="Scripts\test\mocks\solutionservice.mock.js" />
+    <Content Include="Scripts\test\mocks\solution.service.mock.js" />
+    <Content Include="Scripts\test\mocks\testility.mock.js" />
     <Content Include="Scripts\test\mocks\ui.browser.mock.js" />
     <Content Include="Scripts\test\mocks\ui.codemirror.mock.js" />
     <Content Include="Scripts\test\mocks\ui.dialogbox.mock.js" />
@@ -344,7 +345,7 @@
     <Content Include="Scripts\test\mocks\validation.mock.js" />
     <Content Include="Scripts\test\test.main.js" />
     <Content Include="Views\Shared\Solution.cshtml" />
-    <Content Include="Scripts\test\solution.service.spec.js" />
+    <Content Include="Scripts\test\solution.controller.spec.js" />
     <None Include="Views\Shared\_DialogBox.cshtml" />
     <Content Include="Views\Shared\_Messaging.html" />
     <Content Include="Web.config" />
