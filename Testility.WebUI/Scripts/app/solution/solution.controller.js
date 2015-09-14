@@ -22,7 +22,7 @@
         vm.Refresh = refresh;
         vm.Compile = compile;
         vm.Submit = submit;        
-        vm.GetReferences = service.Solution.RefList;
+        vm.GetReferences = getReferences;
         vm.SetReferences = setReferences;
         vm.ChangeSolution = changeSolution;
         vm.SelectedTab = selectedTab;
@@ -103,6 +103,9 @@
                     }
                 });
             }
+        };
+        function getReferences() {
+            return service.Solution.RefList
         };
 
         function setReferences(ref) {
