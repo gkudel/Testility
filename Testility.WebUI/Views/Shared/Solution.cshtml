@@ -47,12 +47,12 @@
                     </div>
                     <div>
                         <tabset>
-                            <tab ng-repeat="item in ctrl.Solution.ItemsList" active="item.active" disable="item.disabled">
+                            <tab ng-repeat="item in ctrl.Solution.ItemsList" active="item.active" disable="item.disabled" select="ctrl.SelectedTab(item)">
                                 <tab-heading>{{item.Name}}<a href="" ng-click="ctrl.RemoveTab($index)" class="glyphicon glyphicon-remove" style="position: relative; right: -13px; top: -7px"></a></tab-heading>
                                 <div class="panel panel-default">
                                     <div class="form-horizontal  padding-top-10">
-                                        <div class="padding-non">
-                                            <textarea ui-codemirror ui-codemirror-opts="ctrl.editorOptions" ng-model="item.Code" name="sourceCode"></textarea>
+                                        <div class="padding-non"  ng-controller="CodeMirrorController">
+                                            <textarea ui-codemirror="{onLoad: OnLoad}" ui-codemirror-opts="editorOptions" ng-model="Code" name="sourceCode"></textarea>
                                         </div>
                                     </div>
                                 </div>

@@ -25,11 +25,7 @@
         vm.GetReferences = service.Solution.RefList;
         vm.SetReferences = setReferences;
         vm.ChangeSolution = changeSolution;
-        vm.editorOptions = {
-            lineNumbers: true,
-            matchBrackets: true,
-            mode: 'text/x-csharp'
-        };
+        vm.SelectedTab = selectedTab;
 
         refresh();
 
@@ -121,15 +117,43 @@
                 }
             });
         };
+
+        function selectedTab(item) {
+            $scope.$broadcast('SelectedTab_Changed', item);
+        }
     };
 
-    CodeMirrorController.$inject = ['$scope'];
-    function CodeMirrorController($scope) {
-        var vm = this;
-        vm.Code = $scope.$parent.item.Code;
-    
+    CodeMirrorController.$inject = ['$scope', '$timeout'];
+    function CodeMirrorController($scope, $timeout) {
+        var editorInstance = null;
+        $scope.Code = $scope.$parent.item.Code;
+        $scope.editorOptions = {
+            lineNumbers: true,
+            matchBrackets: true,
+            mode: 'text/x-csharp'
+        };
+        $scope.OnLoad = onLoad;
 
-        $scope.$watch("code", function (newValue, oldValue) {
+        function onLoad(instance) {
+            $timeout(_onLoad.bind(null, instance), 0, false)
+        }
+
+        function _onLoad(instance) {
+            instance.refresh();
+            instance.clearHistory();
+            instance.focus();
+            editorInstance = instance;
+        }
+
+        $scope.$on('SelectedTab_Changed', function (e, item) {            
+            if ($scope.$parent.item === item) {
+                if (!editorInstance) return;
+                var refresh = editorInstance.refresh.bind(editorInstance);
+                $timeout(refresh, 0, false);                
+            }
+        });
+
+        $scope.$watch("Code", function (newValue, oldValue) {
             if (newValue !== oldValue) {
                 $scope.$parent.item.Code = newValue;
             }
