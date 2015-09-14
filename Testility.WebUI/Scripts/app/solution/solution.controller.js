@@ -126,13 +126,18 @@
     CodeMirrorController.$inject = ['$scope', '$timeout'];
     function CodeMirrorController($scope, $timeout) {
         var editorInstance = null;
-        $scope.Code = $scope.$parent.item.Code;
-        $scope.editorOptions = {
+        var vm = this;        
+        vm.editorOptions = {
             lineNumbers: true,
             matchBrackets: true,
             mode: 'text/x-csharp'
         };
-        $scope.OnLoad = onLoad;
+        vm.OnLoad = onLoad;
+        vm.Code = getSourceCode;
+
+        function getSourceCode(newCode) {
+            return arguments.length ? ($scope.$parent.item.Code = newCode) : $scope.$parent.item.Code;
+        }
 
         function onLoad(instance) {
             $timeout(_onLoad.bind(null, instance), 0, false)
@@ -150,12 +155,6 @@
                 if (!editorInstance) return;
                 var refresh = editorInstance.refresh.bind(editorInstance);
                 $timeout(refresh, 0, false);                
-            }
-        });
-
-        $scope.$watch("Code", function (newValue, oldValue) {
-            if (newValue !== oldValue) {
-                $scope.$parent.item.Code = newValue;
             }
         });
     };

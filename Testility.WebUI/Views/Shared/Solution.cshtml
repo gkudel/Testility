@@ -51,8 +51,8 @@
                                 <tab-heading>{{item.Name}}<a href="" ng-click="ctrl.RemoveTab($index)" class="glyphicon glyphicon-remove" style="position: relative; right: -13px; top: -7px"></a></tab-heading>
                                 <div class="panel panel-default">
                                     <div class="form-horizontal  padding-top-10">
-                                        <div class="padding-non"  ng-controller="CodeMirrorController">
-                                            <textarea ui-codemirror="{onLoad: OnLoad}" ui-codemirror-opts="editorOptions" ng-model="Code" name="sourceCode"></textarea>
+                                        <div class="padding-non"  ng-controller="CodeMirrorController as codeCtrl">
+                                            <textarea ui-codemirror="{onLoad: codeCtrl.OnLoad}" ui-codemirror-opts="codeCtrl.editorOptions" ng-model="codeCtrl.Code" ng-model-options="{ getterSetter: true }" name="sourceCode"></textarea>
                                         </div>
                                     </div>
                                 </div>
