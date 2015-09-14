@@ -13,15 +13,16 @@
                     Items: [],
                     RefList: []
                 },
-                get: function () {
-                    return {
-                        then: function (f) {
-                            if (f) {
-                                f('Ok');
+                get: jasmine.createSpy('get')
+                    .and.callFake(function () {
+                        return {
+                            then: function (f) {
+                                if (f) {
+                                    f('Ok');
+                                };
                             }
                         }
-                    }
-                },
+                    }),
                 removeItem: jasmine.createSpy('removeItem'),
                 newItem: jasmine.createSpy('newItem')
             };

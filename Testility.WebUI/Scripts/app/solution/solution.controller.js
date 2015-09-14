@@ -75,12 +75,14 @@
                         dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
                     }
                 });
+            } else {
+                throw 'Solution not loaded';
             }
         };
 
         function submit() {
             messaging.clearMessages();
-            if (!SolutionForm.$invalid && !SolutionForm.$pending) {
+            if (!$scope.SolutionForm.$invalid && !$scope.SolutionForm.$pending) {
                 service.submit().then(function (response) {
                     if (response) {
                         if (response.hasOwnProperty('compileErrors'))
