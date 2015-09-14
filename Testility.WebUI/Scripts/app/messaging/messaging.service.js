@@ -47,6 +47,14 @@
             return {
                 init: function (form, scope) {
                     if (!form || !scope) throw 'Form && Scope are required';
+                    if (scope) {
+                        Object.defineProperty(scope, 'Messages', {
+                            get: function () { return _Messages; }
+                        });
+                        Object.getPrototypeOf(scope).removeMessage = function (index) {
+                            _remove(index);
+                        };
+                    }
                     angular.forEach(form, function (value, key) {
                         if (value.attributes.getNamedItem('client-validation-enabled')) {
                             _ErrorMessages[value.name] = {};

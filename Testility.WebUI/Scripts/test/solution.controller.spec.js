@@ -8,10 +8,10 @@
     beforeEach(angular.mock.module('testility.solution'));
     beforeEach(inject(function ($controller, $rootScope, SolutionService, dialogbox, messaging) {
         scope = $rootScope.$new();
-        scope.SolutionForm = {};
         solutionService = SolutionService;
         dialog = dialogbox;
         msg = messaging;
+        SolutionForm = {};
         solutionController = $controller('SolutionController', {
             $scope: scope
         });        
@@ -94,8 +94,8 @@
                             }
                         });
             solutionController.Compile();
-            expect(msg.clearMessages).toHaveBeenCalled();
-            expect(msg.addMessage).not.toHaveBeenCalled();
+            expect(msg.clear).toHaveBeenCalled();
+            expect(msg.add).not.toHaveBeenCalled();
         });
 
         it('Compile for with Errors', function () {
@@ -111,8 +111,8 @@
                             }
                         });
             solutionController.Compile();
-            expect(msg.clearMessages).toHaveBeenCalled();
-            expect(msg.addMessage).toHaveBeenCalled();
+            expect(msg.clear).toHaveBeenCalled();
+            expect(msg.add).toHaveBeenCalled();
         });
 
         it('Compile faild for with Errors', function () {
@@ -128,8 +128,8 @@
                             }
                         });
             solutionController.Compile();
-            expect(msg.clearMessages).toHaveBeenCalled();
-            expect(msg.addMessage).toHaveBeenCalled();
+            expect(msg.clear).toHaveBeenCalled();
+            expect(msg.add).toHaveBeenCalled();
         });
 
         it('Compile faild', function () {
@@ -145,23 +145,23 @@
                             }
                         });
             solutionController.Compile();
-            expect(msg.clearMessages).toHaveBeenCalled();
-            expect(msg.addMessage).not.toHaveBeenCalled();
+            expect(msg.clear).toHaveBeenCalled();
+            expect(msg.add).not.toHaveBeenCalled();
             expect(dialog.show).toHaveBeenCalled();
         });
 
         it('Submit $invalid not saved', function () {
             solutionService.submit = jasmine.createSpy('submit');
-            scope.SolutionForm.$invalid = true;
-            scope.SolutionForm.$pending = false;
+            SolutionForm.$invalid = true;
+            SolutionForm.$pending = false;
             solutionController.Submit();
             expect(solutionService.submit).not.toHaveBeenCalled();
         });
 
         it('Submit $pending not saved', function () {
             solutionService.submit = jasmine.createSpy('submit');
-            scope.SolutionForm.$invalid = false;
-            scope.SolutionForm.$pending = true;
+            SolutionForm.$invalid = false;
+            SolutionForm.$pending = true;
             solutionController.Submit();
             expect(solutionService.submit).not.toHaveBeenCalled();
         });
@@ -179,11 +179,11 @@
                                     }
                                 }
                             });
-            scope.SolutionForm.$invalid = false;
-            scope.SolutionForm.$pending = false;
+            SolutionForm.$invalid = false;
+            SolutionForm.$pending = false;
             solutionController.Submit();
             expect(solutionService.submit).toHaveBeenCalled();
-            expect(msg.addMessage).toHaveBeenCalled();
+            expect(msg.add).toHaveBeenCalled();
         });
 
         it('Submit saved with Errors', function () {
@@ -197,11 +197,11 @@
                                     }
                                 }
                             });
-            scope.SolutionForm.$invalid = false;
-            scope.SolutionForm.$pending = false;
+            SolutionForm.$invalid = false;
+            SolutionForm.$pending = false;
             solutionController.Submit();
             expect(solutionService.submit).toHaveBeenCalled();
-            expect(msg.addMessage).toHaveBeenCalled();
+            expect(msg.add).toHaveBeenCalled();
         });
 
         it('Submit failed', function () {
@@ -215,8 +215,8 @@
                                     }
                                 }
                             });
-            scope.SolutionForm.$invalid = false;
-            scope.SolutionForm.$pending = false;
+            SolutionForm.$invalid = false;
+            SolutionForm.$pending = false;
             solutionController.Submit();
             expect(solutionService.submit).toHaveBeenCalled();
             expect(dialog.show).toHaveBeenCalled();

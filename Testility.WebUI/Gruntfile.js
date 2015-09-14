@@ -25,17 +25,23 @@ module.exports = function(grunt) {
         },
         wiredep: {
             test: {
-                devDependencies: true,
-                src: './App_Start/BundleConfig.cs',
-                ignorePath: /\.\.\//,
+                exclude: [
+                    /jquery.validation/,
+                    /Microsoft.jQuery.Unobtrusive.Validation/],
+                dependencies: true,
+                devDependencies: false,
+                src: 'App_Start/BundleConfig.cs',
+                ignorePath: '..',
                 fileTypes: {
                     cs: {
-                        block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
+                        block: /(([ \t]*)\/\/\s*bower:*(\S*)\s*)(\n|\r|.)*?(\/\/\s*endbower\s*)/gi,
                         detect: {
-                            js: /'(.*\.js)'/gi
+                            js: /<script.*src=['"](.+)['"]>/gi,
+                            css: /<link.*href=['"](.+)['"]/gi
                         },
                         replace: {
-                            js: '\"~/{{filePath}}\",'
+                            js: '.Include("~{{filePath}}\")',
+                            css: '.Include("~{{filePath}}\")'
                         }
                     }
                 }

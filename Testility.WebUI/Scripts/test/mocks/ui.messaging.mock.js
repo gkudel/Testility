@@ -4,8 +4,8 @@
         .factory('messaging', function () {
             return {
                 init: jasmine.createSpy('init'),
-                clearMessages: jasmine.createSpy('clearMessages'),
-                addMessage: jasmine.createSpy('addMessage')
+                clear: jasmine.createSpy('clear'),
+                add: jasmine.createSpy('add')
             };
         });
 })(window.angular);

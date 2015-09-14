@@ -7,7 +7,10 @@
     "Fabrizio Fortunato <fortune@cortesconta.net>"
   ],
   "description": "iOS Overlay/Notification Plugin for the Web!",
-  "main": "js/iosOverlay.js",
+  "main": [
+    "js/iosOverlay.js",
+    "css/iosOverlay.css"
+  ],
   "keywords": [
     "overlay",
     "ios"
@@ -29,6 +32,5 @@
   },
   "_source": "git://github.com/izifortune/iOS-Overlay.git",
   "_target": "~0.0.1",
-  "_originalSource": "iOS-Overlay",
-  "_direct": true
+  "_originalSource": "iOS-Overlay"
 }

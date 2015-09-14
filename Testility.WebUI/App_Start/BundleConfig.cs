@@ -8,34 +8,38 @@ namespace Testility.WebUI
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/bower_components").Include(
-                // bower:js
-                "~/bower_components/modernizr/modernizr.js",
-                "~/bower_components/jquery/dist/jquery.js",
-                "~/bower_components/angular/angular.js",
-                "~/bower_components/angular-animate/angular-animate.js",
-                "~/bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
-                "~/bower_components/codemirror/lib/codemirror.js",
-                "~/bower_components/angular-ui-codemirror/ui-codemirror.js",
-                "~/bower_components/bootstrap/dist/js/bootstrap.js",
-                "~/bower_components/iOS-Overlay/js/iosOverlay.js",
-                "~/bower_components/jquery.validation/dist/jquery.validate.js",
-                "~/bower_components/Microsoft.jQuery.Unobtrusive.Validation/jquery.validate.unobtrusive.js",
-                "~/bower_components/respond/dest/respond.src.js",
-                "~/bower_components/lodash/lodash.js",
-                "~/bower_components/restangular/dist/restangular.js",
+            bundles.Add(new ScriptBundle("~/bundles/bower_components")
+                // bower:js                                                                                                                               
+                .Include("~/bower_components/modernizr/modernizr.js")
+                .Include("~/bower_components/jquery/dist/jquery.js")
+                .Include("~/bower_components/angular/angular.js")
+                .Include("~/bower_components/angular-animate/angular-animate.js")
+                .Include("~/bower_components/angular-bootstrap/ui-bootstrap-tpls.js")
+                .Include("~/bower_components/angular-mocks/angular-mocks.js")
+                .Include("~/bower_components/codemirror/lib/codemirror.js")
+                .Include("~/bower_components/codemirror/mode/clike/clike.js")
+                .Include("~/bower_components/codemirror/addon/edit/matchbrackets.js")
+                .Include("~/bower_components/angular-ui-codemirror/ui-codemirror.js")
+                .Include("~/bower_components/bootstrap/dist/js/bootstrap.js")
+                .Include("~/bower_components/iOS-Overlay/js/iosOverlay.js")
+                .Include("~/bower_components/iOS-Overlay/js/spin.min.js")
+                .Include("~/bower_components/respond/dest/respond.src.js")
+                .Include("~/bower_components/lodash/lodash.js")
+                .Include("~/bower_components/restangular/dist/restangular.js")
                 // endbower
-                "~/bower_components/iOS-Overlay/js/spin.min.js",
-                "~/bower_components/codemirror/mode/clike/clike.js",
-                "~/bower_components/codemirror/addon/edit/matchbrackets.js"));
+                );
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css",
-                      "~/Content/iosOverlay.css",
-                      "~/Content/codemirror-3.0/codemirror.css",
-                      "~/Content/angular-block-ui.min.css"));
+            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css")
+                        // bower:css                                                                                                               
+                        .Include("~/bower_components/codemirror/lib/codemirror.css")
+                        .Include("~/bower_components/bootstrap/dist/css/bootstrap.css")
+                        .Include("~/bower_components/iOS-Overlay/css/iosOverlay.css")
+                        // endbower
+                        );
 
+            bundles.Add(new ScriptBundle("~/bundles/jQueryValidate")
+                .Include("~/bower_components/jquery.validation/dist/jquery.validate.js")
+                .Include("~/bower_components/Microsoft.jQuery.Unobtrusive.Validation/jquery.validate.unobtrusive.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/testility").Include(
                     "~/Scripts/app/testility.module.js",
@@ -57,14 +61,10 @@ namespace Testility.WebUI
                     "~/Scripts/app/validation/data.validation.module.js",
                     "~/Scripts/app/validation/data.validation.directive.js",
                     "~/Scripts/app/spiner/spiner.module.js",
-                    "~/Scripts/app/spiner/spiner.service.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/solution").Include(
-                "~/Scripts/app/solution/solution.module.js",
-                "~/Scripts/app/solution/solution.service.js",
-                "~/Scripts/app/solution/solution.controller.js"
-               //"~/Scripts/app/solution/services/unittestservice.js",
-               ));
+                    "~/Scripts/app/spiner/spiner.service.js",
+                    "~/Scripts/app/solution/solution.module.js",
+                    "~/Scripts/app/solution/solution.service.js",
+                    "~/Scripts/app/solution/solution.controller.js"));
         }
     }
 }

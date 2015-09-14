@@ -1,6 +1,11 @@
 {
   "name": "codemirror",
-  "main": ["lib/codemirror.js", "lib/codemirror.css"],
+  "main": [
+    "lib/codemirror.js",
+    "mode/clike/clike.js",
+    "addon/edit/matchbrackets.js",
+    "lib/codemirror.css" 
+  ],
   "ignore": [
     "**/.*",
     "node_modules",
