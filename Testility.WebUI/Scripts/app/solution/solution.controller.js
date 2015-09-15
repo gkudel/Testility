@@ -10,7 +10,7 @@
         var vm = this;
 
         service.init();
-        messaging.init(SolutionForm, $scope);
+        messaging.init(SolutionInputForm, $scope);
 
         //Members
         vm.Entry = service.Entry;
@@ -89,7 +89,7 @@
 
         function submit() {
             messaging.clear();
-            if (!SolutionForm.$invalid && !SolutionForm.$pending) {
+            if (!SolutionInputForm.$invalid && !SolutionInputForm.$pending) {
                 service.submit().then(function (response) {
                     if (response) {
                         if (response.hasOwnProperty('compileErrors'))

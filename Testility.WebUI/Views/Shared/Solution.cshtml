@@ -2,7 +2,7 @@
 @using Testility.WebUI.Extensions;
 
 <div ng-controller="SolutionController as ctrl">
-    <form id="Solution" method="post" name="SolutionForm" role="form" ng-submit="ctrl.Submit()" novalidate>
+    <form id="SolutionInputForm" method="post" name="SolutionInputForm" role="form" ng-submit="ctrl.Submit()" novalidate>
         <content>
             <div ui-Messaging></div>
             @Html.AntiForgeryToken()
@@ -68,7 +68,7 @@
                             </a>
                         </div>
                         <div class="td-right">
-                            <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Solution" ng-disabled="!ctrl.IsLoaded() || SolutionForm.$invalid || SolutionForm.$pending">
+                            <button type="submit" value="Save" class="btn btn-primary btn-lg" form="SolutionInputForm" ng-disabled="!ctrl.IsLoaded() || SolutionForm.$invalid || SolutionForm.$pending">
                                 <span class="glyphicon glyphicon-floppy-disk"></span> Save
                             </button>
                         </div>

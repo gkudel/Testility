@@ -321,7 +321,6 @@
     <Content Include="Scripts\app\messaging\messaging.module.js" />
     <Content Include="Scripts\app\messaging\messaging.service.js" />
     <Content Include="Scripts\app\solution\solution.controller.js" />
-    <Content Include="Scripts\app\solution\services\unittestservice.js" />
     <Content Include="Scripts\app\solution\solution.module.js" />
     <Content Include="Scripts\app\solution\solution.service.js" />
     <Content Include="Scripts\app\spiner\spiner.module.js" />

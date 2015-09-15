@@ -11,7 +11,7 @@
         solutionService = SolutionService;
         dialog = dialogbox;
         msg = messaging;
-        SolutionForm = {};
+        SolutionInputForm = {};
         solutionController = $controller('SolutionController', {
             $scope: scope
         });        
@@ -152,16 +152,16 @@
 
         it('Submit $invalid not saved', function () {
             solutionService.submit = jasmine.createSpy('submit');
-            SolutionForm.$invalid = true;
-            SolutionForm.$pending = false;
+            SolutionInputForm.$invalid = true;
+            SolutionInputForm.$pending = false;
             solutionController.Submit();
             expect(solutionService.submit).not.toHaveBeenCalled();
         });
 
         it('Submit $pending not saved', function () {
             solutionService.submit = jasmine.createSpy('submit');
-            SolutionForm.$invalid = false;
-            SolutionForm.$pending = true;
+            SolutionInputForm.$invalid = false;
+            SolutionInputForm.$pending = true;
             solutionController.Submit();
             expect(solutionService.submit).not.toHaveBeenCalled();
         });
@@ -179,8 +179,8 @@
                                     }
                                 }
                             });
-            SolutionForm.$invalid = false;
-            SolutionForm.$pending = false;
+            SolutionInputForm.$invalid = false;
+            SolutionInputForm.$pending = false;
             solutionController.Submit();
             expect(solutionService.submit).toHaveBeenCalled();
             expect(msg.add).toHaveBeenCalled();
@@ -197,8 +197,8 @@
                                     }
                                 }
                             });
-            SolutionForm.$invalid = false;
-            SolutionForm.$pending = false;
+            SolutionInputForm.$invalid = false;
+            SolutionInputForm.$pending = false;
             solutionController.Submit();
             expect(solutionService.submit).toHaveBeenCalled();
             expect(msg.add).toHaveBeenCalled();
@@ -215,8 +215,8 @@
                                     }
                                 }
                             });
-            SolutionForm.$invalid = false;
-            SolutionForm.$pending = false;
+            SolutionInputForm.$invalid = false;
+            SolutionInputForm.$pending = false;
             solutionController.Submit();
             expect(solutionService.submit).toHaveBeenCalled();
             expect(dialog.show).toHaveBeenCalled();

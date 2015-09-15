@@ -2,10 +2,11 @@
     angular
         .module('testility.solution')
         .factory('SolutionService', SolutionService)
-        .factory('SetupSolutionService', SetupSolutionService);
+        .factory('SetupSolutionService', SetupSolutionService)
+        .factory('UnitTestService', UnitTestService);
 
-    SolutionService.$inject = ['$location', 'Restangular', 'qSpiner', 'SetupSolutionService'];
-    function SolutionService($location, Restangular, qSpiner, setupSolutionService) {
+    SolutionService.$inject = ['$location', 'Restangular', 'qSpiner', 'SetupSolutionService', 'UnitTestService'];
+    function SolutionService($location, Restangular, qSpiner, setupSolutionService, unitTestService) {
         var serivce = {
             Solution: {},
             Loaded: false,
@@ -24,9 +25,10 @@
                 Name: '',
                 Language: 0,
                 References: [],
-                Items: []
+                Items: [],
+                SetupId: 0
             };
-            element = _initializer(angular.extend({}, e, element));
+            element = Initializer(angular.extend({}, e, element));
             return element;
         };
 
@@ -57,7 +59,7 @@
                 if (array && array.length > 1) {
                     id = array[1];
                 }
-                Object.setPrototypeOf(this, new _unitTestSolutionService(Restangular, qSpiner));
+                Object.setPrototypeOf(this, unitTestService);
             }
             this.Solution = this.empty();
             this.Solution.Id = id;            
@@ -144,7 +146,103 @@
         return service;
     };
 
-    function _initializer(solution) {
+    UnitTestService.$inject = ['Restangular', 'qSpiner', 'uiBrowserDialog', 'ui.config']
+    function UnitTestService(Restangular, qSpiner, uiBrowserDialog, uiConfig) {
+        var service = {
+            Entry: 'UnitTest',
+            WebApi: 'UnitTest',
+            get: function () {
+                var instance = this;
+                if (this.Solution.Id) {
+                    var d = qSpiner.defer('Loading');
+                    Restangular.one('UnitTest', this.Solution.Id).get()
+                    .then(function (solution) {
+                        instance.Loaded = true;
+                        angular.extend(instance.Solution, solution);
+                        d.resolve(instance.Solution);
+                    }, function (data, status) {
+                        instance.Loaded = false;
+                        if (data.hasOwnProperty('data'))
+                            data = data.data;
+                        d.reject(data);
+                    });
+                    return d.promise;
+                } else {
+                    if (!this.Solution.SetupId) {
+                        return ChangeSolution.bind(this)();
+                    } else {
+                        var d = qSpiner.defer('Loading');
+                        Loaded = true;
+                        d.resolve(this.Solution);
+                        return d.promise;
+                    }
+                }
+            },
+            changeSolution: function (resolve, reject) {
+                return ChangeSolution.bind(this)().then(function (response) {
+                    resolve(response);
+                }, function (error) {
+                    reject(error);
+                });
+            }
+        };        
+        function ChangeSolution() {
+            var instance = this;
+            var promise = new Promise(function (resolve, reject) {
+                var options = {};
+                options = uiConfig.browsersConfig['Solutions'] || {};
+                
+                var setSelected = function (solutionId) {
+                    if (solutionId) {
+                        var d = qSpiner.defer('Initializing');
+                        if (instance.Solution.SetupId !== solutionId.items) {
+                            Restangular.one('UnitTest/Init', solutionId.items).get()
+                                .then(function (solution) {
+                                    instance.Loaded = true;
+                                    angular.extend(instance.Solution, solution.plain());
+                                    d.resolve();
+                                    resolve();
+                                }, function (data, status) {
+                                    instance.Solution = empty();
+                                    instance.Loaded = false;
+                                    d.reject();
+                                    if (data.hasOwnProperty('data'))
+                                        data = data.data;
+                                    d.reject(data);
+                                });
+                        } else {
+                            d.resolve();
+                            resolve("Unchanged");
+                        }
+                    } else {
+                        d.reject();
+                        reject("Please select setup solution");
+                    }
+                }
+
+                var getSelected = function () {
+                    if (instance.Solution.SetupId === undefined) {
+                        return [];
+                    } else {
+                        return [instance.Solution.SetupId];
+                    }
+                }
+                var cancelled = function () {
+                    if (instance.Solution.SetupId) {
+                        reject();
+                    } else {
+                        reject("Please select setup solution");
+                    }
+                };
+                uiBrowserDialog.show(options, 'md', getSelected, setSelected, cancelled);
+            });
+            return promise;
+        }
+
+        return service;
+    }
+
+    function Initializer(solution) {
         Object.defineProperty(solution, 'RefList', {
             get: function () {
                 if (!this.References) this.References = [];
