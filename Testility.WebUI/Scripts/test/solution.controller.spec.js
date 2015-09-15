@@ -65,7 +65,7 @@
                 return {
                     then: function (f, r) {
                         if (r) {
-                            r('Error');
+                            r({ data: 'Error' });
                         };
                     }
                 }
@@ -122,7 +122,7 @@
                             return {
                                 then: function (f, r) {
                                     if (r) {
-                                        r([{ Message: 'Error', Alert: 'danger' }]);
+                                        r({data: [{ Message: 'Error', Alert: 'danger' }] });
                                     }
                                 }
                             }
@@ -139,7 +139,7 @@
                             return {
                                 then: function (f, r) {
                                     if (r) {
-                                        r('Error');
+                                        r({ data: 'Error' });
                                     }
                                 }
                             }
@@ -192,7 +192,7 @@
                                 return {
                                     then: function (f, r) {
                                         if (r) {
-                                            r([{ Message: 'Error', Alert: 'danger' }]);
+                                            r({ data: [{ Message: 'Error', Alert: 'danger' }] });
                                         }
                                     }
                                 }

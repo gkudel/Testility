@@ -25,6 +25,7 @@
         vm.GetReferences = getReferences;
         vm.SetReferences = setReferences;
         vm.ChangeSolution = changeSolution;
+        vm.RunTests = runTests;
         vm.SelectedTab = selectedTab;
 
         refresh();
@@ -50,11 +51,11 @@
             } else {
                 throw 'Solution not loaded';
             }
-        };
+        }
 
         function removeTab(index) {
             service.removeItem(index);
-        };
+        }
 
         function refresh() {
             messaging.clear();
@@ -62,11 +63,13 @@
             service.get()
                 .then(function (solution) { },
                       function (error) {
-                          dialogbox.show({
-                              caption: 'Solution', message: error, icon: 'Error'
-                          });
+                          if (error) {
+                              dialogbox.show({
+                                  caption: 'Solution', message: error.data, icon: 'Error'
+                              });
+                          }
                       });
-        };
+        }
 
         function compile() {
             if (service.Loaded) {
@@ -76,16 +79,16 @@
                         messaging.add(response);
                     }
                 }, function (error) {
-                    if (Array.isArray(error)) {
-                        messaging.add(error);
+                    if (Array.isArray(error.data)) {
+                        messaging.add(error.data);
                     } else {
-                        dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
+                        dialogbox.show({ caption: 'Solution', message: error.data, icon: 'Error' });
                     }
                 });
             } else {
                 throw 'Solution not loaded';
             }
-        };
+        }
 
         function submit() {
             messaging.clear();
@@ -96,30 +99,47 @@
                             messaging.add(response.compileErrors);
                     }
                 }, function (error) {
-                    if (Array.isArray(error)) {
-                        messaging.add(error);
+                    if (Array.isArray(error.data)) {
+                        messaging.add(error.data);
                     } else {
-                        dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
+                        dialogbox.show({ caption: 'Solution', message: error.data, icon: 'Error' });
                     }
                 });
             }
-        };
+        }
+
         function getReferences() {
             return service.Solution.RefList
-        };
+        }
 
         function setReferences(ref) {
             service.Solution.RefList = ref;
-        };
+        }
 
         function changeSolution() {
             service.changeSolution(function (response) {                
             }, function (error) {
                 if(error) {
-                    dialogbox.show({ caption: 'Solution', message: error, icon: 'Error' });
+                    dialogbox.show({ caption: 'Solution', message: error.data, icon: 'Error' });
                 }
             });
         };
+
+        function runTests() {
+            messaging.clear();
+            service.runTest().then(function (response) {
+                if (response) {
+                    if (response.hasOwnProperty('compileErrors'))
+                        messaging.add(response.compileErrors);
+                }
+            }, function (error) {
+                if (Array.isArray(error.data)) {
+                    messaging.add(error.data);
+                } else {
+                    dialogbox.show({ caption: 'Solution', message: error.data, icon: 'Error' });
+                }
+            });
+        }
 
         function selectedTab(item) {
             $scope.$broadcast('SelectedTab_Changed', item);

@@ -22,7 +22,7 @@
                 });
             },
             template: '<span ng-transclude></span>',
-            controller: 'uiBrowserController',
+            controller: 'UiBrowserController',
             controllerAs: 'ctrl'
         };
     }

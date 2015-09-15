@@ -145,5 +145,13 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ret.ToArray());
             }
         }
+
+        [ArgumentNullExceptionFilter]
+        [HttpPost]
+        [Route("api/UnitTest/RunTest")]
+        public HttpResponseMessage RunTest(SolutionViewModel model)
+        {
+            return Request.CreateResponse(HttpStatusCode.NotImplemented);
+        }
     }
 }

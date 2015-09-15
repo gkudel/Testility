@@ -1,7 +1,7 @@
 ﻿(function (angular) {
 
     angular.module('ui.browser')
-        .controller('uiBrowserController', UiBrowserController)
+        .controller('UiBrowserController', UiBrowserController)
         .controller('BrowserInstanceController', BrowserInstanceController);
 
 
@@ -21,7 +21,6 @@
 
 
     BrowserInstanceController.$inject = ['$scope', '$modalInstance', 'items', 'config', 'selected'];
-
     function BrowserInstanceController($scope, $modalInstance, items, config, selected) {
         $scope.allitems = items || [];
         $scope.title = config.title;

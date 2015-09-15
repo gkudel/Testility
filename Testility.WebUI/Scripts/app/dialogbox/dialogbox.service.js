@@ -25,7 +25,7 @@
                 cfg = angular.extend({}, cfg, config)
                 var types = {
                     MessageBox: 'MessageBoxInstanceController',
-                    DialogBox: 'DialogBoxInstanceConttroller'
+                    DialogBox: 'DialogBoxInstanceController'
                 };
                 var buttonsTypes = {
                     Ok: 'Ok.html',

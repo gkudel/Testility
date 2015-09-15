@@ -1,7 +1,7 @@
 ﻿(function (angular) {
     angular.module('ui.dialogbox')
         .controller('MessageBoxInstanceController', MessageBoxInstnaceController)
-        .controller('DialogBoxInstanceConttroller', DialogBoxInstnaceConttroller)
+        .controller('DialogBoxInstanceController', DialogBoxInstnaceController)
         .controller('InputBoxController', InputBoxController);
 
    
@@ -37,8 +37,8 @@
         };
     };
 
-    DialogBoxInstnaceConttroller.$inject = ['$scope', '$modalInstance', 'caption', 'icon', 'buttons', 'config'];
-    function DialogBoxInstnaceConttroller($scope, $modalInstance, caption, icon, buttons, config) {
+    DialogBoxInstnaceController.$inject = ['$scope', '$modalInstance', 'caption', 'icon', 'buttons', 'config'];
+    function DialogBoxInstnaceController($scope, $modalInstance, caption, icon, buttons, config) {
         $scope.Caption = caption;
         $scope.type = 'InputBox.html';
         $scope.Value = config.hasOwnProperty('value') ? config.value : '';
