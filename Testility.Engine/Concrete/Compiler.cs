@@ -18,10 +18,10 @@ using System.Data.Entity;
 
 namespace Testility.Engine.Concrete
 {
-    public class Compiler : MarshalByRefObject, ICompiler
+    public class Compiler : MarshalByRefObject
     {
 
-        Result ICompiler.Compile(Input input)
+        public Result Compile(Input input)
         {                         
             Result result = new Result();
             CodeDomProvider provider = null;
@@ -124,8 +124,7 @@ namespace Testility.Engine.Concrete
             return result;
         }
 
-        [SuppressMessage("Microsoft.Performance",
-                     "CA1822:MarkMembersAsStatic")]
+        [SuppressMessage("Microsoft.Performance","CA1822:MarkMembersAsStatic")]
         public void LoadAssembly(String assemblyPath)
         {
             try

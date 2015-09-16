@@ -31,5 +31,10 @@ namespace Testility.WebUI.Services.Concrete
             }
             return r.Errors;
         }
+
+        public IList<Error> RunTests(Solution solution, int[] referencesIds)
+        {
+            throw new InvalidOperationException();
+        }
     }
 }

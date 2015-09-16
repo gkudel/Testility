@@ -136,7 +136,7 @@
                 if (Array.isArray(error.data)) {
                     messaging.add(error.data);
                 } else {
-                    dialogbox.show({ caption: 'Solution', message: error.data, icon: 'Error' });
+                    dialogbox.show({ caption: 'Solution', message: error.data + '[' + error.statusText + ']', icon: 'Error' });
                 }
             });
         }

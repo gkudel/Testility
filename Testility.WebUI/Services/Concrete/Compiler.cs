@@ -31,5 +31,13 @@ namespace Testility.WebUI.Services.Concrete
             input.ReferencedAssemblies = setupRepository.GetSelectedReferencesNames(referencesIds);
             return compilerRepository.Compile(input);
         }
+
+        public Result RunTests<T>(T solution, int[] referencesIds)
+        {
+            Input input = Mapper.Map<Input>(solution);
+
+            input.ReferencedAssemblies = setupRepository.GetSelectedReferencesNames(referencesIds);
+            return compilerRepository.RunTests(input);
+        }
     }
 }

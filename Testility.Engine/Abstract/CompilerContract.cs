@@ -17,9 +17,10 @@ namespace Testility.Engine.Abstract
             return null;
         }
 
-        public void LoadAssembly(string assemblyPath)
+        public Result RunTests(Input input)
         {
-            Contract.Requires<ArgumentNullException>(!string.IsNullOrEmpty(assemblyPath));
+            Contract.Requires<ArgumentNullException>(input.Code != null && input.Code.Length > 0);
+            return null;
         }
     }
 }

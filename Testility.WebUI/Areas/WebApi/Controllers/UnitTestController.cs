@@ -149,9 +149,28 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         [ArgumentNullExceptionFilter]
         [HttpPost]
         [Route("api/UnitTest/RunTest")]
-        public HttpResponseMessage RunTest(SolutionViewModel model)
+        public HttpResponseMessage RunTest(SolutionViewModel solution)
         {
-            return Request.CreateResponse(HttpStatusCode.NotImplemented);
+            if(solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
+            UnitTestSolution u = Mapper.Map<UnitTestSolution>(solution);
+            if (u.SetupSolutionId > 0)
+            {
+                u.SetupSolution = dbRepository.GetSetupSolution(u.SetupSolutionId);
+            }
+            IList<Error> errors = compilerService.RunTests(u, solution.References);
+            if (errors.Count == 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            else
+            {
+                List<object> ret = new List<object>();
+                foreach (Error e in errors)
+                {
+                    ret.Add(new { Message = e.ToString(), Alert = e.IsWarning ? "warning" : "danger" });
+                }
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ret.ToArray());
+            }
         }
     }
 }

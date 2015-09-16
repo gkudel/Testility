@@ -8,10 +8,11 @@ using Testility.Engine.Model;
 
 namespace Testility.Engine.Abstract
 {
-    [ContractClass(typeof(CompilerContract))]
+    [ContractClass(typeof(CompilerContract))]
+
     public interface ICompiler
     {
         Result Compile(Input input);
-        void LoadAssembly(String assemblyPath);
+        Result RunTests(Input input);
     }
 }
