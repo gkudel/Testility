@@ -30,22 +30,25 @@
         }
 
         function _init() {
-            var id;
-            angular.extend(this, CommonSerivce(Restangular, qSpiner));
+            var id;            
             if ($location.absUrl().match(/Solution\/Create/) ||
                 $location.absUrl().match(/Solution\/Edit/)) {
                 var array = /Solution\/Edit\/(\d+)/.exec($location.absUrl());
                 if (array && array.length > 1) {
-                    id = array[1];
+                    id = +array[1];
                 }
+                angular.extend(this, CommonSerivce(Restangular, qSpiner));
                 angular.extend(this, SetupSolutionService(Restangular, qSpiner));
             } else if ($location.absUrl().match(/UnitTest\/Create/) ||
                        $location.absUrl().match(/UnitTest\/Edit/)) {
                 var array = /UnitTest\/Edit\/(\d+)/.exec($location.absUrl());
                 if (array && array.length > 1) {
-                    id = array[1];
+                    id = +array[1];
                 }
+                angular.extend(this, CommonSerivce(Restangular, qSpiner));
                 angular.extend(this, UnitTestService(Restangular, qSpiner, uiBrowserDialog, uiConfig));
+            } else {
+                throw 'Location not matched';
             }
             this.Solution = this.empty();
             this.Solution.Id = id;

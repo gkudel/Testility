@@ -15,15 +15,14 @@ require.config({
         angularMocks: '/base/bower_components/angular-mocks/angular-mocks',
         solutionModule: '/base/Scripts/app/solution/solution.module',
         solutionController: '/base/Scripts/app/solution/solution.controller',
+        solutionService: '/base/Scripts/app/solution/solution.service',
         //Mocks
-        solutionServiceMock: '/base/Scripts/test/mocks/solution.service.mock',
-        restangularMock: '/base/Scripts/test/mocks/restangular.mock',
         uiCodemirrorMock: '/base/Scripts/test/mocks/ui.codemirror.mock',
         uiBrowserMock: '/base/Scripts/test/mocks/ui.browser.mock',
         uiMessagingMock: '/base/Scripts/test/mocks/ui.messaging.mock',
         uiDialogboxMock: '/base/Scripts/test/mocks/ui.dialogbox.mock',
         uiSpinerMock: '/base/Scripts/test/mocks/ui.spiner.mock',
-        validationMock: '/base/Scripts/test/mocks/validation.mock'
+        validationMock: '/base/Scripts/test/mocks/validation.mock',
     },
     shim: {
         'angular': { 'exports': 'angular' },
@@ -38,13 +37,10 @@ require.config({
         'solutionController': {
             deps: ['angular', 'angularMocks', 'solutionModule']
         },
-        //Mocks
-        'solutionServiceMock': {
+        'solutionService': {
             deps: ['angular', 'angularMocks', 'solutionModule']
         },
-        'restangularMock': {
-            deps: ['angular', 'angularMocks']
-        },
+        //Mocks
         'uiCodemirrorMock': {
             deps: ['angular', 'angularMocks']
         },

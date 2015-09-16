@@ -1,7 +1,7 @@
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine', 'requirejs'],
+    frameworks: ['jasmine', 'jasmine-matchers', 'requirejs'],
     files: [
         { pattern: 'bower_components/**/*.js', included: false },
         { pattern: 'Scripts/app/**/*.js', included: false },
