@@ -15,9 +15,9 @@ namespace Testility.Domain.Infrastructure
     {
         private ILogger logger;
 
-        public DbContextInterceptorLogging()
+        public DbContextInterceptorLogging(ILogger logger)
         {
-            this.logger = Logger.Concrete.Logger.GetInstance();
+            this.logger = logger;
         }
 
         public override void ScalarExecuting(DbCommand command, DbCommandInterceptionContext<object> interceptionContext)

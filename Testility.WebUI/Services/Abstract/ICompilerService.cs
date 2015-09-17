@@ -11,7 +11,7 @@ namespace Testility.WebUI.Services.Abstract
     public interface ICompilerService
     {
         IList<Error> Compile(Solution solution, int[] referencesIds);
-        IList<Error> RunTests(Solution solution, int[] referencesIds);
+        Result RunTests(Solution solution, int[] referencesIds);
         
     }
 }

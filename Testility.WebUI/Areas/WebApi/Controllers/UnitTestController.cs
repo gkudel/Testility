@@ -120,6 +120,13 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         }
 
         [ArgumentNullExceptionFilter]
+        [System.Web.Mvc.ValidateAntiForgeryToken]
+        public HttpResponseMessage Put(SolutionViewModel model)
+        {
+            return CreateOrUpdate(model);
+        }
+
+        [ArgumentNullExceptionFilter]
         [HttpPost]
         [Route("api/UnitTest/Compile")]
         public HttpResponseMessage Compile(SolutionViewModel solution)
@@ -151,25 +158,45 @@ namespace Testility.WebUI.Areas.WebApi.Controllers
         [Route("api/UnitTest/RunTest")]
         public HttpResponseMessage RunTest(SolutionViewModel solution)
         {
-            if(solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
+            if (solution == null) return Request.CreateResponse<string>(HttpStatusCode.BadRequest, "Solution can't be null");
             UnitTestSolution u = Mapper.Map<UnitTestSolution>(solution);
             if (u.SetupSolutionId > 0)
             {
                 u.SetupSolution = dbRepository.GetSetupSolution(u.SetupSolutionId);
             }
-            IList<Error> errors = compilerService.RunTests(u, solution.References);
-            if (errors.Count == 0)
+            Result r = compilerService.RunTests(u, solution.References);
+            if (r != null)
             {
-                return Request.CreateResponse(HttpStatusCode.OK);
+                if (r.Errors?.Count() > 0)
+                {
+                    List<object> ret = new List<object>();
+                    foreach (Error e in r.Errors)
+                    {
+                        ret.Add(new { Message = e.ToString(), Alert = e.IsWarning ? "warning" : "danger" });
+                    }
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, ret.ToArray());
+                }
+                else
+                {
+                    IList<Engine.Model.Test>  tests = Mapper.Map<IList<Engine.Model.Test>>(r);
+                    List<object> ret = new List<object>();
+                    if (tests.Count() > 0)
+                    {
+                        foreach (Engine.Model.Test e in tests)
+                        {
+                            ret.Add(new { Message = e.ToString(), Alert = e.RunFail == e.Fail ? "success" : "danger" });
+                        }
+                    }
+                    else
+                    {
+                        ret.Add(new { Message = "Any tests have been run", Alert = "info" });
+                    }
+                    return Request.CreateResponse(HttpStatusCode.OK, ret.ToArray());
+                }
             }
             else
             {
-                List<object> ret = new List<object>();
-                foreach (Error e in errors)
-                {
-                    ret.Add(new { Message = e.ToString(), Alert = e.IsWarning ? "warning" : "danger" });
-                }
-                return Request.CreateResponse(HttpStatusCode.BadRequest, ret.ToArray());
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
     }

@@ -10,17 +10,20 @@ using Testility.Domain.Entities;
 using System.Net;
 using AutoMapper.QueryableExtensions;
 using Testility.WebUI.Model;
+using Testility.WebUI.Services.Abstract;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class ReferencesController : Controller
     {
         private readonly IDbRepository setupRepository;
+        private readonly IFileService fileService;
         public int PageSize { get; set; }
 
-        public ReferencesController(IDbRepository setupRepository)
+        public ReferencesController(IDbRepository setupRepository, IFileService fileService)
         {
             this.setupRepository = setupRepository;
+            this.fileService = fileService;
             PageSize = 3;
         }
 
@@ -66,18 +69,20 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         }
 
         [HttpPost ActionName("Edit")]
-        public ActionResult Edit(ReferencesViewModel model)
+        public ActionResult Edit(ReferencesViewModel model, HttpPostedFileBase file = null)
         {
             if (ModelState.IsValid)
             {
                 try {
                     Reference reference = Mapper.Map<Reference>(model);
                     setupRepository.Save(reference);
+                    fileService.UploadReference(reference, file);
                     TempData["savemessage"] = string.Format("{0} has been added", model.Name);
                     return RedirectToAction("List");
                 }
-                catch(Exception /*ex*/)
+                catch(Exception ex)
                 {
+                    ModelState.AddModelError("", ex);
                     return View("Reference", model);
                 }
             }

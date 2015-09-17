@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure.Interception;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Testility.Logger.Abstract;
 
 namespace Testility.Domain.Infrastructure
 {
@@ -13,7 +14,7 @@ namespace Testility.Domain.Infrastructure
         public DbContextConfiguration()
         {
             DbInterception.Add(new DbContextInterceptorError());
-            DbInterception.Add(new DbContextInterceptorLogging());
+            DbInterception.Add(new DbContextInterceptorLogging(Logger.Concrete.Logger.GetInstance()));
         }
     }
 }

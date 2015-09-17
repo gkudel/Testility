@@ -12,11 +12,6 @@ namespace Testility.Logger.Concrete
     {
         private static ILogger loger;
         private static object syncRoot = new Object();
-        public static void Initalize(ILogger iLoger)
-        {
-            Contract.Requires<ArgumentException>(iLoger != null, "Logger.Initalize(iLoger) iLoger can not be null");
-            loger = iLoger;
-        }
         public static ILogger GetInstance()
         {
             if (loger == null)

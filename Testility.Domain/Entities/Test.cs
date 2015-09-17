@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Testility.Domain.Entities
-{
+{   
     public class Test
     {
         public int Id { get; set; }

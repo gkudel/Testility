@@ -18,78 +18,83 @@ namespace Testility.Egine.Concrete
 {
     public class CompilerProxy : ICompiler
     {
-        private class CompileResult
-        {
-            public Result Result { get; set; }
-            public System.AppDomain UnitDomain { get; set; }
-        }
-
-        private CompileResult compile(Input input)
+        private Result compile(Input input)
         {
             Compiler compiler;
-            Result r = null;
-            System.AppDomain unitDomain = null;
-            Evidence evidence = new Evidence(AppDomain.CurrentDomain.Evidence);
-            AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
-            unitDomain = AppDomain.CreateDomain("uTestDomain", evidence, setup);
-            Type type = typeof(Compiler);
-            compiler = (Compiler)unitDomain.CreateInstanceFrom(
-                    type.Assembly.Location,
-                    type.FullName).Unwrap();
-            foreach (string s in GetAssemblies(type.Assembly))
+            Result r;
+            System.AppDomain unitDomain = null; 
+            try
             {
-                compiler.LoadAssembly(s);
+                Evidence evidence = new Evidence(AppDomain.CurrentDomain.Evidence);
+                AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
+                unitDomain = AppDomain.CreateDomain("uTestDomain", evidence, setup);
+                Type type = typeof(Compiler);
+                compiler = (Compiler)unitDomain.CreateInstanceFrom(
+                        type.Assembly.Location,
+                        type.FullName).Unwrap();
+                foreach (string s in GetAssemblies(Assembly.GetExecutingAssembly()))
+                {
+                    compiler.LoadAssembly(s);
+                }
+                r = compiler.Compile(input);
             }
-            r = compiler.Compile(input);
-            return new CompileResult() { Result = r, UnitDomain = unitDomain };
+            finally
+            {
+                if (unitDomain != null) System.AppDomain.Unload(unitDomain);
+            }
+            return r;
         }
 
-        private CompileResult runTests(Input i, CompileResult r)
+        private Result runTests(Input i, Result r)
         {
-            if (r != null && r.Result != null)
+            if (r != null)
             {
-                if (r.Result.Errors.Count() == 0 && !string.IsNullOrEmpty(r.Result.TemporaryFile))
+                if (r.Errors.Count() == 0 && !string.IsNullOrEmpty(r.TemporaryFile))
                 {
-                    if (r?.UnitDomain != null)
+                    System.AppDomain unitDomain = null;
+                    TestRuner runner;
+                    try
                     {
-                        System.AppDomain.Unload(r.UnitDomain);
-                        r.UnitDomain = null;
+                        Evidence evidence = new Evidence(AppDomain.CurrentDomain.Evidence);
+                        AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
+                        unitDomain = AppDomain.CreateDomain("uTestDomain", evidence, setup);
+                        Type type = typeof(TestRuner);
+                        runner = (TestRuner)unitDomain.CreateInstanceFrom(
+                                type.Assembly.Location,
+                                type.FullName).Unwrap();
+                        foreach (string s in GetAssemblies(Assembly.GetExecutingAssembly()))
+                        {
+                            runner.LoadAssembly(s);
+                        }
+                        r = runner.Run(r.TemporaryFile, r);
                     }
-                    RemoteTestRunner runner = new RemoteTestRunner();
-                    TestPackage package = new TestPackage("Test");
-                    package.Assemblies.Add(r.Result.TemporaryFile);
-                    foreach (string s in GetAssemblies(Assembly.GetExecutingAssembly()))
+                    finally
                     {
-                        package.Assemblies.Add(s);
-                    }
-                    if (runner.Load(package))
-                    {
-                        TestResult result = runner.Run(new NullListener(), NUnit.Core.TestFilter.Empty, false, LoggingThreshold.All);
+                        if (unitDomain != null) System.AppDomain.Unload(unitDomain);
                     }
                 }
             }
             return r;
         }
 
-        private Result invoke(Func<Input, CompileResult> invoke, Input input)
+        private Result invoke(Func<Input, Result> invoke, Input input)
         {
-            CompileResult ret = null;
+            Result ret = null;
             try
             {
                 ret = invoke(input);
             }
             finally
-            {
-                if (ret?.UnitDomain != null) System.AppDomain.Unload(ret.UnitDomain);
-                if (!string.IsNullOrEmpty(ret?.Result?.TemporaryFile ?? ""))
+            {                
+                if (!string.IsNullOrEmpty(ret?.TemporaryFile ?? ""))
                 {
-                    if (File.Exists(ret.Result.TemporaryFile))
+                    if (File.Exists(ret.TemporaryFile))
                     {
-                        File.Delete(ret.Result.TemporaryFile);
+                        File.Delete(ret.TemporaryFile);
                     }
                 }
             }
-            return ret?.Result ?? null;
+            return ret;
         }
 
         public Result Compile(Input input)
@@ -99,7 +104,7 @@ namespace Testility.Egine.Concrete
 
         public Result RunTests(Input input)
         {
-            Func<CompileResult, Input, CompileResult> testRuner = (x, y) => runTests(y, x);
+            Func<Result, Input, Result> testRuner = (x, y) => runTests(y, x);
             return invoke(testRuner.Curry()(compile(input)), input);
         }
         

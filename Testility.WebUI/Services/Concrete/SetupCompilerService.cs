@@ -29,10 +29,10 @@ namespace Testility.WebUI.Services.Concrete
             {
                 Mapper.Map<Result, Solution>(r, solution);
             }
-            return r.Errors;
+            return r?.Errors ?? new List<Error>();
         }
 
-        public IList<Error> RunTests(Solution solution, int[] referencesIds)
+        public Result RunTests(Solution solution, int[] referencesIds)
         {
             throw new InvalidOperationException();
         }

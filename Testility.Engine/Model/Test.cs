@@ -13,5 +13,12 @@ namespace Testility.Engine.Model
         public string Name { get; set; }
         public string Description { get; set; }
         public bool Fail { get; set; }
+        public bool HasBeenRun { get; set; }
+        public bool RunFail { get; set; }
+
+        public override string ToString()
+        {
+            return Name + " has " + (!HasBeenRun ? " not " : "") + " been run with " + (RunFail ? "Fail" : "Succes");
+        }
     }
 }

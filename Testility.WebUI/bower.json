@@ -8,6 +8,7 @@
     "angular-mocks": "~1.4.5",
     "angular-ui-codemirror": "~0.3.0",
     "bootstrap": "~3.3.5",
+    "bootstrap-filestyle": "~1.2.1",
     "iOS-Overlay": "~0.0.1",
     "jquery": "jQuery#~2.1.4",
     "Microsoft.jQuery.Unobtrusive.Validation": "~3.2.3",

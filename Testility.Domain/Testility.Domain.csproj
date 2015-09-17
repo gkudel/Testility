@@ -121,6 +121,18 @@
     <Compile Include="Migrations\201509040749124_Language1.Designer.cs">
       <DependentUpon>201509040749124_Language1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509170818531_RunResult.cs" />
+    <Compile Include="Migrations\201509170818531_RunResult.Designer.cs">
+      <DependentUpon>201509170818531_RunResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509170948555_removeRunResult.cs" />
+    <Compile Include="Migrations\201509170948555_removeRunResult.Designer.cs">
+      <DependentUpon>201509170948555_removeRunResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509171036478_filePath.cs" />
+    <Compile Include="Migrations\201509171036478_filePath.Designer.cs">
+      <DependentUpon>201509171036478_filePath.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -147,7 +159,17 @@
     <EmbeddedResource Include="Migrations\201509040749124_Language1.resx">
       <DependentUpon>201509040749124_Language1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509170818531_RunResult.resx">
+      <DependentUpon>201509170818531_RunResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509170948555_removeRunResult.resx">
+      <DependentUpon>201509170948555_removeRunResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509171036478_filePath.resx">
+      <DependentUpon>201509171036478_filePath.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

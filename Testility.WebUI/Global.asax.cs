@@ -17,7 +17,6 @@ namespace Testility.WebUI
 
             AreaRegistration.RegisterAllAreas();
             Infrastructure.Ninject.Ninject.Register();
-            Logger.Concrete.Logger.Initalize(Infrastructure.Ninject.Ninject.GetService(typeof(ILogger)) as ILogger);
             AutoMapperConfiguration.Configure();            
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

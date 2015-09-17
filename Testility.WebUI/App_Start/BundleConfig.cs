@@ -10,6 +10,7 @@ namespace Testility.WebUI
         {
             bundles.Add(new ScriptBundle("~/bundles/bower_components")
                 // bower:js                                                                                                                               
+                
                 .Include("~/bower_components/modernizr/modernizr.js")
                 .Include("~/bower_components/jquery/dist/jquery.js")
                 .Include("~/bower_components/angular/angular.js")
@@ -21,6 +22,7 @@ namespace Testility.WebUI
                 .Include("~/bower_components/codemirror/addon/edit/matchbrackets.js")
                 .Include("~/bower_components/angular-ui-codemirror/ui-codemirror.js")
                 .Include("~/bower_components/bootstrap/dist/js/bootstrap.js")
+                .Include("~/bower_components/bootstrap-filestyle/src/bootstrap-filestyle.js")
                 .Include("~/bower_components/iOS-Overlay/js/iosOverlay.js")
                 .Include("~/bower_components/iOS-Overlay/js/spin.min.js")
                 .Include("~/bower_components/respond/dest/respond.src.js")
@@ -31,6 +33,7 @@ namespace Testility.WebUI
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css")
                         // bower:css                                                                                                               
+                        
                         .Include("~/bower_components/codemirror/lib/codemirror.css")
                         .Include("~/bower_components/bootstrap/dist/css/bootstrap.css")
                         .Include("~/bower_components/iOS-Overlay/css/iosOverlay.css")

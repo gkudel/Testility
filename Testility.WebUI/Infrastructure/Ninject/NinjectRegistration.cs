@@ -33,6 +33,7 @@ namespace Testility.WebUI.Infrastructure.Ninject
             Bind<ITestGenarator>().To<TestGenarator>();
             Bind<ILogger>().To<TraceLogger>();
             Bind<IIdentityServices>().To<IdentityServices>();
+            Bind<IFileService>().To<FileService>();
 
             Bind<DbContext>().ToSelf();
             Bind(typeof(IUserStore<>)).To(typeof(UserStore<>)).WithConstructorArgument("context", Kernel.Get<DbContext>());

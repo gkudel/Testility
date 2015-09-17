@@ -208,11 +208,11 @@
     <Compile Include="Model\IndexViewModel.cs" />
     <Compile Include="Areas\Setup\Model\ReferencesViewModel.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
-    <Compile Include="Content\Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Areas\Setup\Controllers\SolutionController.cs" />
     <Compile Include="Areas\WebApi\Controllers\ReferenceController.cs" />
     <Compile Include="Areas\WebApi\Controllers\SolutionController.cs" />
-    <Compile Include="Content\Controllers\UnitTestController.cs" />
+    <Compile Include="Controllers\UnitTestController.cs" />
     <Compile Include="Infrastructure\CustomValidation\CheckReferenceExtensions.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Extensions\PagingHelpers.cs" />
@@ -233,11 +233,13 @@
     <Compile Include="Model\UnitTestIndexItemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Abstract\ICompilerService.cs" />
+    <Compile Include="Services\Abstract\IFileService.cs" />
     <Compile Include="Services\Abstract\IIdentityServices.cs" />
     <Compile Include="Services\Abstract\ICodeProvider.cs" />
     <Compile Include="Services\Abstract\ITestGenarator.cs" />
     <Compile Include="Services\Concrete\CodeProvider.cs" />
     <Compile Include="Services\Concrete\Compiler.cs" />
+    <Compile Include="Services\Concrete\FileService.cs" />
     <Compile Include="Services\Concrete\UnitTestCompilerService.cs" />
     <Compile Include="Services\Concrete\SetupCompilerService.cs" />
     <Compile Include="Services\Concrete\CSharpCodeProvider.cs" />
@@ -285,7 +287,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Areas\Setup\Views\web.config" />
     <Content Include="Areas\Setup\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Setup\Views\Shared\_Menu.cshtml" />
     <Content Include="Areas\Setup\Views\References\Delete.cshtml" />
     <Content Include="Areas\Setup\Views\References\List.cshtml" />
     <Content Include="Areas\Setup\Views\References\Reference.cshtml" />
@@ -360,13 +361,13 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Areas\Setup\Views\Solution\List.cshtml" />
-    <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\UnitTest\List.cshtml" />
     <Content Include="Views\Shared\_Browser.html" />
     <Content Include="Views\Shared\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

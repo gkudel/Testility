@@ -25,13 +25,12 @@ namespace Testility.WebUI.Services.Concrete
         public IList<Error> Compile(Solution solution, int[] referencesIds)
         {
             Result r = Compiler.GetInstance(compilerRepository, setupRepository).Compile<UnitTestSolution>(solution as UnitTestSolution, referencesIds);
-            return r.Errors;
+            return r?.Errors ?? new List<Error>();
         }
 
-        public IList<Error> RunTests(Solution solution, int[] referencesIds)
+        public Result RunTests(Solution solution, int[] referencesIds)
         {
-            Result r = Compiler.GetInstance(compilerRepository, setupRepository).RunTests<UnitTestSolution>(solution as UnitTestSolution, referencesIds);
-            return r.Errors;
+            return Compiler.GetInstance(compilerRepository, setupRepository).RunTests<UnitTestSolution>(solution as UnitTestSolution, referencesIds);           
         }
     }
 }

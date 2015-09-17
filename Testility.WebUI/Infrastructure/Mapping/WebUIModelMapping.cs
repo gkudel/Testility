@@ -82,6 +82,18 @@ namespace Testility.WebUI.Infrastructure.Mapping
                     s.Classes.Where(c => c.SolutionId == 0).ToList().ForEach(c => c.SolutionId = s.Id);
                 });
 
+            Mapper.CreateMap<Result, IList<Engine.Model.Test>>()
+                .ConvertUsing((r) => {
+                    List<Engine.Model.Test> testList = new List<Engine.Model.Test>();
+                    foreach (Engine.Model.Class c in r.Classes?.Where(c => c.Methods?.Where(m => m.Tests?.Count() > 0)?.Count() > 0))
+                    {
+                        foreach (Testility.Engine.Model.Test t in c.Methods.Where(m => m.Tests?.Count() > 0).SelectMany(m => m.Tests, (m, t) => t))
+                        {
+                            testList.Add(t);
+                        }
+                    }
+                    return testList;
+                });
 
             Mapper.CreateMap<ICollection<Engine.Model.Class>, ICollection<Domain.Entities.Class>>()
                 .ConvertUsing(new CustomConvwerter<Engine.Model.Class, Domain.Entities.Class>((i, o) => i.Name == o.Name));

@@ -129,8 +129,9 @@
             messaging.clear();
             service.runTest().then(function (response) {
                 if (response) {
-                    if (response.hasOwnProperty('compileErrors'))
-                        messaging.add(response.compileErrors);
+                    if (Array.isArray(response)) {
+                        messaging.add(response);
+                    }
                 }
             }, function (error) {
                 if (Array.isArray(error.data)) {

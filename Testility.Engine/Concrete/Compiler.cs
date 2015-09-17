@@ -127,13 +127,7 @@ namespace Testility.Engine.Concrete
         [SuppressMessage("Microsoft.Performance","CA1822:MarkMembersAsStatic")]
         public void LoadAssembly(String assemblyPath)
         {
-            try
-            {
-                Assembly.LoadFile(assemblyPath);
-            }
-            catch (FileNotFoundException)
-            {
-            }
+            try { Assembly.LoadFile(assemblyPath); } catch (FileNotFoundException) { }
         }
 
         private class FakeContext : DbContext

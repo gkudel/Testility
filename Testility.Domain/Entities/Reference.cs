@@ -10,6 +10,7 @@ namespace Testility.Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string FilePath { get; set; }        
         public virtual ICollection<Solution> Solutions { get; set; }
     }
 }
