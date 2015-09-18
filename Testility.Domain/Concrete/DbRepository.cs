@@ -214,7 +214,7 @@ namespace Testility.Domain.Concrete
             return query.ToArray();
         }
 
-        private void Commit()
+        public void Commit()
         {
             context.SaveChanges();
         }

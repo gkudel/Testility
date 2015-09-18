@@ -1,0 +1,9 @@
+E:\src\Testility\Testility.Util\bin\Debug\Testility.Utils.dll
+E:\src\Testility\Testility.Util\bin\Debug\Testility.Utils.pdb
+E:\src\Testility\Testility.Util\obj\Debug\Testility.Utils.dll
+E:\src\Testility\Testility.Util\obj\Debug\Testility.Utils.pdb
+E:\src\Testility\Testility.Util\bin\Debug\CodeContracts\Testility.Utils.Contracts.dll
+E:\src\Testility\Testility.Util\bin\Debug\CodeContracts\Testility.Utils.Contracts.pdb
+E:\src\Testility\Testility.Util\obj\Debug\Decl\Testility.Utils.dll
+E:\src\Testility\Testility.Util\obj\Debug\Decl\Testility.Utils.pdb
+E:\src\Testility\Testility.Util\obj\Debug\Testility.Utilsccrefgen.rsp

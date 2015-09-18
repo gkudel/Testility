@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Testility.Engine.Abstract;
 using Testility.Engine.Concrete;
 using Testility.Engine.Model;
-using Testility.Engine.Utils;
+using Testility.Utils.Extensions;
 
 namespace Testility.Egine.Concrete
 {

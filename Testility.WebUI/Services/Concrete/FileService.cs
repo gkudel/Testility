@@ -18,9 +18,6 @@ namespace Testility.WebUI.Services.Concrete
 
         public void UploadReference(Reference r, HttpPostedFileBase file)
         {
-            Contract.Requires<ArgumentNullException>(r != null);
-            Contract.Requires(file != null);
-
             string path = HostingEnvironment.ApplicationPhysicalPath.ToString();
             var fullPath = Path.Combine(path, ReferencesDirectory, r.Id.ToString());
 

@@ -13,7 +13,7 @@ namespace Testility.WebUI.Services.Concrete
     {
         public static ICodeProvider CreateProvider(Language l)
         {
-            Contract.EnsuresOnThrow<InvalidOperationException>(Contract.Result<ICodeProvider>() != null);
+            Contract.Ensures(Contract.Result<ICodeProvider>() != null);
             ICodeProvider ret = null;
             switch (l)
             {

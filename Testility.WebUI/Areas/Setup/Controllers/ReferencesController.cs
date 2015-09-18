@@ -73,10 +73,11 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             if (ModelState.IsValid)
             {
-                try {
+                try
+                {
                     Reference reference = Mapper.Map<Reference>(model);
                     setupRepository.Save(reference);
-                    fileService.UploadReference(reference, file);
+                    if(file != null) fileService.UploadReference(reference, file);
                     TempData["savemessage"] = string.Format("{0} has been added", model.Name);
                     return RedirectToAction("List");
                 }
