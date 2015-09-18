@@ -45,13 +45,13 @@ namespace Testility.WebUI.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Title = "UnitTest Entry";
+            ViewBag.Title = "UnitTest";
             return View("Solution");
         }
 
         public ActionResult Edit(int? id)
         {
-            ViewBag.Title = "UnitTest Entry";            
+            ViewBag.Title = "UnitTest";            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

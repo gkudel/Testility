@@ -11,14 +11,14 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div><h2><strong><span class="glyphicon glyphicon-th-list"></span> References Explorer</strong></h2></div>
+        <div><h2><strong><span class="glyphicon glyphicon-th-list"></span> References</strong></h2></div>
     </div>
     <div class="panel-body">
         <div class="text-right padding-bottom-10">
-            <a href="@Url.Action("Create")" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus"></span> References</a>
+            <a href="@Url.Action("Create")" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus"></span> Reference</a>
         </div>
         <div class="panel panel-default">
-            <table class="table">
+            <table class="table table-hover table-striped ">
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.List, r => r.Name)
@@ -29,7 +29,9 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Name)
+                            <b>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </b>
                         </td>
                         <td class="text-right">
                             <div class="btn-group">

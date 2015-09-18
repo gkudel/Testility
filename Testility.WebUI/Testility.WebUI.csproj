@@ -370,6 +370,8 @@
     <Content Include="Scripts\app\messaging\messaging.directive.js" />
     <Content Include="Scripts\app\messaging\messaging.module.js" />
     <Content Include="Scripts\app\messaging\messaging.service.js" />
+    <Content Include="Scripts\app\references\references.controller.js" />
+    <Content Include="Scripts\app\references\references.module.js" />
     <Content Include="Scripts\app\solution\solution.controller.js" />
     <Content Include="Scripts\app\solution\solution.module.js" />
     <Content Include="Scripts\app\solution\solution.service.js" />

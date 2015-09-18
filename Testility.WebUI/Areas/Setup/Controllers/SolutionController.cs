@@ -52,13 +52,13 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.Title = "Solution Explorer";
+            ViewBag.Title = "Project";
             return View("Solution");
         }
 
         public ActionResult Edit(int? id)
         {
-            ViewBag.Title = "Solution Explorer";
+            ViewBag.Title = "Project";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

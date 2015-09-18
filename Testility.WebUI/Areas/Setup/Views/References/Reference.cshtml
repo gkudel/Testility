@@ -1,48 +1,50 @@
 ﻿@model Testility.WebUI.Areas.Setup.Model.ReferencesViewModel
 
-@using (Html.BeginForm("Edit", "References", FormMethod.Post, new { id = "Edit", enctype = "multipart/form-data" }))
-{
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Reference Explorer</strong></h2></div>
-        </div>
-        <div class="panel-body">
+<div ng-controller="ReferencesController as ctrl">
+    @using (Html.BeginForm("Edit", "References", FormMethod.Post, new { id = "Edit", enctype = "multipart/form-data" }))
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Reference</strong></h2></div>
+            </div>
+            <div class="panel-body">
 
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-horizontal">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10 col-md-offset-2">
+                            <input type="file" class="filestyle" data-buttonBefore="true" accept=".dll*" name="file" id="file">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10 col-md-offset-2">
+                            @Html.EditorFor(model => model.File)
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-10 col-md-offset-2">
-                        <input type="file" class="filestyle" data-buttonBefore="true" accept=".dll*" name="file" id="file">
+            </div>
+            <div class="panel-footer">
+                <div class="table">
+                    <div class="td-left">
+                        <a href="@Url.Action("List")">
+                            <span class="glyphicon glyphicon-step-backward"></span> Back to the List
+                        </a>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-10 col-md-offset-2">
-                        @Html.EditorFor(model => model.File)
+                    <div class="td-right">
+                        <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Edit">
+                            <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="panel-footer">
-            <div class="table">
-                <div class="td-left">
-                    <a href="@Url.Action("List")">
-                        <span class="glyphicon glyphicon-step-backward"></span> Back to Reference Explorer
-                    </a>
-                </div>
-                <div class="td-right">
-                    <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Edit">
-                        <span class="glyphicon glyphicon-floppy-disk"></span> Save
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-}
+    }
+</div>
