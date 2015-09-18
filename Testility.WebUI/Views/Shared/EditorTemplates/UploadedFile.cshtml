@@ -1,0 +1,15 @@
+﻿@model string
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    <div class="">
+        <div class="col-md-4" >
+            <b>@Model</b>
+        </div>
+        <div class="col-md-8">
+            <button type="button" class="btn btn-danger btn-sm">
+                <span class="glyphicon glyphicon-trash"></span> Remove
+            </button>
+        </div>
+    </div>
+}

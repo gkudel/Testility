@@ -5,6 +5,7 @@ using System.Linq;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using System.Data.Entity.Validation;
+using Testility.Utils.Extensions;
 
 namespace Testility.Domain.Concrete
 {
@@ -13,8 +14,10 @@ namespace Testility.Domain.Concrete
         private readonly IDbContext context;
         public DbRepository(IDbContext context)
         {
-            this.context = context;
+            this.context = context;                        
         }
+
+        public bool AutoCommit { get; set; } = true;
 
         public IQueryable<SetupSolution> GetSetupSolutions(bool lazyloading = true)
         {
@@ -51,8 +54,8 @@ namespace Testility.Domain.Concrete
                 context.SetupSolutions.Add(solution);
             }
             else
-            {           
-                var classes = context.Classes.Where(c => c.SolutionId == solution.Id).ToList();                    
+            {
+                var classes = context.Classes.Where(c => c.SolutionId == solution.Id).ToList();
                 foreach (Class c in classes)
                 {
                     if (solution.Classes.FirstOrDefault(i => i.Id == c.Id) != null)
@@ -91,7 +94,7 @@ namespace Testility.Domain.Concrete
                     }
                 }
             }
-            Commit();
+            commit();
         }
 
         public void SaveUnitTestSolution(UnitTestSolution solution, int[] references)
@@ -118,7 +121,7 @@ namespace Testility.Domain.Concrete
                     context.Items.Remove(item);
                 }
             }
-            Commit();
+            commit();
         }        
         public bool DeleteSetupSolution(int id)
         {
@@ -131,7 +134,7 @@ namespace Testility.Domain.Concrete
                     context.UnitTestSolutions.Remove(u);
                 }
                 context.SetupSolutions.Remove(solution);
-                Commit();
+                commit();
                 return true;
             }
             return false;
@@ -142,7 +145,7 @@ namespace Testility.Domain.Concrete
             if (solution != null)
             {
                 context.UnitTestSolutions.Remove(solution);
-                Commit();
+                commit();
                 return true;
             }
             return false;
@@ -191,7 +194,7 @@ namespace Testility.Domain.Concrete
             {
                 context.References.Attach(reference);
             }
-            Commit();
+            commit();
         }
 
         public bool DeleteReference(int id)
@@ -200,7 +203,7 @@ namespace Testility.Domain.Concrete
             if (references != null)
             {
                 context.References.Remove(references);
-                Commit();
+                commit();
                 return true;
             }
             return false;
@@ -217,6 +220,12 @@ namespace Testility.Domain.Concrete
         public void Commit()
         {
             context.SaveChanges();
+        }
+
+
+        private void commit()
+        {
+            if(AutoCommit) context.SaveChanges();            
         }
 
         public IEnumerable<DbEntityValidationResult> GetValidationErrors()

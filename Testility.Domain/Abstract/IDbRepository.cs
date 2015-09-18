@@ -11,6 +11,7 @@ namespace Testility.Domain.Abstract
 {
     public interface IDbRepository : IDisposable
     {
+        bool AutoCommit { get; set; }
         IQueryable<SetupSolution> GetSetupSolutions(bool lazyloading = true);
         SetupSolution GetSetupSolution(int id);
         void SaveSetupSolution(SetupSolution solution, int[] references);
@@ -26,5 +27,6 @@ namespace Testility.Domain.Abstract
         bool DeleteReference(int id);
         string[] GetSelectedReferencesNames(int[] ids);
         IEnumerable<DbEntityValidationResult> GetValidationErrors();
+        void Commit();
     }
 }

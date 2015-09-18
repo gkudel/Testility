@@ -189,6 +189,10 @@
       <Project>{62394f91-75bc-4323-ac91-ad27df199f23}</Project>
       <Name>Testility.Logger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Testility.Util\Testility.Utils.csproj">
+      <Project>{b7d6ce4e-9023-4371-97f4-9c3f3eda3d81}</Project>
+      <Name>Testility.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

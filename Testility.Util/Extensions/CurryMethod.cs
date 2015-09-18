@@ -8,9 +8,9 @@ namespace Testility.Utils.Extensions
 {
     public static class CurryMethod
     {
-        public static Func<A, Func<B, R>> Curry<A, B, R>(this Func<A, B, R> f)
+        public static Func<A, Func<B, R>> Curry<A, B, R>(this Func<A, B, R> function)
         {
-            return a => b => f(a, b);
+            return a => b => function(a, b);
         }
     }
 }

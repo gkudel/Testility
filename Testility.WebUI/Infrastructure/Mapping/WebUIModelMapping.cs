@@ -9,6 +9,7 @@ using Testility.WebUI.Model;
 using Testility.WebUI.Areas.Setup.Model;
 using Testility.WebUI.Areas.Authorization.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.IO;
 
 namespace Testility.WebUI.Infrastructure.Mapping
 {
@@ -122,8 +123,8 @@ namespace Testility.WebUI.Infrastructure.Mapping
                 .ForMember(e => e.Id, opt => opt.Ignore());
 
             Mapper.CreateMap<ReferencesViewModel, Reference>();
-            Mapper.CreateMap<Reference, ReferencesViewModel>();
-            Mapper.CreateMap<Reference, ReferenceViewModel>();
+            Mapper.CreateMap<Reference, ReferencesViewModel>()
+                .ForMember(r => r.File, opt => opt.MapFrom(reference => string.IsNullOrEmpty(reference.FilePath) ? string.Empty : Path.GetFileName(reference.FilePath)));
             #endregion Setup
 
             #region UnitTes

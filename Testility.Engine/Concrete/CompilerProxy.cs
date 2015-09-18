@@ -105,7 +105,8 @@ namespace Testility.Egine.Concrete
         public Result RunTests(Input input)
         {
             Func<Result, Input, Result> testRuner = (x, y) => runTests(y, x);
-            return invoke(testRuner.Curry()(compile(input)), input);
+            Func<Input, Result> func = testRuner.Curry()(compile(input));
+            return invoke(func, input);
         }
         
         private IEnumerable<string> GetAssemblies(Assembly ass)

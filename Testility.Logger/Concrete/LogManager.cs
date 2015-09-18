@@ -8,11 +8,11 @@ using Testility.Logger.Abstract;
 
 namespace Testility.Logger.Concrete
 {
-    public static class Logger
+    public sealed class LogManager
     {
         private static ILogger loger;
         private static object syncRoot = new Object();
-        public static ILogger GetInstance()
+        public static ILogger GetLogger(Type type)
         {
             if (loger == null)
             {

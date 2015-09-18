@@ -7,6 +7,7 @@ using System.Web.Http;
 using Testility.Domain.Abstract;
 using AutoMapper.QueryableExtensions;
 using Testility.WebUI.Model;
+using Testility.WebUI.Areas.Setup.Model;
 
 namespace Testility.WebUI.Areas.WebApi
 {
@@ -21,7 +22,7 @@ namespace Testility.WebUI.Areas.WebApi
 
         public HttpResponseMessage Get()
         {
-            return Request.CreateResponse<IEnumerable<ReferenceViewModel>>(HttpStatusCode.OK, setupRepository.GetReferences().Project().To<ReferenceViewModel>().ToArray());
+            return Request.CreateResponse<IEnumerable<ReferencesViewModel>>(HttpStatusCode.OK, setupRepository.GetReferences().Project().To<ReferencesViewModel>().ToArray());
         }
     }
 }

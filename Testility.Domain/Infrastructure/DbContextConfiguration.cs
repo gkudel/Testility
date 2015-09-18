@@ -14,7 +14,7 @@ namespace Testility.Domain.Infrastructure
         public DbContextConfiguration()
         {
             DbInterception.Add(new DbContextInterceptorError());
-            DbInterception.Add(new DbContextInterceptorLogging(Logger.Concrete.Logger.GetInstance()));
+            DbInterception.Add(new DbContextInterceptorLogging());
         }
     }
 }

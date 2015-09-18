@@ -10,7 +10,6 @@ namespace Testility.WebUI
         {
             bundles.Add(new ScriptBundle("~/bundles/bower_components")
                 // bower:js                                                                                                                               
-                
                 .Include("~/bower_components/modernizr/modernizr.js")
                 .Include("~/bower_components/jquery/dist/jquery.js")
                 .Include("~/bower_components/angular/angular.js")
@@ -21,6 +20,15 @@ namespace Testility.WebUI
                 .Include("~/bower_components/codemirror/mode/clike/clike.js")
                 .Include("~/bower_components/codemirror/addon/edit/matchbrackets.js")
                 .Include("~/bower_components/angular-ui-codemirror/ui-codemirror.js")
+                .Include("~/bower_components/blueimp-tmpl/js/tmpl.js")
+                .Include("~/bower_components/blueimp-load-image/js/load-image.js")
+                .Include("~/bower_components/blueimp-load-image/js/load-image-ios.js")
+                .Include("~/bower_components/blueimp-load-image/js/load-image-orientation.js")
+                .Include("~/bower_components/blueimp-load-image/js/load-image-meta.js")
+                .Include("~/bower_components/blueimp-load-image/js/load-image-exif.js")
+                .Include("~/bower_components/blueimp-load-image/js/load-image-exif-map.js")
+                .Include("~/bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js")
+                .Include("~/bower_components/blueimp-file-upload/js/jquery.fileupload.js")
                 .Include("~/bower_components/bootstrap/dist/js/bootstrap.js")
                 .Include("~/bower_components/bootstrap-filestyle/src/bootstrap-filestyle.js")
                 .Include("~/bower_components/iOS-Overlay/js/iosOverlay.js")
@@ -33,7 +41,6 @@ namespace Testility.WebUI
 
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css")
                         // bower:css                                                                                                               
-                        
                         .Include("~/bower_components/codemirror/lib/codemirror.css")
                         .Include("~/bower_components/bootstrap/dist/css/bootstrap.css")
                         .Include("~/bower_components/iOS-Overlay/css/iosOverlay.css")

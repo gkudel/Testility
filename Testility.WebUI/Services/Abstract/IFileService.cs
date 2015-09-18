@@ -10,6 +10,6 @@ namespace Testility.WebUI.Services.Abstract
     [ContractClass(typeof(FileServiceContract))]
     public interface IFileService
     {
-        void UploadReference(Reference r, HttpPostedFileBase file);
+        string UploadReference(Reference r, HttpPostedFileBase file);
     }
 }

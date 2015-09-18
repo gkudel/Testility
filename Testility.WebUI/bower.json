@@ -7,6 +7,7 @@
     "angular-bootstrap": "~0.13.4",
     "angular-mocks": "~1.4.5",
     "angular-ui-codemirror": "~0.3.0",
+    "blueimp-file-upload": "~9.11.2",
     "bootstrap": "~3.3.5",
     "bootstrap-filestyle": "~1.2.1",
     "iOS-Overlay": "~0.0.1",

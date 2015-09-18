@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\ILogger.cs" />
-    <Compile Include="Concrete\Logger.cs" />
+    <Compile Include="Concrete\LogManager.cs" />
     <Compile Include="Concrete\TraceLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

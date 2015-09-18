@@ -272,7 +272,6 @@
     <Compile Include="Infrastructure\Ninject\NinjectRegistration.cs" />
     <Compile Include="Model\ItemViewModel.cs" />
     <Compile Include="Model\PagingInfo.cs" />
-    <Compile Include="Model\ReferenceViewModel.cs" />
     <Compile Include="Model\SolutionViewModel.cs" />
     <Compile Include="Model\UnitTestIndexItemViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -418,6 +417,7 @@
     <Content Include="Views\UnitTest\List.cshtml" />
     <Content Include="Views\Shared\_Browser.html" />
     <Content Include="Views\Shared\Delete.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\UploadedFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

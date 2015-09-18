@@ -16,12 +16,13 @@ namespace Testility.WebUI.Services.Concrete
     {
         public const string ReferencesDirectory = "References";
 
-        public void UploadReference(Reference r, HttpPostedFileBase file)
+        public string UploadReference(Reference r, HttpPostedFileBase file)
         {
-            string path = HostingEnvironment.ApplicationPhysicalPath.ToString();
-            var fullPath = Path.Combine(path, ReferencesDirectory, r.Id.ToString());
+            string path = HttpContext.Current.Server.MapPath("~");
+            var fullPath = Path.Combine(path, ReferencesDirectory, r.Id.ToString() + "_" + Path.GetFileName(file.FileName));
 
             file.SaveAs(fullPath);
+            return fullPath;
         }
     }
 }

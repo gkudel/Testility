@@ -31,7 +31,6 @@ namespace Testility.WebUI.Infrastructure.Ninject
             Bind<ICompilerService>().To<SetupCompilerService>().When(c => c.Target.Name.StartsWith("setup"));
             Bind<ICompilerService>().To<UnitTestCompilerService>().When(c => c.Target.Name.StartsWith("unitTest"));
             Bind<ITestGenarator>().To<TestGenarator>();
-            Bind<ILogger>().To<TraceLogger>();
             Bind<IIdentityServices>().To<IdentityServices>();
             Bind<IFileService>().To<FileService>();
 

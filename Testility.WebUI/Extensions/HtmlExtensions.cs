@@ -45,6 +45,5 @@ namespace Testility.WebUI.Extensions
             return LabelFor(TagBuilder.CreateSanitizedId(helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(ExpressionHelper.GetExpressionText(expression2))), ModelMetadata.FromLambdaExpression(expression2, new ViewDataDictionary<TClass>()),
                                      ExpressionHelper.GetExpressionText(expression2), htmlAttributes);
         }
-        
     }
 }

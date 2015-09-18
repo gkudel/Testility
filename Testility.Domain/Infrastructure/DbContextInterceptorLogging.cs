@@ -13,11 +13,10 @@ namespace Testility.Domain.Infrastructure
 {
     public class DbContextInterceptorLogging : DbCommandInterceptor
     {
-        private ILogger logger;
+        private static readonly ILogger logger = LogManager.GetLogger(typeof(DbContextInterceptorLogging));
 
-        public DbContextInterceptorLogging(ILogger logger)
+        public DbContextInterceptorLogging()
         {
-            this.logger = logger;
         }
 
         public override void ScalarExecuting(DbCommand command, DbCommandInterceptionContext<object> interceptionContext)
