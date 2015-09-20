@@ -177,6 +177,10 @@
     <Compile Include="Migrations\201509171036478_filePath.Designer.cs">
       <DependentUpon>201509171036478_filePath.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509201746504_ref.version.cs" />
+    <Compile Include="Migrations\201509201746504_ref.version.Designer.cs">
+      <DependentUpon>201509201746504_ref.version.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -215,6 +219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509171036478_filePath.resx">
       <DependentUpon>201509171036478_filePath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509201746504_ref.version.resx">
+      <DependentUpon>201509201746504_ref.version.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

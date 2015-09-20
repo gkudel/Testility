@@ -17,13 +17,11 @@ namespace Testility.WebUI.Areas.Setup.Controllers
     public class ReferencesController : Controller
     {
         private readonly IDbRepository setupRepository;
-        private readonly IFileService fileService;
         public int PageSize { get; set; }
 
-        public ReferencesController(IDbRepository setupRepository, IFileService fileService)
+        public ReferencesController(IDbRepository setupRepository)
         {
             this.setupRepository = setupRepository;
-            this.fileService = fileService;
             PageSize = 3;
         }
 
@@ -76,10 +74,10 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 try
                 {
                     Reference reference = Mapper.Map<Reference>(model);
-                    if (file != null)
+                    /* (file != null)
                     {
                         reference.FilePath = fileService.UploadReference(reference, file);
-                    }                    
+                    } */                 
                     setupRepository.Save(reference);
                     TempData["savemessage"] = string.Format("{0} has been added", model.Name);
                     return RedirectToAction("List");

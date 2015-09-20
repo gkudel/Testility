@@ -1,5 +1,5 @@
 /// <binding Clean='karma:unit' />
-'use strict';
+/*'use strict';
 
 module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-wiredep');
@@ -53,3 +53,4 @@ module.exports = function(grunt) {
         'wiredep'
     ]);
 };
+*/

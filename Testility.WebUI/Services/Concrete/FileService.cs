@@ -14,15 +14,16 @@ namespace Testility.WebUI.Services.Concrete
 {
     public class FileService : IFileService
     {
-        public const string ReferencesDirectory = "References";
-
-        public string UploadReference(Reference r, HttpPostedFileBase file)
+        private readonly IFilesPath filesPath;
+        public FileService(IFilesPath filesPath)
         {
-            string path = HttpContext.Current.Server.MapPath("~");
-            var fullPath = Path.Combine(path, ReferencesDirectory, r.Id.ToString() + "_" + Path.GetFileName(file.FileName));
+            this.filesPath = filesPath;
+        }
 
-            file.SaveAs(fullPath);
-            return fullPath;
+        public void UploadReference(string s)
+        {
+            /*string path
+            File.Copy()*/
         }
     }
 }

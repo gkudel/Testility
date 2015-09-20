@@ -245,10 +245,13 @@
     <Compile Include="Areas\Setup\Controllers\ReferencesController.cs" />
     <Compile Include="Areas\Setup\Model\SolutionIndexItemViewModel.cs" />
     <Compile Include="Areas\WebApi\Controllers\UnitTestController.cs" />
+    <Compile Include="Areas\WebApi\Controllers\UploaderController.cs" />
     <Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
     <Compile Include="Infrastructure\Attributes\RemoteApiAttribute.cs" />
+    <Compile Include="Infrastructure\Binders\FlowChunkBinder.cs" />
     <Compile Include="Infrastructure\ExternalLogin\ExternalLogin.cs" />
     <Compile Include="Infrastructure\Filters\ArgumentNullExceptionFilterAttribute.cs" />
+    <Compile Include="Model\FlowChunk.cs" />
     <Compile Include="Model\IndexViewModel.cs" />
     <Compile Include="Areas\Setup\Model\ReferencesViewModel.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
@@ -280,15 +283,18 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Services\Abstract\FileServiceContract.cs" />
     <Compile Include="Services\Abstract\ICompilerService.cs" />
+    <Compile Include="Services\Abstract\IFilesPath.cs" />
     <Compile Include="Services\Abstract\IFileService.cs" />
+    <Compile Include="Services\Abstract\IFlowJsService.cs" />
     <Compile Include="Services\Abstract\IIdentityServices.cs" />
     <Compile Include="Services\Abstract\ICodeProvider.cs" />
     <Compile Include="Services\Abstract\ITestGenarator.cs" />
     <Compile Include="Services\Concrete\CodeProvider.cs" />
     <Compile Include="Services\Concrete\Compiler.cs" />
+    <Compile Include="Services\Concrete\FilesPath.cs" />
     <Compile Include="Services\Concrete\FileService.cs" />
+    <Compile Include="Services\Concrete\FlowJsService.cs" />
     <Compile Include="Services\Concrete\UnitTestCompilerService.cs" />
     <Compile Include="Services\Concrete\SetupCompilerService.cs" />
     <Compile Include="Services\Concrete\CSharpCodeProvider.cs" />
@@ -324,6 +330,7 @@
     <Content Include="Content\codemirror-3.0\theme\xq-dark.css" />
     <Content Include="Content\images\check.png" />
     <Content Include="Content\images\cross.png" />
+    <Content Include="Content\images\dll.png" />
     <Content Include="Content\iosOverlay.css" />
     <Content Include="Content\select2.css" />
     <Content Include="Content\select2.png" />
@@ -378,6 +385,7 @@
     <Content Include="Scripts\app\spiner\spiner.module.js" />
     <Content Include="Scripts\app\spiner\spiner.service.js" />
     <Content Include="Scripts\app\testility.config.js" />
+    <Content Include="Scripts\app\testility.filter.js" />
     <Content Include="Scripts\app\testility.module.js" />
     <Content Include="Scripts\app\testility.value.js" />
     <Content Include="Scripts\app\util\util.directive.js" />

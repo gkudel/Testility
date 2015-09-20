@@ -7,9 +7,8 @@ using Testility.Domain.Entities;
 
 namespace Testility.WebUI.Services.Abstract
 {
-    [ContractClass(typeof(FileServiceContract))]
     public interface IFileService
     {
-        string UploadReference(Reference r, HttpPostedFileBase file);
+        void UploadReference(string s);
     }
 }

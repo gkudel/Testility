@@ -21,7 +21,6 @@ namespace Testility.WebUI.Areas.Setup.Controllers
     {
         #region Members
         public Mock<IDbRepository> ServiceMock { get; set; }
-        public Mock<IFileService> FileServiceMock { get; set; }
         private Func<bool> uploaded = () => true;
         public ReferencesController referencesController { get; set; }
         #endregion Members
@@ -43,11 +42,8 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             ServiceMock.Setup(x => x.DeleteReference(It.IsAny<int>())).Returns(true);
             ServiceMock.Setup(x => x.Save(It.IsAny<Reference>()));
 
-            FileServiceMock = new Mock<IFileService>();
-            FileServiceMock.Setup(x => x.UploadReference(It.IsAny<Reference>(), It.IsAny<HttpPostedFileBase>()));
-
             AutoMapperConfiguration.Configure();
-            referencesController = new ReferencesController (ServiceMock.Object, FileServiceMock.Object);
+            referencesController = new ReferencesController (ServiceMock.Object);
         }
         #endregion Init
 

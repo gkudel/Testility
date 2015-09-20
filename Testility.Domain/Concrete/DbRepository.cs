@@ -5,7 +5,6 @@ using System.Linq;
 using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using System.Data.Entity.Validation;
-using Testility.Utils.Extensions;
 
 namespace Testility.Domain.Concrete
 {

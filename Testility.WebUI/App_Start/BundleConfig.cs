@@ -49,6 +49,7 @@ namespace Testility.WebUI
                     "~/Scripts/app/testility.module.js",
                     "~/Scripts/app/testility.value.js",
                     "~/Scripts/app/testility.config.js",
+                    "~/Scripts/app/testility.filter.js", 
                     "~/Scripts/app/util/util.module.js",
                     "~/Scripts/app/util/util.directive.js",
                     "~/Scripts/app/browser/browser.module.js",
