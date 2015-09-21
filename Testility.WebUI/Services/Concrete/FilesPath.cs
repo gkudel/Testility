@@ -19,5 +19,10 @@ namespace Testility.WebUI.Services.Concrete
         {
             return Path.Combine(rootPath, "FlowJs");
         }
+
+        public string GetReferencesDirectory()
+        {
+            return Path.Combine(rootPath, "References");
+        }
     }
 }

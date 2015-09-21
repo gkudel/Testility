@@ -13,7 +13,7 @@ namespace Testility.Domain.Entities
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
-        public string Vesrion{ get; set; }
+        public string Version{ get; set; }
         public string FilePath { get; set; }        
         public virtual ICollection<Solution> Solutions { get; set; }
     }

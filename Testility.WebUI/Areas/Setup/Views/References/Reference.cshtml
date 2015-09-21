@@ -5,46 +5,46 @@
         <div class="panel-heading">
             <div><h2><strong><span class="glyphicon glyphicon-edit"></span> Reference</strong></h2></div>
         </div>
-        <div class="panel-body">
-            <div class="form-horizontal">
-                @using (Html.BeginForm("Edit", "References", FormMethod.Post, new { id = "Edit" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
+        <form action="@Url.Action("Edit", "References", new { area = "Setup"})" id="formUpload" name="formUpload"
+              server-validate novalidate ng-controller="ReferencesController as ctrl" method="post">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            <input type="text" name="FilePath" ng-model="ctrl.FilePath" ng-show="false" />
+            <input type="text" name="Name" ng-model="ctrl.FileName" ng-show="false" />
+            <div class="panel-body">
+                <div class="form-horizontal">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            <div class="form-control-static">
+                                <b>{{ctrl.FileName}}</b>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Version, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                }
-                <div class="form-group" ng-controller="ReferencesController as ctrl">
-                    <div class="col-md-10 col-md-offset-2">
-                        <form name="formUpload" server-validate novalidate>
-                            <div  flow-init="{ target: '/api/File/Upload', singleFile: true, chunkSize: 3000 }"
-                                flow-file-added="validateFile($file)"
-                                flow-file-progress="fileUploadProgress($file.progress())"
-                                flow-files-submitted="$flow.upload()"
-                                flow-file-success="fileUploadSuccess($message)"
-                                flow-error="uploadError($message)">
+                    <div class="form-group">
+                        <div class="col-md-10 col-md-offset-2">
+                            <div flow-init="{ target: '/api/File/Upload', singleFile: true }"
+                                 flow-name="ctrl.flow"
+                                 flow-file-added="ctrl.validateFile($file)"
+                                 flow-file-progress="ctrl.fileUploadProgress($file.progress())"
+                                 flow-files-submitted="ctrl.flow.upload()"
+                                 flow-file-success="ctrl.fileUploadSuccess($message)"
+                                 flow-error="ctrl.uploadError($message)">
                                 <div>
                                     <span class="btn btn-default" flow-btn>Upload Library</span>
-                                    <div ng-repeat="file in $flow.files" class="transfer-box">
+                                    <div ng-repeat="file in ctrl.flow.files" class="transfer-box">
                                         <div ng-show="file.isComplete()">
-                                            <div class="col-md-4">
+                                            <div class="col-md-12">
                                                 <img src="~/Content/images/dll.png" />
-                                                <b>{{file.relativePath}}({{file.size | bytes:2}}bytes)</b>
+                                                <b>{{file.size | bytes:2}}</b>
                                             </div>
-                                            <div class="col-md-4">                                                
+                                            <div class="col-md-4">
                                             </div>
                                         </div>
                                         <div ng-show="file.paused || file.isUploading()">
@@ -76,11 +76,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         <div class="panel-footer">
             <div class="table">
                 <div class="td-left">
@@ -89,7 +89,7 @@
                     </a>
                 </div>
                 <div class="td-right">
-                    <button type="submit" value="Save" class="btn btn-primary btn-lg" form="Edit">
+                    <button type="submit" value="Save" class="btn btn-primary btn-lg" form="formUpload">
                         <span class="glyphicon glyphicon-floppy-disk"></span> Save
                     </button>
                 </div>

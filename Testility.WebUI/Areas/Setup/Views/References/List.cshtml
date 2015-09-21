@@ -23,6 +23,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.List, r => r.Name)
                     </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.List, r => r.Version)
+                    </th>
                     <th></th>
                 </tr>
                 @foreach (var item in Model.List)
@@ -32,6 +35,9 @@
                             <b>
                                 @Html.DisplayFor(modelItem => item.Name)
                             </b>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Version)
                         </td>
                         <td class="text-right">
                             <div class="btn-group">

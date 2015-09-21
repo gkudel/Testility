@@ -97,7 +97,7 @@ namespace Testility.WebUI.Services.Concrete
 
         private string MergeChunks(IEnumerable<string> fileAry, string destFile)
         {
-            string path = Path.Combine(filesPath.GetFlowJsTempDirectory(), destFile);
+            string path = GeneratePath(destFile);
             using (var destStream = File.Create(path))
             {
                 foreach (string filePath in fileAry)
@@ -107,6 +107,21 @@ namespace Testility.WebUI.Services.Concrete
                 }
             }
             return path;
+        }
+
+        private string GeneratePath(string destFile)
+        {
+            int attempts = 0;
+            while (true)
+            {
+                string path = Path.Combine(filesPath.GetFlowJsTempDirectory(), Guid.NewGuid().ToString() + "." + destFile);
+                if (!File.Exists(path))
+                {
+                    return path;
+                }
+                attempts++;
+                if (attempts > 10) throw new InvalidOperationException();
+            }
         }
 
         private string GetChunkFilename(int chunkNumber, string identifier)

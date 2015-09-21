@@ -13,6 +13,7 @@ using System.Net;
 using Testility.WebUI.Model;
 using Testility.WebUI.Services.Abstract;
 using System.Web;
+using System.Threading.Tasks;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
@@ -21,6 +22,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
     {
         #region Members
         public Mock<IDbRepository> ServiceMock { get; set; }
+        public Mock<IFileService> FileServiceMock { get; set; }
         private Func<bool> uploaded = () => true;
         public ReferencesController referencesController { get; set; }
         #endregion Members
@@ -42,8 +44,11 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             ServiceMock.Setup(x => x.DeleteReference(It.IsAny<int>())).Returns(true);
             ServiceMock.Setup(x => x.Save(It.IsAny<Reference>()));
 
+            FileServiceMock = new Mock<IFileService>();
+            FileServiceMock.Setup(x => x.UploadReferenceAsync(It.IsAny<Reference>(), It.IsAny<string>())).Returns(Task.FromResult("path"));
+
             AutoMapperConfiguration.Configure();
-            referencesController = new ReferencesController (ServiceMock.Object);
+            referencesController = new ReferencesController (ServiceMock.Object, FileServiceMock.Object);
         }
         #endregion Init
 
@@ -99,7 +104,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             referencesController.ModelState.AddModelError("Error", "Error");
             ReferencesViewModel reference = new ReferencesViewModel() { Name = "ok" };
-            var actionResult = referencesController.Edit(reference) as ViewResult;
+            var actionResult = referencesController.Edit(reference).Result as ViewResult;
             Assert.AreEqual("Reference", actionResult.ViewName);
         }
 
@@ -107,7 +112,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Can_EditSolution_RedirectToAction()
         {
             ReferencesViewModel reference = new ReferencesViewModel() { Name = "ok" };
-            var actionResult = referencesController.Edit(reference) as RedirectToRouteResult;
+            var actionResult = referencesController.Edit(reference).Result as RedirectToRouteResult;
 
             ServiceMock.Verify(x => x.Save(It.IsAny<Reference>()), Times.Once);
             Assert.AreNotEqual(null, referencesController.TempData["savemessage"]);
@@ -120,7 +125,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
             ServiceMock.Setup(x => x.Save(It.IsAny<Reference>())).Throws(new Exception());
             ReferencesViewModel reference = new ReferencesViewModel() { Name = "ok" };
-            var actionResult = referencesController.Edit(reference) as ViewResult;
+            var actionResult = referencesController.Edit(reference).Result as ViewResult;
             var model = (actionResult as ViewResult).Model as ReferencesViewModel;
 
 
@@ -133,7 +138,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Cannot_EditNotUploaded_Redirect()
         {
             ReferencesViewModel reference = new ReferencesViewModel() { Name = "ok" };
-            var actionResult = referencesController.Edit(reference) as ViewResult;
+            var actionResult = referencesController.Edit(reference).Result as ViewResult;
             Assert.AreEqual("Reference", actionResult.ViewName);
         }
         #endregion POST

@@ -123,8 +123,7 @@ namespace Testility.WebUI.Infrastructure.Mapping
                 .ForMember(e => e.Id, opt => opt.Ignore());
 
             Mapper.CreateMap<ReferencesViewModel, Reference>();
-            Mapper.CreateMap<Reference, ReferencesViewModel>()
-                .ForMember(r => r.File, opt => opt.MapFrom(reference => string.IsNullOrEmpty(reference.FilePath) ? string.Empty : Path.GetFileName(reference.FilePath)));
+            Mapper.CreateMap<Reference, ReferencesViewModel>();
             #endregion Setup
 
             #region UnitTes

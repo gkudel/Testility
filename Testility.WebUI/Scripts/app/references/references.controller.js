@@ -6,26 +6,39 @@
     ReferencesController.$inject = ['$scope'];
     function ReferencesController($scope) {
 
-        $scope.fileUploadSuccess = function (message) {
-        };
+        var vm = this;
+        vm.obj = {};
+        vm.UniqId = '';
 
-        $scope.fileUploadProgress = function (progress) {
-            $scope.fileProgress = Math.round(progress * 100);
-        };
+        vm.FileName = 
+        vm.FilePath = '';
+        vm.fileUploadSuccess = fileUploadSuccess;
+        vm.fileUploadProgress = fileUploadProgress;
+        vm.uploadError = uploadError;
+        vm.validateFile = validateFile;
 
-        $scope.uploadError = function (message) {
+        function fileUploadSuccess(message) {
+            var jsonResponse = JSON.parse(message);
+            vm.FilePath = jsonResponse.FilePath;
+            vm.FileName = jsonResponse.FileName;
+        }
+
+        function fileUploadProgress(progress) {
+            vm.fileProgress = Math.round(progress * 100);
+        }
+
+        function uploadError(message) {
             //var jsonResponse = JSON.parse(message);
             //var modelState = jsonResponse.modelState;
             //$scope.modelState = modelState;
-        };
+        }
 
-        $scope.validateFile = function ($file) {
-            $scope.modelState = undefined;
-            $scope.formUpload.$serverErrors = undefined;
+        function validateFile($file) {
+            vm.modelState = undefined;
             var allowedExtensions = ['dll'];
             var isValidType = allowedExtensions.indexOf($file.getExtension()) >= 0;
-            if (!isValidType) $scope.modelState = { file: ['type'] };
+            if (!isValidType) vm.modelState = { file: ['type'] };
             return isValidType;
-        };
+        }
     }
 })(window.angular);

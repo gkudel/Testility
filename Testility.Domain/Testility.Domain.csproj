@@ -181,6 +181,10 @@
     <Compile Include="Migrations\201509201746504_ref.version.Designer.cs">
       <DependentUpon>201509201746504_ref.version.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509211139400_Misspeling.cs" />
+    <Compile Include="Migrations\201509211139400_Misspeling.Designer.cs">
+      <DependentUpon>201509211139400_Misspeling.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -222,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509201746504_ref.version.resx">
       <DependentUpon>201509201746504_ref.version.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509211139400_Misspeling.resx">
+      <DependentUpon>201509211139400_Misspeling.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

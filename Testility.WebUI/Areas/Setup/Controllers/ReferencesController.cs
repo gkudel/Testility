@@ -11,17 +11,20 @@ using System.Net;
 using AutoMapper.QueryableExtensions;
 using Testility.WebUI.Model;
 using Testility.WebUI.Services.Abstract;
+using System.Threading.Tasks;
 
 namespace Testility.WebUI.Areas.Setup.Controllers
 {
     public class ReferencesController : Controller
     {
         private readonly IDbRepository setupRepository;
+        private readonly IFileService fileService;
         public int PageSize { get; set; }
 
-        public ReferencesController(IDbRepository setupRepository)
+        public ReferencesController(IDbRepository setupRepository, IFileService fileService)
         {
             this.setupRepository = setupRepository;
+            this.fileService = fileService;
             PageSize = 3;
         }
 
@@ -67,17 +70,14 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         }
 
         [HttpPost ActionName("Edit")]
-        public ActionResult Edit(ReferencesViewModel model, HttpPostedFileBase file = null)
+        public async Task<ActionResult> Edit(ReferencesViewModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     Reference reference = Mapper.Map<Reference>(model);
-                    /* (file != null)
-                    {
-                        reference.FilePath = fileService.UploadReference(reference, file);
-                    } */                 
+                    if(!string.IsNullOrEmpty(model.FilePath)) reference.FilePath = await fileService.UploadReferenceAsync(reference, model.FilePath);
                     setupRepository.Save(reference);
                     TempData["savemessage"] = string.Format("{0} has been added", model.Name);
                     return RedirectToAction("List");
@@ -85,7 +85,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 catch(Exception ex)
                 {
                     ModelState.AddModelError("", ex.Message);
-                    return View("Reference", model);
+                    return View("Reference", model);                    
                 }
             }
             else

@@ -19,11 +19,22 @@ namespace Testility.WebUI.Services.Concrete
         {
             this.filesPath = filesPath;
         }
-
-        public void UploadReference(string s)
+        public async Task<string> UploadReferenceAsync(Reference r, string path)
         {
-            /*string path
-            File.Copy()*/
+            if (File.Exists(path))
+            {
+                string destpath = Path.Combine(filesPath.GetReferencesDirectory(), r.Id.ToString() + ".dll");
+                using (FileStream SourceStream = File.Open(path, FileMode.Open))
+                {                    
+                    using (FileStream DestinationStream = File.Create(destpath))
+                    {
+                        await SourceStream.CopyToAsync(DestinationStream);
+                    }                    
+                }
+                try { File.Delete(path); } catch (Exception) { }
+                return destpath;
+            }
+            return string.Empty;
         }
     }
 }

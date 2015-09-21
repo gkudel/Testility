@@ -9,5 +9,6 @@ namespace Testility.WebUI.Services.Abstract
     public interface IFilesPath
     {
         string GetFlowJsTempDirectory();
+        string GetReferencesDirectory();
     }
 }
