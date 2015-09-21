@@ -15,6 +15,7 @@ namespace Testility.WebUI.Areas.Setup.Model
         [CheckReferenceExtensions(".dll", ErrorMessage = "Please enter a valid assembly name.")]
         public string Name { get; set; }
         public string Version { get; set; }
+        public string Description { get; set; }
         public string FilePath { get; set; }
     }
 }

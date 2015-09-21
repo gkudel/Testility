@@ -7,3 +7,4 @@ E:\src\Testility\Testility.Util\obj\Debug\Decl\Testility.Utils.pdb
 E:\src\Testility\Testility.Util\obj\Debug\Testility.Utilsccrefgen.rsp
 E:\src\Testility\Testility.Util\obj\Debug\Testility.Utils.dll
 E:\src\Testility\Testility.Util\obj\Debug\Testility.Utils.pdb
+E:\src\Testility\Testility.Util\obj\Debug\Testility.Utils.csprojResolveAssemblyReference.cache

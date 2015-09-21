@@ -31,10 +31,18 @@ namespace Testility.WebUI.Services.Concrete
                         await SourceStream.CopyToAsync(DestinationStream);
                     }                    
                 }
-                try { File.Delete(path); } catch (Exception) { }
+                try { File.Delete(path); } catch (Exception) { /*TODO add To Logs */ }
                 return destpath;
             }
             return string.Empty;
+        }
+
+        public void DeleteReference(string path)
+        {
+            if (File.Exists(path))
+            {
+                try { File.Delete(path); } catch (Exception) { /*TODO add To Logs */ }
+            }
         }
     }
 }

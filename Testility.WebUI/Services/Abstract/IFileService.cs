@@ -11,5 +11,6 @@ namespace Testility.WebUI.Services.Abstract
     public interface IFileService
     {
         Task<string> UploadReferenceAsync(Reference r, string path);
+        void DeleteReference(string path);
     }
 }

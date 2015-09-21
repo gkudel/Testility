@@ -9,15 +9,15 @@
               server-validate novalidate ng-controller="ReferencesController as ctrl" method="post">
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-            <input type="text" name="FilePath" ng-model="ctrl.FilePath" ng-show="false" />
-            <input type="text" name="Name" ng-model="ctrl.FileName" ng-show="false" />
+            @Html.EditorFor(model => model.FilePath, new { htmlAttributes = new { @ng_model = "ctrl.FilePath", ng_show="false" } })            
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @ng_model = "ctrl.FileName", ng_show = "false" } })
             <div class="panel-body">
                 <div class="form-horizontal">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             <div class="form-control-static">
-                                <b>{{ctrl.FileName}}</b>
+                                <b><span ng-bind="ctrl.FileName">@Html.ValueFor(model => model.Name)</span></b>
                             </div>
                         </div>
                     </div>
@@ -28,8 +28,14 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-md-10 col-md-offset-2">
-                            <div flow-init="{ target: '/api/File/Upload', singleFile: true }"
+                            <div flow-init="{ target: '/api/File/Upload', singleFile: true, chunkSize: 2000 }"
                                  flow-name="ctrl.flow"
                                  flow-file-added="ctrl.validateFile($file)"
                                  flow-file-progress="ctrl.fileUploadProgress($file.progress())"

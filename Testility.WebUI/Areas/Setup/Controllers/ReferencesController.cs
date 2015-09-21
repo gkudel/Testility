@@ -77,8 +77,8 @@ namespace Testility.WebUI.Areas.Setup.Controllers
                 try
                 {
                     Reference reference = Mapper.Map<Reference>(model);
-                    if(!string.IsNullOrEmpty(model.FilePath)) reference.FilePath = await fileService.UploadReferenceAsync(reference, model.FilePath);
                     setupRepository.Save(reference);
+                    if (!string.IsNullOrEmpty(model.FilePath)) reference.FilePath = await fileService.UploadReferenceAsync(reference, model.FilePath);                    
                     TempData["savemessage"] = string.Format("{0} has been added", model.Name);
                     return RedirectToAction("List");
                 }
@@ -116,6 +116,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             try
             {
                 setupRepository.DeleteReference(model.Id);
+                if (!string.IsNullOrEmpty(model.FilePath)) fileService.DeleteReference(model.FilePath);
                 TempData["savemessage"] = string.Format("Solution has been deleted");
             }
             catch (Exception /*ex*/ )

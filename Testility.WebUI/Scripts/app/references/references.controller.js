@@ -8,9 +8,8 @@
 
         var vm = this;
         vm.obj = {};
-        vm.UniqId = '';
 
-        vm.FileName = 
+        vm.FileName = formUpload.Name.value;
         vm.FilePath = '';
         vm.fileUploadSuccess = fileUploadSuccess;
         vm.fileUploadProgress = fileUploadProgress;
