@@ -191,7 +191,7 @@ namespace Testility.Domain.Concrete
             }
             else
             {
-                context.References.Attach(reference);
+                context.SetState(reference, EntityState.Modified);
             }
             commit();
         }

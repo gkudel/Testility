@@ -70,26 +70,31 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         }
 
         [HttpPost ActionName("Edit")]
-        public async Task<ActionResult> Edit(ReferencesViewModel model)
+        public ActionResult Edit(ReferencesViewModel model)
         {
-            if (ModelState.IsValid)
+            string oldFileName = string.Empty;
+            try
             {
-                try
+                Reference reference = setupRepository.GetReference(model.Id) ?? new Reference();
+                Mapper.Map(model, reference, typeof(ReferencesViewModel), typeof(Reference));
+                oldFileName = reference?.FileName ?? string.Empty;
+                if (!string.IsNullOrEmpty(model.NewFilePath)) reference.FileName = fileService.UploadReference(model.NewFilePath);
+
+                if (ModelState.IsValid)
                 {
-                    Reference reference = Mapper.Map<Reference>(model);
                     setupRepository.Save(reference);
-                    if (!string.IsNullOrEmpty(model.FilePath)) reference.FilePath = await fileService.UploadReferenceAsync(reference, model.FilePath);                    
                     TempData["savemessage"] = string.Format("{0} has been added", model.Name);
+                    if (!string.IsNullOrEmpty(oldFileName)) try { fileService.DeleteReference(oldFileName); } catch (Exception) { /*Logs*/ };
                     return RedirectToAction("List");
                 }
-                catch(Exception ex)
+                else
                 {
-                    ModelState.AddModelError("", ex.Message);
-                    return View("Reference", model);                    
-                }
+                    return View("Reference", model);
+                }                
             }
-            else
+            catch (Exception ex)
             {
+                ModelState.AddModelError("", ex.Message);
                 return View("Reference", model);
             }
         }
@@ -115,8 +120,10 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             try
             {
+                Reference reference = setupRepository.GetReference(model.Id);
+                string fileName = reference?.FileName ?? string.Empty;
                 setupRepository.DeleteReference(model.Id);
-                if (!string.IsNullOrEmpty(model.FilePath)) fileService.DeleteReference(model.FilePath);
+                if (!string.IsNullOrEmpty(fileName)) fileService.DeleteReference(fileName);
                 TempData["savemessage"] = string.Format("Solution has been deleted");
             }
             catch (Exception /*ex*/ )

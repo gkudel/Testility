@@ -9,7 +9,7 @@
               server-validate novalidate ng-controller="ReferencesController as ctrl" method="post">
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-            @Html.EditorFor(model => model.FilePath, new { htmlAttributes = new { @ng_model = "ctrl.FilePath", ng_show="false" } })            
+            @Html.EditorFor(model => model.NewFilePath, new { htmlAttributes = new { @ng_model = "ctrl.FilePath", ng_show="false" } })            
             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @ng_model = "ctrl.FileName", ng_show = "false" } })
             <div class="panel-body">
                 <div class="form-horizontal">

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
+using Testility.Domain.Abstract;
 using Testility.Domain.Entities;
 using Testility.WebUI.Services.Abstract;
 
@@ -15,33 +16,31 @@ namespace Testility.WebUI.Services.Concrete
     public class FileService : IFileService
     {
         private readonly IFilesPath filesPath;
-        public FileService(IFilesPath filesPath)
+        public FileService(IFilesPath filesPath, IDbRepository dbRepository)
         {
             this.filesPath = filesPath;
         }
-        public async Task<string> UploadReferenceAsync(Reference r, string path)
+
+        public string UploadReference(string path)
         {
             if (File.Exists(path))
             {
-                string destpath = Path.Combine(filesPath.GetReferencesDirectory(), r.Id.ToString() + ".dll");
-                using (FileStream SourceStream = File.Open(path, FileMode.Open))
-                {                    
-                    using (FileStream DestinationStream = File.Create(destpath))
-                    {
-                        await SourceStream.CopyToAsync(DestinationStream);
-                    }                    
-                }
-                try { File.Delete(path); } catch (Exception) { /*TODO add To Logs */ }
-                return destpath;
+                string destpath = Path.Combine(filesPath.GetReferencesDirectory(), Path.GetFileName(path));
+                File.Move(path, destpath);                
+                return Path.GetFileName(destpath);
             }
             return string.Empty;
         }
 
-        public void DeleteReference(string path)
+        public void DeleteReference(string name)
         {
-            if (File.Exists(path))
+            if (!string.IsNullOrEmpty(name))
             {
-                try { File.Delete(path); } catch (Exception) { /*TODO add To Logs */ }
+                string destpath = Path.Combine(filesPath.GetReferencesDirectory(), name);
+                if (File.Exists(destpath))
+                {
+                    try { File.Delete(destpath); } catch (Exception) { /*TODO add To Logs */ }
+                }
             }
         }
     }

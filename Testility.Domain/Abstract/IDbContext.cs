@@ -27,5 +27,6 @@ namespace Testility.Domain.Abstract
 
         int SaveChanges();
         IEnumerable<DbEntityValidationResult> GetValidationErrors();
+        void SetState(object entity, EntityState state);
     }
 }

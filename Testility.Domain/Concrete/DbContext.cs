@@ -32,7 +32,12 @@ namespace Testility.Domain.Concrete
 
         public DbContext() : base("EFDbContext")
         {
-        }        
+        }
+
+        public void SetState(object entity, EntityState state)
+        {
+            Entry(entity).State = state;
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

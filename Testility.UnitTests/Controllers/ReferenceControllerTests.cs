@@ -45,7 +45,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
             ServiceMock.Setup(x => x.Save(It.IsAny<Reference>()));
 
             FileServiceMock = new Mock<IFileService>();
-            FileServiceMock.Setup(x => x.UploadReferenceAsync(It.IsAny<Reference>(), It.IsAny<string>())).Returns(Task.FromResult("path"));
+            FileServiceMock.Setup(x => x.UploadReference(It.IsAny<string>())).Returns("path");
 
             AutoMapperConfiguration.Configure();
             referencesController = new ReferencesController (ServiceMock.Object, FileServiceMock.Object);
@@ -104,7 +104,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         {
             referencesController.ModelState.AddModelError("Error", "Error");
             ReferencesViewModel reference = new ReferencesViewModel() { Name = "ok" };
-            var actionResult = referencesController.Edit(reference).Result as ViewResult;
+            var actionResult = referencesController.Edit(reference) as ViewResult;
             Assert.AreEqual("Reference", actionResult.ViewName);
         }
 
@@ -112,7 +112,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Can_EditSolution_RedirectToAction()
         {
             ReferencesViewModel reference = new ReferencesViewModel() { Name = "ok" };
-            var actionResult = referencesController.Edit(reference).Result as RedirectToRouteResult;
+            var actionResult = referencesController.Edit(reference) as RedirectToRouteResult;
 
             ServiceMock.Verify(x => x.Save(It.IsAny<Reference>()), Times.Once);
             Assert.AreNotEqual(null, referencesController.TempData["savemessage"]);
@@ -125,7 +125,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
 
             ServiceMock.Setup(x => x.Save(It.IsAny<Reference>())).Throws(new Exception());
             ReferencesViewModel reference = new ReferencesViewModel() { Name = "ok" };
-            var actionResult = referencesController.Edit(reference).Result as ViewResult;
+            var actionResult = referencesController.Edit(reference) as ViewResult;
             var model = (actionResult as ViewResult).Model as ReferencesViewModel;
 
 
@@ -138,7 +138,7 @@ namespace Testility.WebUI.Areas.Setup.Controllers
         public void Cannot_EditNotUploaded_Redirect()
         {
             ReferencesViewModel reference = new ReferencesViewModel() { Name = "ok" };
-            var actionResult = referencesController.Edit(reference).Result as ViewResult;
+            var actionResult = referencesController.Edit(reference) as ViewResult;
             Assert.AreEqual("Reference", actionResult.ViewName);
         }
         #endregion POST

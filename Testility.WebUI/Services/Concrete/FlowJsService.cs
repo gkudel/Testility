@@ -11,6 +11,8 @@ namespace Testility.WebUI.Services.Concrete
     public class FlowJsService : IFlowJsService
     {
         private readonly IFilesPath filesPath;
+        private static object lockObj = new object();
+
         public FlowJsService(IFilesPath filesPath)
         {
             this.filesPath = filesPath;
@@ -61,37 +63,39 @@ namespace Testility.WebUI.Services.Concrete
                 throw;
             }
 
-            for (int i = 1, l = chunk.TotalChunks; i <= l; i++)
+            lock(lockObj)
             {
-                var chunkNameToTest = GetChunkFilename(i, chunk.Identifier);
-                var exists = File.Exists(chunkNameToTest);
-                if (!exists)
+                for (int i = 1, l = chunk.TotalChunks; i <= l; i++)
                 {
-                    response.Status = PostChunkStatus.PartlyDone;
-                    return response;
+                    var chunkNameToTest = GetChunkFilename(i, chunk.Identifier);
+                    var exists = File.Exists(chunkNameToTest);
+                    if (!exists)
+                    {
+                        response.Status = PostChunkStatus.PartlyDone;
+                        return response;
+                    }
+                }
+
+                var fileAry = new List<string>();
+                for (int i = 1, l = chunk.TotalChunks; i <= l; i++)
+                {
+                    fileAry.Add("flow-" + chunk.Identifier + "." + i);
+                }
+
+                response.FilePath = MergeChunks(fileAry, chunk.FileName);
+
+                for (int i = 0, l = fileAry.Count; i < l; i++)
+                {
+                    try
+                    {
+                        File.Delete(Path.Combine(filesPath.GetFlowJsTempDirectory(), fileAry[i]));
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
             }
-
-            var fileAry = new List<string>();
-            for (int i = 1, l = chunk.TotalChunks; i <= l; i++)
-            {
-                fileAry.Add("flow-" + chunk.Identifier + "." + i);
-            }
-
-            response.FilePath = MergeChunks(fileAry, chunk.FileName);
-
-            for (int i = 0, l = fileAry.Count; i < l; i++)
-            {
-                try
-                {
-                    File.Delete(Path.Combine(filesPath.GetFlowJsTempDirectory(), fileAry[i]));
-                }
-                catch (Exception)
-                {
-                }
-            }
-
-            response.Status = PostChunkStatus.Done;
+            response.Status = PostChunkStatus.Done;            
             return response;
         }
 

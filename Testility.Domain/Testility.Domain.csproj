@@ -189,6 +189,14 @@
     <Compile Include="Migrations\201509211201183_Description.Designer.cs">
       <DependentUpon>201509211201183_Description.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509220559217_Reference.FilePath.Uniq.cs" />
+    <Compile Include="Migrations\201509220559217_Reference.FilePath.Uniq.Designer.cs">
+      <DependentUpon>201509220559217_Reference.FilePath.Uniq.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509220615190_Reference.FileName.cs" />
+    <Compile Include="Migrations\201509220615190_Reference.FileName.Designer.cs">
+      <DependentUpon>201509220615190_Reference.FileName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -236,6 +244,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509211201183_Description.resx">
       <DependentUpon>201509211201183_Description.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509220559217_Reference.FilePath.Uniq.resx">
+      <DependentUpon>201509220559217_Reference.FilePath.Uniq.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509220615190_Reference.FileName.resx">
+      <DependentUpon>201509220615190_Reference.FileName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
